@@ -1,6 +1,6 @@
 #include <HDX/Input/Keyboard/Keyboard.hpp>
 #include <HDX/Input/Keyboard/IKeyboard.hpp>
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx

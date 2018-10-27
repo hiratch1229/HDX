@@ -7,7 +7,7 @@
 //  システム
 //  2018.07.31  作成
 //  TODO:前バージョンからほとんど持ってきたので、色々改善
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 
 
 //*************************
@@ -53,7 +53,7 @@
 //  2018.08.09  作成
 //  TODO:もっと簡単に描画出来るように
 //  TODO:バッチ処理
-#include <HDX/Sprite.hpp>
+#include <HDX/Sprite/Sprite.hpp>
 
 //  3D基本形オブジェクト
 //  2018.09.26  作成

@@ -1,6 +1,6 @@
 #include <HDX/Input/XInput/XInput.hpp>
 #include <HDX/Input/XInput/IXInput.hpp>
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx

@@ -1,6 +1,6 @@
 #include <HDX/PixelShader/PixelShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 
 namespace hdx
 {

@@ -1,7 +1,7 @@
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 
 #include <HDX/Engine.hpp>
-#include <HDX/ISystem.hpp>
+#include <HDX/System/ISystem.hpp>
 
 #include <Windows.h>
 #include <crtdbg.h>

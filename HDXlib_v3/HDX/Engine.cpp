@@ -1,6 +1,6 @@
 #include <HDX/Engine.hpp>
 
-#include <HDX/ISystem.hpp>
+#include <HDX/System/ISystem.hpp>
 #include <HDX/Input/Keyboard/IKeyboard.hpp>
 #include <HDX/Input/Mouse/IMouse.hpp>
 #include <HDX/Input/XInput/IXInput.hpp>

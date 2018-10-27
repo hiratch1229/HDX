@@ -1,4 +1,4 @@
- #include <HDX/System.hpp>
+ #include <HDX/System/System.hpp>
 
 #include <HDX/Vertex.hpp>
 #include <HDX/Blend.hpp>
@@ -13,7 +13,7 @@
 #include <HDX/ConstantBuffer.hpp>
 #include <HDX/Macro.hpp>
 
-#include <HDX/ISystem.hpp>
+#include <HDX/System/ISystem.hpp>
 #include <HDX/Engine.hpp>
 
 #include <HDX/SkinnedMesh.hpp>

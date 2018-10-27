@@ -1,5 +1,5 @@
 #include <HDX/Model.hpp>
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 #include <HDX/ConstantBuffer.hpp>
 #include <HDX/VertexShader/VertexShader.hpp>
 #include <HDX/PixelShader/PixelShader.hpp>

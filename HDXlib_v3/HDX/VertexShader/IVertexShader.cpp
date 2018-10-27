@@ -1,5 +1,5 @@
 #include <HDX/VertexShader/IVertexShader.hpp>
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 #include <HDX/InputElementDesc.hpp>
 #include <HDX/NumberMap.hpp>
 

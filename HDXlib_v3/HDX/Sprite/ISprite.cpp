@@ -1,7 +1,7 @@
 #include <HDX/Sprite/ISprite.hpp>
 
 #include <HDX/Engine.hpp>
-#include <HDX/ISystem.hpp>
+#include <HDX/System/ISystem.hpp>
 
 #include <HDX/NumberMap.hpp>
 

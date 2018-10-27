@@ -1,6 +1,6 @@
 #include <HDX/Input/Gamepad/Gamepad.hpp>
 #include <HDX/Input/Gamepad/IGamepad.hpp>
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx

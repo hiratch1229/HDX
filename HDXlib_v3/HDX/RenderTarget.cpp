@@ -8,7 +8,7 @@
 #include <HDX/PixelShader/PixelShader.hpp>
 #include <HDX/Math.hpp>
 
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 #include <d3d11.h>
 #include <wrl.h>
 

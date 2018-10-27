@@ -1,7 +1,7 @@
 #include <HDX/VertexShader/VertexShader.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/InputElementDesc.hpp>
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 
 namespace hdx
 {

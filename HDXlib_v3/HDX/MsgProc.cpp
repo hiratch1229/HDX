@@ -2,7 +2,7 @@
 
 #include <HDX/Engine.hpp>
 
-#include <HDX/ISystem.hpp>
+#include <HDX/System/ISystem.hpp>
 #include <HDX/Input/Mouse/IMouse.hpp>
 
 namespace detail

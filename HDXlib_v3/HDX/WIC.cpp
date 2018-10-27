@@ -1,7 +1,7 @@
 #include <HDX/WIC.hpp>
 
 #include <HDX/Engine.hpp>
-#include <HDX/ISystem.hpp>
+#include <HDX/System/ISystem.hpp>
 #include <HDX/Sprite/ISprite.hpp>
 
 #include <HDX/Type2.hpp>

@@ -3,7 +3,7 @@
 #include <HDX/Input/Mouse/IMouse.hpp>
 #include <HDX/Input/XInput/IXInput.hpp>
 #include <HDX/Input/Gamepad/IGamepad.hpp>
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 
 namespace hdx
 {

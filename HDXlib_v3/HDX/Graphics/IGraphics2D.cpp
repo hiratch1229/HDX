@@ -1,6 +1,6 @@
 #include <HDX/Graphics/IGraphics2D.hpp>
 
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 
 #include <HDX/VertexShader/VertexShader.hpp>
 #include <HDX/PixelShader/PixelShader.hpp>

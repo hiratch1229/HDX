@@ -1,6 +1,6 @@
-#include <HDX/Sprite.hpp>
+#include <HDX/Sprite/Sprite.hpp>
 
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 #include <HDX/Math.hpp>
 #include <HDX/Vertex.hpp>
 #include <HDX/Error.hpp>

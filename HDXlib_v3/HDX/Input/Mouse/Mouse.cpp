@@ -1,6 +1,6 @@
 #include <HDX/Input/Mouse/Mouse.hpp>
 #include <HDX/Input/Mouse/IMouse.hpp>
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx

@@ -1,5 +1,5 @@
 #include <HDX/Sound.hpp>
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 #include <HDX/Error.hpp>
 
 namespace hdx

@@ -3,7 +3,7 @@
 #include <HDX/Input/InputState.hpp>
 #include <HDX/Math.hpp>
 #include <HDX/Macro.hpp>
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 
 #include <windows.h>
 #define DIRECTINPUT_VERSION 0x0800

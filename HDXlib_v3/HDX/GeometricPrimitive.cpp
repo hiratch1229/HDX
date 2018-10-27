@@ -1,5 +1,5 @@
 #include <HDX/GeometricPrimitive.hpp>
-#include <HDX/System.hpp>
+#include <HDX/System/System.hpp>
 #include <HDX/ConstantBuffer.hpp>
 #include <HDX/MathConstants.hpp>
 #include <HDX/VertexShader/VertexShader.hpp>

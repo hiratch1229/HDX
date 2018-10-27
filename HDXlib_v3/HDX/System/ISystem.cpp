@@ -1,4 +1,4 @@
-#include <HDX/ISystem.hpp>
+#include <HDX/System/ISystem.hpp>
 
 #include <HDX/Blend.hpp>
 #include <HDX/Type2.hpp>
