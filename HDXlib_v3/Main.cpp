@@ -7,7 +7,7 @@ void Main()
   hdx::System::SetTitle("HDXlib");
   hdx::System::SetBackColor(hdx::Palette::Gray);
 
-  hdx::Sprite A{ "DATA/title_logo01.png" };
+  //hdx::Sprite A{ "DATA/title_logo01.png" };
 
   //  hdx::SkinnedMesh Fbx("DATA/FBX/005_cube.fbx");
   //
@@ -84,6 +84,6 @@ void Main()
 
   while (hdx::System::Update())
   {
-    A.Draw();
+    //A.Draw();
   }
 }

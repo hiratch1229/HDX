@@ -1,5 +1,8 @@
 #include <HDX/System.hpp>
 
+#include <HDX/Engine.hpp>
+#include <HDX/ISystem.hpp>
+
 #include <Windows.h>
 #include <crtdbg.h>
 
@@ -10,13 +13,18 @@
 void Main();
 
 //  メッセージプロシージャ
-LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+//LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+//{
+//  return detail::Engine::GetSystem()->MsgProc(hWnd, msg, wParam, lParam);
+//}
+
+namespace detail
 {
-  return detail::System::Get()->MsgProc(hWnd, msg, wParam, lParam);
+  LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 }
 
 //  エントリーポイント
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
   //  メモリリーク検出
 #if defined(DEBUG) | defined(_DEBUG)
@@ -24,8 +32,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 #endif
 
   //  時間でランダム
-  srand((unsigned)time(nullptr));
-  
+  srand(static_cast<unsigned int>(time(nullptr)));
+
   //  日本語に設定
   setlocale(LC_CTYPE, "jpn");
 
@@ -34,7 +42,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   {
     WindowClass.cbSize = sizeof(WNDCLASSEX);
     WindowClass.style = CS_CLASSDC;
-    WindowClass.lpfnWndProc = MsgProc;
+    WindowClass.lpfnWndProc = detail::MsgProc;
     WindowClass.cbClsExtra = 0;
     WindowClass.cbWndExtra = 0;
     WindowClass.hInstance = hInstance;
@@ -48,7 +56,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
   }
 
   //  ウィンドウ&デバイス&スワップチェーン生成
-  detail::System::Get()->CreateWindowAndDeviceAndSwapChain(hInstance);
+  //detail::System::Get()->CreateWindowAndDeviceAndSwapChain(hInstance);
+
+  detail::Engine Engine;
 
   //  プログラムの実行
   Main();

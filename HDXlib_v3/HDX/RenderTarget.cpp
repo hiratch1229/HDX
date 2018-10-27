@@ -1,6 +1,5 @@
 #include <HDX/RenderTarget.hpp>
 #include <HDX/Color.hpp>
-#include <HDX/Macro.hpp>
 #include <HDX/Vertex.hpp>
 #include <HDX/Angle.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
@@ -78,7 +77,8 @@ namespace hdx
 
   RenderTarget::~RenderTarget()
   {
-    SAFE_DELETE(pImpl_);
+    delete pImpl_;
+    pImpl_ = nullptr;
 
     Restore();
   }

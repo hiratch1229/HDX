@@ -1,4 +1,4 @@
-#include <HDX/System.hpp>
+ #include <HDX/System.hpp>
 
 #include <HDX/Vertex.hpp>
 #include <HDX/Blend.hpp>
@@ -12,6 +12,9 @@
 #include <HDX/InputElementDesc.hpp>
 #include <HDX/ConstantBuffer.hpp>
 #include <HDX/Macro.hpp>
+
+#include <HDX/ISystem.hpp>
+#include <HDX/Engine.hpp>
 
 #include <HDX/SkinnedMesh.hpp>
 
@@ -31,11 +34,11 @@ namespace detail
   //  初期化
   void System::Initialize()
   {
-    //  ウィンドウを設定
-    SetUpWindow();
-
     //  Direct3Dを初期化
     InitializeD3D();
+    
+    //  ウィンドウを設定
+    SetUpWindow();
 
     //  Blendクラスを初期化
     pBlender_ = std::make_unique<Blend>();
@@ -1229,52 +1232,54 @@ namespace hdx
   //  更新
   int System::Update()
   {
-    static bool SystemInitialize = false;
+    //static bool SystemInitialize = false;
+    //
+    ////  一回目
+    //if (!SystemInitialize)
+    //{
+    //  SystemInitialize = true;
+    //  //  初期化
+    //  detail::System::Get()->Initialize();
+    //}
+    ////  それ以降
+    //else
+    //{
+    //  //  描画裏表反転
+    //  detail::System::Get()->Present();
+    //}
+    //
+    ////  入力情報更新
+    //{
+    //  //  キーボード情報更新
+    //  detail::System::Get()->GetKeyboard()->Update();
+    //
+    //  //  マウス情報更新
+    //  detail::System::Get()->GetMouse()->Update();
+    //
+    //  //  XInputコントローラ情報更新
+    //  detail::System::Get()->GetXInput()->Update();
+    //
+    //  //  コントローラ情報更新
+    //  detail::System::Get()->GetGamepad()->Update();
+    //}
+    //
+    ////  メッセージを全て処理
+    //MSG Msg{};
+    //while (PeekMessage(&Msg, nullptr, 0, 0, PM_REMOVE))
+    //{
+    //  TranslateMessage(&Msg);
+    //  DispatchMessage(&Msg);
+    //}
+    //
+    ////  FPS制御
+    //while (!detail::System::Get()->FrameRateUpdate());
+    //
+    ////  画面クリア
+    //detail::System::Get()->ScreenClear();
+    //
+    ////  ウィンドウが閉じられたかどうか
+    //return detail::System::Get()->isNotCloseWindow();
 
-    //  一回目
-    if (!SystemInitialize)
-    {
-      SystemInitialize = true;
-      //  初期化
-      detail::System::Get()->Initialize();
-    }
-    //  それ以降
-    else
-    {
-      //  描画裏表反転
-      detail::System::Get()->Present();
-    }
-
-    //  入力情報更新
-    {
-      //  キーボード情報更新
-      detail::System::Get()->GetKeyboard()->Update();
-
-      //  マウス情報更新
-      detail::System::Get()->GetMouse()->Update();
-
-      //  XInputコントローラ情報更新
-      detail::System::Get()->GetXInput()->Update();
-
-      //  コントローラ情報更新
-      detail::System::Get()->GetGamepad()->Update();
-    }
-
-    //  メッセージを全て処理
-    MSG Msg{};
-    while (PeekMessage(&Msg, nullptr, 0, 0, PM_REMOVE))
-    {
-      TranslateMessage(&Msg);
-      DispatchMessage(&Msg);
-    }
-
-    //  FPS制御
-    while (!detail::System::Get()->FrameRateUpdate());
-
-    //  画面クリア
-    detail::System::Get()->ScreenClear();
-
-    //  ウィンドウが閉じられたかどうか
-    return detail::System::Get()->isNotCloseWindow();
+    return detail::Engine::GetSystem()->Update();
   }
 }

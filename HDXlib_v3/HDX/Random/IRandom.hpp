@@ -23,7 +23,8 @@ namespace detail
       W_ = _Seed;
     }
   public:
-    IRandom(uint _Seed) { SetSeed(_Seed); }
+    IRandom();
     ~IRandom() {}
+    uint Get();
   };
 }

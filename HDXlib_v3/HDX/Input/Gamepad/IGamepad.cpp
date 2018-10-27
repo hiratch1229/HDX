@@ -1,8 +1,8 @@
 #include <HDX/Input/Gamepad/IGamepad.hpp>
 #include <HDX/Input/XInput/IXInput.hpp>
 #include <HDX/Input/InputState.hpp>
-#include <HDX/Macro.hpp>
 #include <HDX/Math.hpp>
+#include <HDX/Macro.hpp>
 #include <HDX/System.hpp>
 
 #include <windows.h>
@@ -333,8 +333,8 @@ namespace detail
   //  解放
   IGamepad::~IGamepad()
   {
-    //  ポインタの解放
-    SAFE_DELETE(pImpl_);
+    delete pImpl_;
+    pImpl_ = nullptr;
   }
 
   //  DirectInputコントローラを作成

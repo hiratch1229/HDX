@@ -1,24 +1,15 @@
 #include <HDX/Random/Random.hpp>
-#include <stdlib.h>
-#include <Windows.h>
 
-#include <random>
+#include <HDX/Engine.hpp>
+#include <HDX/Random/IRandom.hpp>
+
+#include <climits>
 
 namespace hdx
 {
-  Random::Random()
-    : W_(rand())
+  int Random::Range(int _Max, int _Min)
   {
-    std::mt19937 mt = std::mt19937(std::random_device()());
-
-    std::uniform_int_distribution<int>(0, 100)(mt);
-
-    std::uniform_real_distribution<float>(0.0f, 100.0f)(mt);
-  }
-
-  int Random::Range(int _Max, int _Min)const
-  {
-    const unsigned int R = Rand();
+    const uint R = detail::Engine::GetRandom()->Get();
 
     if (_Min > _Max)
     {
@@ -32,9 +23,9 @@ namespace hdx
     return R % Value + _Min;
   }
 
-  float Random::Range(float _Max, float _Min)const
+  float Random::Range(float _Max, float _Min)
   {
-    const unsigned int R = Rand();
+    const uint R = detail::Engine::GetRandom()->Get();
 
     if (_Min > _Max)
     {
@@ -48,13 +39,8 @@ namespace hdx
     return (static_cast<float>(R) / UINT_MAX)*Value + _Min;
   }
 
-  inline unsigned int Random::Rand()const
+  void Random::SetSeed(uint _Seed)
   {
-    unsigned long Temp = (X_ ^ (X_ << 11));
-    X_ = Y_;
-    Y_ = Z_;
-    Z_ = W_;
-
-    return W_ = (W_ ^ (W_ >> 19)) ^ (Temp ^ (Temp >> 8));
+    detail::Engine::GetRandom()->SetSeed(_Seed);
   }
 }

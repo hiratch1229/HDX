@@ -2,7 +2,6 @@
 #include <HDX/System.hpp>
 #include <HDX/InputElementDesc.hpp>
 #include <HDX/NumberMap.hpp>
-#include <HDX/Macro.hpp>
 
 #include <d3d11.h>
 #include <wrl.h>
@@ -35,7 +34,8 @@ namespace detail
   //  解放
   IVertexShader::~IVertexShader()
   {
-    SAFE_DELETE(pImpl_);
+    delete pImpl_;
+    pImpl_ = nullptr;
   }
 
   //  バーテックスシェーダー作成

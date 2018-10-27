@@ -1,0 +1,137 @@
+#include <HDX/Sprite/ISprite.hpp>
+
+#include <HDX/Engine.hpp>
+#include <HDX/ISystem.hpp>
+
+#include <HDX/NumberMap.hpp>
+
+#include <d3d11.h>
+#include <wrl.h>
+
+namespace detail
+{
+  class ISprite::Impl
+  {
+    static constexpr char* kDammyTextureName = "";
+  private:
+    struct TextureData
+    {
+      Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pShaderResourceView;
+      hdx::int2 Size_;
+    };
+  private:
+    NumberMap<std::string, TextureData> TextureMap_;
+  private:
+    inline int CreateDammyTexture()
+    {
+      //  エラーチェック用
+      HRESULT hr = S_OK;
+
+      ISystem* pSystem = Engine::GetSystem();
+
+      //  シェーダーリソースビュー設定で作成
+      D3D11_TEXTURE2D_DESC Texture2dDesc{};
+      {
+        Texture2dDesc.Width = 1;
+        Texture2dDesc.Height = 1;
+        Texture2dDesc.MipLevels = 1;
+        Texture2dDesc.ArraySize = 1;
+        Texture2dDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        Texture2dDesc.SampleDesc.Count = 1;
+        Texture2dDesc.SampleDesc.Quality = 0;
+        Texture2dDesc.Usage = D3D11_USAGE_DEFAULT;
+        Texture2dDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+        Texture2dDesc.CPUAccessFlags = 0;
+        Texture2dDesc.MiscFlags = 0;
+      }
+
+      //  白色設定で作成
+      D3D11_SUBRESOURCE_DATA SubresourceData{};
+      {
+        u_int color = 0xFFFFFFFF;
+        SubresourceData.pSysMem = &color;
+        SubresourceData.SysMemPitch = 4;
+        SubresourceData.SysMemSlicePitch = 4;
+      }
+
+      //  Texture2Dを作成
+      Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture2d;
+      {
+        hr = pSystem->GetDevice()->CreateTexture2D(&Texture2dDesc, &SubresourceData, pTexture2d.GetAddressOf());
+        _ASSERT_EXPR(SUCCEEDED(hr), L"CreateTexture2D");
+      }
+
+      //  シェーダーリソースビューをスワップチェーン設定で作成
+      D3D11_SHADER_RESOURCE_VIEW_DESC ShaderResourceViewDesc{};
+      {
+        DXGI_SWAP_CHAIN_DESC SwapChainDesc;
+        pSystem->GetSwapChain()->GetDesc(&SwapChainDesc);
+        ShaderResourceViewDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+        ShaderResourceViewDesc.ViewDimension = (SwapChainDesc.SampleDesc.Count != 1) ? D3D11_SRV_DIMENSION_TEXTURE2DMS : D3D11_SRV_DIMENSION_TEXTURE2D;
+        ShaderResourceViewDesc.Texture2D.MipLevels = 1;
+      }
+
+      //  シェーダーリソースビューを作成
+      Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pShaderResouceView;
+      {
+        hr = pSystem->GetDevice()->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResouceView.GetAddressOf());
+        _ASSERT_EXPR(SUCCEEDED(hr), L"CreateShaderResourceView");
+      }
+
+      //  マップへ追加
+      return TextureMap_.insert(kDammyTextureName, { pShaderResouceView, hdx::int2(1, 1) });
+    }
+  public:
+    int GetDammyTextureID()
+    {
+      int ID = TextureMap_.find("");
+      if (ID >= 0)
+      {
+        return ID;
+      }
+
+      return CreateDammyTexture();
+    }
+    int GetTextureID(const char* _FilePath) { return TextureMap_.find(_FilePath); }
+    hdx::int2 GetSize(int _ID) { return TextureMap_[_ID].Size_; }
+    int InsertTexture(const char* _FilePath, ID3D11ShaderResourceView* _pShaderResourceView, const hdx::int2& _Size)
+    {
+      return TextureMap_.insert(_FilePath, { _pShaderResourceView, _Size });
+    }
+  public:
+    Impl() { TextureMap_.clear(); }
+    ~Impl() { TextureMap_.clear(); }
+  };
+
+  ISprite::ISprite()
+    : pImpl_(new Impl)
+  {
+
+  }
+
+  ISprite::~ISprite()
+  {
+    delete pImpl_;
+    pImpl_ = nullptr;
+  }
+
+  int ISprite::GetDammyTextureID()
+  {
+    return pImpl_->GetDammyTextureID();
+  }
+
+  int ISprite::GetTextureID(const char* _FilePath)
+  {
+    return pImpl_->GetTextureID(_FilePath);
+  }
+
+  hdx::int2 ISprite::GetSize(int _ID)
+  {
+    return pImpl_->GetSize(_ID);
+  }
+
+  int ISprite::InsertTexture(const char* _FilePath, ID3D11ShaderResourceView* _pShaderResourceView, const hdx::int2& _Size)
+  {
+    return pImpl_->InsertTexture(_FilePath, _pShaderResourceView, _Size);
+  }
+}

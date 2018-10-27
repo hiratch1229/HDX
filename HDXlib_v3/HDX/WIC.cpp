@@ -1,7 +1,10 @@
 #include <HDX/WIC.hpp>
-#include <HDX/Macro.hpp>
+
+#include <HDX/Engine.hpp>
+#include <HDX/ISystem.hpp>
+#include <HDX/Sprite/ISprite.hpp>
+
 #include <HDX/Type2.hpp>
-#include <HDX/System.hpp>
 
 #include <d3d11.h>
 #include <wincodec.h>
@@ -51,14 +54,15 @@ namespace detail
 
   WIC::~WIC()
   {
-    SAFE_DELETE(pImpl_);
+    delete pImpl_;
+    pImpl_ = nullptr;
   }
 
   int WIC::Load(const char* _FilePath)
   {
     //  Šù‚Éì¬‚³‚ê‚Ä‚¢‚é‚©Šm”F
     {
-      int ID = detail::System::Get()->GetSpriteManager()->GetShaderResourceViewID(_FilePath);
+      const int ID = detail::Engine::GetSprite()->GetTextureID(_FilePath);
       if (ID >= 0)
       {
         return ID;
@@ -134,20 +138,22 @@ namespace detail
 
     Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture2d;
 
-    hr = detail::System::Get()->GetDevice()->CreateTexture2D(&Texture2dDesc, &InitializeData, pTexture2d.GetAddressOf());
+    ISystem* pSystem = Engine::GetSystem();
+
+    hr = pSystem->GetDevice()->CreateTexture2D(&Texture2dDesc, &InitializeData, pTexture2d.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateTexture2D");
 
     DXGI_SWAP_CHAIN_DESC SwapChainDesc;
-    detail::System::Get()->GetSwapChain()->GetDesc(&SwapChainDesc);
+    pSystem->GetSwapChain()->GetDesc(&SwapChainDesc);
     D3D11_SHADER_RESOURCE_VIEW_DESC ShaderResourceViewDesc{};
     ShaderResourceViewDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     ShaderResourceViewDesc.ViewDimension = (SwapChainDesc.SampleDesc.Count != 1) ? D3D11_SRV_DIMENSION_TEXTURE2DMS : D3D11_SRV_DIMENSION_TEXTURE2D;
     ShaderResourceViewDesc.Texture2D.MipLevels = 1;
 
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pShaderResourceView;
-    hr = detail::System::Get()->GetDevice()->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResourceView.GetAddressOf());
+    hr = pSystem->GetDevice()->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResourceView.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateShaderResourceView");
 
-    return detail::System::Get()->GetSpriteManager()->InsertTextureDataMap(_FilePath, pShaderResourceView, Size);
+    return Engine::GetSprite()->InsertTexture(_FilePath, pShaderResourceView.Get(), Size);
   }
 }

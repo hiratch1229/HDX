@@ -1,7 +1,6 @@
 #include <HDX/PixelShader/IPixelShader.hpp>
 #include <HDX/System.hpp>
 #include <HDX/NumberMap.hpp>
-#include <HDX/Macro.hpp>
 
 #include <d3d11.h>
 #include <wrl.h>
@@ -28,7 +27,8 @@ namespace detail
   //  解放
   IPixelShader::~IPixelShader()
   {
-    SAFE_DELETE(pImpl_);
+    delete pImpl_;
+    pImpl_ = nullptr;
   }
 
   //  ピクセルシェーダー作成

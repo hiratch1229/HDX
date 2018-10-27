@@ -5,8 +5,6 @@
 #include <HDX/VertexShader/VertexShader.hpp>
 #include <HDX/PixelShader/PixelShader.hpp>
 
-#include <HDX/Macro.hpp>
-
 namespace detail
 {
   struct IGraphics2D::Impl
@@ -28,6 +26,7 @@ namespace detail
 
   IGraphics2D::~IGraphics2D()
   {
-    SAFE_DELETE(pImpl_);
+    delete pImpl_;
+    pImpl_ = nullptr;
   }
 }
