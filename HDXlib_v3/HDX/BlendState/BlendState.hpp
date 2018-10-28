@@ -32,24 +32,8 @@ namespace hdx
     Max = 5
   };
 
-  class BlendState_
+  class BlendState
   {
-    union
-    {
-      struct
-      {
-        bool AlphaToCoverageEnable_ : 3;
-        bool BlendEnable_ : 3;
-        Blend SrcBlend_ : 5;
-        Blend DestBlend_ : 5;
-        BlendOp BlendOp_ : 3;
-        Blend SrcBlendAlpha_ : 5;
-        Blend DestBlnedAlpha_ : 5;
-        BlendOp BlendOpAlpha_ : 3;
-      };
-      int ID_;
-    };
-  private:
     enum class PreDefined
     {
       Default,
@@ -64,20 +48,23 @@ namespace hdx
       Num
     };
   public:
-    constexpr BlendState_()
-      : AlphaToCoverageEnable_(false),
-      BlendEnable_(false),
-      SrcBlend_(Blend::One),
-      DestBlend_(Blend::One),
-      BlendOp_(BlendOp::Add),
-      SrcBlendAlpha_(Blend::One),
-      DestBlnedAlpha_(Blend::One),
-      BlendOpAlpha_(BlendOp::Add)
+    union
     {
-
-    }
-
-    constexpr BlendState_(bool _AlphaToCoverageEnable = false,
+      struct
+      {
+        bool AlphaToCoverageEnable_ : 3;
+        bool BlendEnable_ : 3;
+        hdx::Blend SrcBlend_ : 5;
+        hdx::Blend DestBlend_ : 5;
+        hdx::BlendOp BlendOp_ : 3;
+        hdx::Blend SrcBlendAlpha_ : 5;
+        hdx::Blend DestBlnedAlpha_ : 5;
+        hdx::BlendOp BlendOpAlpha_ : 3;
+      };
+      int DataType_;
+    };
+  public:
+    constexpr BlendState(bool _AlphaToCoverageEnable = false,
       bool _BlendEnable = false,
       Blend _SrcBlend = Blend::One,
       Blend _DestBlend = Blend::Zero,
@@ -92,27 +79,32 @@ namespace hdx
       BlendOp_(_BlendOp),
       SrcBlendAlpha_(_SrcBlendAlpha),
       DestBlnedAlpha_(_DestBlnedAlpha),
-      BlendOpAlpha_(_BlendOpAlpha)
-    {
-
-    }
-
+      BlendOpAlpha_(_BlendOpAlpha) { }
   public:
-    BlendState_(PreDefined _PreDefined)
+    BlendState(PreDefined _PreDefined)
     {
-      static constexpr BlendState_ PreDefinedStatus[static_cast<int>(PreDefined::Num)] =
+      static constexpr BlendState PreDefineds[static_cast<int>(PreDefined::Num)] =
       {
         { false, true, Blend::SrcAlpha, Blend::InvSrcAlpha, BlendOp::Add, Blend::One, Blend::InvSrcAlpha, BlendOp::Add },
-        { false, true, Blend::SrcAlpha, Blend::InvSrcAlpha, BlendOp::Add, Blend::One, Blend::InvSrcAlpha, BlendOp::Add },
-        { false, true, Blend::SrcAlpha, Blend::InvSrcAlpha, BlendOp::Add, Blend::One, Blend::InvSrcAlpha, BlendOp::Add },
-        { false, true, Blend::SrcAlpha, Blend::InvSrcAlpha, BlendOp::Add, Blend::One, Blend::InvSrcAlpha, BlendOp::Add },
-        { false, true, Blend::SrcAlpha, Blend::InvSrcAlpha, BlendOp::Add, Blend::One, Blend::InvSrcAlpha, BlendOp::Add },
-        { false, true, Blend::SrcAlpha, Blend::InvSrcAlpha, BlendOp::Add, Blend::One, Blend::InvSrcAlpha, BlendOp::Add },
-        { false, true, Blend::SrcAlpha, Blend::InvSrcAlpha, BlendOp::Add, Blend::One, Blend::InvSrcAlpha, BlendOp::Add },
-        { false, true, Blend::SrcAlpha, Blend::InvSrcAlpha, BlendOp::Add, Blend::One, Blend::InvSrcAlpha, BlendOp::Add }
+        { false, true, Blend::SrcAlpha, Blend::One, BlendOp::Add, Blend::Zero, Blend::One, BlendOp::Add },
+        { false, true, Blend::SrcAlpha, Blend::One, BlendOp::Subtract, Blend::Zero, Blend::One, BlendOp::Add },
+        { false, true, Blend::SrcAlpha, Blend::Zero, BlendOp::Add, Blend::One, Blend::Zero, BlendOp::Add },
+        { false, true, Blend::Zero, Blend::SrcColor, BlendOp::Add, Blend::DestAlpha, Blend::Zero, BlendOp::Add },
+        { false, true, Blend::One, Blend::One, BlendOp::Max, Blend::One, Blend::One, BlendOp::Max },
+        { false, true, Blend::One, Blend::One, BlendOp::Min, Blend::One, Blend::One, BlendOp::Min },
+        { false, true, Blend::SrcAlpha, Blend::InvSrcColor, BlendOp::Add, Blend::One, Blend::InvSrcAlpha, BlendOp::Add }
       };
 
-      *this = PreDefinedStatus[static_cast<int>(_PreDefined)];
+      *this = PreDefineds[static_cast<int>(_PreDefined)];
+    }
+  public:
+    bool operator==(const BlendState& _BlendState)const
+    {
+      return DataType_ == _BlendState.DataType_;
+    }
+    bool operator!=(const BlendState& _BlendState)const
+    {
+      return !((*this) == _BlendState);
     }
   public:
     static constexpr PreDefined Default = PreDefined::Default;

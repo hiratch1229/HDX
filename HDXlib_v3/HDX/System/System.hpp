@@ -9,12 +9,6 @@
 #include <wrl.h>
 #include <memory>
 
-//  前方宣言
-namespace hdx
-{
-  enum class BlendState;
-}
-
 namespace detail
 {
   class IKeyboard;
@@ -50,14 +44,14 @@ namespace detail
     public:
       float GetFPS()const { return NowFPS_; }
     };
-    class Blend
-    {
-      std::unique_ptr<Microsoft::WRL::ComPtr<ID3D11BlendState>[]> States_; //  ブレンドステート
-    public:
-      ID3D11BlendState* GetState(hdx::BlendState State) { return States_[static_cast<int>(State)].Get(); }
-    public:
-      Blend();
-    };
+    //class Blend
+    //{
+    //  std::unique_ptr<Microsoft::WRL::ComPtr<ID3D11BlendState>[]> States_; //  ブレンドステート
+    //public:
+    //  ID3D11BlendState* GetState(hdx::BlendState State) { return States_[static_cast<int>(State)].Get(); }
+    //public:
+    //  Blend();
+    //};
     class SpriteManager
     {
       struct TextureData
@@ -189,7 +183,7 @@ namespace detail
   private:
     WindowData WindowData_;
     std::unique_ptr<FrameRate>  pFPS_;
-    std::unique_ptr<Blend>      pBlender_;
+    //std::unique_ptr<Blend>      pBlender_;
     IKeyboard*                  pKeyboard_;
     IMouse*                     pMouse_;
     IXInput*                    pXInput_;
@@ -299,7 +293,7 @@ namespace detail
   public:
     HRESULT MakeDummyTexture(ID3D11ShaderResourceView** ppShaderResouceView);
   public:
-    void OMSetBlendState(hdx::BlendState _BlendState);
+    //void OMSetBlendState(hdx::BlendState _BlendState);
     void PSSetShaderResources(ID3D11ShaderResourceView*const* _ppShaderResourceView);
     void IASetVertexBuffers(ID3D11Buffer*const* _ppVertexBuffer, UINT Strides, UINT Offsets);
     void IASetInputLayout(ID3D11InputLayout* _pInputLayout);
@@ -328,9 +322,13 @@ namespace detail
   };
 }
 
+#include <HDX/Type2.hpp>
+
 //  ライブラリ
 namespace hdx
 {
+  struct ColorF;
+
   //  システム
   class System
   {
@@ -339,85 +337,47 @@ namespace hdx
     System& operator=(const System&) = delete;
   public:
     //  画面幅を取得
-    static int GetWindowWidth()
-    {
-      return detail::System::Get()->GetWindowWidth();
-    }
+    static int GetWindowWidth();
     //  画面高を取得
-    static int GetWindowHeight()
-    {
-      return detail::System::Get()->GetWindowHeight();
-    }
-    static int2 GetWindowSize()
-    {
-      return detail::System::Get()->GetWindowSize();
-    }
+    static int GetWindowHeight();
+    //  画面サイズを取得
+    static int2 GetWindowSize();
   public:
     //  ウィンドウの設定
     //  _LeftPos:左上座標X
     //  _TopPos:左上座標Y
-    static void SetWindowLeftTopPos(int _LeftPos, int _TopPos)
-    {
-      detail::System::Get()->SetWindowLeftTopPos({ _LeftPos, _TopPos });
-    }
+    static void SetWindowLeftTopPos(int _LeftPos, int _TopPos);
     //  ウィンドウの設定
     //  _LeftTopPos:左上座標
-    static void SetWindowLeftTopPos(const hdx::int2& _LeftTopPos)
-    {
-      detail::System::Get()->SetWindowLeftTopPos(_LeftTopPos);
-    }
+    static void SetWindowLeftTopPos(const int2& _LeftTopPos);
     //  ウィンドウの設定
     //  _Width:ウィンドウ幅
     //  _Height:ウィンドウ高
-    static void SetWindowSize(int _Width, int _Height)
-    {
-      detail::System::Get()->SetWindowSize({ _Width, _Height });
-    }
+    static void SetWindowSize(int _Width, int _Height);
     //  ウィンドウの設定
     //  _Size:ウィンドウ縦横幅
-    static void SetWindowSize(const hdx::int2& _Size)
-    {
-      detail::System::Get()->SetWindowSize(_Size);
-    }
+    static void SetWindowSize(const int2& _Size);
     //  ウィンドウの設定
     //  _isFullScreen:画面モード(true:フルスクリーン,false:ウィンドウモード)
-    static void SetWindowMode(bool _isFullScreen)
-    {
-      detail::System::Get()->SetWindowMode(_isFullScreen);
-    }
+    static void SetWindowMode(bool _isFullScreen);
     //  ウィンドウの設定
     //  _LeftPos:左上座標X
     //  _TopPos:左上座標Y
     //  _Width:ウィンドウ幅
     //  _Height:ウィンドウ高
     //  _isFullScreen:画面モード(true:フルスクリーン,false:ウィンドウモード)
-    static void SettingWindow(int _LeftPos, int _TopPos, int _Width, int _Height, bool _isFullScreen = false)
-    {
-      detail::System::Get()->SetWindowData({ _LeftPos, _TopPos }, { _Width, _Height }, _isFullScreen);
-    }
+    static void SettingWindow(int _LeftPos, int _TopPos, int _Width, int _Height, bool _isFullScreen = false);
     //  ウィンドウの設定
     //  _LeftTopPos:左上座標
     //  _Size:ウィンドウ縦横幅
     //  _isFullScreen:画面モード(true:フルスクリーン,false:ウィンドウモード)
-    static void SettingWindow(const hdx::int2& _LeftTopPos, const hdx::int2& _Size, bool _isFullScreen = false)
-    {
-      detail::System::Get()->SetWindowData(_LeftTopPos, _Size, _isFullScreen);
-    }
+    static void SettingWindow(const int2& _LeftTopPos, const int2& _Size, bool _isFullScreen = false);
     //  カーソル表示設定(true:表示,false:非表示)
-    static void ShowCursor(bool _isShowCursor)
-    {
-      detail::System::Get()->SetShowCursor(_isShowCursor);
-    }
+    static void ShowCursor(bool _isShowCursor);
     //  ウィンドウのタイトルを設定
-    static void SetTitle(char* _Title)
-    {
-      detail::System::Get()->SetTitle(_Title);
-    }
+    static void SetTitle(const char* _Title);
     //  背景の色変更
-    static void SetBackColor(const hdx::ColorF& _Color)
-    {
-      detail::System::Get()->SetBackColor(_Color);
-    }
+    static void SetBackColor(const ColorF& _Color);
 
     ////  ウィンドウのサイズを変更
     ////  _Width:ウィンドウ幅
@@ -429,32 +389,14 @@ namespace hdx
 
     //  ウィンドウのモードを変更
     //  ウィンドウモード⇔フルスクリーン
-    static void ChangeWindowMode()
-    {
-      detail::System::Get()->ChangeWindowMode();
-    }
-    //  カーソルの表示を変更
-    //  表示⇔非表示
-    static void ChangeShowCursorMode()
-    {
-      detail::System::Get()->ChangeShowCursorMode();
-    }
+    static void ChangeWindowMode();
     //  ウィンドウのタイトルを変更
-    static void RenameTitle(const char* _Title)
-    {
-      detail::System::Get()->RenameTitle(_Title);
-    }
-    //  ソフトを終了
-    static void Exit()
-    {
-      detail::System::Get()->Exit();
-    }
+    static void RenameTitle(const char* _Title);
     //  スクリーンショット
     //  SCREENSHOTフォルダに保存
-    static void ScreenShot()
-    {
-      detail::System::Get()->ScreenShot();
-    }
+    static void ScreenShot();
+    //  ソフトを終了
+    static void Exit();
   public:
     //  更新
     static int Update();

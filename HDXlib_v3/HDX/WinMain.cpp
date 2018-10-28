@@ -1,7 +1,8 @@
 #include <HDX/System/System.hpp>
 
 #include <HDX/Engine.hpp>
-#include <HDX/System/ISystem.hpp>
+#include <HDX/Graphics/Graphics2D.hpp>
+#include <HDX/BlendState/BlendState.hpp>
 
 #include <Windows.h>
 #include <crtdbg.h>
@@ -53,11 +54,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
     RegisterClassEx(&WindowClass);
   }
 
-  //  ウィンドウ&デバイス&スワップチェーン生成
-  //detail::System::Get()->CreateWindowAndDeviceAndSwapChain(hInstance);
-
   //  エンジンの作成
-  detail::Engine();
+  detail::Engine Engine;
+
+  hdx::Graphics2D::SetBlendState(hdx::BlendState::Default);
 
   //  プログラムの実行
   Main();

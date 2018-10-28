@@ -1,6 +1,5 @@
 #include <HDX/System/ISystem.hpp>
 
-#include <HDX/Blend.hpp>
 #include <HDX/Type2.hpp>
 #include <HDX/Color.hpp>
 
@@ -86,7 +85,7 @@ namespace detail
         SetCapture(hWnd_);
 
         //  カーソル表示設定
-        ShowCursor(isShowCursor_);
+        ::ShowCursor(isShowCursor_);
 
         //  ウィンドウタイトル設定
         {
@@ -123,179 +122,10 @@ namespace detail
       }
       ~Window() = default;
     };
-    class Blend
-    {
-      Microsoft::WRL::ComPtr<ID3D11BlendState> States_[static_cast<int>(hdx::BlendState::Num)];
-    public:
-      ID3D11BlendState* GetState(hdx::BlendState State) { return States_[static_cast<int>(State)].Get(); }
-    public:
-      Blend(ID3D11Device* _pDevice)
-      {
-        //  エラーチェック用
-        HRESULT hr = S_OK;
-
-        D3D11_BLEND_DESC BlendStateDesc{};
-
-        //  無効
-        {
-          BlendStateDesc.AlphaToCoverageEnable = false;
-          BlendStateDesc.IndependentBlendEnable = false;
-          BlendStateDesc.RenderTarget[0].BlendEnable = false;
-          BlendStateDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ZERO;
-          BlendStateDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-          BlendStateDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-          hr = _pDevice->CreateBlendState(&BlendStateDesc, States_[static_cast<int>(hdx::BlendState::None)].GetAddressOf());
-          _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState(BS_NONE)");
-        }
-
-        //  不透明度適応
-        {
-          BlendStateDesc.AlphaToCoverageEnable = false;
-          BlendStateDesc.IndependentBlendEnable = false;
-          BlendStateDesc.RenderTarget[0].BlendEnable = true;
-          BlendStateDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-          BlendStateDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-          BlendStateDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
-          BlendStateDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-          hr = _pDevice->CreateBlendState(&BlendStateDesc, States_[static_cast<int>(hdx::BlendState::Alpha)].GetAddressOf());
-          _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState(BS_ALPHA)");
-        }
-
-        //  加算
-        {
-          BlendStateDesc.AlphaToCoverageEnable = false;
-          BlendStateDesc.IndependentBlendEnable = false;
-          BlendStateDesc.RenderTarget[0].BlendEnable = true;
-          BlendStateDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-          BlendStateDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
-          BlendStateDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-          hr = _pDevice->CreateBlendState(&BlendStateDesc, States_[static_cast<int>(hdx::BlendState::Add)].GetAddressOf());
-          _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState(BS_ADD)");
-        }
-
-        //  減算
-        {
-          BlendStateDesc.AlphaToCoverageEnable = false;
-          BlendStateDesc.IndependentBlendEnable = false;
-          BlendStateDesc.RenderTarget[0].BlendEnable = true;
-          BlendStateDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-          BlendStateDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_SUBTRACT;
-          BlendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ZERO;
-          BlendStateDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-          hr = _pDevice->CreateBlendState(&BlendStateDesc, States_[static_cast<int>(hdx::BlendState::Subtract)].GetAddressOf());
-          _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState(BS_SUBTRACT)");
-        }
-
-        //  不透明度あり
-        {
-          BlendStateDesc.AlphaToCoverageEnable = false;
-          BlendStateDesc.IndependentBlendEnable = false;
-          BlendStateDesc.RenderTarget[0].BlendEnable = true;
-          BlendStateDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-          BlendStateDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ZERO;
-          BlendStateDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-          BlendStateDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-          hr = _pDevice->CreateBlendState(&BlendStateDesc, States_[static_cast<int>(hdx::BlendState::Replace)].GetAddressOf());
-          _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState(BS_REPLACE)");
-        }
-
-        //  乗算
-        {
-          BlendStateDesc.AlphaToCoverageEnable = false;
-          BlendStateDesc.IndependentBlendEnable = false;
-          BlendStateDesc.RenderTarget[0].BlendEnable = true;
-          BlendStateDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ZERO;
-          BlendStateDesc.RenderTarget[0].DestBlend = D3D11_BLEND_SRC_COLOR;
-          BlendStateDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_DEST_ALPHA;
-          BlendStateDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-          BlendStateDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-          hr = _pDevice->CreateBlendState(&BlendStateDesc, States_[static_cast<int>(hdx::BlendState::Multiply)].GetAddressOf());
-          _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState(BS_MULTIPLY)");
-        }
-
-        //  明るく
-        {
-          BlendStateDesc.AlphaToCoverageEnable = false;
-          BlendStateDesc.IndependentBlendEnable = false;
-          BlendStateDesc.RenderTarget[0].BlendEnable = true;
-          BlendStateDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_MAX;
-          BlendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_MAX;
-          BlendStateDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-          hr = _pDevice->CreateBlendState(&BlendStateDesc, States_[static_cast<int>(hdx::BlendState::Lighten)].GetAddressOf());
-          _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState(BS_LIGHTEN)");
-        }
-
-        //  暗く
-        {
-          BlendStateDesc.AlphaToCoverageEnable = false;
-          BlendStateDesc.IndependentBlendEnable = false;
-          BlendStateDesc.RenderTarget[0].BlendEnable = true;
-          BlendStateDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].DestBlend = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_MIN;
-          BlendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_MIN;
-          BlendStateDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-          hr = _pDevice->CreateBlendState(&BlendStateDesc, States_[static_cast<int>(hdx::BlendState::Draken)].GetAddressOf());
-          _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState(BS_DARKEN)");
-        }
-
-        //  スクリーン
-        {
-          BlendStateDesc.AlphaToCoverageEnable = false;
-          BlendStateDesc.IndependentBlendEnable = false;
-          BlendStateDesc.RenderTarget[0].BlendEnable = true;
-          BlendStateDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-          BlendStateDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_COLOR;
-          BlendStateDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-          BlendStateDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
-          BlendStateDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-          BlendStateDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-
-          hr = _pDevice->CreateBlendState(&BlendStateDesc, States_[static_cast<int>(hdx::BlendState::Screen)].GetAddressOf());
-          _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState(BS_SCREEN)");
-        }
-      };
-      ~Blend() = default;
-    };
   public:
     bool isSetUpWindow_ = false;
     std::unique_ptr<FrameRate> pFrameRate_;
     std::unique_ptr<Window> pWindow_;
-    std::unique_ptr<Blend> pBlend_;
   public:
     Microsoft::WRL::ComPtr<ID3D11Device> pDevice_;
     Microsoft::WRL::ComPtr<ID3D11DeviceContext> pImmediateContext_;
@@ -516,11 +346,6 @@ namespace detail
 
       //  スワップチェーンの作成
       CreateSwapChain();
-
-      //  ブレンドステートの作成
-      pBlend_ = std::make_unique<Blend>(pDevice_.Get());
-      //  アルファ反映設定
-      pImmediateContext_->OMSetBlendState(pBlend_->GetState(hdx::BlendState::Alpha), nullptr, 0xFFFFFFFF);
     }
     ~Impl()
     {
@@ -580,6 +405,14 @@ namespace detail
     pImpl_->ChangeWindowMode();
   }
 
+  void ISystem::RenameTitle(const char* _Title)
+  {
+    wchar_t wWindowTitle[256];
+    mbstowcs_s(nullptr, wWindowTitle, pImpl_->pWindow_->Title_ = const_cast<char*>(_Title), 256);
+
+    SetWindowText(pImpl_->pWindow_->hWnd_, wWindowTitle);
+  }
+
   void ISystem::ScreenShot()
   {
     pImpl_->ScreenShot();
@@ -588,6 +421,83 @@ namespace detail
   void ISystem::Exit()
   {
     PostMessage(pImpl_->pWindow_->hWnd_, WM_CLOSE, 0, 0);
+  }
+
+  int ISystem::GetWindowWidth()
+  {
+    return pImpl_->pWindow_->Size_.X;
+  }
+
+  int ISystem::GetWindowHeight()
+  {
+    return pImpl_->pWindow_->Size_.Y;
+  }
+
+  hdx::int2 ISystem::GetWindowSize()
+  {
+    return pImpl_->pWindow_->Size_;
+  }
+
+  void ISystem::SetWindowLeftTopPos(int _LeftPos, int _TopPos)
+  {
+    pImpl_->pWindow_->LeftTopPos_ = { _LeftPos, _TopPos };
+  }
+
+  void ISystem::SetWindowLeftTopPos(const hdx::int2& _LeftTopPos)
+  {
+    pImpl_->pWindow_->LeftTopPos_ = _LeftTopPos;
+  }
+
+  void ISystem::SetWindowSize(int _Width, int _Height)
+  {
+    pImpl_->pWindow_->Size_ = { _Width, _Height };
+  }
+
+  void ISystem::SetWindowSize(const hdx::int2& _Size)
+  {
+    pImpl_->pWindow_->Size_ = _Size;
+  }
+
+  void ISystem::SetWindowMode(bool _isFullScreen)
+  {
+    pImpl_->pWindow_->isFullScreen_ = _isFullScreen;
+  }
+
+  void ISystem::SetWindow(int _LeftPos, int _TopPos, int _Width, int _Height, bool _isFullScreen)
+  {
+    pImpl_->pWindow_->LeftTopPos_ = { _LeftPos, _TopPos };
+    pImpl_->pWindow_->Size_ = { _Width, _Height };
+    pImpl_->pWindow_->isFullScreen_ = _isFullScreen;
+  }
+
+  void ISystem::SetWindow(const hdx::int2& _LeftTopPos, const hdx::int2& _Size, bool _isFullScreen)
+  {
+    pImpl_->pWindow_->LeftTopPos_ = _LeftTopPos;
+    pImpl_->pWindow_->Size_ = _Size;
+    pImpl_->pWindow_->isFullScreen_ = _isFullScreen;
+  }
+
+  void ISystem::ShowCursor(bool _isShowCursor)
+  {
+    pImpl_->pWindow_->isShowCursor_ = _isShowCursor;
+
+    ::ShowCursor(_isShowCursor);
+  }
+
+  void ISystem::SetTitle(const char* _Title)
+  {
+    pImpl_->pWindow_->Title_ = const_cast<char*>(_Title);
+  }
+
+  void ISystem::SetBackColor(const hdx::ColorF& _Color)
+  {
+    pImpl_->pWindow_->BackColor_ = _Color;
+  }
+
+  void ISystem::SetBlendState(ID3D11BlendState* _BlendState)
+  {
+    //  アルファ反映設定
+    pImpl_->pImmediateContext_->OMSetBlendState(_BlendState, nullptr, 0xFFFFFFFF);
   }
 
   ID3D11Device* ISystem::GetDevice()

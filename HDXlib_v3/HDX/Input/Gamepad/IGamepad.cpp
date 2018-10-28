@@ -53,7 +53,7 @@ namespace detail
     const int XInputNum_;       //  XInputゲームパッドの数
     const int GamepadNum_;      //  ゲームパッドの数
   public:
-    LPDIRECTINPUT8 pDirectInput_;       //  DirectInput
+    Microsoft::WRL::ComPtr<IDirectInput8W> pDirectInput_;       //  DirectInput
     LPDIRECTINPUTDEVICE8* pJoySticks_;  //  ジョイスティック
     LPDIRECTINPUTEFFECT* pEffects_;     //  振動エフェクト
   public:
@@ -198,8 +198,8 @@ namespace detail
 
       SAFE_DELETE_ARRAY(pJoySticks_);
       SAFE_DELETE_ARRAY(pEffects_);
-
-      SAFE_RELEASE(pDirectInput_);
+      
+      //SAFE_RELEASE(pDirectInput_);
       SAFE_DELETE_ARRAY(Status_);
     }
   public:

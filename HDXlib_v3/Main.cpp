@@ -5,10 +5,9 @@ void Main()
   hdx::System::SetWindowSize(1280, 720);
   hdx::System::ShowCursor(false);
   hdx::System::SetTitle("HDXlib");
-  hdx::System::SetBackColor(hdx::Palette::Gray);
 
   //hdx::Sprite A{ "DATA/title_logo01.png" };
-
+  //
   //  hdx::SkinnedMesh Fbx("DATA/FBX/005_cube.fbx");
   //
   //  hdx::float3 Position;

@@ -1,9 +1,10 @@
 #pragma once
 
+struct ID3D11BlendState;
+
 namespace hdx
 {
-  enum class Blend;
-  enum class BlendOp;
+  class BlendState;
 }
 
 namespace detail
@@ -17,6 +18,7 @@ namespace detail
     IBlendState();
     ~IBlendState();
   public:
-    int Create(bool _AlphaToCoverageEnable, bool _BlendEnable, hdx::Blend& _SrcBlend, hdx::Blend& _DestBlend, hdx::BlendOp& _BlendOp, hdx::Blend& _SrcBlendAlpha, hdx::Blend& _DestBlnedAlpha, hdx::BlendOp& _BlendOpAlpha);
+    int Create(const hdx::BlendState& _BlendState);
+    ID3D11BlendState* GetBlendState(const hdx::BlendState& _BlendState);
   };
 }
