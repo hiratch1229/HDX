@@ -511,11 +511,16 @@ namespace detail
       //  デバイスの作成
       CreateDevice();
 
+      //  三角リスト設定
+      pImmediateContext_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
       //  スワップチェーンの作成
       CreateSwapChain();
 
       //  ブレンドステートの作成
       pBlend_ = std::make_unique<Blend>(pDevice_.Get());
+      //  アルファ反映設定
+      pImmediateContext_->OMSetBlendState(pBlend_->GetState(hdx::BlendState::Alpha), nullptr, 0xFFFFFFFF);
     }
     ~Impl()
     {
@@ -598,5 +603,10 @@ namespace detail
   IDXGISwapChain* ISystem::GetSwapChain()
   {
     return pImpl_->pSwapChain_.Get();
+  }
+
+  HWND ISystem::GetHWND()
+  {
+    return pImpl_->pWindow_->hWnd_;
   }
 }

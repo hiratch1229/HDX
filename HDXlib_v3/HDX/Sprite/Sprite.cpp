@@ -1,14 +1,22 @@
 #include <HDX/Sprite/Sprite.hpp>
 
+#include <HDX/Engine.hpp>
+#include <HDX/System/ISystem.hpp>
+#include <HDX/WIC.hpp>
+#include <HDX/Sprite/ISprite.hpp>
+
 #include <HDX/System/System.hpp>
 #include <HDX/Math.hpp>
 #include <HDX/Vertex.hpp>
-#include <HDX/Error.hpp>
-#include <HDX/VertexShader/VertexShader.hpp>
-#include <HDX/PixelShader/PixelShader.hpp>
-#include <HDX/VertexShader/IVertexShader.hpp>
-#include <HDX/PixelShader/IPixelShader.hpp>
-#include <HDX/WIC.hpp>
+
+//#include <HDX/System/System.hpp>
+//#include <HDX/Math.hpp>
+//#include <HDX/Error.hpp>
+//#include <HDX/VertexShader/VertexShader.hpp>
+//#include <HDX/PixelShader/PixelShader.hpp>
+//#include <HDX/VertexShader/IVertexShader.hpp>
+//#include <HDX/PixelShader/IPixelShader.hpp>
+//#include <HDX/WIC.hpp>
 
 #include <time.h>
 #include <WICTextureLoader.h>
@@ -21,7 +29,7 @@ namespace hdx
 {
   //  ファイルパスから画像を作成
   Sprite::Sprite(const char* FilePath)
-    : ID_(detail::System::Get()->GetWIC()->Load(FilePath)), Size_(detail::System::Get()->GetSpriteManager()->GetSize(ID_))
+    : ID_(detail::Engine::GetWIC()->Load(FilePath)), Size_(detail::Engine::GetSprite()->GetSize(ID_))
   {
 
   }
@@ -116,9 +124,11 @@ namespace hdx
     //  エラーチェック用
     HRESULT hr = S_OK;
 
+    detail::ISystem* pSystem = detail::Engine::GetSystem();
+
     //  頂点バッファオブジェクトを書き換え
     D3D11_MAPPED_SUBRESOURCE MappedSubresorce;
-    hr = detail::System::Get()->GetDeviceContext()->Map(detail::System::Get()->GetSpriteManager()->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresorce);
+    hr = pSystem->GetImmediateContext()->Map(detail::System::Get()->GetSpriteManager()->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresorce);
     _ASSERT_EXPR(SUCCEEDED(hr), L"Map");
 
     detail::Vertex2D* Vertices = reinterpret_cast<detail::Vertex2D*>(MappedSubresorce.pData);
@@ -127,25 +137,24 @@ namespace hdx
     memcpy(Vertices, v, sizeof(detail::Vertex2D) * 4);
 
     //  頂点バッファオブジェクトを書き換え終了
-    detail::System::Get()->GetDeviceContext()->Unmap(detail::System::Get()->GetSpriteManager()->GetVertexBuffer(), 0);
+    pSystem->GetImmediateContext()->Unmap(detail::System::Get()->GetSpriteManager()->GetVertexBuffer(), 0);
 
     //  シェーダーリソースビューを設定
-    detail::System::Get()->GetDeviceContext()->PSSetShaderResources(0, 1, detail::System::Get()->GetSpriteManager()->GetAddressOfShaderResourceView(ID_));
+    pSystem->GetImmediateContext()->PSSetShaderResources(0, 1, detail::System::Get()->GetSpriteManager()->GetAddressOfShaderResourceView(ID_));
 
     UINT Strides = sizeof(detail::Vertex2D);
     UINT Offsets = 0;
 
-    detail::System::Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-    detail::System::Get()->IASetVertexBuffers(detail::System::Get()->GetSpriteManager()->GetAddressOfVertexBuffer(), Strides, Offsets);
-    detail::System::Get()->IASetInputLayout(detail::System::Get()->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->ID_ : detail::System::Get()->GetSpriteManager()->GetVertexShaderID()));
-    detail::System::Get()->VSSetShader(detail::System::Get()->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->ID_ : detail::System::Get()->GetSpriteManager()->GetVertexShaderID()));
-    detail::System::Get()->PSSetShader(detail::System::Get()->GetPixelShader()->GetPixeShader((_pVertexShader) ? _pVertexShader->ID_ : detail::System::Get()->GetSpriteManager()->GetPixelShaderID()));
-    detail::System::Get()->PSSetSamplers(detail::System::Get()->GetSpriteManager()->GetAddressOfSamplerState());
-    detail::System::Get()->RSSetState(detail::System::Get()->GetSpriteManager()->GetRasterizerState());
-    detail::System::Get()->OMSetDepthStencilState(detail::System::Get()->GetSpriteManager()->GetDepthStencilState());
+    //detail::System::Get()->IASetVertexBuffers(detail::System::Get()->GetSpriteManager()->GetAddressOfVertexBuffer(), Strides, Offsets);
+    //detail::System::Get()->IASetInputLayout(detail::System::Get()->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->ID_ : detail::System::Get()->GetSpriteManager()->GetVertexShaderID()));
+    //detail::System::Get()->VSSetShader(detail::System::Get()->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->ID_ : detail::System::Get()->GetSpriteManager()->GetVertexShaderID()));
+    //detail::System::Get()->PSSetShader(detail::System::Get()->GetPixelShader()->GetPixeShader((_pVertexShader) ? _pVertexShader->ID_ : detail::System::Get()->GetSpriteManager()->GetPixelShaderID()));
+    //detail::System::Get()->PSSetSamplers(detail::System::Get()->GetSpriteManager()->GetAddressOfSamplerState());
+    //detail::System::Get()->RSSetState(detail::System::Get()->GetSpriteManager()->GetRasterizerState());
+    //detail::System::Get()->OMSetDepthStencilState(detail::System::Get()->GetSpriteManager()->GetDepthStencilState());
 
     //  描画
-    detail::System::Get()->GetDeviceContext()->Draw(4, 0);
+    pSystem->GetImmediateContext()->Draw(4, 0);
   }
 
   //  描画

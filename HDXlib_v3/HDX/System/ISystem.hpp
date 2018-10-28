@@ -3,6 +3,13 @@
 struct ID3D11Device;
 struct ID3D11DeviceContext;
 struct IDXGISwapChain;
+struct HWND__;
+typedef struct HWND__ *HWND;
+
+namespace hdx
+{
+  enum class BlendState;
+}
 
 namespace detail
 {
@@ -19,6 +26,9 @@ namespace detail
     ID3D11Device* GetDevice();
     ID3D11DeviceContext* GetImmediateContext();
     IDXGISwapChain* GetSwapChain();
+    HWND GetHWND();
+  public:
+    void SetBlendState(const hdx::BlendState& _BlendState);
   public:
     ISystem();
     ~ISystem();

@@ -9,7 +9,7 @@ namespace hdx
   class VertexShader
   {
   public:
-    const int ID_ = -1;
+    const int ID_;
   public:
     VertexShader(const char* _FilePath, const InputElementDesc _InputElementDescs[], unsigned int _NumElements);
   };

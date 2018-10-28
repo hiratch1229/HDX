@@ -1,6 +1,5 @@
 #include <HDX/Input/Keyboard/IKeyboard.hpp>
 #include <HDX/Input/InputState.hpp>
-#include <HDX/Macro.hpp>
 
 #include <Windows.h>
 
@@ -61,7 +60,8 @@ namespace detail
   //  ‰ð•ú
   IKeyboard::~IKeyboard()
   {
-    SAFE_DELETE_ARRAY(InputStatus_);
+    delete[] InputStatus_;
+    InputStatus_ = nullptr;
   }
 
 

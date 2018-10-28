@@ -1,6 +1,5 @@
 #include <HDX/Input/Mouse/IMouse.hpp>
 #include <HDX/Input/InputState.hpp>
-#include <HDX/Macro.hpp>
 
 #include <Windows.h>
 
@@ -62,7 +61,8 @@ namespace detail
   //  ‰ð•ú
   IMouse::~IMouse()
   {
-    SAFE_DELETE_ARRAY(InputStatus_);
+    delete[] InputStatus_;
+    InputStatus_ = nullptr;
   }
 
 

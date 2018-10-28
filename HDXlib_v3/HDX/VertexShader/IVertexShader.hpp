@@ -16,10 +16,11 @@ namespace detail
   private:
     Impl* pImpl_;
   public:
-    IVertexShader();
-    ~IVertexShader();
     int Create(const char* _FilePath, const hdx::InputElementDesc _InputElementDescs[], unsigned int _NumElements);
     ID3D11InputLayout* GetInputLayout(int _ID);
     ID3D11VertexShader* GetVertexShader(int _ID);
+  public:
+    IVertexShader();
+    ~IVertexShader();
   };
 }

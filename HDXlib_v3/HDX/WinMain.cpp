@@ -9,6 +9,9 @@
 #include <time.h>
 #include <locale>
 
+//  メッセージプロシージャのプロトタイプ宣言
+LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 //  メイン関数のプロトタイプ宣言
 void Main();
 
@@ -17,11 +20,6 @@ void Main();
 //{
 //  return detail::Engine::GetSystem()->MsgProc(hWnd, msg, wParam, lParam);
 //}
-
-namespace detail
-{
-  LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-}
 
 //  エントリーポイント
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
@@ -42,7 +40,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
   {
     WindowClass.cbSize = sizeof(WNDCLASSEX);
     WindowClass.style = CS_CLASSDC;
-    WindowClass.lpfnWndProc = detail::MsgProc;
+    WindowClass.lpfnWndProc = MsgProc;
     WindowClass.cbClsExtra = 0;
     WindowClass.cbWndExtra = 0;
     WindowClass.hInstance = hInstance;
@@ -58,7 +56,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
   //  ウィンドウ&デバイス&スワップチェーン生成
   //detail::System::Get()->CreateWindowAndDeviceAndSwapChain(hInstance);
 
-  detail::Engine Engine;
+  //  エンジンの作成
+  detail::Engine();
 
   //  プログラムの実行
   Main();

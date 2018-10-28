@@ -1,9 +1,10 @@
 #include <HDX/Input/Button.hpp>
+
+#include <HDX/Engine.hpp>
 #include <HDX/Input/Keyboard/IKeyboard.hpp>
 #include <HDX/Input/Mouse/IMouse.hpp>
 #include <HDX/Input/XInput/IXInput.hpp>
 #include <HDX/Input/Gamepad/IGamepad.hpp>
-#include <HDX/System/System.hpp>
 
 namespace hdx
 {
@@ -13,13 +14,13 @@ namespace hdx
     switch (InputDevice_)
     {
     case detail::InputDevice::Keyboard:
-      return detail::System::Get()->GetKeyboard()->Press(Number_);
+      return detail::Engine::GetKeyboard()->Press(Number_);
     case detail::InputDevice::Mouse:
-      return detail::System::Get()->GetMouse()->Press(Number_);
+      return detail::Engine::GetMouse()->Press(Number_);
     case detail::InputDevice::XInput:
-      return detail::System::Get()->GetXInput()->Press(Number_, Index_);
+      return detail::Engine::GetXInput()->Press(Number_, Index_);
     case detail::InputDevice::Gamepad:
-      return detail::System::Get()->GetGamepad()->Press(Number_, Index_);
+      return detail::Engine::GetGamepad()->Press(Number_, Index_);
     }
 
     return false;
@@ -31,13 +32,13 @@ namespace hdx
     switch (InputDevice_)
     {
     case detail::InputDevice::Keyboard:
-      return detail::System::Get()->GetKeyboard()->Pressed(Number_);
+      return detail::Engine::GetKeyboard()->Pressed(Number_);
     case detail::InputDevice::Mouse:
-      return detail::System::Get()->GetMouse()->Pressed(Number_);
+      return detail::Engine::GetMouse()->Pressed(Number_);
     case detail::InputDevice::XInput:
-      return detail::System::Get()->GetXInput()->Pressed(Number_, Index_);
+      return detail::Engine::GetXInput()->Pressed(Number_, Index_);
     case detail::InputDevice::Gamepad:
-      return detail::System::Get()->GetGamepad()->Pressed(Number_, Index_);
+      return detail::Engine::GetGamepad()->Pressed(Number_, Index_);
     }
 
     return false;
@@ -49,13 +50,13 @@ namespace hdx
     switch (InputDevice_)
     {
     case detail::InputDevice::Keyboard:
-      return detail::System::Get()->GetKeyboard()->Released(Number_);
+      return detail::Engine::GetKeyboard()->Released(Number_);
     case detail::InputDevice::Mouse:
-      return detail::System::Get()->GetMouse()->Released(Number_);
+      return detail::Engine::GetMouse()->Released(Number_);
     case detail::InputDevice::XInput:
-      return detail::System::Get()->GetXInput()->Released(Number_, Index_);
+      return detail::Engine::GetXInput()->Released(Number_, Index_);
     case detail::InputDevice::Gamepad:
-      return detail::System::Get()->GetGamepad()->Released(Number_, Index_);
+      return detail::Engine::GetGamepad()->Released(Number_, Index_);
     }
 
     return false;
@@ -67,13 +68,13 @@ namespace hdx
     switch (InputDevice_)
     {
     case detail::InputDevice::Keyboard:
-      return detail::System::Get()->GetKeyboard()->Release(Number_);
+      return detail::Engine::GetKeyboard()->Release(Number_);
     case detail::InputDevice::Mouse:
-      return detail::System::Get()->GetMouse()->Release(Number_);
+      return detail::Engine::GetMouse()->Release(Number_);
     case detail::InputDevice::XInput:
-      return detail::System::Get()->GetXInput()->Release(Number_, Index_);
+      return detail::Engine::GetXInput()->Release(Number_, Index_);
     case detail::InputDevice::Gamepad:
-      return detail::System::Get()->GetGamepad()->Release(Number_, Index_);
+      return detail::Engine::GetGamepad()->Release(Number_, Index_);
     }
 
     return false;

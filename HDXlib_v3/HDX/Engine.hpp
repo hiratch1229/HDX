@@ -7,6 +7,7 @@ namespace detail
   class IMouse;
   class IXInput;
   class IGamepad;
+  class IBlendState;
   class IVertexShader;
   class IPixelShader;
   class WIC;
@@ -45,6 +46,7 @@ namespace detail
     Component<IMouse> pMouse_;
     Component<IXInput> pXInput_;
     Component<IGamepad> pGamepad_;
+    Component<IBlendState> pBlendState_;
     Component<IVertexShader> pVertexShader_;
     Component<IPixelShader> pPixelShader_;
     Component<WIC> pWIC_;
@@ -73,6 +75,10 @@ namespace detail
     static IGamepad* GetGamepad()
     {
       return pEngine->pGamepad_.Get();
+    }
+    static IBlendState* GetBlendState()
+    {
+      return pEngine->pBlendState_.Get();
     }
     static IVertexShader* GetVertexShader()
     {

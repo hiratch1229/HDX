@@ -1,6 +1,7 @@
 #include <HDX/Input/Keyboard/Keyboard.hpp>
+
+#include <HDX/Engine.hpp>
 #include <HDX/Input/Keyboard/IKeyboard.hpp>
-#include <HDX/System/System.hpp>
 
 //  ライブラリ
 namespace hdx
@@ -14,17 +15,17 @@ namespace hdx
       //  何かのキーが押されていればtrueを返す
       bool AnyKeyPress()
       {
-        return detail::System::Get()->GetKeyboard()->AnyKeyPress();
+        return detail::Engine::GetKeyboard()->AnyKeyPress();
       }
       //  何かのキーが押されたならtrueを返す
       bool AnyKeyPressed()
       {
-        return detail::System::Get()->GetKeyboard()->AnyKeyPressed();
+        return detail::Engine::GetKeyboard()->AnyKeyPressed();
       }
       //  何かのキーが離されたならtrueを返す
       bool AnyKeyReleased()
       {
-        return detail::System::Get()->GetKeyboard()->AnyKeyReleased();
+        return detail::Engine::GetKeyboard()->AnyKeyReleased();
       }
     }
   }

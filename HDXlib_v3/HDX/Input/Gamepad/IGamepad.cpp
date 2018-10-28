@@ -1,9 +1,12 @@
 #include <HDX/Input/Gamepad/IGamepad.hpp>
-#include <HDX/Input/XInput/IXInput.hpp>
 #include <HDX/Input/InputState.hpp>
+
+#include <HDX/Engine.hpp>
+#include <HDX/System/ISystem.hpp>
+#include <HDX/Input/XInput/IXInput.hpp>
+
 #include <HDX/Math.hpp>
 #include <HDX/Macro.hpp>
-#include <HDX/System/System.hpp>
 
 #include <windows.h>
 #define DIRECTINPUT_VERSION 0x0800
@@ -16,7 +19,7 @@
 BOOL CALLBACK EnumJoysticksCallback(const DIDEVICEINSTANCE* pdidInstance, void*)
 {
   //  DirectInputを作成
-  detail::System::Get()->GetGamepad()->CreateDirectInputDevice(pdidInstance->guidProduct);
+  detail::Engine::GetGamepad()->CreateDirectInputDevice(pdidInstance->guidProduct);
 
   //  次へ
   return DIENUM_CONTINUE;
@@ -365,7 +368,7 @@ namespace detail
       //  ジョイスティックを作成
       pImpl_->pDirectInput_->CreateDevice(GuidProductFromDirectInput, &pImpl_->pJoySticks_[CreateDeviceNum], NULL);
       pImpl_->pJoySticks_[CreateDeviceNum]->SetDataFormat(&c_dfDIJoystick);
-      pImpl_->pJoySticks_[CreateDeviceNum]->SetCooperativeLevel(detail::System::Get()->GetHWND(), DISCL_NONEXCLUSIVE | DISCL_BACKGROUND);
+      pImpl_->pJoySticks_[CreateDeviceNum]->SetCooperativeLevel(Engine::GetSystem()->GetHWND(), DISCL_NONEXCLUSIVE | DISCL_BACKGROUND);
 
       // 軸の値の範囲を設定
       DIPROPRANGE DirectInputPropatyRange;
@@ -436,7 +439,7 @@ namespace detail
     //  XInputの入力を返す
     if (_Index < pImpl_->XInputNum_)
     {
-      return detail::System::Get()->GetXInput()->Press(_Number, _Index);
+      return detail::Engine::GetXInput()->Press(_Number, _Index);
     }
 
     const int DirectInputIndex = _Index - pImpl_->XInputNum_;
@@ -452,7 +455,7 @@ namespace detail
     //  XInputの入力を返す
     if (_Index < pImpl_->XInputNum_)
     {
-      return detail::System::Get()->GetXInput()->Pressed(_Number, _Index);
+      return detail::Engine::GetXInput()->Pressed(_Number, _Index);
     }
 
     const int DirectInputIndex = _Index - pImpl_->XInputNum_;
@@ -466,7 +469,7 @@ namespace detail
     if (_Index < 0 || _Index > pImpl_->GamepadNum_) return false;
 
     //  XInputの入力を返す
-    if (_Index < pImpl_->XInputNum_) return detail::System::Get()->GetXInput()->Released(_Number, _Index);
+    if (_Index < pImpl_->XInputNum_) return detail::Engine::GetXInput()->Released(_Number, _Index);
 
     const int DirectInputIndex = _Index - pImpl_->XInputNum_;
     return pImpl_->Status_[DirectInputIndex].InputStatus_[_Number] == InputState::Released;
@@ -481,7 +484,7 @@ namespace detail
     //  XInputの入力を返す
     if (_Index < pImpl_->XInputNum_)
     {
-      return detail::System::Get()->GetXInput()->Release(_Number, _Index);
+      return detail::Engine::GetXInput()->Release(_Number, _Index);
     }
 
     const int DirectInputIndex = _Index - pImpl_->XInputNum_;
@@ -497,7 +500,7 @@ namespace detail
     //  XInputの入力を返す
     if (_Index < pImpl_->XInputNum_)
     {
-      return detail::System::Get()->GetXInput()->AnyButtonPress(_Index);
+      return detail::Engine::GetXInput()->AnyButtonPress(_Index);
     }
 
     const int DirectInputIndex = _Index - pImpl_->XInputNum_;
@@ -522,7 +525,7 @@ namespace detail
     //  XInputの入力を返す
     if (_Index < pImpl_->XInputNum_)
     {
-      return detail::System::Get()->GetXInput()->AnyButtonPressed(_Index);
+      return detail::Engine::GetXInput()->AnyButtonPressed(_Index);
     }
 
     const int DirectInputIndex = _Index - pImpl_->XInputNum_;
@@ -547,7 +550,7 @@ namespace detail
     //  XInputの入力を返す
     if (_Index < pImpl_->XInputNum_)
     {
-      return detail::System::Get()->GetXInput()->AnyButtonReleased(_Index);
+      return detail::Engine::GetXInput()->AnyButtonReleased(_Index);
     }
 
     const int DirectInputIndex = _Index - pImpl_->XInputNum_;
@@ -595,7 +598,7 @@ namespace detail
     //  XInputの入力を返す
     if (_Index < pImpl_->XInputNum_)
     {
-      return detail::System::Get()->GetXInput()->GetLeftStick(_Index, _DeadZone);
+      return detail::Engine::GetXInput()->GetLeftStick(_Index, _DeadZone);
     }
 
     const int DirectInputIndex = _Index - pImpl_->XInputNum_;
@@ -616,7 +619,7 @@ namespace detail
     //  XInputの入力を返す
     if (_Index < pImpl_->XInputNum_)
     {
-      return detail::System::Get()->GetXInput()->GetRightStick(_Index, _DeadZone);
+      return detail::Engine::GetXInput()->GetRightStick(_Index, _DeadZone);
     }
 
     const int DirectInputIndex = _Index - pImpl_->XInputNum_;
@@ -637,7 +640,7 @@ namespace detail
     //  XInputの入力を返す
     if (_Index < pImpl_->XInputNum_)
     {
-      return detail::System::Get()->GetXInput()->GetLeftTrigger(_Index, _DeadZone);
+      return detail::Engine::GetXInput()->GetLeftTrigger(_Index, _DeadZone);
     }
 
     const int DirectInputIndex = _Index - pImpl_->XInputNum_;
@@ -657,7 +660,7 @@ namespace detail
     //  XInputの入力を返す
     if (_Index < pImpl_->XInputNum_)
     {
-      return detail::System::Get()->GetXInput()->GetRightTrigger(_Index, _DeadZone);
+      return detail::Engine::GetXInput()->GetRightTrigger(_Index, _DeadZone);
     }
 
     const int DirectInputIndex = _Index - pImpl_->XInputNum_;
@@ -677,7 +680,7 @@ namespace detail
     //  XInputの入力を返す
     if (_Index < pImpl_->XInputNum_)
     {
-      return detail::System::Get()->GetXInput()->isConnect(_Index);
+      return detail::Engine::GetXInput()->isConnect(_Index);
     }
 
     const int DirectInputIndex = _Index - pImpl_->XInputNum_;
@@ -693,12 +696,12 @@ namespace detail
     //  XInputを振動させる
     if (_Index < pImpl_->XInputNum_)
     {
-      detail::System::Get()->GetXInput()->SetVibration(_Index, _Speed);
+      detail::Engine::GetXInput()->SetVibration(_Index, _Speed);
       return;
     }
 
-    const int DirectInputIndex = _Index - pImpl_->XInputNum_;
-    if (pImpl_->pEffects_[DirectInputIndex]) pImpl_->pEffects_[DirectInputIndex]->Start(1, 0);
+    //const int DirectInputIndex = _Index - pImpl_->XInputNum_;
+    //if (pImpl_->pEffects_[DirectInputIndex]) pImpl_->pEffects_[DirectInputIndex]->Start(1, 0);
   }
 
   //  コントローラの振動を止めます
@@ -710,11 +713,11 @@ namespace detail
     //  XInputの振動を止める
     if (_Index < pImpl_->XInputNum_)
     {
-      detail::System::Get()->GetXInput()->StopVibration(_Index);
+      detail::Engine::GetXInput()->StopVibration(_Index);
       return;
     }
 
-    const int DirectInputIndex = _Index - pImpl_->XInputNum_;
-    if (pImpl_->pEffects_[DirectInputIndex]) pImpl_->pEffects_[DirectInputIndex]->Stop();
+    //const int DirectInputIndex = _Index - pImpl_->XInputNum_;
+    //if (pImpl_->pEffects_[DirectInputIndex]) pImpl_->pEffects_[DirectInputIndex]->Stop();
   }
 }

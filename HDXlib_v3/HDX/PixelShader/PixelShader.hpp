@@ -6,7 +6,7 @@ namespace hdx
   class PixelShader
   {
   public:
-    const int ID_ = -1;
+    const int ID_;
   public:
     PixelShader(const char* _FilePath);
   };

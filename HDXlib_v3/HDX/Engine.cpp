@@ -5,13 +5,14 @@
 #include <HDX/Input/Mouse/IMouse.hpp>
 #include <HDX/Input/XInput/IXInput.hpp>
 #include <HDX/Input/Gamepad/IGamepad.hpp>
+#include <HDX/BlendState/IBlendState.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
 #include <HDX/WIC.hpp>
 #include <HDX/Sprite/ISprite.hpp>
 #include <HDX/Random/IRandom.hpp>
 
-#include <assert.h>
+#include <crtdbg.h>
 
 namespace detail
 {
@@ -20,8 +21,8 @@ namespace detail
   Engine::Engine()
   {
     //  二度目以降作成時エラー
-    assert(!pEngine);
-
+    _ASSERT_EXPR(!pEngine, L"Engineの二度目の作成です");
+    
     //  作成時にデータを取り出せるようにする
     pEngine = this;
   }
@@ -33,6 +34,7 @@ namespace detail
     pMouse_.Release();
     pXInput_.Release();
     pGamepad_.Release();
+    pBlendState_.Release();
     pVertexShader_.Release();
     pPixelShader_.Release();
     pWIC_.Release();

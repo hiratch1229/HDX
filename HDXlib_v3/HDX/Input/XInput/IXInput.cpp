@@ -1,7 +1,6 @@
 #include <HDX/Input/XInput/IXInput.hpp>
 #include <HDX/Input/InputState.hpp>
 #include <HDX/Math.hpp>
-#include <HDX/Macro.hpp>
 
 #include <Windows.h>
 #include <Xinput.h>
@@ -121,8 +120,8 @@ namespace detail
       }
     }
 
-    //  ƒ|ƒCƒ“ƒ^‚Ì‰ð•ú
-    SAFE_DELETE_ARRAY(Status_);
+    delete[] Status_;
+    Status_ = nullptr;
   }
 
 
