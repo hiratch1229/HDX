@@ -494,10 +494,17 @@ namespace detail
     pImpl_->pWindow_->BackColor_ = _Color;
   }
 
-  void ISystem::SetBlendState(ID3D11BlendState* _BlendState)
+  void ISystem::SetBlendState(ID3D11BlendState* _pBlendState)
   {
-    //  ƒAƒ‹ƒtƒ@”½‰fÝ’è
-    pImpl_->pImmediateContext_->OMSetBlendState(_BlendState, nullptr, 0xFFFFFFFF);
+    static ID3D11BlendState* pBlendState = nullptr;
+
+    //  Œ»Ý‚Ì‚Æ“¯‚¶‚È‚çÝ’è‚µ‚È‚¢
+    if (pBlendState != _pBlendState)
+    {
+      pBlendState = _pBlendState;
+      //  Ý’è‚ð”½‰f
+      pImpl_->pImmediateContext_->OMSetBlendState(pBlendState, nullptr, 0xFFFFFFFF);
+    }
   }
 
   ID3D11Device* ISystem::GetDevice()

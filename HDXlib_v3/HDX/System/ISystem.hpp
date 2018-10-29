@@ -47,7 +47,7 @@ namespace detail
     IDXGISwapChain* GetSwapChain();
     HWND GetHWND();
   public:
-    void SetBlendState(ID3D11BlendState* _BlendState);
+    void SetBlendState(ID3D11BlendState* _pBlendState);
   public:
     ISystem();
     ~ISystem();
