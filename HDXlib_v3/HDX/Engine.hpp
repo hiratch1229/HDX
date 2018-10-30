@@ -3,6 +3,7 @@
 namespace detail
 {
   class ISystem;
+  class IGraphics2D;
   class IKeyboard;
   class IMouse;
   class IXInput;
@@ -42,6 +43,7 @@ namespace detail
     static Engine* pEngine;
   private:
     Component<ISystem> pSystem_;
+    Component<IGraphics2D> pGraphics2D_;
     Component<IKeyboard> pKeyboard_;
     Component<IMouse> pMouse_;
     Component<IXInput> pXInput_;
@@ -59,6 +61,10 @@ namespace detail
     static ISystem* GetSystem()
     {
       return pEngine->pSystem_.Get();
+    }
+    static IGraphics2D* GetGraphics2D()
+    {
+      return pEngine->pGraphics2D_.Get();
     }
     static IKeyboard* GetKeyboard()
     {

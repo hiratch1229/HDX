@@ -1,6 +1,7 @@
 #include <HDX/Engine.hpp>
 
 #include <HDX/System/ISystem.hpp>
+#include <HDX/Graphics/IGraphics2D.hpp>
 #include <HDX/Input/Keyboard/IKeyboard.hpp>
 #include <HDX/Input/Mouse/IMouse.hpp>
 #include <HDX/Input/XInput/IXInput.hpp>
@@ -30,6 +31,7 @@ namespace detail
   Engine::~Engine()
   {
     pSystem_.Release();
+    pGraphics2D_.Release();
     pKeyboard_.Release();
     pMouse_.Release();
     pXInput_.Release();

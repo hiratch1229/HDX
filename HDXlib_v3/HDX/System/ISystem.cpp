@@ -423,17 +423,17 @@ namespace detail
     PostMessage(pImpl_->pWindow_->hWnd_, WM_CLOSE, 0, 0);
   }
 
-  int ISystem::GetWindowWidth()
+  int ISystem::GetWindowWidth()const
   {
     return pImpl_->pWindow_->Size_.X;
   }
 
-  int ISystem::GetWindowHeight()
+  int ISystem::GetWindowHeight()const
   {
     return pImpl_->pWindow_->Size_.Y;
   }
 
-  hdx::int2 ISystem::GetWindowSize()
+  const hdx::int2& ISystem::GetWindowSize()const
   {
     return pImpl_->pWindow_->Size_;
   }
@@ -494,6 +494,17 @@ namespace detail
     pImpl_->pWindow_->BackColor_ = _Color;
   }
 
+  void ISystem::SetShaderResouceView(ID3D11ShaderResourceView** _ppShaderResourceView, int _Slot)
+  {
+    static ID3D11ShaderResourceView*const* ppShaderResourceView = nullptr;
+    if (ppShaderResourceView != _ppShaderResourceView)
+    {
+      ppShaderResourceView = _ppShaderResourceView;
+      //  Ý’è‚ð”½‰f
+      pImpl_->pImmediateContext_->PSSetShaderResources(_Slot, 1, ppShaderResourceView);
+    }
+  }
+
   void ISystem::SetBlendState(ID3D11BlendState* _pBlendState)
   {
     static ID3D11BlendState* pBlendState = nullptr;
@@ -505,6 +516,98 @@ namespace detail
       //  Ý’è‚ð”½‰f
       pImpl_->pImmediateContext_->OMSetBlendState(pBlendState, nullptr, 0xFFFFFFFF);
     }
+  }
+
+  void ISystem::SetInputLayout(ID3D11InputLayout* _pInputLayout)
+  {
+    static ID3D11InputLayout* pInputLayout = nullptr;
+    if (pInputLayout != _pInputLayout)
+    {
+      pInputLayout = _pInputLayout;
+      //  Ý’è‚ð”½‰f
+      pImpl_->pImmediateContext_->IASetInputLayout(pInputLayout);
+    }
+  }
+
+  void ISystem::SetVertexShader(ID3D11VertexShader* _pVertexShader)
+  {
+    static ID3D11VertexShader* pVertexShader = nullptr;
+    if (pVertexShader != _pVertexShader)
+    {
+      pVertexShader = _pVertexShader;
+      //  Ý’è‚ð”½‰f
+      pImpl_->pImmediateContext_->VSSetShader(pVertexShader, nullptr, 0);
+    }
+  }
+
+  void ISystem::SetPixelShader(ID3D11PixelShader* _pPixelShader)
+  {
+    static ID3D11PixelShader* pPixelShader = nullptr;
+    if (pPixelShader != _pPixelShader)
+    {
+      pPixelShader = _pPixelShader;
+      //  Ý’è‚ð”½‰f
+      pImpl_->pImmediateContext_->PSSetShader(pPixelShader, nullptr, 0);
+    }
+  }
+
+  void ISystem::SetVertexBuffers(ID3D11Buffer*const* _ppVertexBuffer, UINT _Strides)
+  {
+    static ID3D11Buffer*const* ppVertexBuffer = nullptr;
+    if (ppVertexBuffer != _ppVertexBuffer)
+    {
+      ppVertexBuffer = _ppVertexBuffer;
+      UINT Offset = 0;
+
+      //  Ý’è‚ð”½‰f
+      pImpl_->pImmediateContext_->IASetVertexBuffers(0, 1, ppVertexBuffer, &_Strides, &Offset);
+    }
+  }
+
+  void ISystem::SetSamplersState(ID3D11SamplerState*const* _ppSamplerState)
+  {
+    static ID3D11SamplerState*const* ppSamplerState = nullptr;
+    if (ppSamplerState != _ppSamplerState)
+    {
+      ppSamplerState = _ppSamplerState;
+      //  Ý’è‚ð”½‰f
+      pImpl_->pImmediateContext_->PSSetSamplers(0, 1, ppSamplerState);
+    }
+  }
+
+  void ISystem::SetRasterizerState(ID3D11RasterizerState* _pRasterizerState)
+  {
+    static ID3D11RasterizerState* pRasterizerState = nullptr;
+    if (pRasterizerState != _pRasterizerState)
+    {
+      pRasterizerState = _pRasterizerState;
+      //  Ý’è‚ð”½‰f
+      pImpl_->pImmediateContext_->RSSetState(pRasterizerState);
+    }
+  }
+
+  void ISystem::SetDepthStencilState(ID3D11DepthStencilState* _pDepthStencilState)
+  {
+    static ID3D11DepthStencilState* pDepthStencilState = nullptr;
+    if (pDepthStencilState != _pDepthStencilState)
+    {
+      pDepthStencilState = _pDepthStencilState;
+      //  Ý’è‚ð”½‰f
+      pImpl_->pImmediateContext_->OMSetDepthStencilState(pDepthStencilState, 1);
+    }
+  }
+
+  void ISystem::Map(ID3D11Buffer* _pVertexBuffer, D3D11_MAPPED_SUBRESOURCE* _pMappedSubresorce)
+  {
+    //  ƒGƒ‰[ƒ`ƒFƒbƒN—p
+    HRESULT hr = S_OK;
+
+    pImpl_->pImmediateContext_->Map(_pVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, _pMappedSubresorce);
+  }
+
+  void ISystem::Unmap(ID3D11Buffer* _pVertexBuffer)
+  {
+    pImpl_->pImmediateContext_->Unmap(_pVertexBuffer, 0);
   }
 
   ID3D11Device* ISystem::GetDevice()

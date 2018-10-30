@@ -146,9 +146,9 @@ namespace hdx
     detail::System::Get()->PSSetSamplers(PrimitiveManager->GetAddressOfSamplerState());
 
     detail::System::Get()->RSSetState((isWireFrame) ? PrimitiveManager->GetWireFrameState() : PrimitiveManager->GetSolidState());
-    detail::System::Get()->IASetInputLayout(detail::System::Get()->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->ID_ : PrimitiveManager->GetVertexShaderID()));
-    detail::System::Get()->VSSetShader(detail::System::Get()->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->ID_ : PrimitiveManager->GetVertexShaderID()));
-    detail::System::Get()->PSSetShader(detail::System::Get()->GetPixelShader()->GetPixeShader((_pPixelShader) ? _pPixelShader->ID_ : PrimitiveManager->GetPixelShaderID()));
+    detail::System::Get()->IASetInputLayout(detail::System::Get()->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->GetID() : PrimitiveManager->GetVertexShaderID()));
+    detail::System::Get()->VSSetShader(detail::System::Get()->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->GetID() : PrimitiveManager->GetVertexShaderID()));
+    detail::System::Get()->PSSetShader(detail::System::Get()->GetPixelShader()->GetPixeShader((_pPixelShader) ? _pPixelShader->GetID() : PrimitiveManager->GetPixelShaderID()));
     detail::System::Get()->OMSetDepthStencilState(PrimitiveManager->GetDepthStencilState());
     detail::System::Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

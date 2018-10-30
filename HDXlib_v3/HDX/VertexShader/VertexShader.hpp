@@ -1,4 +1,5 @@
 #pragma once
+#include <HDX/Types.hpp>
 
 //  ライブラリ
 namespace hdx
@@ -8,9 +9,15 @@ namespace hdx
   //  頂点シェーダー
   class VertexShader
   {
+  private:
+    int ID_ = -1;
   public:
-    const int ID_;
+    int GetID()const { return ID_; }
   public:
-    VertexShader(const char* _FilePath, const InputElementDesc _InputElementDescs[], unsigned int _NumElements);
+    bool operator==(const VertexShader& _VertexShader)const { return ID_ == _VertexShader.ID_; }
+    bool operator!=(const VertexShader& _VertexShader)const { return !((*this) == _VertexShader); }
+  public:
+    VertexShader() = default;
+    VertexShader(const char* _FilePath, const InputElementDesc _InputElementDescs[], uint _NumElements);
   };
 }

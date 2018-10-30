@@ -38,8 +38,20 @@ namespace detail
     pImpl_ = nullptr;
   }
 
+  hdx::VertexShader IVertexShader::CreateDefault2D()
+  {
+    hdx::InputElementDesc InputElementDescs[] =
+    {
+      { "POSITION", 0, hdx::Format::R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+      { "COLOR", 0, hdx::Format::R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+      { "TEXCOORD", 0, hdx::Format::R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+    };
+
+    return hdx::VertexShader(kDefault2DFilePath, InputElementDescs, ARRAYSIZE(InputElementDescs));
+  }
+
   //  バーテックスシェーダー作成
-  int IVertexShader::Create(const char* _FilePath, const hdx::InputElementDesc _InputElementDescs[], unsigned int _NumElements)
+  int IVertexShader::Create(const char* _FilePath, const hdx::InputElementDesc _InputElementDescs[], uint _NumElements)
   {
     int ID = pImpl_->StateMap_.find(_FilePath);
 
@@ -91,13 +103,27 @@ namespace detail
     return ID;
   }
 
-  ID3D11InputLayout* IVertexShader::GetInputLayout(int _ID)
+  ID3D11InputLayout* IVertexShader::GetInputLayout(const hdx::VertexShader& _VertexShader)
   {
-    return pImpl_->StateMap_[_ID].pInputLayout.Get();
+    const int ID = _VertexShader.GetID();
+
+    if (ID < 0)
+    {
+      return nullptr;
+    }
+
+    return pImpl_->StateMap_[ID].pInputLayout.Get();
   }
 
-  ID3D11VertexShader* IVertexShader::GetVertexShader(int _ID)
+  ID3D11VertexShader* IVertexShader::GetVertexShader(const hdx::VertexShader& _VertexShader)
   {
-    return pImpl_->StateMap_[_ID].pVertexShader.Get();
+    const int ID = _VertexShader.GetID();
+
+    if (ID < 0)
+    {
+      return nullptr;
+    }
+
+    return pImpl_->StateMap_[ID].pVertexShader.Get();
   }
 }

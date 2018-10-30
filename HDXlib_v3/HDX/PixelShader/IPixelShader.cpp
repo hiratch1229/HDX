@@ -31,6 +31,11 @@ namespace detail
     pImpl_ = nullptr;
   }
 
+  hdx::PixelShader IPixelShader::CreateDefault2D()
+  {
+    return hdx::PixelShader(kDefault2DFilePath);
+  }
+
   //  ピクセルシェーダー作成
   int IPixelShader::Create(const char* _FilePath)
   {
@@ -65,8 +70,15 @@ namespace detail
     return ID;
   }
 
-  ID3D11PixelShader* IPixelShader::GetPixeShader(int _ID)
+  ID3D11PixelShader* IPixelShader::GetPixeShader(const hdx::PixelShader& _PixelShader)
   {
-    return pImpl_->PixelShaderMap_[_ID].Get();
+    const int ID = _PixelShader.GetID();
+
+    if (ID < 0)
+    {
+      return nullptr;
+    }
+
+    return pImpl_->PixelShaderMap_[ID].Get();
   }
 }

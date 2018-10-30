@@ -57,7 +57,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
   //  エンジンの作成
   detail::Engine Engine;
 
-  hdx::Graphics2D::SetBlendState(hdx::BlendState::Default);
+  //  初期設定
+  {
+    hdx::Graphics2D::SetBlendState(hdx::BlendState::Default);
+    hdx::Graphics2D::RestoreVertexShader();
+    hdx::Graphics2D::RestorePixelShader();
+  }
 
   //  プログラムの実行
   Main();

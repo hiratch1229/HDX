@@ -2,12 +2,19 @@
 
 #include <HDX/Engine.hpp>
 #include <HDX/System/ISystem.hpp>
+#include <HDX/Graphics/IGraphics2D.hpp>
+#include <HDX/BlendState/IBlendState.hpp>
+#include <HDX/VertexShader/IVertexShader.hpp>
+#include <HDX/PixelShader/IPixelShader.hpp>
+
 #include <HDX/WIC.hpp>
 #include <HDX/Sprite/ISprite.hpp>
 
 #include <HDX/System/System.hpp>
 #include <HDX/Math.hpp>
 #include <HDX/Vertex.hpp>
+
+#include <HDX/BlendState/BlendState.hpp>
 
 //#include <HDX/System/System.hpp>
 //#include <HDX/Math.hpp>
@@ -121,15 +128,11 @@ namespace hdx
   //  描画最終処理
   void Sprite::Draw2D(const detail::Vertex2D* v, const VertexShader* _pVertexShader, const PixelShader* _pPixelShader)const
   {
-    //  エラーチェック用
-    HRESULT hr = S_OK;
-
     detail::ISystem* pSystem = detail::Engine::GetSystem();
 
     //  頂点バッファオブジェクトを書き換え
     D3D11_MAPPED_SUBRESOURCE MappedSubresorce;
-    hr = pSystem->GetImmediateContext()->Map(detail::System::Get()->GetSpriteManager()->GetVertexBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresorce);
-    _ASSERT_EXPR(SUCCEEDED(hr), L"Map");
+    pSystem->Map(detail::Engine::GetSprite()->GetVertexBuffer(), &MappedSubresorce);
 
     detail::Vertex2D* Vertices = reinterpret_cast<detail::Vertex2D*>(MappedSubresorce.pData);
 
@@ -137,18 +140,24 @@ namespace hdx
     memcpy(Vertices, v, sizeof(detail::Vertex2D) * 4);
 
     //  頂点バッファオブジェクトを書き換え終了
-    pSystem->GetImmediateContext()->Unmap(detail::System::Get()->GetSpriteManager()->GetVertexBuffer(), 0);
+    pSystem->Unmap(detail::Engine::GetSprite()->GetVertexBuffer());
 
     //  シェーダーリソースビューを設定
-    pSystem->GetImmediateContext()->PSSetShaderResources(0, 1, detail::System::Get()->GetSpriteManager()->GetAddressOfShaderResourceView(ID_));
+    pSystem->SetShaderResouceView(detail::Engine::GetSprite()->GetShaderResourceView(ID_), 0);
 
     UINT Strides = sizeof(detail::Vertex2D);
-    UINT Offsets = 0;
 
-    //detail::System::Get()->IASetVertexBuffers(detail::System::Get()->GetSpriteManager()->GetAddressOfVertexBuffer(), Strides, Offsets);
-    //detail::System::Get()->IASetInputLayout(detail::System::Get()->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->ID_ : detail::System::Get()->GetSpriteManager()->GetVertexShaderID()));
-    //detail::System::Get()->VSSetShader(detail::System::Get()->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->ID_ : detail::System::Get()->GetSpriteManager()->GetVertexShaderID()));
-    //detail::System::Get()->PSSetShader(detail::System::Get()->GetPixelShader()->GetPixeShader((_pVertexShader) ? _pVertexShader->ID_ : detail::System::Get()->GetSpriteManager()->GetPixelShaderID()));
+    const detail::IGraphics2D* pGraphics2D = detail::Engine::GetGraphics2D();
+
+    pSystem->SetBlendState(detail::Engine::GetBlendState()->GetBlendState(pGraphics2D->GetBlendState()));
+    pSystem->SetInputLayout(detail::Engine::GetVertexShader()->GetInputLayout(pGraphics2D->GetVertexShader()));
+    pSystem->SetVertexShader(detail::Engine::GetVertexShader()->GetVertexShader(pGraphics2D->GetVertexShader()));
+    pSystem->SetPixelShader(detail::Engine::GetPixelShader()->GetPixeShader(pGraphics2D->GetPixelShader()));
+    pSystem->SetVertexBuffers(detail::Engine::GetSprite()->GetAddressOfVertexBuffer(), Strides);
+    pSystem->SetSamplersState();
+    pSystem->SetRasterizerState();
+    pSystem->SetDepthStencilState();
+
     //detail::System::Get()->PSSetSamplers(detail::System::Get()->GetSpriteManager()->GetAddressOfSamplerState());
     //detail::System::Get()->RSSetState(detail::System::Get()->GetSpriteManager()->GetRasterizerState());
     //detail::System::Get()->OMSetDepthStencilState(detail::System::Get()->GetSpriteManager()->GetDepthStencilState());

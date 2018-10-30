@@ -3,6 +3,7 @@
 #include <HDX/Engine.hpp>
 #include <HDX/System/ISystem.hpp>
 
+#include <HDX/Vertex.hpp>
 #include <HDX/NumberMap.hpp>
 
 #include <d3d11.h>
@@ -21,8 +22,9 @@ namespace detail
     };
   private:
     NumberMap<std::string, TextureData> TextureMap_;
+    Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer_;
   private:
-    inline int CreateDammyTexture()
+    int CreateDammyTexture()
     {
       //  エラーチェック用
       HRESULT hr = S_OK;
@@ -81,6 +83,52 @@ namespace detail
       //  マップへ追加
       return TextureMap_.insert(kDammyTextureName, { pShaderResouceView, hdx::int2(1, 1) });
     }
+    void CreateVertexBuffer()
+    {
+      //  エラーチェック用
+      HRESULT hr = S_OK;
+
+      Vertex2D Vertices[4]{};
+
+      D3D11_BUFFER_DESC BufferDesc{};
+      {
+        BufferDesc.ByteWidth = sizeof(Vertices);
+        BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+        BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+        BufferDesc.MiscFlags = 0;
+        BufferDesc.StructureByteStride = 0;
+      }
+
+      D3D11_SUBRESOURCE_DATA InitialData{};
+      {
+        InitialData.pSysMem = Vertices;
+        InitialData.SysMemPitch = 0;
+        InitialData.SysMemSlicePitch = 0;
+      }
+
+      Engine::GetSystem()->GetDevice()->CreateBuffer(&BufferDesc, &InitialData, pVertexBuffer_.GetAddressOf());
+
+    }
+  public:
+    ID3D11Buffer* GetVertexBuffer()
+    {
+      if (!pVertexBuffer_)
+      {
+        CreateVertexBuffer();
+      }
+
+      return pVertexBuffer_.Get();
+    }
+    ID3D11Buffer** GetAddressOfVertexBuffer()
+    {
+      if (!pVertexBuffer_)
+      {
+        CreateVertexBuffer();
+      }
+
+      return pVertexBuffer_.GetAddressOf();
+    }
   public:
     int GetDammyTextureID()
     {
@@ -98,6 +146,7 @@ namespace detail
     {
       return TextureMap_.insert(_FilePath, { _pShaderResourceView, _Size });
     }
+    ID3D11ShaderResourceView** GetShaderResourceView(int _ID) { return TextureMap_[_ID].pShaderResourceView.GetAddressOf(); }
   public:
     Impl() { TextureMap_.clear(); }
     ~Impl() { TextureMap_.clear(); }
@@ -133,5 +182,20 @@ namespace detail
   int ISprite::InsertTexture(const char* _FilePath, ID3D11ShaderResourceView* _pShaderResourceView, const hdx::int2& _Size)
   {
     return pImpl_->InsertTexture(_FilePath, _pShaderResourceView, _Size);
+  }
+
+  ID3D11ShaderResourceView** ISprite::GetShaderResourceView(int _ID)
+  {
+    return pImpl_->GetShaderResourceView(_ID);
+  }
+
+  ID3D11Buffer* ISprite::GetVertexBuffer()
+  {
+    return pImpl_->GetVertexBuffer();
+  }
+
+  ID3D11Buffer** ISprite::GetAddressOfVertexBuffer()
+  {
+    return pImpl_->GetAddressOfVertexBuffer();
   }
 }

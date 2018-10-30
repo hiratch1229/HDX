@@ -322,11 +322,10 @@ namespace detail
   };
 }
 
-#include <HDX/Type2.hpp>
-
 //  ライブラリ
 namespace hdx
 {
+  struct int2;
   struct ColorF;
 
   //  システム

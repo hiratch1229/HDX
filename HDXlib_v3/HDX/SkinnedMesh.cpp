@@ -304,9 +304,9 @@ namespace hdx
 
     System->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     System->RSSetState((isWireFrame) ? FbxManager->GetWireFrameState() : FbxManager->GetSolidState());
-    System->IASetInputLayout(System->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->ID_ : FbxManager->GetVertexShaderID()));
-    System->VSSetShader(System->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->ID_ : FbxManager->GetVertexShaderID()));
-    System->PSSetShader(System->GetPixelShader()->GetPixeShader((_pPixelShader) ? _pPixelShader->ID_ : FbxManager->GetPixelShaderID()));
+    System->IASetInputLayout(System->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->GetID() : FbxManager->GetVertexShaderID()));
+    System->VSSetShader(System->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->GetID() : FbxManager->GetVertexShaderID()));
+    System->PSSetShader(System->GetPixelShader()->GetPixeShader((_pPixelShader) ? _pPixelShader->GetID() : FbxManager->GetPixelShaderID()));
     System->OMSetDepthStencilState(FbxManager->GetDepthStencilState());
     System->PSSetSamplers(FbxManager->GetAddressOfSamplerState());
 
