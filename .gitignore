@@ -1,0 +1,9 @@
+Debug/
+Release/
+*.cso
+*.vcxproj
+*.vcxproj.filters
+*.sln
+*.VC.db
+*.VC.VC.opendb
+*.suo
