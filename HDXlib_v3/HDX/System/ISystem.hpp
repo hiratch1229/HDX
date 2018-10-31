@@ -40,8 +40,8 @@ namespace detail
     void SetWindowSize(int _Width, int _Height);
     void SetWindowSize(const hdx::int2& _Size);
     void SetWindowMode(bool _isFullScreen);
-    void SetWindow(int _LeftPos, int _TopPos, int _Width, int _Height, bool _isFullScreen );
-    void SetWindow(const hdx::int2& _LeftTopPos, const hdx::int2& _Size, bool _isFullScreen );
+    void SetWindow(int _LeftPos, int _TopPos, int _Width, int _Height, bool _isFullScreen);
+    void SetWindow(const hdx::int2& _LeftTopPos, const hdx::int2& _Size, bool _isFullScreen);
     void ShowCursor(bool _isShowCursor);
     void SetTitle(const char* _Title);
     void SetBackColor(const hdx::ColorF& _Color);
@@ -56,7 +56,7 @@ namespace detail
     IDXGISwapChain* GetSwapChain();
     HWND GetHWND();
   public:
-    void SetShaderResouceView(ID3D11ShaderResourceView** _ppShaderResourceView,int _Slot);
+    void SetShaderResouceView(ID3D11ShaderResourceView** _ppShaderResourceView, int _Slot);
     void SetBlendState(ID3D11BlendState* _pBlendState);
     void SetInputLayout(ID3D11InputLayout* _pInputLayout);
     void SetVertexShader(ID3D11VertexShader* _pVertexShader);
@@ -69,8 +69,9 @@ namespace detail
     void Map(ID3D11Buffer* _pVertexBuffer, D3D11_MAPPED_SUBRESOURCE* _pMappedSubresorce);
     void Unmap(ID3D11Buffer* _pVertexBuffer);
   public:
+    bool Update();
+  public:
     ISystem();
     ~ISystem();
-    bool Update();
   };
 }

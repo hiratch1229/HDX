@@ -45,10 +45,6 @@
 //  2018.08.09  作成
 #include <HDX/Color.hpp>
 
-//  ブレンドステート
-//  2018.07.31  作成
-#include <HDX/Blend.hpp>
-
 //  2D画像
 //  2018.08.09  作成
 //  TODO:もっと簡単に描画出来るように
@@ -69,6 +65,14 @@
 //  2018.09.28  作成
 //  TODO:授業課題から改善
 #include <HDX/SkinnedMesh.hpp>
+
+//  グラフィックス2D
+//  2018.10.28  作成
+#include <HDX/Graphics/Graphics2D.hpp>
+
+//  ブレンドステート
+//  2018.10.29  作成
+#include <HDX/BlendState/BlendState.hpp>
 
 
 //*************************

@@ -1,7 +1,6 @@
 #include <HDX/System/System.hpp>
 
 #include <HDX/Vertex.hpp>
-#include <HDX/Blend.hpp>
 #include <HDX/Input/Keyboard/IKeyboard.hpp>
 #include <HDX/Input/Mouse/IMouse.hpp>
 #include <HDX/Input/XInput/IXInput.hpp>

@@ -1,8 +1,9 @@
 #pragma once
+#include <HDX/Types.hpp>
 
 namespace hdx
 {
-  enum class Blend
+  enum class Blend : uint
   {
     Zero = 1,
     One = 2,
@@ -23,7 +24,7 @@ namespace hdx
     InvSrc1Alpha = 19
   };
 
-  enum class BlendOp
+  enum class BlendOp : uint
   {
     Add = 1,
     Subtract = 2,
@@ -36,7 +37,7 @@ namespace hdx
   {
     enum class PreDefined
     {
-      Default,
+      Alpha,
       Add,
       Subtract,
       Replace,
@@ -54,14 +55,14 @@ namespace hdx
       {
         bool AlphaToCoverageEnable_ : 3;
         bool BlendEnable_ : 3;
-        hdx::Blend SrcBlend_ : 5;
-        hdx::Blend DestBlend_ : 5;
-        hdx::BlendOp BlendOp_ : 3;
-        hdx::Blend SrcBlendAlpha_ : 5;
-        hdx::Blend DestBlnedAlpha_ : 5;
-        hdx::BlendOp BlendOpAlpha_ : 3;
+        Blend SrcBlend_ : 5;
+        Blend DestBlend_ : 5;
+        BlendOp BlendOp_ : 3;
+        Blend SrcBlendAlpha_ : 5;
+        Blend DestBlnedAlpha_ : 5;
+        BlendOp BlendOpAlpha_ : 3;
       };
-      int DataType_;
+      uint DataType_;
     };
   public:
     constexpr BlendState(bool _AlphaToCoverageEnable = false,
@@ -107,7 +108,7 @@ namespace hdx
       return !((*this) == _BlendState);
     }
   public:
-    static constexpr PreDefined Default = PreDefined::Default;
+    static constexpr PreDefined Default = PreDefined::Alpha;
     static constexpr PreDefined Add = PreDefined::Add;
     static constexpr PreDefined Subtract = PreDefined::Subtract;
     static constexpr PreDefined Replace = PreDefined::Replace;
