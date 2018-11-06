@@ -18,6 +18,6 @@ namespace hdx
     bool operator!=(const VertexShader& _VertexShader)const { return !((*this) == _VertexShader); }
   public:
     VertexShader() = default;
-    VertexShader(const char* _FilePath, const InputElementDesc _InputElementDescs[], uint _NumElements);
+    VertexShader(const char* _FilePath, const InputElementDesc _InputElementDescs[], UINT _NumElements);
   };
 }

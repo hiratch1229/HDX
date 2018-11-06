@@ -21,7 +21,7 @@ namespace detail
     static constexpr char* kDefault2DFilePath = "SpriteVS.cso";
   public:
     hdx::VertexShader CreateDefault2D();
-    int Create(const char* _FilePath, const hdx::InputElementDesc _InputElementDescs[], uint _NumElements);
+    int Create(const char* _FilePath, const hdx::InputElementDesc _InputElementDescs[], UINT _NumElements);
     ID3D11InputLayout* GetInputLayout(const hdx::VertexShader& _VertexShader);
     ID3D11VertexShader* GetVertexShader(const hdx::VertexShader& _VertexShader);
   public:

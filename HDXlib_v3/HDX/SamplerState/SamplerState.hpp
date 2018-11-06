@@ -71,7 +71,7 @@ namespace hdx
       AddressMode _AddressModeW = AddressMode::Clamp,
       Filter _Filter = Filter::MinMagMipLinear,
       UINT _MaxAnisotropy = 16,
-      const Color& _BorderColor = Color(Palette::Black, 0.0f))
+      const Color& _BorderColor = Color(Palette::Black, 0))
       : Filter_(_Filter),
       AddressModeU_(_AddressModeU),
       AddressModeV_(_AddressModeV),
@@ -89,8 +89,8 @@ namespace hdx
     {
       static constexpr SamplerState PreDefineds[static_cast<UINT>(PreDefined::Num)] =
       {
-        { AddressMode::Wrap, Filter::MinMagMipLinear },
-        { AddressMode::Wrap, Filter::Anisotropic }
+        { AddressMode::Wrap, AddressMode::Wrap, AddressMode::Wrap, Filter::MinMagMipLinear },
+        { AddressMode::Wrap, AddressMode::Wrap, AddressMode::Wrap, Filter::Anisotropic }
       };
 
       *this = PreDefineds[static_cast<UINT>(_PreDefined)];

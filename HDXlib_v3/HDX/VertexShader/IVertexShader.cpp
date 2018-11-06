@@ -51,7 +51,7 @@ namespace detail
   }
 
   //  バーテックスシェーダー作成
-  int IVertexShader::Create(const char* _FilePath, const hdx::InputElementDesc _InputElementDescs[], uint _NumElements)
+  int IVertexShader::Create(const char* _FilePath, const hdx::InputElementDesc _InputElementDescs[], UINT _NumElements)
   {
     int ID = pImpl_->StateMap_.find(_FilePath);
 

@@ -10,7 +10,7 @@ namespace hdx
 
 namespace detail
 {
-  class IGraphics2D
+  class IRenderer2D
   {
     struct Impl;
   private:
@@ -19,13 +19,14 @@ namespace detail
     void SetVertexShader(const hdx::VertexShader& _VertexShader);
     void SetPixelShader(const hdx::PixelShader& _PixelShader);
     void SetBlendState(const hdx::BlendState& _BlendState);
+    void SetSamplerState(const hdx::SamplerState& _SamplerState);
   public:
     const hdx::VertexShader& GetVertexShader()const;
     const hdx::PixelShader& GetPixelShader()const;
     const hdx::BlendState& GetBlendState()const;
     const hdx::SamplerState& GetSamplerState()const;
   public:
-    IGraphics2D();
-    ~IGraphics2D();
+    IRenderer2D();
+    ~IRenderer2D();
   };
 }

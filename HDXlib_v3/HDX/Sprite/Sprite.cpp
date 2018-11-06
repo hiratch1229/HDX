@@ -2,7 +2,7 @@
 
 #include <HDX/Engine.hpp>
 #include <HDX/System/ISystem.hpp>
-#include <HDX/Graphics/IGraphics2D.hpp>
+#include <HDX/Renderer/IRenderer2D.hpp>
 #include <HDX/BlendState/IBlendState.hpp>
 #include <HDX/SamplerState/ISamplerState.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
@@ -148,7 +148,7 @@ namespace hdx
 
     UINT Strides = sizeof(detail::Vertex2D);
 
-    const detail::IGraphics2D* pGraphics2D = detail::Engine::GetGraphics2D();
+    const detail::IRenderer2D* pGraphics2D = detail::Engine::GetRenderer2D();
 
     pSystem->SetBlendState(detail::Engine::GetBlendState()->GetBlendState(pGraphics2D->GetBlendState()));
     pSystem->SetInputLayout(detail::Engine::GetVertexShader()->GetInputLayout(pGraphics2D->GetVertexShader()));

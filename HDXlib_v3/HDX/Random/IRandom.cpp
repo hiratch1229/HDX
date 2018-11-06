@@ -9,7 +9,7 @@ namespace detail
     SetSeed(std::random_device()());
   }
 
-  uint IRandom::Get()
+  UINT IRandom::Get()
   {
     unsigned long Temp = (X_ ^ (X_ << 11));
     X_ = Y_;

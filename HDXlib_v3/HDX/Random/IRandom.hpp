@@ -5,17 +5,17 @@ namespace detail
 {
   class IRandom
   {
-    static constexpr uint kInitX = 123456789U;
-    static constexpr uint kInitY = 362436069U;
-    static constexpr uint kInitZ = 521288629U;
-    static constexpr uint kInitW = 88675123U;
+    static constexpr UINT kInitX = 123456789U;
+    static constexpr UINT kInitY = 362436069U;
+    static constexpr UINT kInitZ = 521288629U;
+    static constexpr UINT kInitW = 88675123U;
   private:
-    uint X_ = kInitX;
-    uint Y_ = kInitY;
-    uint Z_ = kInitZ;
-    uint W_ = kInitW;
+    UINT X_ = kInitX;
+    UINT Y_ = kInitY;
+    UINT Z_ = kInitZ;
+    UINT W_ = kInitW;
   public:
-    void SetSeed(uint _Seed)
+    void SetSeed(UINT _Seed)
     {
       X_ = kInitX;
       Y_ = kInitY;
@@ -25,6 +25,6 @@ namespace detail
   public:
     IRandom();
     ~IRandom() {}
-    uint Get();
+    UINT Get();
   };
 }

@@ -1,7 +1,7 @@
 #include <HDX/System/System.hpp>
 
 #include <HDX/Engine.hpp>
-#include <HDX/Graphics/Graphics2D.hpp>
+#include <HDX/Renderer/Renderer2D.hpp>
 #include <HDX/BlendState/BlendState.hpp>
 
 #include <Windows.h>
@@ -59,9 +59,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 
   //  ‰Šúİ’è
   {
-    hdx::Graphics2D::SetBlendState(hdx::BlendState::Default);
-    hdx::Graphics2D::RestoreVertexShader();
-    hdx::Graphics2D::RestorePixelShader();
+    hdx::Renderer2D::SetBlendState(hdx::BlendState::Default);
+    hdx::Renderer2D::RestoreVertexShader();
+    hdx::Renderer2D::RestorePixelShader();
   }
 
   //  ƒvƒƒOƒ‰ƒ€‚ÌÀs

@@ -1,5 +1,6 @@
 #pragma once
 #include <HDX/Type2.hpp>
+#include <HDX/Types.hpp>
 
 struct ID3D11Device;
 struct ID3D11DeviceContext;

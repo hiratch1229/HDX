@@ -1,4 +1,4 @@
-#include <HDX/Graphics/IGraphics2D.hpp>
+#include <HDX/Renderer/IRenderer2D.hpp>
 
 #include <HDX/System/System.hpp>
 
@@ -9,7 +9,7 @@
 
 namespace detail
 {
-  struct IGraphics2D::Impl
+  struct IRenderer2D::Impl
   {
     hdx::VertexShader CurrentVertexShader_;
     hdx::PixelShader CurrentPixelShader_;
@@ -22,19 +22,19 @@ namespace detail
     }
   };
 
-  IGraphics2D::IGraphics2D()
+  IRenderer2D::IRenderer2D()
     : pImpl_(new Impl)
   {
 
   }
 
-  IGraphics2D::~IGraphics2D()
+  IRenderer2D::~IRenderer2D()
   {
     delete pImpl_;
     pImpl_ = nullptr;
   }
 
-  void IGraphics2D::SetVertexShader(const hdx::VertexShader& _VertexShader)
+  void IRenderer2D::SetVertexShader(const hdx::VertexShader& _VertexShader)
   {
     if (_VertexShader != hdx::VertexShader() && pImpl_->CurrentVertexShader_ != _VertexShader)
     {
@@ -42,7 +42,7 @@ namespace detail
     }
   }
 
-  void IGraphics2D::SetPixelShader(const hdx::PixelShader& _PixelShader)
+  void IRenderer2D::SetPixelShader(const hdx::PixelShader& _PixelShader)
   {
     if (_PixelShader != hdx::PixelShader() && pImpl_->CurrentPixelShader_ != _PixelShader)
     {
@@ -50,7 +50,7 @@ namespace detail
     }
   }
 
-  void IGraphics2D::SetBlendState(const hdx::BlendState& _BlendState)
+  void IRenderer2D::SetBlendState(const hdx::BlendState& _BlendState)
   {
     if (pImpl_->CurrentBlendState_ != _BlendState)
     {
@@ -58,22 +58,30 @@ namespace detail
     }
   }
 
-  const hdx::VertexShader& IGraphics2D::GetVertexShader()const
+  void IRenderer2D::SetSamplerState(const hdx::SamplerState& _SamplerState)
+  {
+    if (pImpl_->CurrentSamplerState_ != _SamplerState)
+    {
+      pImpl_->CurrentSamplerState_ = _SamplerState;
+    }
+  }
+
+  const hdx::VertexShader& IRenderer2D::GetVertexShader()const
   {
     return pImpl_->CurrentVertexShader_;
   }
 
-  const hdx::PixelShader& IGraphics2D::GetPixelShader()const
+  const hdx::PixelShader& IRenderer2D::GetPixelShader()const
   {
     return pImpl_->CurrentPixelShader_;
   }
 
-  const hdx::BlendState& IGraphics2D::GetBlendState()const
+  const hdx::BlendState& IRenderer2D::GetBlendState()const
   {
     return pImpl_->CurrentBlendState_;
   }
 
-  const hdx::SamplerState& IGraphics2D::GetSamplerState()const
+  const hdx::SamplerState& IRenderer2D::GetSamplerState()const
   {
     return pImpl_->CurrentSamplerState_;
   }

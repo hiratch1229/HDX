@@ -68,11 +68,15 @@
 
 //  グラフィックス2D
 //  2018.10.28  作成
-#include <HDX/Graphics/Graphics2D.hpp>
+#include <HDX/Renderer/Renderer2D.hpp>
 
 //  ブレンドステート
 //  2018.10.29  作成
 #include <HDX/BlendState/BlendState.hpp>
+
+//  サンプラーステート
+//  2018.11.06  作成
+#include <HDX/SamplerState/ISamplerState.hpp>
 
 
 //*************************
