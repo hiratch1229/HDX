@@ -5,6 +5,7 @@ namespace hdx
   class VertexShader;
   class PixelShader;
   class BlendState;
+  class SamplerState;
 }
 
 namespace detail
@@ -22,6 +23,7 @@ namespace detail
     const hdx::VertexShader& GetVertexShader()const;
     const hdx::PixelShader& GetPixelShader()const;
     const hdx::BlendState& GetBlendState()const;
+    const hdx::SamplerState& GetSamplerState()const;
   public:
     IGraphics2D();
     ~IGraphics2D();

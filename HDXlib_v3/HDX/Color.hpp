@@ -1,4 +1,5 @@
 #pragma once
+#include <HDX/Types.hpp>
 
 //  ‘O•ûéŒ¾
 namespace hdx

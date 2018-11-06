@@ -7,6 +7,7 @@
 #include <HDX/Input/XInput/IXInput.hpp>
 #include <HDX/Input/Gamepad/IGamepad.hpp>
 #include <HDX/BlendState/IBlendState.hpp>
+#include <HDX/SamplerState/ISamplerState.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
 #include <HDX/WIC.hpp>
@@ -37,6 +38,7 @@ namespace detail
     pXInput_.Release();
     pGamepad_.Release();
     pBlendState_.Release();
+    pSamplerState_.Release();
     pVertexShader_.Release();
     pPixelShader_.Release();
     pWIC_.Release();

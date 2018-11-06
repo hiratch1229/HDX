@@ -3,7 +3,7 @@
 
 namespace hdx
 {
-  enum class Blend : uint
+  enum class Blend : UINT
   {
     Zero = 1,
     One = 2,
@@ -24,7 +24,7 @@ namespace hdx
     InvSrc1Alpha = 19
   };
 
-  enum class BlendOp : uint
+  enum class BlendOp : UINT
   {
     Add = 1,
     Subtract = 2,
@@ -35,7 +35,7 @@ namespace hdx
 
   class BlendState
   {
-    enum class PreDefined
+    enum class PreDefined : UINT
     {
       Alpha,
       Add,
@@ -48,6 +48,8 @@ namespace hdx
 
       Num
     };
+  private:
+    using DataType = uint32;
   public:
     union
     {
@@ -62,7 +64,7 @@ namespace hdx
         Blend DestBlnedAlpha_ : 5;
         BlendOp BlendOpAlpha_ : 3;
       };
-      uint DataType_;
+      DataType DataType_;
     };
   public:
     constexpr BlendState(bool _AlphaToCoverageEnable = false,
@@ -84,7 +86,7 @@ namespace hdx
   public:
     BlendState(PreDefined _PreDefined)
     {
-      static constexpr BlendState PreDefineds[static_cast<int>(PreDefined::Num)] =
+      static constexpr BlendState PreDefineds[static_cast<UINT>(PreDefined::Num)] =
       {
         { false, true, Blend::SrcAlpha, Blend::InvSrcAlpha, BlendOp::Add, Blend::One, Blend::InvSrcAlpha, BlendOp::Add },
         { false, true, Blend::SrcAlpha, Blend::One, BlendOp::Add, Blend::Zero, Blend::One, BlendOp::Add },
@@ -96,7 +98,7 @@ namespace hdx
         { false, true, Blend::SrcAlpha, Blend::InvSrcColor, BlendOp::Add, Blend::One, Blend::InvSrcAlpha, BlendOp::Add }
       };
 
-      *this = PreDefineds[static_cast<int>(_PreDefined)];
+      *this = PreDefineds[static_cast<UINT>(_PreDefined)];
     }
   public:
     bool operator==(const BlendState& _BlendState)const

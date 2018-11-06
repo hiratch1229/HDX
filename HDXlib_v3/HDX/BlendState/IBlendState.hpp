@@ -11,7 +11,7 @@ namespace detail
 {
   class IBlendState
   {
-    class Impl;
+    struct Impl;
   private:
     Impl* pImpl_;
   private:

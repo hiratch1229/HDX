@@ -4,6 +4,7 @@
 #include <HDX/System/ISystem.hpp>
 #include <HDX/Graphics/IGraphics2D.hpp>
 #include <HDX/BlendState/IBlendState.hpp>
+#include <HDX/SamplerState/ISamplerState.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
 
@@ -126,7 +127,7 @@ namespace hdx
   //}
 
   //  ï`âÊç≈èIèàóù
-  void Sprite::Draw2D(const detail::Vertex2D* v, const VertexShader* _pVertexShader, const PixelShader* _pPixelShader)const
+  void Sprite::Draw2D(const detail::Vertex2D* v)const
   {
     detail::ISystem* pSystem = detail::Engine::GetSystem();
 
@@ -154,7 +155,7 @@ namespace hdx
     pSystem->SetVertexShader(detail::Engine::GetVertexShader()->GetVertexShader(pGraphics2D->GetVertexShader()));
     pSystem->SetPixelShader(detail::Engine::GetPixelShader()->GetPixeShader(pGraphics2D->GetPixelShader()));
     pSystem->SetVertexBuffers(detail::Engine::GetSprite()->GetAddressOfVertexBuffer(), Strides);
-    pSystem->SetSamplersState();
+    pSystem->SetSamplersState(detail::Engine::GetSamplerState()->GetSamplerState(pGraphics2D->GetSamplerState()));
     pSystem->SetRasterizerState();
     pSystem->SetDepthStencilState();
 
@@ -169,7 +170,7 @@ namespace hdx
   //  ï`âÊ
   //  _isFitScreen:true:âÊñ ÉTÉCÉYÇ…çáÇÌÇÈ,false:ÇªÇÃÇ‹Ç‹ÇÃÉTÉCÉY
   //  _Color:êFÇéwíË(ColorÉNÉâÉXÇ‡ÇªÇÃÇ‹Ç‹égÇ¶Ç‹Ç∑)
-  void Sprite::Draw(bool _isFitScreen, const ColorF& _Color, const VertexShader* _pVertexShader, const PixelShader* _pPixelShader)const
+  void Sprite::Draw(bool _isFitScreen, const ColorF& _Color)const
   {
     detail::Vertex2D Vertices[4];
 
@@ -196,11 +197,11 @@ namespace hdx
     Vertices[0].Color = Vertices[1].Color = Vertices[2].Color = Vertices[3].Color = _Color;
 
     //  ï`âÊèàóù
-    Draw2D(Vertices, _pVertexShader, _pPixelShader);
+    Draw2D(Vertices);
   }
 
   //  ï`âÊ
-  void Sprite::Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const ColorF& _Color, const VertexShader* _pVertexShader, const PixelShader* _pPixelShader)const
+  void Sprite::Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const ColorF& _Color)const
   {
     detail::Vertex2D Vertices[4];
 
@@ -227,11 +228,11 @@ namespace hdx
     Vertices[0].Color = Vertices[1].Color = Vertices[2].Color = Vertices[3].Color = _Color;
 
     //  ï`âÊèàóù
-    Draw2D(Vertices, _pVertexShader, _pPixelShader);
+    Draw2D(Vertices);
   }
 
   //  ï`âÊ
-  void Sprite::Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const Degree& _Angle, const ColorF& _Color, const VertexShader* _pVertexShader, const PixelShader* _pPixelShader)const
+  void Sprite::Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const Degree& _Angle, const ColorF& _Color)const
   {
     detail::Vertex2D Vertices[4];
 
@@ -269,11 +270,11 @@ namespace hdx
     Vertices[0].Color = Vertices[1].Color = Vertices[2].Color = Vertices[3].Color = _Color;
 
     //  ï`âÊèàóù
-    Draw2D(Vertices, _pVertexShader, _pPixelShader);
+    Draw2D(Vertices);
   }
 
   //  ï`âÊ
-  void Sprite::Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const Degree& _Angle, bool _HorizontalFlip, bool _VerticalFlip, const ColorF& _Color, const VertexShader* _pVertexShader, const PixelShader* _pPixelShader)const
+  void Sprite::Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const Degree& _Angle, bool _HorizontalFlip, bool _VerticalFlip, const ColorF& _Color)const
   {
     detail::Vertex2D Vertices[4];
 
@@ -309,6 +310,6 @@ namespace hdx
     Vertices[0].Color = Vertices[1].Color = Vertices[2].Color = Vertices[3].Color = _Color;
 
     //  ï`âÊèàóù
-    Draw2D(Vertices, _pVertexShader, _pPixelShader);
+    Draw2D(Vertices);
   }
 }

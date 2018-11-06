@@ -4,7 +4,7 @@
 
 namespace hdx
 {
-  enum class Filter : uint
+  enum class Filter : uint8
   {
     MinMagMipPoint = 0,
     MinMagPointMipLinear = 0x1,
@@ -26,7 +26,7 @@ namespace hdx
     ComparisonAnisotropic = 0xd5,
   };
 
-  enum class AddressMode : uint
+  enum class AddressMode : uint8
   {
     Wrap = 1,
     Mirror = 2,
@@ -37,47 +37,63 @@ namespace hdx
 
   class SamplerState
   {
-    enum class PreDefined
+    enum class PreDefined : UINT
     {
       WrapLinear,
       WrapAnisotropic,
 
       Num
     };
+  private:
+    using DataType = uint64;
   public:
     union
     {
       struct
       {
-        AddressMode AddressMode_ : 3;
+        AddressMode AddressModeU_ : 4;
+        AddressMode AddressModeV_ : 4;
+        AddressMode AddressModeW_ : 8;
+        uint8 MaxAnisotropy_ : 8;
         Filter Filter_ : 8;
-        uint MaxAnisotropy_ : 5;
-        Color BorderColor_;
+        uint8 BorderColorR_ : 8;
+        uint8 BorderColorG_ : 8;
+        uint8 BorderColorB_ : 8;
+        uint8 BorderColorA_ : 8;
+        //Color BorderColor_;
+        //  ↑operator=が暗黙的に削除される為使用不可(?)
       };
-      uint DataType_;
+      DataType DataType_;
     };
   public:
-    constexpr SamplerState(AddressMode _AddressMode = AddressMode::Clamp,
+    constexpr SamplerState(AddressMode _AddressModeU = AddressMode::Clamp,
+      AddressMode _AddressModeV = AddressMode::Clamp,
+      AddressMode _AddressModeW = AddressMode::Clamp,
       Filter _Filter = Filter::MinMagMipLinear,
-      uint _MaxAnisotropy = 16,
-      const Color& _BorderColor = Palette::Black)
+      UINT _MaxAnisotropy = 16,
+      const Color& _BorderColor = Color(Palette::Black, 0.0f))
       : Filter_(_Filter),
-      AddressMode_(_AddressMode),
+      AddressModeU_(_AddressModeU),
+      AddressModeV_(_AddressModeV),
+      AddressModeW_(_AddressModeW),
       MaxAnisotropy_(_MaxAnisotropy),
-      BorderColor_(_BorderColor)
+      BorderColorR_(_BorderColor.R),
+      BorderColorG_(_BorderColor.G),
+      BorderColorB_(_BorderColor.B),
+      BorderColorA_(_BorderColor.A)
     {
 
     }
   public:
     SamplerState(PreDefined _PreDefined)
     {
-      static constexpr SamplerState PreDefineds[static_cast<int>(PreDefined::Num)] =
+      static constexpr SamplerState PreDefineds[static_cast<UINT>(PreDefined::Num)] =
       {
         { AddressMode::Wrap, Filter::MinMagMipLinear },
         { AddressMode::Wrap, Filter::Anisotropic }
       };
 
-      *this = PreDefineds[static_cast<int>(_PreDefined)];
+      *this = PreDefineds[static_cast<UINT>(_PreDefined)];
     }
   public:
     bool operator==(const SamplerState& _SamplerState)const

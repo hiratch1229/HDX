@@ -5,6 +5,7 @@
 #include <HDX/VertexShader/VertexShader.hpp>
 #include <HDX/PixelShader/PixelShader.hpp>
 #include <HDX/BlendState/BlendState.hpp>
+#include <HDX/SamplerState/SamplerState.hpp>
 
 namespace detail
 {
@@ -13,6 +14,7 @@ namespace detail
     hdx::VertexShader CurrentVertexShader_;
     hdx::PixelShader CurrentPixelShader_;
     hdx::BlendState CurrentBlendState_;
+    hdx::SamplerState CurrentSamplerState_;
   public:
     Impl()
     {
@@ -69,5 +71,10 @@ namespace detail
   const hdx::BlendState& IGraphics2D::GetBlendState()const
   {
     return pImpl_->CurrentBlendState_;
+  }
+
+  const hdx::SamplerState& IGraphics2D::GetSamplerState()const
+  {
+    return pImpl_->CurrentSamplerState_;
   }
 }
