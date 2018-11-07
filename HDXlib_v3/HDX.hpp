@@ -66,7 +66,7 @@
 //  TODO:授業課題から改善
 #include <HDX/SkinnedMesh.hpp>
 
-//  グラフィックス2D
+//  レンダラー2D
 //  2018.10.28  作成
 #include <HDX/Renderer/Renderer2D.hpp>
 
@@ -77,6 +77,14 @@
 //  サンプラーステート
 //  2018.11.06  作成
 #include <HDX/SamplerState/ISamplerState.hpp>
+
+//  ラスタライーザーステート
+//  2018.11.07  作成
+#include <HDX/RasterizerState/RasterizerState.hpp>
+
+//  デプスステンシルステート
+//  2018.11.07  作成
+#include <HDX/DepthStencilState/DepthStencilState.hpp>
 
 
 //*************************
