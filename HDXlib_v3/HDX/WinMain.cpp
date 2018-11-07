@@ -9,7 +9,7 @@
 #include <time.h>
 #include <locale>
 
-#include <resource.h>
+#include <Resource.hpp>
 
 //  メッセージプロシージャのプロトタイプ宣言
 LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
