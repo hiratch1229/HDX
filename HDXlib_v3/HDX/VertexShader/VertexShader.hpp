@@ -4,7 +4,7 @@
 //  ライブラリ
 namespace hdx
 {
-  struct InputElementDesc;
+  class InputElementDesc;
 
   //  頂点シェーダー
   class VertexShader

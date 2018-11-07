@@ -137,24 +137,24 @@ namespace hdx
 
     auto PrimitiveManager = detail::System::Get()->GetPrimitiveManager();
 
-    detail::System::Get()->IASetVertexBuffers(pVertexBuffer_.GetAddressOf(), Strides, Offsets);
-    detail::System::Get()->GetDeviceContext()->IASetIndexBuffer(pIndexBuffer_.Get(), DXGI_FORMAT_R32_UINT, 0);
-
-    detail::System::Get()->GetDeviceContext()->UpdateSubresource(PrimitiveManager->GetConstantBuffer(), 0, nullptr, &_ConstantBuffer, 0, 0);
-    detail::System::Get()->GetDeviceContext()->VSSetConstantBuffers(0, 1, PrimitiveManager->GetAddressOfConstantBuffer());
-
-    detail::System::Get()->PSSetSamplers(PrimitiveManager->GetAddressOfSamplerState());
-
-    detail::System::Get()->RSSetState((isWireFrame) ? PrimitiveManager->GetWireFrameState() : PrimitiveManager->GetSolidState());
-    detail::System::Get()->IASetInputLayout(detail::System::Get()->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->GetID() : PrimitiveManager->GetVertexShaderID()));
-    detail::System::Get()->VSSetShader(detail::System::Get()->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->GetID() : PrimitiveManager->GetVertexShaderID()));
-    detail::System::Get()->PSSetShader(detail::System::Get()->GetPixelShader()->GetPixeShader((_pPixelShader) ? _pPixelShader->GetID() : PrimitiveManager->GetPixelShaderID()));
-    detail::System::Get()->OMSetDepthStencilState(PrimitiveManager->GetDepthStencilState());
-    detail::System::Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-    D3D11_BUFFER_DESC BufferDesc;
-    pIndexBuffer_->GetDesc(&BufferDesc);
-    detail::System::Get()->GetDeviceContext()->DrawIndexed(BufferDesc.ByteWidth / sizeof(UINT), 0, 0);
+    //detail::System::Get()->IASetVertexBuffers(pVertexBuffer_.GetAddressOf(), Strides, Offsets);
+    //detail::System::Get()->GetDeviceContext()->IASetIndexBuffer(pIndexBuffer_.Get(), DXGI_FORMAT_R32_UINT, 0);
+    //
+    //detail::System::Get()->GetDeviceContext()->UpdateSubresource(PrimitiveManager->GetConstantBuffer(), 0, nullptr, &_ConstantBuffer, 0, 0);
+    //detail::System::Get()->GetDeviceContext()->VSSetConstantBuffers(0, 1, PrimitiveManager->GetAddressOfConstantBuffer());
+    //
+    //detail::System::Get()->PSSetSamplers(PrimitiveManager->GetAddressOfSamplerState());
+    //
+    //detail::System::Get()->RSSetState((isWireFrame) ? PrimitiveManager->GetWireFrameState() : PrimitiveManager->GetSolidState());
+    //detail::System::Get()->IASetInputLayout(detail::System::Get()->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->GetID() : PrimitiveManager->GetVertexShaderID()));
+    //detail::System::Get()->VSSetShader(detail::System::Get()->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->GetID() : PrimitiveManager->GetVertexShaderID()));
+    //detail::System::Get()->PSSetShader(detail::System::Get()->GetPixelShader()->GetPixeShader((_pPixelShader) ? _pPixelShader->GetID() : PrimitiveManager->GetPixelShaderID()));
+    //detail::System::Get()->OMSetDepthStencilState(PrimitiveManager->GetDepthStencilState());
+    //detail::System::Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    //
+    //D3D11_BUFFER_DESC BufferDesc;
+    //pIndexBuffer_->GetDesc(&BufferDesc);
+    //detail::System::Get()->GetDeviceContext()->DrawIndexed(BufferDesc.ByteWidth / sizeof(UINT), 0, 0);
   }
 
   inline void GeometricPrimitive::CreateBuffers(Vertex3D Vertices[], int VerticesNum, UINT Indices[], int IndicesNum)

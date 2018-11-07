@@ -7,7 +7,7 @@ struct ID3D11VertexShader;
 
 namespace hdx
 {
-  struct InputElementDesc;
+  class InputElementDesc;
 }
 
 namespace detail

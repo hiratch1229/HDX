@@ -189,16 +189,16 @@ namespace hdx
     UINT Strides = sizeof(detail::Vertex2D);
     UINT Offsets = 0;
 
-    detail::System::Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-    detail::System::Get()->IASetVertexBuffers(detail::System::Get()->GetSpriteManager()->GetAddressOfVertexBuffer(), Strides, Offsets);
-    detail::System::Get()->IASetInputLayout(detail::System::Get()->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->GetID() : detail::System::Get()->GetSpriteManager()->GetVertexShaderID()));
-    detail::System::Get()->VSSetShader(detail::System::Get()->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->GetID() : detail::System::Get()->GetSpriteManager()->GetVertexShaderID()));
-    detail::System::Get()->PSSetShader(detail::System::Get()->GetPixelShader()->GetPixeShader((_pVertexShader) ? _pVertexShader->GetID() : detail::System::Get()->GetSpriteManager()->GetPixelShaderID()));
-    detail::System::Get()->PSSetSamplers(detail::System::Get()->GetSpriteManager()->GetAddressOfSamplerState());
-    detail::System::Get()->RSSetState(detail::System::Get()->GetSpriteManager()->GetRasterizerState());
-    detail::System::Get()->OMSetDepthStencilState(detail::System::Get()->GetSpriteManager()->GetDepthStencilState());
-
-    //  •`‰æ
-    detail::System::Get()->GetDeviceContext()->Draw(4, 0);
+    //detail::System::Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+    //detail::System::Get()->IASetVertexBuffers(detail::System::Get()->GetSpriteManager()->GetAddressOfVertexBuffer(), Strides, Offsets);
+    //detail::System::Get()->IASetInputLayout(detail::System::Get()->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->GetID() : detail::System::Get()->GetSpriteManager()->GetVertexShaderID()));
+    //detail::System::Get()->VSSetShader(detail::System::Get()->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->GetID() : detail::System::Get()->GetSpriteManager()->GetVertexShaderID()));
+    //detail::System::Get()->PSSetShader(detail::System::Get()->GetPixelShader()->GetPixeShader((_pVertexShader) ? _pVertexShader->GetID() : detail::System::Get()->GetSpriteManager()->GetPixelShaderID()));
+    //detail::System::Get()->PSSetSamplers(detail::System::Get()->GetSpriteManager()->GetAddressOfSamplerState());
+    //detail::System::Get()->RSSetState(detail::System::Get()->GetSpriteManager()->GetRasterizerState());
+    //detail::System::Get()->OMSetDepthStencilState(detail::System::Get()->GetSpriteManager()->GetDepthStencilState());
+    //
+    ////  •`‰æ
+    //detail::System::Get()->GetDeviceContext()->Draw(4, 0);
   }
 }

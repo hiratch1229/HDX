@@ -44,7 +44,7 @@ namespace hdx
 
       Num
     };
-  private:
+  public:
     using DataType = uint64;
   public:
     union

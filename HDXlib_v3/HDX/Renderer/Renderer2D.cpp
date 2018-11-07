@@ -4,13 +4,12 @@
 #include <HDX/Renderer/IRenderer2D.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
-//#include <HDX/System/ISystem.hpp>
-//#include <HDX/BlendState/IBlendState.hpp>
 
 #include <HDX/VertexShader/VertexShader.hpp>
 #include <HDX/PixelShader/PixelShader.hpp>
 #include <HDX/BlendState/BlendState.hpp>
 #include <HDX/SamplerState/SamplerState.hpp>
+#include <HDX/RasterizerState/RasterizerState.hpp>
 
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx
@@ -45,6 +44,11 @@ namespace hdx
     void SetSamplerState(const SamplerState& _SamplerState)
     {
       detail::Engine::GetRenderer2D()->SetSamplerState(_SamplerState);
+    }
+
+    void SetRasterizerState(const RasterizerState& _RasterizerState)
+    {
+      detail::Engine::GetRenderer2D()->SetRasterizerState(_RasterizerState);
     }
   }
 }

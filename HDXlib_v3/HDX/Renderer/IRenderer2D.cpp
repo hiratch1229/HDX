@@ -6,6 +6,8 @@
 #include <HDX/PixelShader/PixelShader.hpp>
 #include <HDX/BlendState/BlendState.hpp>
 #include <HDX/SamplerState/SamplerState.hpp>
+#include <HDX/RasterizerState/RasterizerState.hpp>
+#include <HDX/DepthStencilState/DepthStencilState.hpp>
 
 namespace detail
 {
@@ -13,8 +15,10 @@ namespace detail
   {
     hdx::VertexShader CurrentVertexShader_;
     hdx::PixelShader CurrentPixelShader_;
-    hdx::BlendState CurrentBlendState_;
-    hdx::SamplerState CurrentSamplerState_;
+    hdx::BlendState CurrentBlendState_ = hdx::BlendState::Default;
+    hdx::SamplerState CurrentSamplerState_ = hdx::SamplerState::Default2D;
+    hdx::RasterizerState CurrentRasterizerState_ = hdx::RasterizerState::Default2D;
+    hdx::DepthStencilState CurrentDepthStencilState_ = hdx::DepthStencilState::Default2D;
   public:
     Impl()
     {
@@ -66,6 +70,22 @@ namespace detail
     }
   }
 
+  void IRenderer2D::SetRasterizerState(const hdx::RasterizerState& _RasterizerState)
+  {
+    if (pImpl_->CurrentRasterizerState_ != _RasterizerState)
+    {
+      pImpl_->CurrentRasterizerState_ = _RasterizerState;
+    }
+  }
+
+  void IRenderer2D::SetDepthStencilState(const hdx::DepthStencilState& _DepthStencilState)
+  {
+    if (pImpl_->CurrentDepthStencilState_ != _DepthStencilState)
+    {
+      pImpl_->CurrentDepthStencilState_ = _DepthStencilState;
+    }
+  }
+
   const hdx::VertexShader& IRenderer2D::GetVertexShader()const
   {
     return pImpl_->CurrentVertexShader_;
@@ -84,5 +104,15 @@ namespace detail
   const hdx::SamplerState& IRenderer2D::GetSamplerState()const
   {
     return pImpl_->CurrentSamplerState_;
+  }
+
+  const hdx::RasterizerState& IRenderer2D::GetRasterizerState()const
+  {
+    return pImpl_->CurrentRasterizerState_;
+  }
+
+  const hdx::DepthStencilState& IRenderer2D::GetDepthStencilState()const
+  {
+    return pImpl_->CurrentDepthStencilState_;
   }
 }

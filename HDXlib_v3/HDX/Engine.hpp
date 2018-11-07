@@ -10,6 +10,8 @@ namespace detail
   class IGamepad;
   class IBlendState;
   class ISamplerState;
+  class IRasterizerState;
+  class IDepthStencilState;
   class IVertexShader;
   class IPixelShader;
   class WIC;
@@ -51,6 +53,8 @@ namespace detail
     Component<IGamepad> pGamepad_;
     Component<IBlendState> pBlendState_;
     Component<ISamplerState> pSamplerState_;
+    Component<IRasterizerState> pRasterizerState_;
+    Component<IDepthStencilState> pDepthStencilState_;
     Component<IVertexShader> pVertexShader_;
     Component<IPixelShader> pPixelShader_;
     Component<WIC> pWIC_;
@@ -60,57 +64,20 @@ namespace detail
     Engine();
     ~Engine();
   public:
-    static ISystem* GetSystem()
-    {
-      return pEngine->pSystem_.Get();
-    }
-    static IRenderer2D* GetRenderer2D()
-    {
-      return pEngine->pRenderer2D_.Get();
-    }
-    static IKeyboard* GetKeyboard()
-    {
-      return pEngine->pKeyboard_.Get();
-    }
-    static IMouse* GetMouse()
-    {
-      return pEngine->pMouse_.Get();
-    }
-    static IXInput* GetXInput()
-    {
-      return pEngine->pXInput_.Get();
-    }
-    static IGamepad* GetGamepad()
-    {
-      return pEngine->pGamepad_.Get();
-    }
-    static IBlendState* GetBlendState()
-    {
-      return pEngine->pBlendState_.Get();
-    }
-    static ISamplerState* GetSamplerState()
-    {
-      return pEngine->pSamplerState_.Get();
-    }
-    static IVertexShader* GetVertexShader()
-    {
-      return pEngine->pVertexShader_.Get();
-    }
-    static IPixelShader* GetPixelShader()
-    {
-      return pEngine->pPixelShader_.Get();
-    }
-    static WIC* GetWIC()
-    {
-      return pEngine->pWIC_.Get();
-    }
-    static ISprite* GetSprite()
-    {
-      return pEngine->pSprite_.Get();
-    }
-    static IRandom* GetRandom()
-    {
-      return pEngine->pRandom_.Get();
-    }
+    static ISystem* GetSystem() { return pEngine->pSystem_.Get(); }
+    static IRenderer2D* GetRenderer2D() { return pEngine->pRenderer2D_.Get(); }
+    static IKeyboard* GetKeyboard() { return pEngine->pKeyboard_.Get(); }
+    static IMouse* GetMouse() { return pEngine->pMouse_.Get(); }
+    static IXInput* GetXInput() { return pEngine->pXInput_.Get(); }
+    static IGamepad* GetGamepad() { return pEngine->pGamepad_.Get(); }
+    static IBlendState* GetBlendState() { return pEngine->pBlendState_.Get(); }
+    static ISamplerState* GetSamplerState() { return pEngine->pSamplerState_.Get(); }
+    static IRasterizerState* GetRasterizerState() { return pEngine->pRasterizerState_.Get(); }
+    static IDepthStencilState* GetDepthStencilState() { return pEngine->pDepthStencilState_.Get(); }
+    static IVertexShader* GetVertexShader() { return pEngine->pVertexShader_.Get(); }
+    static IPixelShader* GetPixelShader() { return pEngine->pPixelShader_.Get(); }
+    static WIC* GetWIC() { return pEngine->pWIC_.Get(); }
+    static ISprite* GetSprite() { return pEngine->pSprite_.Get(); }
+    static IRandom* GetRandom() { return pEngine->pRandom_.Get(); }
   };
 }

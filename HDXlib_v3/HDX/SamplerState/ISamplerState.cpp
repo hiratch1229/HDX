@@ -12,7 +12,7 @@
 template<>
 struct std::hash<hdx::SamplerState>
 {
-  size_t operator()(const hdx::SamplerState& _SamplerState)const
+  hdx::SamplerState::DataType operator()(const hdx::SamplerState& _SamplerState)const
   {
     return _SamplerState.DataType_;
   }

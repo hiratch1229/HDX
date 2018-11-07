@@ -2,7 +2,6 @@
 
 #include <HDX/Engine.hpp>
 #include <HDX/Renderer/Renderer2D.hpp>
-#include <HDX/BlendState/BlendState.hpp>
 
 #include <Windows.h>
 #include <crtdbg.h>
@@ -16,12 +15,6 @@ LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 //  メイン関数のプロトタイプ宣言
 void Main();
 
-//  メッセージプロシージャ
-//LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-//{
-//  return detail::Engine::GetSystem()->MsgProc(hWnd, msg, wParam, lParam);
-//}
-
 //  エントリーポイント
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
@@ -31,7 +24,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 #endif
 
   //  時間でランダム
-  srand(static_cast<unsigned int>(time(nullptr)));
+  srand(static_cast<UINT>(time(nullptr)));
 
   //  日本語に設定
   setlocale(LC_CTYPE, "jpn");
@@ -57,11 +50,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
   //  エンジンの作成
   detail::Engine Engine;
 
-  //  初期設定
+  //  シェーダーの初期設定
   {
-    hdx::Renderer2D::SetBlendState(hdx::BlendState::Default);
-    hdx::Renderer2D::RestoreVertexShader();
-    hdx::Renderer2D::RestorePixelShader();
+    //  2D
+    {
+      hdx::Renderer2D::RestoreVertexShader();
+      hdx::Renderer2D::RestorePixelShader();
+    }
+    //  3D
+    {
+
+    }
   }
 
   //  プログラムの実行

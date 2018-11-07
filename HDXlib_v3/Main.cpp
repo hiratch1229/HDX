@@ -6,8 +6,8 @@ void Main()
   hdx::System::ShowCursor(false);
   hdx::System::SetTitle("HDXlib");
 
-  //hdx::Sprite A{ "DATA/title_logo01.png" };
-  //
+  hdx::Sprite A{ "DATA/exp.png" };
+  
   //  hdx::SkinnedMesh Fbx("DATA/FBX/005_cube.fbx");
   //
   //  hdx::float3 Position;
@@ -83,6 +83,6 @@ void Main()
 
   while (hdx::System::Update())
   {
-    //A.Draw();
+    A.Draw();
   }
 }

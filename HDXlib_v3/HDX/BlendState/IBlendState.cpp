@@ -18,7 +18,6 @@ struct std::hash<hdx::BlendState>
   }
 };
 
-
 namespace detail
 {
   struct IBlendState::Impl

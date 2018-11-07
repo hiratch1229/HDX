@@ -764,6 +764,8 @@ namespace detail
     hr = System::Get()->pDevice_->CreateSamplerState(&SampleDesc, pSamplerState_.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateSamplerState");
 
+    D3D11_DEPTH_STENCILOP_DESC;
+
     D3D11_DEPTH_STENCIL_DESC DepthStencilDesc;
     DepthStencilDesc.DepthEnable = false;
     DepthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;

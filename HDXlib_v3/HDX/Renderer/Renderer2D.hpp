@@ -7,6 +7,7 @@ namespace hdx
   class PixelShader;
   class BlendState;
   class SamplerState;
+  class RasterizerState;
 
   namespace Renderer2D
   {
@@ -16,5 +17,6 @@ namespace hdx
     void RestorePixelShader();
     void SetBlendState(const BlendState& _BlendState);
     void SetSamplerState(const SamplerState& _SamplerState);
+    void SetRasterizerState(const RasterizerState& _RasterizerState);
   };
 }

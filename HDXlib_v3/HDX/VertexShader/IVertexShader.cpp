@@ -1,5 +1,8 @@
 #include <HDX/VertexShader/IVertexShader.hpp>
-#include <HDX/System/System.hpp>
+
+#include <HDX/Engine.hpp>
+#include <HDX/System/ISystem.hpp>
+
 #include <HDX/InputElementDesc.hpp>
 #include <HDX/NumberMap.hpp>
 
@@ -76,24 +79,24 @@ namespace detail
       Impl::State State;
       {
         //  頂点シェーダーの作成
-        hr = detail::System::Get()->GetDevice()->CreateVertexShader(Data.get(), Size, nullptr, State.pVertexShader.GetAddressOf());
+        hr = detail::Engine::GetSystem()->GetDevice()->CreateVertexShader(Data.get(), Size, nullptr, State.pVertexShader.GetAddressOf());
         _ASSERT_EXPR(SUCCEEDED(hr), L"CreateVertexShader");
 
         std::unique_ptr<D3D11_INPUT_ELEMENT_DESC[]> InputElementDescs = std::make_unique<D3D11_INPUT_ELEMENT_DESC[]>(_NumElements);
 
-        for (unsigned int i = 0; i < _NumElements; ++i)
+        for (UINT i = 0; i < _NumElements; ++i)
         {
-          InputElementDescs[i].SemanticName = _InputElementDescs[i].SemanticName;
-          InputElementDescs[i].SemanticIndex = _InputElementDescs[i].SemanticIndex;
-          InputElementDescs[i].Format = static_cast<DXGI_FORMAT>(_InputElementDescs[i].Format);
-          InputElementDescs[i].InputSlot = _InputElementDescs[i].InputSlot;
-          InputElementDescs[i].AlignedByteOffset = _InputElementDescs[i].AlignedByteOffset;
-          InputElementDescs[i].InputSlotClass = static_cast<D3D11_INPUT_CLASSIFICATION>(_InputElementDescs[i].InputSlotClass);
-          InputElementDescs[i].InstanceDataStepRate = _InputElementDescs[i].InstanceDataStepRate;
+          InputElementDescs[i].SemanticName = _InputElementDescs[i].SemanticName_;
+          InputElementDescs[i].SemanticIndex = _InputElementDescs[i].SemanticIndex_;
+          InputElementDescs[i].Format = static_cast<DXGI_FORMAT>(_InputElementDescs[i].Format_);
+          InputElementDescs[i].InputSlot = _InputElementDescs[i].InputSlot_;
+          InputElementDescs[i].AlignedByteOffset = _InputElementDescs[i].AlignedByteOffset_;
+          InputElementDescs[i].InputSlotClass = static_cast<D3D11_INPUT_CLASSIFICATION>(_InputElementDescs[i].InputSlotClass_);
+          InputElementDescs[i].InstanceDataStepRate = _InputElementDescs[i].InstanceDataStepRate_;
         }
 
         //  入力レイアウトの作成
-        hr = detail::System::Get()->GetDevice()->CreateInputLayout(InputElementDescs.get(), _NumElements, Data.get(), Size, State.pInputLayout.GetAddressOf());
+        hr = detail::Engine::GetSystem()->GetDevice()->CreateInputLayout(InputElementDescs.get(), _NumElements, Data.get(), Size, State.pInputLayout.GetAddressOf());
         _ASSERT_EXPR(SUCCEEDED(hr), L"CreateInputLayout");
       }
 

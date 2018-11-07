@@ -1,8 +1,9 @@
 #pragma once
+#include <HDX/Types.hpp>
 
 namespace hdx
 {
-  enum class Format : unsigned int
+  enum class Format : UINT
   {
     UNKNOWN = 0,
     R32G32B32A32_TYPELESS = 1,
@@ -112,14 +113,67 @@ namespace hdx
     PER_INSTANCE_DATA = 1,
   };
 
-  struct InputElementDesc
+  class InputElementDesc
   {
-    const char* SemanticName;
-    unsigned int SemanticIndex;
-    Format Format;
-    unsigned int InputSlot;
-    unsigned int AlignedByteOffset;
-    InputClassification InputSlotClass;
-    unsigned int InstanceDataStepRate;
+    enum class PreDefined : UINT
+    {
+      Position,
+      Texcoord,
+      Color,
+      Normal,
+      Weights,
+      Bones,
+      Num
+    };
+  public:
+    static constexpr UINT AppendAlignedElement = 0xffffffff;
+  public:
+    const char* SemanticName_;
+    UINT SemanticIndex_;
+    Format Format_;
+    UINT InputSlot_;
+    UINT AlignedByteOffset_;
+    InputClassification InputSlotClass_;
+    UINT InstanceDataStepRate_;
+  public:
+    constexpr InputElementDesc(const char* _SemanticName,
+      UINT _SemanticIndex,
+      Format _Format,
+      UINT _InputSlot,
+      UINT _AlignedByteOffset,
+      InputClassification _InputSlotClass,
+      UINT _InstanceDataStepRata)
+      : SemanticName_(_SemanticName),
+      SemanticIndex_(_SemanticIndex),
+      Format_(_Format),
+      InputSlot_(_InputSlot),
+      AlignedByteOffset_(_AlignedByteOffset),
+      InputSlotClass_(_InputSlotClass),
+      InstanceDataStepRate_(_InstanceDataStepRata)
+    {
+
+    }
+  public:
+    InputElementDesc(PreDefined _PreDefined)
+    {
+      static constexpr InputElementDesc PreDefineds[static_cast<UINT>(PreDefined::Num)] =
+      {
+        { "POSITION", 0, Format::R32G32B32A32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, Format::R32G32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+        { "COLOR", 0, Format::R32G32B32A32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+        { "NORMAL", 0, Format::R32G32B32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+        { "WEIGHTS", 0, Format::R32G32B32A32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+        { "BONES", 0, Format::R32G32B32A32_UINT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+      };
+
+      *this = PreDefineds[static_cast<UINT>(_PreDefined)];
+    }
+  public:
+    static constexpr PreDefined Position = PreDefined::Position;
+    static constexpr PreDefined Texcoord = PreDefined::Texcoord;
+    static constexpr PreDefined Color = PreDefined::Color;
+    static constexpr PreDefined Normal = PreDefined::Normal;
+    static constexpr PreDefined Weights = PreDefined::Weights;
+    static constexpr PreDefined Bones = PreDefined::Bones;
   };
 }

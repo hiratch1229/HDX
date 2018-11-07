@@ -1,5 +1,8 @@
 #include <HDX/PixelShader/IPixelShader.hpp>
-#include <HDX/System/System.hpp>
+
+#include <HDX/Engine.hpp>
+#include <HDX/System/ISystem.hpp>
+
 #include <HDX/NumberMap.hpp>
 
 #include <d3d11.h>
@@ -61,7 +64,7 @@ namespace detail
 
       Microsoft::WRL::ComPtr<ID3D11PixelShader> pPixelShader;
       //  ピクセルシェーダーの作成
-      hr = detail::System::Get()->GetDevice()->CreatePixelShader(Data.get(), Size, nullptr, pPixelShader.GetAddressOf());
+      hr = detail::Engine::GetSystem()->GetDevice()->CreatePixelShader(Data.get(), Size, nullptr, pPixelShader.GetAddressOf());
       _ASSERT_EXPR(SUCCEEDED(hr), L"CreatePixelShader");
 
       ID = pImpl_->PixelShaderMap_.insert(_FilePath, pPixelShader);

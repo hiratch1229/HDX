@@ -302,13 +302,13 @@ namespace hdx
     auto System = detail::System::Get();
     auto FbxManager = System->GetFbxManager();
 
-    System->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    System->RSSetState((isWireFrame) ? FbxManager->GetWireFrameState() : FbxManager->GetSolidState());
-    System->IASetInputLayout(System->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->GetID() : FbxManager->GetVertexShaderID()));
-    System->VSSetShader(System->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->GetID() : FbxManager->GetVertexShaderID()));
-    System->PSSetShader(System->GetPixelShader()->GetPixeShader((_pPixelShader) ? _pPixelShader->GetID() : FbxManager->GetPixelShaderID()));
-    System->OMSetDepthStencilState(FbxManager->GetDepthStencilState());
-    System->PSSetSamplers(FbxManager->GetAddressOfSamplerState());
+    //System->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    //System->RSSetState((isWireFrame) ? FbxManager->GetWireFrameState() : FbxManager->GetSolidState());
+    //System->IASetInputLayout(System->GetVertexShader()->GetInputLayout((_pVertexShader) ? _pVertexShader->GetID() : FbxManager->GetVertexShaderID()));
+    //System->VSSetShader(System->GetVertexShader()->GetVertexShader((_pVertexShader) ? _pVertexShader->GetID() : FbxManager->GetVertexShaderID()));
+    //System->PSSetShader(System->GetPixelShader()->GetPixeShader((_pPixelShader) ? _pPixelShader->GetID() : FbxManager->GetPixelShaderID()));
+    //System->OMSetDepthStencilState(FbxManager->GetDepthStencilState());
+    //System->PSSetSamplers(FbxManager->GetAddressOfSamplerState());
 
     //D3D11_BUFFER_DESC BufferDesc;
     //pIndexBuffer_->GetDesc(&BufferDesc);
@@ -337,8 +337,8 @@ namespace hdx
 
     for (auto& Mesh : Meshes_)
     {
-      detail::System::Get()->IASetVertexBuffers(Mesh.pVertexBuffer.GetAddressOf(), Strides, Offsets);
-      detail::System::Get()->GetDeviceContext()->IASetIndexBuffer(Mesh.pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+      //detail::System::Get()->IASetVertexBuffers(Mesh.pVertexBuffer.GetAddressOf(), Strides, Offsets);
+      //detail::System::Get()->GetDeviceContext()->IASetIndexBuffer(Mesh.pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
       const DirectX::XMMATRIX GlobalTransform = DirectX::XMLoadFloat4x4(&Mesh.GlobalTransform);
 
@@ -375,13 +375,13 @@ namespace hdx
 
       for (auto& Subset : Mesh.Subsets)
       {
-        ConstantBuffer.MaterialColor = { _MaterialColor.R*Subset.Diffuse.Color_.R,_MaterialColor.G*Subset.Diffuse.Color_.G,_MaterialColor.B*Subset.Diffuse.Color_.B,_MaterialColor.A*Subset.Diffuse.Color_.A };
-        System->GetDeviceContext()->UpdateSubresource(FbxManager->GetConstantBuffer(), 0, 0, &ConstantBuffer, 0, 0);
-        System->GetDeviceContext()->VSSetConstantBuffers(0, 1, FbxManager->GetAddressOfConstantBuffer());
-
-        System->PSSetShaderResources(Subset.Diffuse.pShaderResourceView_.GetAddressOf());
-
-        System->GetDeviceContext()->DrawIndexed(Subset.IndexCount, Subset.IndexStart, 0);
+        //ConstantBuffer.MaterialColor = { _MaterialColor.R*Subset.Diffuse.Color_.R,_MaterialColor.G*Subset.Diffuse.Color_.G,_MaterialColor.B*Subset.Diffuse.Color_.B,_MaterialColor.A*Subset.Diffuse.Color_.A };
+        //System->GetDeviceContext()->UpdateSubresource(FbxManager->GetConstantBuffer(), 0, 0, &ConstantBuffer, 0, 0);
+        //System->GetDeviceContext()->VSSetConstantBuffers(0, 1, FbxManager->GetAddressOfConstantBuffer());
+        //
+        //System->PSSetShaderResources(Subset.Diffuse.pShaderResourceView_.GetAddressOf());
+        //
+        //System->GetDeviceContext()->DrawIndexed(Subset.IndexCount, Subset.IndexStart, 0);
       }
     }
   }

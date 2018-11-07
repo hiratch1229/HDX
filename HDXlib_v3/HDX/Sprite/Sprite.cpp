@@ -5,6 +5,8 @@
 #include <HDX/Renderer/IRenderer2D.hpp>
 #include <HDX/BlendState/IBlendState.hpp>
 #include <HDX/SamplerState/ISamplerState.hpp>
+#include <HDX/RasterizerState/IRasterizerState.hpp>
+#include <HDX/DepthStencilState/IDepthStencilState.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
 
@@ -14,8 +16,6 @@
 #include <HDX/System/System.hpp>
 #include <HDX/Math.hpp>
 #include <HDX/Vertex.hpp>
-
-#include <HDX/BlendState/BlendState.hpp>
 
 //#include <HDX/System/System.hpp>
 //#include <HDX/Math.hpp>
@@ -156,8 +156,8 @@ namespace hdx
     pSystem->SetPixelShader(detail::Engine::GetPixelShader()->GetPixeShader(pGraphics2D->GetPixelShader()));
     pSystem->SetVertexBuffers(detail::Engine::GetSprite()->GetAddressOfVertexBuffer(), Strides);
     pSystem->SetSamplersState(detail::Engine::GetSamplerState()->GetSamplerState(pGraphics2D->GetSamplerState()));
-    pSystem->SetRasterizerState();
-    pSystem->SetDepthStencilState();
+    pSystem->SetRasterizerState(detail::Engine::GetRasterizerState()->GetRasterizerState(pGraphics2D->GetRasterizerState()));
+    pSystem->SetDepthStencilState(detail::Engine::GetDepthStencilState()->GetDepthStencilState(pGraphics2D->GetDepthStencilState()));
 
     //detail::System::Get()->PSSetSamplers(detail::System::Get()->GetSpriteManager()->GetAddressOfSamplerState());
     //detail::System::Get()->RSSetState(detail::System::Get()->GetSpriteManager()->GetRasterizerState());

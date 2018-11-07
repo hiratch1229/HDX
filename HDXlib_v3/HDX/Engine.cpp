@@ -8,6 +8,8 @@
 #include <HDX/Input/Gamepad/IGamepad.hpp>
 #include <HDX/BlendState/IBlendState.hpp>
 #include <HDX/SamplerState/ISamplerState.hpp>
+#include <HDX/RasterizerState/IRasterizerState.hpp>
+#include <HDX/DepthStencilState/IDepthStencilState.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
 #include <HDX/WIC.hpp>
@@ -39,6 +41,8 @@ namespace detail
     pGamepad_.Release();
     pBlendState_.Release();
     pSamplerState_.Release();
+    pRasterizerState_.Release();
+    pDepthStencilState_.Release();
     pVertexShader_.Release();
     pPixelShader_.Release();
     pWIC_.Release();
