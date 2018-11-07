@@ -1,7 +1,14 @@
 #include <HDX/System/ISystem.hpp>
 
+#include <HDX/Engine.hpp>
+#include <HDX/Input/Keyboard/IKeyboard.hpp>
+#include <HDX/Input/Mouse/IMouse.hpp>
+#include <HDX/Input/XInput/IXInput.hpp>
+#include <HDX/Input/Gamepad/IGamepad.hpp>
+
 #include <HDX/Type2.hpp>
 #include <HDX/Color.hpp>
+#include <HDX/Constants.hpp>
 
 #include <Windows.h>
 #include <d3d11.h>
@@ -89,8 +96,8 @@ namespace detail
 
         //  ウィンドウタイトル設定
         {
-          wchar_t wWindowTitle[256];
-          mbstowcs_s(nullptr, wWindowTitle, Title_, 256);
+          wchar_t wWindowTitle[hdx::kMaxCharLimit];
+          mbstowcs_s(nullptr, wWindowTitle, Title_, hdx::kMaxCharLimit);
 
           SetWindowText(hWnd_, wWindowTitle);
         }
@@ -323,7 +330,7 @@ namespace detail
         //  スクリーンショット用フォルダ作成
         _mkdir("SCREENSHOT");
 
-        wchar_t wstr[256];
+        wchar_t wstr[hdx::kMaxCharLimit];
         swprintf_s(wstr, L"SCREENSHOT\\%04d%02d%02d%02d%02d%02d.png", TM.tm_year + 1900, TM.tm_mon + 1, TM.tm_mday, TM.tm_hour, TM.tm_min, TM.tm_sec);
 
         DirectX::SaveWICTextureToFile(pImmediateContext_.Get(), BackBuffer.Get(), GUID_ContainerFormatPng, wstr);
@@ -380,6 +387,11 @@ namespace detail
     {
       pImpl_->Present();
     }
+   
+    Engine::GetKeyboard()->Update();
+    Engine::GetMouse()->Update();
+    Engine::GetXInput()->Update();
+    Engine::GetGamepad()->Update();
 
     //  メッセージを全て処理
     MSG Msg{};
@@ -407,8 +419,8 @@ namespace detail
 
   void ISystem::RenameTitle(const char* _Title)
   {
-    wchar_t wWindowTitle[256];
-    mbstowcs_s(nullptr, wWindowTitle, pImpl_->pWindow_->Title_ = const_cast<char*>(_Title), 256);
+    wchar_t wWindowTitle[hdx::kMaxCharLimit];
+    mbstowcs_s(nullptr, wWindowTitle, pImpl_->pWindow_->Title_ = const_cast<char*>(_Title), hdx::kMaxCharLimit);
 
     SetWindowText(pImpl_->pWindow_->hWnd_, wWindowTitle);
   }

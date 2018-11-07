@@ -5,6 +5,7 @@
 #include <HDX/PixelShader/PixelShader.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
+#include <HDX/Constants.hpp>
 
 #include <WICTextureLoader.h>
 
@@ -13,12 +14,10 @@
 
 namespace hdx
 {
-  static constexpr int kMaxCharNum = 256;
-
   Model::Model(const char* FilePath, bool VCoordingFlip)
   {
-    wchar_t wFilePath[kMaxCharNum];
-    mbstowcs_s(nullptr, wFilePath, FilePath, kMaxCharNum);
+    wchar_t wFilePath[kMaxCharLimit];
+    mbstowcs_s(nullptr, wFilePath, FilePath, kMaxCharLimit);
 
     std::vector<Vertex3D> Vertices;
     std::vector<UINT> Indices;
@@ -83,12 +82,12 @@ namespace hdx
 
     while (fin)
     {
-      wchar_t command[kMaxCharNum];
+      wchar_t command[kMaxCharLimit];
       fin >> command;
 
       if (wcscmp(command, L"mtllib") == 0)
       {
-        wchar_t mtl[kMaxCharNum];
+        wchar_t mtl[kMaxCharLimit];
 
         fin >> mtl;
         MtlFileNames.push_back(mtl);
@@ -113,7 +112,7 @@ namespace hdx
       }
       else if (wcscmp(command, L"usemtl") == 0)
       {
-        wchar_t usemtl[kMaxCharNum]{};
+        wchar_t usemtl[kMaxCharLimit]{};
 
         fin >> usemtl;
         Subset Subset;
@@ -161,7 +160,7 @@ namespace hdx
     //  区切り文字
     static constexpr wchar_t kDelimiters[] = { L'\\', L'/' };
     //  objファイルが存在するフォルダ
-    wchar_t Directory[kMaxCharNum]{};
+    wchar_t Directory[kMaxCharLimit]{};
 
     for (wchar_t Delimiter : kDelimiters)
     {
@@ -182,7 +181,7 @@ namespace hdx
       int CurrentMaterialIndex = -1;
 
       //  Mtlファイルのファイルパスを作成
-      wchar_t MtlFilePath[kMaxCharNum]{};
+      wchar_t MtlFilePath[kMaxCharLimit]{};
       wcscpy_s(MtlFilePath, Directory);
       wcscat_s(MtlFilePath, MtlFileNames.front().c_str());
 
@@ -194,12 +193,12 @@ namespace hdx
 
       while (fin)
       {
-        wchar_t command[kMaxCharNum];
+        wchar_t command[kMaxCharLimit];
         fin >> command;
 
         if (wcscmp(command, L"newmtl") == 0)
         {
-          wchar_t NewMtl[kMaxCharNum];
+          wchar_t NewMtl[kMaxCharLimit];
           fin >> NewMtl;
 
           Material.NewMtl = NewMtl;
@@ -237,11 +236,11 @@ namespace hdx
         }
         else if (wcscmp(command, L"map_Kd") == 0)
         {
-          wchar_t TextureFileName[kMaxCharNum]{};
+          wchar_t TextureFileName[kMaxCharLimit]{};
           fin >> TextureFileName;
 
           //  テクスチャのファイルパスを作成
-          wchar_t TextureFilePath[kMaxCharNum]{};
+          wchar_t TextureFilePath[kMaxCharLimit]{};
           wcscpy_s(TextureFilePath, Directory);
           wcscat_s(TextureFilePath, TextureFileName);
 

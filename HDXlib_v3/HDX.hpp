@@ -76,7 +76,7 @@
 
 //  サンプラーステート
 //  2018.11.06  作成
-#include <HDX/SamplerState/ISamplerState.hpp>
+#include <HDX/SamplerState/SamplerState.hpp>
 
 //  ラスタライーザーステート
 //  2018.11.07  作成
@@ -85,6 +85,10 @@
 //  デプスステンシルステート
 //  2018.11.07  作成
 #include <HDX/DepthStencilState/DepthStencilState.hpp>
+
+//  レンダーターゲット
+//  2018.11.07  作成
+#include <HDX/RenderTarget.hpp>
 
 
 //*************************

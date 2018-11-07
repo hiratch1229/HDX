@@ -5,6 +5,7 @@
 #include <HDX/PixelShader/PixelShader.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
+#include <HDX/Constants.hpp>
 
 #include <fbxsdk.h>
 #include <vector>
@@ -217,13 +218,13 @@ namespace hdx
             const fbxsdk::FbxFileTexture* pFileTexture = Property.GetSrcObject<fbxsdk::FbxFileTexture>();
             if (pFileTexture)
             {
-              wchar_t wFbxFileName[256];
-              mbstowcs_s(nullptr, wFbxFileName, FilePath, 256);
+              wchar_t wFbxFileName[kMaxCharLimit];
+              mbstowcs_s(nullptr, wFbxFileName, FilePath, kMaxCharLimit);
 
               //  区切り文字
               static constexpr wchar_t kDelimiters[] = { L'\\', L'/' };
               //  objファイルが存在するフォルダ
-              wchar_t Directory[256]{};
+              wchar_t Directory[kMaxCharLimit]{};
 
               for (wchar_t Delimiter : kDelimiters)
               {
@@ -238,17 +239,17 @@ namespace hdx
                 }
               }
 
-              wchar_t wFilePath[256]{};
+              wchar_t wFilePath[kMaxCharLimit]{};
               bool isFbxModel = strstr(FilePath, ".fbx") != nullptr;
 
               if (isFbxModel)
               {
-                wchar_t wFileName[256];
-                mbstowcs_s(nullptr, wFileName, pFileTexture->GetRelativeFileName(), 256);
+                wchar_t wFileName[kMaxCharLimit];
+                mbstowcs_s(nullptr, wFileName, pFileTexture->GetRelativeFileName(), kMaxCharLimit);
 
                 //  objファイルが存在するフォルダ
-                wchar_t wTextureFileName[256];
-                wcsncpy_s(wTextureFileName, wFileName, 256);
+                wchar_t wTextureFileName[kMaxCharLimit];
+                wcsncpy_s(wTextureFileName, wFileName, kMaxCharLimit);
                 
                 for (wchar_t Delimiter : kDelimiters)
                 {
@@ -259,7 +260,7 @@ namespace hdx
                   if (p)
                   {
                     //  区切り文字までをフォルダ名として格納
-                    wcsncpy_s(wTextureFileName, p, 256);
+                    wcsncpy_s(wTextureFileName, p, kMaxCharLimit);
                   }
                 }
 
@@ -269,7 +270,7 @@ namespace hdx
               }
               else
               {
-                mbstowcs_s(nullptr, wFilePath, pFileTexture->GetFileName(), 256);
+                mbstowcs_s(nullptr, wFilePath, pFileTexture->GetFileName(), kMaxCharLimit);
               }
 
               HRESULT hr = DirectX::CreateWICTextureFromFile(detail::System::Get()->GetDevice(), wFilePath, nullptr, Subset.Diffuse.pShaderResourceView_.GetAddressOf());

@@ -8,6 +8,7 @@ namespace hdx
   class BlendState;
   class SamplerState;
   class RasterizerState;
+  class RenderTarget;
 
   namespace Renderer2D
   {
@@ -18,5 +19,7 @@ namespace hdx
     void SetBlendState(const BlendState& _BlendState);
     void SetSamplerState(const SamplerState& _SamplerState);
     void SetRasterizerState(const RasterizerState& _RasterizerState);
+    void RestoreRenderTarget();
+    void SetRenderTarget(const RenderTarget& _RenderTarget);
   };
 }

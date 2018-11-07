@@ -1,4 +1,5 @@
 #pragma once
+#include <HDX/Type2.hpp>
 
 namespace detail
 {
@@ -11,5 +12,6 @@ namespace detail
     WIC();
     ~WIC();
     int Load(const char* _FilePath);
+    int Add(const hdx::int2& _Size);
   };
 }

@@ -115,4 +115,9 @@ namespace detail
   {
     return pImpl_->CurrentDepthStencilState_;
   }
+
+  //const hdx::RenderTarget& IRenderer2D::GetRenderTarget()const
+  //{
+  //  return pImpl_
+  //}
 }

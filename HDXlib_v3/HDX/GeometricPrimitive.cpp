@@ -7,6 +7,8 @@
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
 
+#include <HDX/Constants.hpp>
+
 #include <WICTextureLoader.h>
 
 #include <memory>
@@ -86,8 +88,8 @@ namespace hdx
     }
     else
     {
-      wchar_t FilePath[256]{};
-      mbstowcs_s(nullptr, FilePath, _FilePath, 256);
+      wchar_t FilePath[kMaxCharLimit]{};
+      mbstowcs_s(nullptr, FilePath, _FilePath, kMaxCharLimit);
 
       HRESULT hr = DirectX::CreateWICTextureFromFile(detail::System::Get()->GetDevice(), FilePath, nullptr, pShaderResourceView_.GetAddressOf());
       _ASSERT_EXPR(SUCCEEDED(hr), L"CreateWICTextureFromFile");

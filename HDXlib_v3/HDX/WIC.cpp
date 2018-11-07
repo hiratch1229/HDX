@@ -5,6 +5,7 @@
 #include <HDX/Sprite/ISprite.hpp>
 
 #include <HDX/Type2.hpp>
+#include <HDX/Constants.hpp>
 
 #include <d3d11.h>
 #include <wincodec.h>
@@ -74,8 +75,8 @@ namespace detail
     Microsoft::WRL::ComPtr<IWICBitmapDecoder> Decoder;
 
     //  charŒ^¨wchar_tŒ^‚É•ÏŠ·
-    wchar_t wFilePath[256];
-    mbstowcs_s(nullptr, wFilePath, _FilePath, 256);
+    wchar_t wFilePath[hdx::kMaxCharLimit];
+    mbstowcs_s(nullptr, wFilePath, _FilePath, hdx::kMaxCharLimit);
 
     hr = pImpl_->pFactory_->CreateDecoderFromFilename(wFilePath, 0, GENERIC_READ, WICDecodeMetadataCacheOnDemand, Decoder.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateDecoderFromFilename");
@@ -155,5 +156,10 @@ namespace detail
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateShaderResourceView");
 
     return Engine::GetSprite()->InsertTexture(_FilePath, pShaderResourceView.Get(), Size);
+  }
+
+  int WIC::Add(const hdx::int2& _Size)
+  {
+    return Engine::GetSprite()->CreateTexture(_Size);
   }
 }

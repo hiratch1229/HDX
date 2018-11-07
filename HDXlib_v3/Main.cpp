@@ -7,7 +7,7 @@ void Main()
   hdx::System::SetTitle("HDXlib");
 
   hdx::Sprite A{ "DATA/exp.png" };
-  
+
   //  hdx::SkinnedMesh Fbx("DATA/FBX/005_cube.fbx");
   //
   //  hdx::float3 Position;
@@ -81,8 +81,25 @@ void Main()
   //    Fbx.Render(WordldViewProjection, World, LightDirection, 1 / 60.0f, hdx::Palette::White, hdx::Input::Keyboard::KeySpace);
   //  }
 
+  hdx::RenderTarget();
+
   while (hdx::System::Update())
   {
-    A.Draw();
+    if (hdx::Input::Keyboard::Key0.Pressed())
+    {
+      hdx::Renderer2D::SetSamplerState(hdx::SamplerState::Default2D);
+    }
+    else if (hdx::Input::Keyboard::Key1.Pressed())
+    {
+      static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipPoint };
+      hdx::Renderer2D::SetSamplerState(SamplerState);
+    }
+    else if (hdx::Input::Keyboard::Key2.Pressed())
+    {
+      static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipLinear };
+      hdx::Renderer2D::SetSamplerState(SamplerState);
+    }
+
+    A.Draw(true);
   }
 }

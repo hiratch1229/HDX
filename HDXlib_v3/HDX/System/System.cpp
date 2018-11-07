@@ -11,6 +11,7 @@
 #include <HDX/InputElementDesc.hpp>
 #include <HDX/ConstantBuffer.hpp>
 #include <HDX/Macro.hpp>
+#include <HDX/Constants.hpp>
 
 #include <HDX/System/ISystem.hpp>
 #include <HDX/Engine.hpp>
@@ -427,9 +428,9 @@ namespace detail
 
   void System::RenameTitle(const char* _Title)
   {
-    wchar_t wWindowTitle[256];
+    wchar_t wWindowTitle[hdx::kMaxCharLimit];
     size_t Num;
-    mbstowcs_s(&Num, wWindowTitle, WindowData_.Title = const_cast<char*>(_Title), 256);
+    mbstowcs_s(&Num, wWindowTitle, WindowData_.Title = const_cast<char*>(_Title), hdx::kMaxCharLimit);
 
     SetWindowText(hWnd_, wWindowTitle);
   }
@@ -1302,7 +1303,7 @@ namespace hdx
   }
 
   //  ‰æ–ÊƒTƒCƒY‚ðŽæ“¾
-  int2 System::GetWindowSize()
+  const int2& System::GetWindowSize()
   {
     return  detail::Engine::GetSystem()->GetWindowSize();
   }

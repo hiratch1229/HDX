@@ -340,7 +340,7 @@ namespace hdx
     //  画面高を取得
     static int GetWindowHeight();
     //  画面サイズを取得
-    static int2 GetWindowSize();
+    static const int2& GetWindowSize();
   public:
     //  ウィンドウの設定
     //  _LeftPos:左上座標X

@@ -8,6 +8,7 @@ namespace hdx
   class SamplerState;
   class RasterizerState;
   class DepthStencilState;
+  class RenderTarget;
 }
 
 namespace detail
@@ -24,6 +25,7 @@ namespace detail
     void SetSamplerState(const hdx::SamplerState& _SamplerState);
     void SetRasterizerState(const hdx::RasterizerState& _RasterizerState);
     void SetDepthStencilState(const hdx::DepthStencilState& _DepthStencilState);
+    void SetRenderTarget(const hdx::RenderTarget& _RenderTarger);
   public:
     const hdx::VertexShader& GetVertexShader()const;
     const hdx::PixelShader& GetPixelShader()const;
@@ -31,6 +33,7 @@ namespace detail
     const hdx::SamplerState& GetSamplerState()const;
     const hdx::RasterizerState& GetRasterizerState()const;
     const hdx::DepthStencilState& GetDepthStencilState()const;
+    const hdx::RenderTarget& GetRenderTarget()const;
   public:
     IRenderer2D();
     ~IRenderer2D();

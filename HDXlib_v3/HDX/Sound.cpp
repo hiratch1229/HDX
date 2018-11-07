@@ -1,14 +1,15 @@
 #include <HDX/Sound.hpp>
 #include <HDX/System/System.hpp>
 #include <HDX/Error.hpp>
+#include <HDX/Constants.hpp>
 
 namespace hdx
 {
   Sound::Sound(const char* FilePath)
   {
-    wchar_t wFilePath[256]{};
+    wchar_t wFilePath[kMaxCharLimit]{};
     size_t Num;
-    mbstowcs_s(&Num, wFilePath, FilePath, 256);
+    mbstowcs_s(&Num, wFilePath, FilePath, kMaxCharLimit);
     
     HRESULT hr = MFPCreateMediaPlayer(wFilePath, false, MFP_OPTION_NONE, nullptr, detail::System::Get()->GetHWND(), pMediaPlayer_.GetAddressOf());
 

@@ -1,10 +1,11 @@
 #pragma once
+#include <HDX/Constants.hpp>
 
 #if defined(DEBUG) | defined(_DEBUG)
 #define NOT_FOUND(hr,wFilePath)  \
 if (FAILED(hr))\
 {\
-  wchar_t wstr[256];\
+  wchar_t wstr[hdx::kMaxCharLimit];\
   wsprintf(wstr, L"%s not found.", wFilePath);\
   _ASSERT_EXPR(SUCCEEDED(hr), wstr);\
 }

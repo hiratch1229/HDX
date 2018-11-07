@@ -35,6 +35,12 @@
 
 namespace hdx
 {
+  Sprite::Sprite(const int2& _Size)
+    : ID_(detail::Engine::GetWIC()->Add(_Size)), Size_(_Size)
+  {
+
+  }
+
   //  ファイルパスから画像を作成
   Sprite::Sprite(const char* FilePath)
     : ID_(detail::Engine::GetWIC()->Load(FilePath)), Size_(detail::Engine::GetSprite()->GetSize(ID_))

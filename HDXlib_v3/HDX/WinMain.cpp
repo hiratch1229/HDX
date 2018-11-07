@@ -9,6 +9,8 @@
 #include <time.h>
 #include <locale>
 
+#include <resource.h>
+
 //  メッセージプロシージャのプロトタイプ宣言
 LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -38,12 +40,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
     WindowClass.cbClsExtra = 0;
     WindowClass.cbWndExtra = 0;
     WindowClass.hInstance = hInstance;
-    WindowClass.hIcon = nullptr;
+    WindowClass.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON));
     WindowClass.hCursor = nullptr;
     WindowClass.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
     WindowClass.lpszMenuName = nullptr;
     WindowClass.lpszClassName = L"HDXlib";
-    WindowClass.hIconSm = nullptr;
+    WindowClass.hIconSm = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MINI_ICON));
     RegisterClassEx(&WindowClass);
   }
 

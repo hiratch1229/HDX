@@ -2,11 +2,12 @@
 
 #include <HDX/Engine.hpp>
 #include <HDX/Input/Gamepad/IGamepad.hpp>
+#include <HDX/Constants.hpp>
 
 //  ライブラリ
 namespace hdx
 {
-  //入力系
+  //  入力系
   namespace Input
   {
     //  ボタンを取得

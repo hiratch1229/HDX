@@ -55,26 +55,25 @@ namespace hdx
   //  2D画像
   class Sprite
   {
-  public:
-    const int ID_;
-    union
-    {
-      const int2 Size_;
-      struct
-      {
-        const int x;
-        const int y;
-      };
-    };
+  protected:
+    int ID_;
+    int2 Size_;
   private:
     //  描画最終処理
     //  (描画関数を追加する場合最後に呼んでください)
     void Draw2D(const detail::Vertex2D* v)const;
+  protected:
+    Sprite(const int2& _Size);
   public:
     //  ファイルパスから画像を作成
     Sprite(const char* FilePath);
     //Sprite();
-    ~Sprite() {}
+    ~Sprite() = default;
+  public:
+    int GetID()const { return ID_; }
+    int2 GetSize()const { return Size_; }
+    int GetWidth()const { return Size_.X; }
+    int GetHeight()const { return Size_.Y; }
   public:
     ////  (0,0)を基準にそのまま描画
     //SpriteDesc operator()() { return Desc(this, { 0,0 }, { Width_,Height_ }); }

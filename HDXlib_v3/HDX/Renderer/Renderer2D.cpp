@@ -50,5 +50,15 @@ namespace hdx
     {
       detail::Engine::GetRenderer2D()->SetRasterizerState(_RasterizerState);
     }
+
+    void RestoreRenderTarget()
+    {
+
+    }
+
+    void SetRenderTarget(const RenderTarget& _RenderTarget)
+    {
+
+    }
   }
 }
