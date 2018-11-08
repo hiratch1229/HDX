@@ -11,7 +11,7 @@ namespace hdx
 
 namespace detail
 {
-  class ISprite
+  class ITexture
   {
     class Impl;
   private:
@@ -26,7 +26,7 @@ namespace detail
     ID3D11Buffer* GetVertexBuffer();
     ID3D11Buffer** GetAddressOfVertexBuffer();
   public:
-    ISprite();
-    ~ISprite();
+    ITexture();
+    ~ITexture();
   };
 }

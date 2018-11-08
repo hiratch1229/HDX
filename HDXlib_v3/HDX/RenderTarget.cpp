@@ -18,19 +18,19 @@
 namespace hdx
 {
   RenderTarget::RenderTarget()
-    : Sprite(hdx::System::GetWindowSize())
+    : Texture(hdx::System::GetWindowSize())
   {
 
   }
 
   RenderTarget::RenderTarget(const int2& _Size)
-    : Sprite(_Size)
+    : Texture(_Size)
   {
 
   }
 
   RenderTarget::RenderTarget(UINT _Width, UINT _Height)
-    : Sprite({ static_cast<int>(_Width), static_cast<int>(_Height) })
+    : Texture({ static_cast<int>(_Width), static_cast<int>(_Height) })
   {
 
   }

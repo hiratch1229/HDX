@@ -2,7 +2,7 @@
 
 #include <HDX/Engine.hpp>
 #include <HDX/System/ISystem.hpp>
-#include <HDX/Sprite/ISprite.hpp>
+#include <HDX/Texture/ITexture.hpp>
 
 #include <HDX/Type2.hpp>
 #include <HDX/Constants.hpp>
@@ -63,7 +63,7 @@ namespace detail
   {
     //  Šù‚Éì¬‚³‚ê‚Ä‚¢‚é‚©Šm”F
     {
-      const int ID = detail::Engine::GetSprite()->GetTextureID(_FilePath);
+      const int ID = detail::Engine::GetTexture()->GetTextureID(_FilePath);
       if (ID >= 0)
       {
         return ID;
@@ -75,8 +75,8 @@ namespace detail
     Microsoft::WRL::ComPtr<IWICBitmapDecoder> Decoder;
 
     //  charŒ^¨wchar_tŒ^‚É•ÏŠ·
-    wchar_t wFilePath[hdx::kMaxCharLimit];
-    mbstowcs_s(nullptr, wFilePath, _FilePath, hdx::kMaxCharLimit);
+    wchar_t wFilePath[hdx::MaxCharLimit];
+    mbstowcs_s(nullptr, wFilePath, _FilePath, hdx::MaxCharLimit);
 
     hr = pImpl_->pFactory_->CreateDecoderFromFilename(wFilePath, 0, GENERIC_READ, WICDecodeMetadataCacheOnDemand, Decoder.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateDecoderFromFilename");
@@ -155,11 +155,11 @@ namespace detail
     hr = pSystem->GetDevice()->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResourceView.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateShaderResourceView");
 
-    return Engine::GetSprite()->InsertTexture(_FilePath, pShaderResourceView.Get(), Size);
+    return Engine::GetTexture()->InsertTexture(_FilePath, pShaderResourceView.Get(), Size);
   }
 
   int WIC::Add(const hdx::int2& _Size)
   {
-    return Engine::GetSprite()->CreateTexture(_Size);
+    return Engine::GetTexture()->CreateTexture(_Size);
   }
 }

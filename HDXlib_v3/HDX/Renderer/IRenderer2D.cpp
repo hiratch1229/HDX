@@ -1,6 +1,7 @@
 #include <HDX/Renderer/IRenderer2D.hpp>
 
-#include <HDX/System/System.hpp>
+#include <HDX/Engine.hpp>
+#include <HDX/Texture/ITexture.hpp>
 
 #include <HDX/VertexShader/VertexShader.hpp>
 #include <HDX/PixelShader/PixelShader.hpp>
@@ -8,6 +9,10 @@
 #include <HDX/SamplerState/SamplerState.hpp>
 #include <HDX/RasterizerState/RasterizerState.hpp>
 #include <HDX/DepthStencilState/DepthStencilState.hpp>
+#include <HDX/Texture/Texture.hpp>
+#include <HDX/RenderTarget.hpp>
+
+#include <HDX/Constants.hpp>
 
 namespace detail
 {
@@ -16,13 +21,16 @@ namespace detail
     hdx::VertexShader CurrentVertexShader_;
     hdx::PixelShader CurrentPixelShader_;
     hdx::BlendState CurrentBlendState_ = hdx::BlendState::Default;
-    hdx::SamplerState CurrentSamplerState_ = hdx::SamplerState::Default2D;
+    hdx::SamplerState CurrentSamplerStatus_[hdx::SamplerStateMaxNum];
     hdx::RasterizerState CurrentRasterizerState_ = hdx::RasterizerState::Default2D;
     hdx::DepthStencilState CurrentDepthStencilState_ = hdx::DepthStencilState::Default2D;
+    hdx::Texture CurrentTextures_[hdx::TextureMaxNum - 1];
+    hdx::RenderTarget CurrentRenderTarget_;
+    bool isDefaultRenderTarget_ = true;
   public:
     Impl()
     {
-
+      CurrentSamplerStatus_[0] = hdx::SamplerState::Default2D;
     }
   };
 
@@ -62,11 +70,14 @@ namespace detail
     }
   }
 
-  void IRenderer2D::SetSamplerState(const hdx::SamplerState& _SamplerState)
+  void IRenderer2D::SetSamplerState(const hdx::SamplerState& _SamplerState, UINT _Slot)
   {
-    if (pImpl_->CurrentSamplerState_ != _SamplerState)
+
+
+    hdx::SamplerState& CurrentSamplerState = pImpl_->CurrentSamplerStatus_[_Slot];
+    if (CurrentSamplerState != _SamplerState)
     {
-      pImpl_->CurrentSamplerState_ = _SamplerState;
+      CurrentSamplerState = _SamplerState;
     }
   }
 
@@ -86,6 +97,36 @@ namespace detail
     }
   }
 
+  void IRenderer2D::SetTexture(const hdx::Texture& _Texture, UINT _Slot)
+  {
+    hdx::Texture& CurrentTexture = pImpl_->CurrentTextures_[_Slot - 1];
+    if (CurrentTexture != _Texture)
+    {
+      CurrentTexture = _Texture;
+    }
+  }
+
+  inline void CreateTextureFromRenderTarget(const hdx::RenderTarget& _RenderTarger)
+  {
+    Engine::
+  }
+
+  void IRenderer2D::RestoreRenderTarget()
+  {
+    pImpl_->isDefaultRenderTarget_ = true;
+    CreateTextureFromRenderTarget(pImpl_->CurrentRenderTarget_);
+  }
+
+  void IRenderer2D::SetRenderTarget(const hdx::RenderTarget& _RenderTarger)
+  {
+    pImpl_->isDefaultRenderTarget_ = false;
+    if (pImpl_->CurrentRenderTarget_ != _RenderTarger)
+    {
+      CreateTextureFromRenderTarget(pImpl_->CurrentRenderTarget_);
+      pImpl_->CurrentRenderTarget_ = _RenderTarger;
+    }
+  }
+
   const hdx::VertexShader& IRenderer2D::GetVertexShader()const
   {
     return pImpl_->CurrentVertexShader_;
@@ -101,9 +142,9 @@ namespace detail
     return pImpl_->CurrentBlendState_;
   }
 
-  const hdx::SamplerState& IRenderer2D::GetSamplerState()const
+  const hdx::SamplerState& IRenderer2D::GetSamplerState(UINT _Slot)const
   {
-    return pImpl_->CurrentSamplerState_;
+    return pImpl_->CurrentSamplerStatus_[_Slot];
   }
 
   const hdx::RasterizerState& IRenderer2D::GetRasterizerState()const
@@ -114,6 +155,11 @@ namespace detail
   const hdx::DepthStencilState& IRenderer2D::GetDepthStencilState()const
   {
     return pImpl_->CurrentDepthStencilState_;
+  }
+
+  const hdx::Texture& IRenderer2D::GetTexture(UINT _Slot)const
+  {
+    return pImpl_->CurrentTextures_[_Slot - 1];
   }
 
   //const hdx::RenderTarget& IRenderer2D::GetRenderTarget()const

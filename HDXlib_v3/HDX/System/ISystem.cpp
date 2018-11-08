@@ -96,8 +96,8 @@ namespace detail
 
         //  ウィンドウタイトル設定
         {
-          wchar_t wWindowTitle[hdx::kMaxCharLimit];
-          mbstowcs_s(nullptr, wWindowTitle, Title_, hdx::kMaxCharLimit);
+          wchar_t wWindowTitle[hdx::MaxCharLimit];
+          mbstowcs_s(nullptr, wWindowTitle, Title_, hdx::MaxCharLimit);
 
           SetWindowText(hWnd_, wWindowTitle);
         }
@@ -330,7 +330,7 @@ namespace detail
         //  スクリーンショット用フォルダ作成
         _mkdir("SCREENSHOT");
 
-        wchar_t wstr[hdx::kMaxCharLimit];
+        wchar_t wstr[hdx::MaxCharLimit];
         swprintf_s(wstr, L"SCREENSHOT\\%04d%02d%02d%02d%02d%02d.png", TM.tm_year + 1900, TM.tm_mon + 1, TM.tm_mday, TM.tm_hour, TM.tm_min, TM.tm_sec);
 
         DirectX::SaveWICTextureToFile(pImmediateContext_.Get(), BackBuffer.Get(), GUID_ContainerFormatPng, wstr);
@@ -387,7 +387,7 @@ namespace detail
     {
       pImpl_->Present();
     }
-   
+
     Engine::GetKeyboard()->Update();
     Engine::GetMouse()->Update();
     Engine::GetXInput()->Update();
@@ -419,8 +419,8 @@ namespace detail
 
   void ISystem::RenameTitle(const char* _Title)
   {
-    wchar_t wWindowTitle[hdx::kMaxCharLimit];
-    mbstowcs_s(nullptr, wWindowTitle, pImpl_->pWindow_->Title_ = const_cast<char*>(_Title), hdx::kMaxCharLimit);
+    wchar_t wWindowTitle[hdx::MaxCharLimit];
+    mbstowcs_s(nullptr, wWindowTitle, pImpl_->pWindow_->Title_ = const_cast<char*>(_Title), hdx::MaxCharLimit);
 
     SetWindowText(pImpl_->pWindow_->hWnd_, wWindowTitle);
   }
@@ -506,9 +506,11 @@ namespace detail
     pImpl_->pWindow_->BackColor_ = _Color;
   }
 
-  void ISystem::SetShaderResouceView(ID3D11ShaderResourceView** _ppShaderResourceView, int _Slot)
+  void ISystem::SetShaderResouceView(ID3D11ShaderResourceView** _ppShaderResourceView, UINT _Slot)
   {
-    static ID3D11ShaderResourceView*const* ppShaderResourceView = nullptr;
+    static ID3D11ShaderResourceView*const* ppShaderResourceViews[hdx::TextureMaxNum] = { nullptr };
+
+    ID3D11ShaderResourceView*const*& ppShaderResourceView = ppShaderResourceViews[_Slot];
     if (ppShaderResourceView != _ppShaderResourceView)
     {
       ppShaderResourceView = _ppShaderResourceView;
@@ -576,14 +578,16 @@ namespace detail
     }
   }
 
-  void ISystem::SetSamplersState(ID3D11SamplerState*const* _ppSamplerState)
+  void ISystem::SetSamplersState(ID3D11SamplerState*const* _ppSamplerState, UINT _Slot)
   {
-    static ID3D11SamplerState*const* ppSamplerState = nullptr;
+    static ID3D11SamplerState*const* ppSamplerStatus[hdx::SamplerStateMaxNum] = { nullptr };
+
+    ID3D11SamplerState*const*& ppSamplerState = ppSamplerStatus[_Slot];
     if (ppSamplerState != _ppSamplerState)
     {
       ppSamplerState = _ppSamplerState;
       //  設定を反映
-      pImpl_->pImmediateContext_->PSSetSamplers(0, 1, ppSamplerState);
+      pImpl_->pImmediateContext_->PSSetSamplers(_Slot, 1, ppSamplerState);
     }
   }
 

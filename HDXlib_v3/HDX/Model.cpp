@@ -16,8 +16,8 @@ namespace hdx
 {
   Model::Model(const char* FilePath, bool VCoordingFlip)
   {
-    wchar_t wFilePath[kMaxCharLimit];
-    mbstowcs_s(nullptr, wFilePath, FilePath, kMaxCharLimit);
+    wchar_t wFilePath[MaxCharLimit];
+    mbstowcs_s(nullptr, wFilePath, FilePath, MaxCharLimit);
 
     std::vector<Vertex3D> Vertices;
     std::vector<UINT> Indices;
@@ -82,12 +82,12 @@ namespace hdx
 
     while (fin)
     {
-      wchar_t command[kMaxCharLimit];
+      wchar_t command[MaxCharLimit];
       fin >> command;
 
       if (wcscmp(command, L"mtllib") == 0)
       {
-        wchar_t mtl[kMaxCharLimit];
+        wchar_t mtl[MaxCharLimit];
 
         fin >> mtl;
         MtlFileNames.push_back(mtl);
@@ -112,7 +112,7 @@ namespace hdx
       }
       else if (wcscmp(command, L"usemtl") == 0)
       {
-        wchar_t usemtl[kMaxCharLimit]{};
+        wchar_t usemtl[MaxCharLimit]{};
 
         fin >> usemtl;
         Subset Subset;
@@ -160,7 +160,7 @@ namespace hdx
     //  区切り文字
     static constexpr wchar_t kDelimiters[] = { L'\\', L'/' };
     //  objファイルが存在するフォルダ
-    wchar_t Directory[kMaxCharLimit]{};
+    wchar_t Directory[MaxCharLimit]{};
 
     for (wchar_t Delimiter : kDelimiters)
     {
@@ -181,7 +181,7 @@ namespace hdx
       int CurrentMaterialIndex = -1;
 
       //  Mtlファイルのファイルパスを作成
-      wchar_t MtlFilePath[kMaxCharLimit]{};
+      wchar_t MtlFilePath[MaxCharLimit]{};
       wcscpy_s(MtlFilePath, Directory);
       wcscat_s(MtlFilePath, MtlFileNames.front().c_str());
 
@@ -193,12 +193,12 @@ namespace hdx
 
       while (fin)
       {
-        wchar_t command[kMaxCharLimit];
+        wchar_t command[MaxCharLimit];
         fin >> command;
 
         if (wcscmp(command, L"newmtl") == 0)
         {
-          wchar_t NewMtl[kMaxCharLimit];
+          wchar_t NewMtl[MaxCharLimit];
           fin >> NewMtl;
 
           Material.NewMtl = NewMtl;
@@ -236,11 +236,11 @@ namespace hdx
         }
         else if (wcscmp(command, L"map_Kd") == 0)
         {
-          wchar_t TextureFileName[kMaxCharLimit]{};
+          wchar_t TextureFileName[MaxCharLimit]{};
           fin >> TextureFileName;
 
           //  テクスチャのファイルパスを作成
-          wchar_t TextureFilePath[kMaxCharLimit]{};
+          wchar_t TextureFilePath[MaxCharLimit]{};
           wcscpy_s(TextureFilePath, Directory);
           wcscat_s(TextureFilePath, TextureFileName);
 

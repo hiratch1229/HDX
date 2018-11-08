@@ -12,11 +12,11 @@ namespace detail
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx
 {
-  class Sprite;
+  class Texture;
 
-  class SpriteDesc
+  class TextureDesc
   {
-    const Sprite* pSprite_;
+    const Texture* pTexture_;
   private:
     float2 SrcPos_;
     float2 SrcSize_;
@@ -26,20 +26,20 @@ namespace hdx
     bool isHorizontalFlip_;
     bool isVerticalFlip_;
   public:
-    SpriteDesc(const Sprite* _pSprite, const float2& _SrcPos, const float2& _SrcSize)
-      : pSprite_(_pSprite), SrcPos_(_SrcPos), SrcSize_(_SrcSize), Size_(_SrcSize), Color_({ 1.0f,1.0f,1.0f,1.0f }),
+    TextureDesc(const Texture* _pTexture, const float2& _SrcPos, const float2& _SrcSize)
+      : pTexture_(_pTexture), SrcPos_(_SrcPos), SrcSize_(_SrcSize), Size_(_SrcSize), Color_({ 1.0f,1.0f,1.0f,1.0f }),
       Angle_(0.0f), isHorizontalFlip_(false), isVerticalFlip_(false) {}
-    SpriteDesc(const Sprite* _pSprite, const float2& _SrcPos, const float2& _SrcSize, const float2& _Size, const ColorF& _Color, const Degree& _Angle, bool _isHorizontalFlip, bool _isVerticalFlip)
-      : pSprite_(_pSprite), SrcPos_(_SrcPos), SrcSize_(_SrcSize), Size_(_Size), Color_(_Color), Angle_(_Angle), isHorizontalFlip_(_isHorizontalFlip), isVerticalFlip_(_isVerticalFlip) {}
-    SpriteDesc Scale(const float2& _Scale)const { return{ pSprite_,SrcPos_,SrcSize_,{ Size_.X*_Scale.X,Size_.Y*_Scale.Y },Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
-    SpriteDesc Scale(float _ScaleX, float _ScaleY)const { return{ pSprite_,SrcPos_,SrcSize_,{ Size_.Y*_ScaleX,Size_.Y*_ScaleY },Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
-    SpriteDesc Scale(int _ScaleX, int _ScaleY)const { return{ pSprite_,SrcPos_,SrcSize_,{ Size_.X*_ScaleX,Size_.Y*_ScaleY },Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
-    SpriteDesc Scale(int _ScaleX, float _ScaleY)const { return{ pSprite_,SrcPos_,SrcSize_,{ Size_.X*_ScaleX,Size_.Y*_ScaleY },Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
-    SpriteDesc Scale(float _ScaleX, int _ScaleY)const { return{ pSprite_,SrcPos_,SrcSize_,{ Size_.X*_ScaleX,Size_.Y*_ScaleY },Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
-    SpriteDesc Scale(float _Scale)const { return{ pSprite_,SrcPos_,SrcSize_,Size_*_Scale,Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
-    SpriteDesc Scale(int _Scale)const { return{ pSprite_,SrcPos_,SrcSize_, Size_*static_cast<float>(_Scale),Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
-    SpriteDesc VerticalFlip()const { return{ pSprite_,SrcPos_,SrcSize_,Size_,Color_,Angle_,isHorizontalFlip_,true }; }
-    SpriteDesc HorizontalFlip()const { return{ pSprite_,SrcPos_,SrcSize_,Size_,Color_,Angle_,true,isVerticalFlip_ }; }
+    TextureDesc(const Texture* _pTexture, const float2& _SrcPos, const float2& _SrcSize, const float2& _Size, const ColorF& _Color, const Degree& _Angle, bool _isHorizontalFlip, bool _isVerticalFlip)
+      : pTexture_(_pTexture), SrcPos_(_SrcPos), SrcSize_(_SrcSize), Size_(_Size), Color_(_Color), Angle_(_Angle), isHorizontalFlip_(_isHorizontalFlip), isVerticalFlip_(_isVerticalFlip) {}
+    TextureDesc Scale(const float2& _Scale)const { return{ pTexture_,SrcPos_,SrcSize_,{ Size_.X*_Scale.X,Size_.Y*_Scale.Y },Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
+    TextureDesc Scale(float _ScaleX, float _ScaleY)const { return{ pTexture_,SrcPos_,SrcSize_,{ Size_.Y*_ScaleX,Size_.Y*_ScaleY },Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
+    TextureDesc Scale(int _ScaleX, int _ScaleY)const { return{ pTexture_,SrcPos_,SrcSize_,{ Size_.X*_ScaleX,Size_.Y*_ScaleY },Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
+    TextureDesc Scale(int _ScaleX, float _ScaleY)const { return{ pTexture_,SrcPos_,SrcSize_,{ Size_.X*_ScaleX,Size_.Y*_ScaleY },Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
+    TextureDesc Scale(float _ScaleX, int _ScaleY)const { return{ pTexture_,SrcPos_,SrcSize_,{ Size_.X*_ScaleX,Size_.Y*_ScaleY },Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
+    TextureDesc Scale(float _Scale)const { return{ pTexture_,SrcPos_,SrcSize_,Size_*_Scale,Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
+    TextureDesc Scale(int _Scale)const { return{ pTexture_,SrcPos_,SrcSize_, Size_*static_cast<float>(_Scale),Color_,Angle_,isHorizontalFlip_,isVerticalFlip_ }; }
+    TextureDesc VerticalFlip()const { return{ pTexture_,SrcPos_,SrcSize_,Size_,Color_,Angle_,isHorizontalFlip_,true }; }
+    TextureDesc HorizontalFlip()const { return{ pTexture_,SrcPos_,SrcSize_,Size_,Color_,Angle_,true,isVerticalFlip_ }; }
   public:
     void Draw()const;
     void Draw(const float2& _LeftTopPos) {}
@@ -53,7 +53,7 @@ namespace hdx
   class PixelShader;
 
   //  2D‰æ‘œ
-  class Sprite
+  class Texture
   {
   protected:
     int ID_;
@@ -63,40 +63,49 @@ namespace hdx
     //  (•`‰æŠÖ”‚ð’Ç‰Á‚·‚éê‡ÅŒã‚ÉŒÄ‚ñ‚Å‚­‚¾‚³‚¢)
     void Draw2D(const detail::Vertex2D* v)const;
   protected:
-    Sprite(const int2& _Size);
+    Texture(const int2& _Size);
   public:
+    Texture() = default;
     //  ƒtƒ@ƒCƒ‹ƒpƒX‚©‚ç‰æ‘œ‚ðì¬
-    Sprite(const char* FilePath);
-    //Sprite();
-    ~Sprite() = default;
+    Texture(const char* FilePath);
+    ~Texture() = default;
   public:
     int GetID()const { return ID_; }
     int2 GetSize()const { return Size_; }
     int GetWidth()const { return Size_.X; }
     int GetHeight()const { return Size_.Y; }
   public:
+    bool operator==(const Texture& _Texture)const
+    {
+      return ID_ == _Texture.ID_;
+    }
+    bool operator!=(const Texture& _Texture)const
+    {
+      return !((*this) == _Texture);
+    }
+  public:
     ////  (0,0)‚ðŠî€‚É‚»‚Ì‚Ü‚Ü•`‰æ
-    //SpriteDesc operator()() { return Desc(this, { 0,0 }, { Width_,Height_ }); }
+    //TextureDesc operator()() { return Desc(this, { 0,0 }, { Width_,Height_ }); }
     ////  (SrcPos.x,SrcPos.y)‚ðŠî€‚É(SrcSize.x,SrcSize.y)‚Ì‚Ý•`‰æ
-    //SpriteDesc operator()(float2 _SrcPos, float2 _SrcSize) { return Desc(this, _SrcPos, _SrcSize); }
+    //TextureDesc operator()(float2 _SrcPos, float2 _SrcSize) { return Desc(this, _SrcPos, _SrcSize); }
     //
     ////  (SrcPos.x,SrcPos.y)‚ðŠî€‚É(SrcWidth,SrcHeight)‚Ì‚Ý•`‰æ
-    //SpriteDesc operator()(float2 _SrcPos, float _SrcWidth, float _SrcHeight) { return Desc(this, _SrcPos, { _SrcWidth,_SrcHeight }); }
+    //TextureDesc operator()(float2 _SrcPos, float _SrcWidth, float _SrcHeight) { return Desc(this, _SrcPos, { _SrcWidth,_SrcHeight }); }
     ////  (SrcPos.x,SrcPos.y)‚ðŠî€‚É(SrcWidth,SrcHeight)‚Ì‚Ý•`‰æ
-    //SpriteDesc operator()(float2 _SrcPos, int _SrcWidth, int _SrcHeight) { return Desc(this, _SrcPos, { _SrcWidth,_SrcHeight }); }
+    //TextureDesc operator()(float2 _SrcPos, int _SrcWidth, int _SrcHeight) { return Desc(this, _SrcPos, { _SrcWidth,_SrcHeight }); }
     ////  (SrcPos.x,SrcPos.y)‚ðŠî€‚É(SrcWidth,SrcHeight)‚Ì‚Ý•`‰æ
-    //SpriteDesc operator()(float2 _SrcPos, int _SrcWidth, float _SrcHeight) { return Desc(this, _SrcPos, { _SrcWidth,_SrcHeight }); }
+    //TextureDesc operator()(float2 _SrcPos, int _SrcWidth, float _SrcHeight) { return Desc(this, _SrcPos, { _SrcWidth,_SrcHeight }); }
     ////  (SrcPos.x,SrcPos.y)‚ðŠî€‚É(SrcWidth,SrcHeight)‚Ì‚Ý•`‰æ
-    //SpriteDesc operator()(float2 _SrcPos, float _SrcWidth, int _SrcHeight) { return Desc(this, _SrcPos, { _SrcWidth,_SrcHeight }); }
+    //TextureDesc operator()(float2 _SrcPos, float _SrcWidth, int _SrcHeight) { return Desc(this, _SrcPos, { _SrcWidth,_SrcHeight }); }
     //
     ////  (SrcX,SrcY)‚ðŠî€‚É(SrcSize.x,SrcSize.y)‚Ì‚Ý•`‰æ
-    //SpriteDesc operator()(float _SrcX, float _SrcY, float2 _SrcSize) { return Desc(this, { _SrcX,_SrcY }, _SrcSize); }
+    //TextureDesc operator()(float _SrcX, float _SrcY, float2 _SrcSize) { return Desc(this, { _SrcX,_SrcY }, _SrcSize); }
     ////  (SrcX,SrcY)‚ðŠî€‚É(SrcSize.x,SrcSize.y)‚Ì‚Ý•`‰æ
-    //SpriteDesc operator()(int _SrcX, int _SrcY, float2 _SrcSize) { return Desc(this, { _SrcX,_SrcY }, _SrcSize); }
+    //TextureDesc operator()(int _SrcX, int _SrcY, float2 _SrcSize) { return Desc(this, { _SrcX,_SrcY }, _SrcSize); }
     ////  (SrcX,SrcY)‚ðŠî€‚É(SrcSize.x,SrcSize.y)‚Ì‚Ý•`‰æ
-    //SpriteDesc operator()(int _SrcX, float _SrcY, float2 _SrcSize) { return Desc(this, { _SrcX,_SrcY }, _SrcSize); }
+    //TextureDesc operator()(int _SrcX, float _SrcY, float2 _SrcSize) { return Desc(this, { _SrcX,_SrcY }, _SrcSize); }
     ////  (SrcX,SrcY)‚ðŠî€‚É(SrcSize.x,SrcSize.y)‚Ì‚Ý•`‰æ
-    //SpriteDesc operator()(float _SrcX, int _SrcY, float2 _SrcSize) { return Desc(this, { _SrcX,_SrcY }, _SrcSize); }
+    //TextureDesc operator()(float _SrcX, int _SrcY, float2 _SrcSize) { return Desc(this, { _SrcX,_SrcY }, _SrcSize); }
     //
     ////  (SrcX,SrcY)‚ðŠî€‚É(SrcWidth,SrcHeight)‚Ì‚Ý•`‰æ
     //Desc operator()(float _SrcX, float _SrcY, float _SrcWidth, float _SrcHeight) { return Desc(this, { _SrcX,_SrcY }, { _SrcWidth,_SrcHeight }); }
@@ -238,8 +247,8 @@ namespace hdx
     void Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const Degree& _Angle, bool _HorizontalFlip, bool _VerticalFlip, const ColorF& _Color = hdx::Palette::White)const;
   };
 
-  inline void SpriteDesc::Draw()const
+  inline void TextureDesc::Draw()const
   {
-    //pSprite_->Draw(0.0f, 0.0f, Size_.X, Size_.Y, SrcPos_.X, SrcPos_.Y, SrcSize_.X, SrcSize_.Y, Angle_, isHorizontalFlip_, isVerticalFlip_, Color_);
+    //pTexture_->Draw(0.0f, 0.0f, Size_.X, Size_.Y, SrcPos_.X, SrcPos_.Y, SrcSize_.X, SrcSize_.Y, Angle_, isHorizontalFlip_, isVerticalFlip_, Color_);
   }
 }

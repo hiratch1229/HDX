@@ -45,9 +45,9 @@ namespace detail
   {
     hdx::InputElementDesc InputElementDescs[] =
     {
-      { "POSITION", 0, hdx::Format::R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, hdx::InputClassification::PER_VERTEX_DATA, 0 },
-      { "COLOR", 0, hdx::Format::R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, hdx::InputClassification::PER_VERTEX_DATA, 0 },
-      { "TEXCOORD", 0, hdx::Format::R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+      hdx::InputElementDesc::Position,
+      hdx::InputElementDesc::Color,
+      hdx::InputElementDesc::Texcoord
     };
 
     return hdx::VertexShader(kDefault2DFilePath, InputElementDescs, ARRAYSIZE(InputElementDescs));

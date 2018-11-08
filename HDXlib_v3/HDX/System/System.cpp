@@ -428,9 +428,9 @@ namespace detail
 
   void System::RenameTitle(const char* _Title)
   {
-    wchar_t wWindowTitle[hdx::kMaxCharLimit];
+    wchar_t wWindowTitle[hdx::MaxCharLimit];
     size_t Num;
-    mbstowcs_s(&Num, wWindowTitle, WindowData_.Title = const_cast<char*>(_Title), hdx::kMaxCharLimit);
+    mbstowcs_s(&Num, wWindowTitle, WindowData_.Title = const_cast<char*>(_Title), hdx::MaxCharLimit);
 
     SetWindowText(hWnd_, wWindowTitle);
   }
@@ -813,9 +813,9 @@ namespace detail
 
     hdx::InputElementDesc InputElementDescs[] =
     {
-      { "POSITION", 0, hdx::Format::R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, hdx::InputClassification::PER_VERTEX_DATA, 0 },
-      { "NORMAL", 0, hdx::Format::R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, hdx::InputClassification::PER_VERTEX_DATA, 0 },
-      { "TEXCOORD", 0, hdx::Format::R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+      hdx::InputElementDesc::Position,
+      hdx::InputElementDesc::Normal,
+      hdx::InputElementDesc::Texcoord,
     };
 
     VertexShaderID_ = System::Get()->GetVertexShader()->Create("ModelVS.cso", InputElementDescs, ARRAYSIZE(InputElementDescs));

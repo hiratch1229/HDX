@@ -49,7 +49,7 @@
 //  2018.08.09  作成
 //  TODO:もっと簡単に描画出来るように
 //  TODO:バッチ処理
-#include <HDX/Sprite/Sprite.hpp>
+#include <HDX/Texture/Texture.hpp>
 
 //  3D基本形オブジェクト
 //  2018.09.26  作成

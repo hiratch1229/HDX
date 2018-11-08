@@ -7,9 +7,9 @@ namespace hdx
 {
   Sound::Sound(const char* FilePath)
   {
-    wchar_t wFilePath[kMaxCharLimit]{};
+    wchar_t wFilePath[MaxCharLimit]{};
     size_t Num;
-    mbstowcs_s(&Num, wFilePath, FilePath, kMaxCharLimit);
+    mbstowcs_s(&Num, wFilePath, FilePath, MaxCharLimit);
     
     HRESULT hr = MFPCreateMediaPlayer(wFilePath, false, MFP_OPTION_NONE, nullptr, detail::System::Get()->GetHWND(), pMediaPlayer_.GetAddressOf());
 

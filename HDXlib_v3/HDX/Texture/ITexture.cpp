@@ -1,4 +1,4 @@
-#include <HDX/Sprite/ISprite.hpp>
+#include <HDX/Texture/ITexture.hpp>
 
 #include <HDX/Engine.hpp>
 #include <HDX/System/ISystem.hpp>
@@ -13,7 +13,7 @@
 
 namespace detail
 {
-  class ISprite::Impl
+  class ITexture::Impl
   {
     int CreateTextureNum_ = 0;
   private:
@@ -91,7 +91,7 @@ namespace detail
         Texture2dDesc.SampleDesc.Count = 1;
         Texture2dDesc.SampleDesc.Quality = 0;
         Texture2dDesc.Usage = D3D11_USAGE_DEFAULT;
-        Texture2dDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE;
+        Texture2dDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_RENDER_TARGET;
         Texture2dDesc.CPUAccessFlags = 0;
         Texture2dDesc.MiscFlags = 0;
       }
@@ -129,7 +129,7 @@ namespace detail
         _ASSERT_EXPR(SUCCEEDED(hr), L"CreateShaderResourceView");
       }
 
-      char FileName[hdx::kMaxCharLimit];
+      char FileName[hdx::MaxCharLimit];
       sprintf_s(FileName, "CreateTextureNumber%d", CreateTextureNum_++);
 
       //  ƒ}ƒbƒv‚Ö’Ç‰Á
@@ -158,54 +158,54 @@ namespace detail
     ~Impl() { TextureMap_.clear(); }
   };
 
-  ISprite::ISprite()
+  ITexture::ITexture()
     : pImpl_(new Impl)
   {
 
   }
 
-  ISprite::~ISprite()
+  ITexture::~ITexture()
   {
     delete pImpl_;
     pImpl_ = nullptr;
   }
 
-  int ISprite::GetDummyTextureID()
+  int ITexture::GetDummyTextureID()
   {
     return pImpl_->GetDummyTextureID();
   }
 
-  int ISprite::GetTextureID(const char* _FilePath)
+  int ITexture::GetTextureID(const char* _FilePath)
   {
     return pImpl_->GetTextureID(_FilePath);
   }
 
-  const hdx::int2& ISprite::GetSize(int _ID)
+  const hdx::int2& ITexture::GetSize(int _ID)
   {
     return pImpl_->GetSize(_ID);
   }
 
-  int ISprite::InsertTexture(const char* _FilePath, ID3D11ShaderResourceView* _pShaderResourceView, const hdx::int2& _Size)
+  int ITexture::InsertTexture(const char* _FilePath, ID3D11ShaderResourceView* _pShaderResourceView, const hdx::int2& _Size)
   {
     return pImpl_->InsertTexture(_FilePath, _pShaderResourceView, _Size);
   }
 
-  int ISprite::CreateTexture(const hdx::int2& _Size)
+  int ITexture::CreateTexture(const hdx::int2& _Size)
   {
     return pImpl_->CreateDammyTexture(_Size);
   }
 
-  ID3D11ShaderResourceView** ISprite::GetShaderResourceView(int _ID)
+  ID3D11ShaderResourceView** ITexture::GetShaderResourceView(int _ID)
   {
     return pImpl_->GetShaderResourceView(_ID);
   }
 
-  ID3D11Buffer* ISprite::GetVertexBuffer()
+  ID3D11Buffer* ITexture::GetVertexBuffer()
   {
     return pImpl_->GetVertexBuffer();
   }
 
-  ID3D11Buffer** ISprite::GetAddressOfVertexBuffer()
+  ID3D11Buffer** ITexture::GetAddressOfVertexBuffer()
   {
     return pImpl_->GetAddressOfVertexBuffer();
   }

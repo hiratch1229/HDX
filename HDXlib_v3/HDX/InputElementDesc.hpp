@@ -1,5 +1,6 @@
 #pragma once
 #include <HDX/Types.hpp>
+#include <HDX/Constants.hpp>
 
 namespace hdx
 {
@@ -126,8 +127,6 @@ namespace hdx
       Num
     };
   public:
-    static constexpr UINT AppendAlignedElement = 0xffffffff;
-  public:
     const char* SemanticName_;
     UINT SemanticIndex_;
     Format Format_;
@@ -158,7 +157,7 @@ namespace hdx
     {
       static constexpr InputElementDesc PreDefineds[static_cast<UINT>(PreDefined::Num)] =
       {
-        { "POSITION", 0, Format::R32G32B32A32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+        { "POSITION", 0, Format::R32G32B32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
         { "TEXCOORD", 0, Format::R32G32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
         { "COLOR", 0, Format::R32G32B32A32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
         { "NORMAL", 0, Format::R32G32B32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },

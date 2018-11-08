@@ -6,7 +6,7 @@ void Main()
   hdx::System::ShowCursor(false);
   hdx::System::SetTitle("HDXlib");
 
-  hdx::Sprite A{ "DATA/exp.png" };
+  hdx::Texture A{ "DATA/exp.png" };
 
   //  hdx::SkinnedMesh Fbx("DATA/FBX/005_cube.fbx");
   //
@@ -83,21 +83,23 @@ void Main()
 
   hdx::RenderTarget();
 
+  hdx::Renderer2D::SetTexture(hdx::RenderTarget(), 1);
+
   while (hdx::System::Update())
   {
     if (hdx::Input::Keyboard::Key0.Pressed())
     {
-      hdx::Renderer2D::SetSamplerState(hdx::SamplerState::Default2D);
+      hdx::Renderer2D::SetSamplerState(hdx::SamplerState::Default2D, 0);
     }
     else if (hdx::Input::Keyboard::Key1.Pressed())
     {
       static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipPoint };
-      hdx::Renderer2D::SetSamplerState(SamplerState);
+      hdx::Renderer2D::SetSamplerState(SamplerState, 0);
     }
     else if (hdx::Input::Keyboard::Key2.Pressed())
     {
       static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipLinear };
-      hdx::Renderer2D::SetSamplerState(SamplerState);
+      hdx::Renderer2D::SetSamplerState(SamplerState, 0);
     }
 
     A.Draw(true);

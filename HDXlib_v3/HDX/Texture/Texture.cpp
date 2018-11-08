@@ -1,4 +1,4 @@
-#include <HDX/Sprite/Sprite.hpp>
+#include <HDX/Texture/Texture.hpp>
 
 #include <HDX/Engine.hpp>
 #include <HDX/System/ISystem.hpp>
@@ -11,11 +11,12 @@
 #include <HDX/PixelShader/IPixelShader.hpp>
 
 #include <HDX/WIC.hpp>
-#include <HDX/Sprite/ISprite.hpp>
+#include <HDX/Texture/ITexture.hpp>
 
 #include <HDX/System/System.hpp>
 #include <HDX/Math.hpp>
 #include <HDX/Vertex.hpp>
+#include <HDX/Constants.hpp>
 
 //#include <HDX/System/System.hpp>
 //#include <HDX/Math.hpp>
@@ -35,21 +36,21 @@
 
 namespace hdx
 {
-  Sprite::Sprite(const int2& _Size)
+  Texture::Texture(const int2& _Size)
     : ID_(detail::Engine::GetWIC()->Add(_Size)), Size_(_Size)
   {
 
   }
 
   //  ファイルパスから画像を作成
-  Sprite::Sprite(const char* FilePath)
-    : ID_(detail::Engine::GetWIC()->Load(FilePath)), Size_(detail::Engine::GetSprite()->GetSize(ID_))
+  Texture::Texture(const char* FilePath)
+    : ID_(detail::Engine::GetWIC()->Load(FilePath)), Size_(detail::Engine::GetTexture()->GetSize(ID_))
   {
 
   }
 
   ////  コンストラクタ(画面から生成)
-  //Sprite::Sprite()
+  //Texture::Texture()
   //{
   //  //  エラーチェック用
   //  HRESULT hr = S_OK;
@@ -125,7 +126,7 @@ namespace hdx
   //  char c[256];
   //  sprintf_s(c, "%d", static_cast<int>(now));
   //
-  //  ID_ = detail::System::Get()->GetSpriteManager()->InsertShaderResourceViewMap(c, pShaderResourceView);
+  //  ID_ = detail::System::Get()->GetTextureManager()->InsertShaderResourceViewMap(c, pShaderResourceView);
   //
   //  //  サイズを保存
   //  Size_.X = Texture2dDesc.Width;
@@ -133,13 +134,13 @@ namespace hdx
   //}
 
   //  描画最終処理
-  void Sprite::Draw2D(const detail::Vertex2D* v)const
+  void Texture::Draw2D(const detail::Vertex2D* v)const
   {
     detail::ISystem* pSystem = detail::Engine::GetSystem();
 
     //  頂点バッファオブジェクトを書き換え
     D3D11_MAPPED_SUBRESOURCE MappedSubresorce;
-    pSystem->Map(detail::Engine::GetSprite()->GetVertexBuffer(), &MappedSubresorce);
+    pSystem->Map(detail::Engine::GetTexture()->GetVertexBuffer(), &MappedSubresorce);
 
     detail::Vertex2D* Vertices = reinterpret_cast<detail::Vertex2D*>(MappedSubresorce.pData);
 
@@ -147,27 +148,34 @@ namespace hdx
     memcpy(Vertices, v, sizeof(detail::Vertex2D) * 4);
 
     //  頂点バッファオブジェクトを書き換え終了
-    pSystem->Unmap(detail::Engine::GetSprite()->GetVertexBuffer());
+    pSystem->Unmap(detail::Engine::GetTexture()->GetVertexBuffer());
 
     //  シェーダーリソースビューを設定
-    pSystem->SetShaderResouceView(detail::Engine::GetSprite()->GetShaderResourceView(ID_), 0);
-
-    UINT Strides = sizeof(detail::Vertex2D);
+    pSystem->SetShaderResouceView(detail::Engine::GetTexture()->GetShaderResourceView(ID_), 0);
 
     const detail::IRenderer2D* pGraphics2D = detail::Engine::GetRenderer2D();
+
+    UINT Strides = sizeof(detail::Vertex2D);
+    pSystem->SetVertexBuffers(detail::Engine::GetTexture()->GetAddressOfVertexBuffer(), Strides);
 
     pSystem->SetBlendState(detail::Engine::GetBlendState()->GetBlendState(pGraphics2D->GetBlendState()));
     pSystem->SetInputLayout(detail::Engine::GetVertexShader()->GetInputLayout(pGraphics2D->GetVertexShader()));
     pSystem->SetVertexShader(detail::Engine::GetVertexShader()->GetVertexShader(pGraphics2D->GetVertexShader()));
     pSystem->SetPixelShader(detail::Engine::GetPixelShader()->GetPixeShader(pGraphics2D->GetPixelShader()));
-    pSystem->SetVertexBuffers(detail::Engine::GetSprite()->GetAddressOfVertexBuffer(), Strides);
-    pSystem->SetSamplersState(detail::Engine::GetSamplerState()->GetSamplerState(pGraphics2D->GetSamplerState()));
     pSystem->SetRasterizerState(detail::Engine::GetRasterizerState()->GetRasterizerState(pGraphics2D->GetRasterizerState()));
     pSystem->SetDepthStencilState(detail::Engine::GetDepthStencilState()->GetDepthStencilState(pGraphics2D->GetDepthStencilState()));
+    for (UINT i = 0; i < SamplerStateMaxNum; ++i)
+    {
+      pSystem->SetSamplersState(detail::Engine::GetSamplerState()->GetSamplerState(pGraphics2D->GetSamplerState(i)), i);
+    }
+    for (UINT i = 1; i < TextureMaxNum; ++i)
+    {
+      const hdx::Texture& Texture = pGraphics2D->GetTexture(i);
+      //  サイズが0の時スルー
+      if (Texture.GetSize() == hdx::int2()) continue;
 
-    //detail::System::Get()->PSSetSamplers(detail::System::Get()->GetSpriteManager()->GetAddressOfSamplerState());
-    //detail::System::Get()->RSSetState(detail::System::Get()->GetSpriteManager()->GetRasterizerState());
-    //detail::System::Get()->OMSetDepthStencilState(detail::System::Get()->GetSpriteManager()->GetDepthStencilState());
+      pSystem->SetShaderResouceView(detail::Engine::GetTexture()->GetShaderResourceView(Texture.GetID()), i);
+    }
 
     //  描画
     pSystem->GetImmediateContext()->Draw(4, 0);
@@ -176,7 +184,7 @@ namespace hdx
   //  描画
   //  _isFitScreen:true:画面サイズに合わる,false:そのままのサイズ
   //  _Color:色を指定(Colorクラスもそのまま使えます)
-  void Sprite::Draw(bool _isFitScreen, const ColorF& _Color)const
+  void Texture::Draw(bool _isFitScreen, const ColorF& _Color)const
   {
     detail::Vertex2D Vertices[4];
 
@@ -207,7 +215,7 @@ namespace hdx
   }
 
   //  描画
-  void Sprite::Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const ColorF& _Color)const
+  void Texture::Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const ColorF& _Color)const
   {
     detail::Vertex2D Vertices[4];
 
@@ -238,7 +246,7 @@ namespace hdx
   }
 
   //  描画
-  void Sprite::Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const Degree& _Angle, const ColorF& _Color)const
+  void Texture::Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const Degree& _Angle, const ColorF& _Color)const
   {
     detail::Vertex2D Vertices[4];
 
@@ -280,7 +288,7 @@ namespace hdx
   }
 
   //  描画
-  void Sprite::Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const Degree& _Angle, bool _HorizontalFlip, bool _VerticalFlip, const ColorF& _Color)const
+  void Texture::Draw(const float2& _DstLeftTop, const float2& _DstSize, const float2& _SrcLeftPos, const float2& _SrcSize, const Degree& _Angle, bool _HorizontalFlip, bool _VerticalFlip, const ColorF& _Color)const
   {
     detail::Vertex2D Vertices[4];
 

@@ -13,7 +13,7 @@
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
 #include <HDX/WIC.hpp>
-#include <HDX/Sprite/ISprite.hpp>
+#include <HDX/Texture/ITexture.hpp>
 #include <HDX/Random/IRandom.hpp>
 
 #include <crtdbg.h>
@@ -46,7 +46,7 @@ namespace detail
     pVertexShader_.Release();
     pPixelShader_.Release();
     pWIC_.Release();
-    pSprite_.Release();
+    pTexture_.Release();
     pRandom_.Release();
   }
 }

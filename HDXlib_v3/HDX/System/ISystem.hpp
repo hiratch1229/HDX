@@ -57,13 +57,13 @@ namespace detail
     IDXGISwapChain* GetSwapChain();
     HWND GetHWND();
   public:
-    void SetShaderResouceView(ID3D11ShaderResourceView** _ppShaderResourceView, int _Slot);
+    void SetShaderResouceView(ID3D11ShaderResourceView** _ppShaderResourceView, UINT _Slot);
     void SetBlendState(ID3D11BlendState* _pBlendState);
     void SetInputLayout(ID3D11InputLayout* _pInputLayout);
     void SetVertexShader(ID3D11VertexShader* _pVertexShader);
     void SetPixelShader(ID3D11PixelShader* _pPixelShader);
     void SetVertexBuffers(ID3D11Buffer*const* _ppVertexBuffer, UINT _Strides);
-    void SetSamplersState(ID3D11SamplerState*const* _ppSamplerState);
+    void SetSamplersState(ID3D11SamplerState*const* _ppSamplerState, UINT _Slot);
     void SetRasterizerState(ID3D11RasterizerState* _pRasterizerState);
     void SetDepthStencilState(ID3D11DepthStencilState* _pDepthStencilState);
   public:

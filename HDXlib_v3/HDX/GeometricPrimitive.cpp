@@ -88,8 +88,8 @@ namespace hdx
     }
     else
     {
-      wchar_t FilePath[kMaxCharLimit]{};
-      mbstowcs_s(nullptr, FilePath, _FilePath, kMaxCharLimit);
+      wchar_t FilePath[MaxCharLimit]{};
+      mbstowcs_s(nullptr, FilePath, _FilePath, MaxCharLimit);
 
       HRESULT hr = DirectX::CreateWICTextureFromFile(detail::System::Get()->GetDevice(), FilePath, nullptr, pShaderResourceView_.GetAddressOf());
       _ASSERT_EXPR(SUCCEEDED(hr), L"CreateWICTextureFromFile");

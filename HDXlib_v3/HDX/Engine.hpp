@@ -15,7 +15,7 @@ namespace detail
   class IVertexShader;
   class IPixelShader;
   class WIC;
-  class ISprite;
+  class ITexture;
   class IRandom;
 
   template <class Interface>
@@ -58,7 +58,7 @@ namespace detail
     Component<IVertexShader> pVertexShader_;
     Component<IPixelShader> pPixelShader_;
     Component<WIC> pWIC_;
-    Component<ISprite> pSprite_;
+    Component<ITexture> pTexture_;
     Component<IRandom> pRandom_;
   public:
     Engine();
@@ -77,7 +77,7 @@ namespace detail
     static IVertexShader* GetVertexShader() { return pEngine->pVertexShader_.Get(); }
     static IPixelShader* GetPixelShader() { return pEngine->pPixelShader_.Get(); }
     static WIC* GetWIC() { return pEngine->pWIC_.Get(); }
-    static ISprite* GetSprite() { return pEngine->pSprite_.Get(); }
+    static ITexture* GetTexture() { return pEngine->pTexture_.Get(); }
     static IRandom* GetRandom() { return pEngine->pRandom_.Get(); }
   };
 }

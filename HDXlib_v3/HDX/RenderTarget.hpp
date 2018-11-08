@@ -1,5 +1,5 @@
 #pragma once
-#include <HDX/Sprite/Sprite.hpp>
+#include <HDX/Texture/Texture.hpp>
 
 #include <HDX/Types.hpp>
 
@@ -11,10 +11,10 @@ namespace hdx
   //class PixelShader;
   //class VertexShader;
 
-  class RenderTarget : public hdx::Sprite
+  class RenderTarget : public hdx::Texture
   {
   public:
-    RenderTarget();
+    RenderTarget() = default;
     RenderTarget(const int2& _Size);
     RenderTarget(UINT _Width, UINT _Height);
   public:
