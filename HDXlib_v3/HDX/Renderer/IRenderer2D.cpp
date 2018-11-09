@@ -10,7 +10,7 @@
 #include <HDX/RasterizerState/RasterizerState.hpp>
 #include <HDX/DepthStencilState/DepthStencilState.hpp>
 #include <HDX/Texture/Texture.hpp>
-#include <HDX/RenderTarget.hpp>
+#include <HDX/RenderTarget/RenderTarget.hpp>
 
 #include <HDX/Constants.hpp>
 
@@ -48,7 +48,7 @@ namespace detail
 
   void IRenderer2D::SetVertexShader(const hdx::VertexShader& _VertexShader)
   {
-    if (_VertexShader != hdx::VertexShader() && pImpl_->CurrentVertexShader_ != _VertexShader)
+    if (pImpl_->CurrentVertexShader_ != _VertexShader)
     {
       pImpl_->CurrentVertexShader_ = _VertexShader;
     }
@@ -56,7 +56,7 @@ namespace detail
 
   void IRenderer2D::SetPixelShader(const hdx::PixelShader& _PixelShader)
   {
-    if (_PixelShader != hdx::PixelShader() && pImpl_->CurrentPixelShader_ != _PixelShader)
+    if (pImpl_->CurrentPixelShader_ != _PixelShader)
     {
       pImpl_->CurrentPixelShader_ = _PixelShader;
     }
@@ -72,8 +72,6 @@ namespace detail
 
   void IRenderer2D::SetSamplerState(const hdx::SamplerState& _SamplerState, UINT _Slot)
   {
-
-
     hdx::SamplerState& CurrentSamplerState = pImpl_->CurrentSamplerStatus_[_Slot];
     if (CurrentSamplerState != _SamplerState)
     {
@@ -108,7 +106,7 @@ namespace detail
 
   inline void CreateTextureFromRenderTarget(const hdx::RenderTarget& _RenderTarger)
   {
-    Engine::
+
   }
 
   void IRenderer2D::RestoreRenderTarget()

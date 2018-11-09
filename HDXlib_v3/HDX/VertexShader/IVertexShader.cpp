@@ -79,7 +79,7 @@ namespace detail
       Impl::State State;
       {
         //  頂点シェーダーの作成
-        hr = detail::Engine::GetSystem()->GetDevice()->CreateVertexShader(Data.get(), Size, nullptr, State.pVertexShader.GetAddressOf());
+        hr = GetSystem()->GetDevice()->CreateVertexShader(Data.get(), Size, nullptr, State.pVertexShader.GetAddressOf());
         _ASSERT_EXPR(SUCCEEDED(hr), L"CreateVertexShader");
 
         std::unique_ptr<D3D11_INPUT_ELEMENT_DESC[]> InputElementDescs = std::make_unique<D3D11_INPUT_ELEMENT_DESC[]>(_NumElements);
@@ -96,7 +96,7 @@ namespace detail
         }
 
         //  入力レイアウトの作成
-        hr = detail::Engine::GetSystem()->GetDevice()->CreateInputLayout(InputElementDescs.get(), _NumElements, Data.get(), Size, State.pInputLayout.GetAddressOf());
+        hr = GetSystem()->GetDevice()->CreateInputLayout(InputElementDescs.get(), _NumElements, Data.get(), Size, State.pInputLayout.GetAddressOf());
         _ASSERT_EXPR(SUCCEEDED(hr), L"CreateInputLayout");
       }
 

@@ -71,7 +71,7 @@ namespace detail
 
     Microsoft::WRL::ComPtr<ID3D11DepthStencilState> pDepthStencilState;
 
-    HRESULT hr = detail::Engine::GetSystem()->GetDevice()->CreateDepthStencilState(&DepthStencilDesc, pDepthStencilState.GetAddressOf());
+    HRESULT hr = GetSystem()->GetDevice()->CreateDepthStencilState(&DepthStencilDesc, pDepthStencilState.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState");
 
     //  ƒ}ƒbƒv‚Ö’Ç‰Á

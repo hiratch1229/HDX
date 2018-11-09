@@ -15,17 +15,17 @@ namespace hdx
       //  何かのキーが押されていればtrueを返す
       bool AnyKeyPress()
       {
-        return detail::Engine::GetKeyboard()->AnyKeyPress();
+        return GetKeyboard()->AnyKeyPress();
       }
       //  何かのキーが押されたならtrueを返す
       bool AnyKeyPressed()
       {
-        return detail::Engine::GetKeyboard()->AnyKeyPressed();
+        return GetKeyboard()->AnyKeyPressed();
       }
       //  何かのキーが離されたならtrueを返す
       bool AnyKeyReleased()
       {
-        return detail::Engine::GetKeyboard()->AnyKeyReleased();
+        return GetKeyboard()->AnyKeyReleased();
       }
     }
   }

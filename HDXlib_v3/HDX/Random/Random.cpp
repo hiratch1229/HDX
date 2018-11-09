@@ -9,7 +9,7 @@ namespace hdx
 {
   int Random::Range(int _Max, int _Min)
   {
-    const UINT R = detail::Engine::GetRandom()->Get();
+    const UINT R = GetRandom()->Get();
 
     if (_Min > _Max)
     {
@@ -25,7 +25,7 @@ namespace hdx
 
   float Random::Range(float _Max, float _Min)
   {
-    const UINT R = detail::Engine::GetRandom()->Get();
+    const UINT R = GetRandom()->Get();
 
     if (_Min > _Max)
     {
@@ -41,6 +41,6 @@ namespace hdx
 
   void Random::SetSeed(UINT _Seed)
   {
-    detail::Engine::GetRandom()->SetSeed(_Seed);
+    GetRandom()->SetSeed(_Seed);
   }
 }

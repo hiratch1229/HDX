@@ -3,14 +3,14 @@
 
 namespace detail
 {
-  class WIC
+  class IWIC
   {
     struct Impl;
   private:
     Impl* pImpl_;
   public:
-    WIC();
-    ~WIC();
+    IWIC();
+    ~IWIC();
     int Load(const char* _FilePath);
     int Add(const hdx::int2& _Size);
   };

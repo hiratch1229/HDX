@@ -64,7 +64,7 @@ namespace detail
 
       Microsoft::WRL::ComPtr<ID3D11PixelShader> pPixelShader;
       //  ピクセルシェーダーの作成
-      hr = detail::Engine::GetSystem()->GetDevice()->CreatePixelShader(Data.get(), Size, nullptr, pPixelShader.GetAddressOf());
+      hr = GetSystem()->GetDevice()->CreatePixelShader(Data.get(), Size, nullptr, pPixelShader.GetAddressOf());
       _ASSERT_EXPR(SUCCEEDED(hr), L"CreatePixelShader");
 
       ID = pImpl_->PixelShaderMap_.insert(_FilePath, pPixelShader);

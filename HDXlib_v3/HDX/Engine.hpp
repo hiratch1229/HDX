@@ -14,7 +14,7 @@ namespace detail
   class IDepthStencilState;
   class IVertexShader;
   class IPixelShader;
-  class WIC;
+  class IWIC;
   class ITexture;
   class IRandom;
 
@@ -57,7 +57,7 @@ namespace detail
     Component<IDepthStencilState> pDepthStencilState_;
     Component<IVertexShader> pVertexShader_;
     Component<IPixelShader> pPixelShader_;
-    Component<WIC> pWIC_;
+    Component<IWIC> pWIC_;
     Component<ITexture> pTexture_;
     Component<IRandom> pRandom_;
   public:
@@ -76,8 +76,49 @@ namespace detail
     static IDepthStencilState* GetDepthStencilState() { return pEngine->pDepthStencilState_.Get(); }
     static IVertexShader* GetVertexShader() { return pEngine->pVertexShader_.Get(); }
     static IPixelShader* GetPixelShader() { return pEngine->pPixelShader_.Get(); }
-    static WIC* GetWIC() { return pEngine->pWIC_.Get(); }
+    static IWIC* GetWIC() { return pEngine->pWIC_.Get(); }
     static ITexture* GetTexture() { return pEngine->pTexture_.Get(); }
     static IRandom* GetRandom() { return pEngine->pRandom_.Get(); }
   };
 }
+
+#if 1
+
+#define GetFunc(name) \
+inline detail::I##name* Get##name()\
+{\
+  static detail::I##name* p##name = nullptr;\
+\
+  if (!p##name)\
+  {\
+  p##name = detail::Engine::Get##name();\
+  }\
+\
+return p##name;\
+}\
+
+#else
+
+#define GetFunc(name) \
+inline detail::I##name* Get##name()\
+{\
+return detail::Engine::Get##name();\
+}\
+
+#endif // 0
+
+GetFunc(System)
+GetFunc(Renderer2D)
+GetFunc(Keyboard)
+GetFunc(Mouse)
+GetFunc(XInput)
+GetFunc(Gamepad)
+GetFunc(BlendState)
+GetFunc(SamplerState)
+GetFunc(RasterizerState)
+GetFunc(DepthStencilState)
+GetFunc(VertexShader)
+GetFunc(PixelShader)
+GetFunc(WIC)
+GetFunc(Texture)
+GetFunc(Random)

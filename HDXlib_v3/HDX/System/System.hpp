@@ -17,7 +17,7 @@ namespace detail
   class IGamepad;
   class IVertexShader;
   class IPixelShader;
-  class WIC;
+  class IWIC;
 
   class System : public hdx::Singleton<System>
   {
@@ -190,7 +190,7 @@ namespace detail
     IGamepad*                   pGamepad_;
     IVertexShader*              pVertexShader_;
     IPixelShader*               pPixelShader_;
-    WIC*                        pWIC_;
+    IWIC*                        pWIC_;
   private:
     SpriteManager     SpriteManager_;     //  ‰æ‘œŠÇ—
     MeshManager       MeshManager_;       //  ƒƒbƒVƒ…ŠÇ—
@@ -311,7 +311,7 @@ namespace detail
     IGamepad* GetGamepad()const { return pGamepad_; }
     IVertexShader* GetVertexShader()const { return pVertexShader_; }
     IPixelShader* GetPixelShader()const { return pPixelShader_; }
-    WIC* GetWIC()const { return pWIC_; }
+    IWIC* GetWIC()const { return pWIC_; }
   public:
     void Initialize();
     void InitializeD3D();

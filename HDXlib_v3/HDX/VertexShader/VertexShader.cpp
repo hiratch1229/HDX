@@ -7,7 +7,7 @@
 namespace hdx
 {
   VertexShader::VertexShader(const char* _FilePath, const InputElementDesc _InputElementDescs[], UINT _NumElements)
-    : ID_(detail::Engine::GetVertexShader()->Create(_FilePath, _InputElementDescs, _NumElements))
+    : ID_(GetVertexShader()->Create(_FilePath, _InputElementDescs, _NumElements))
   {
 
   }

@@ -6,7 +6,7 @@
 namespace hdx
 {
   PixelShader::PixelShader(const char* _FilePath)
-    : ID_(detail::Engine::GetPixelShader()->Create(_FilePath))
+    : ID_(GetPixelShader()->Create(_FilePath))
   {
 
   }

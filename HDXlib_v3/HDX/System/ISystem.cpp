@@ -21,6 +21,8 @@
 
 #include <memory>
 
+#include <HDX/System/System.hpp>
+
 namespace detail
 {
   class ISystem::Impl
@@ -40,6 +42,11 @@ namespace detail
       LARGE_INTEGER FreqTime_;
       //  最後の時間
       LARGE_INTEGER LastTime_;
+    public:
+      float GetDeltaTime()const
+      {
+        return DeltaTime_;
+      }
     public:
       FrameRate(int _MaxFrameRate)
         : MaxFrameRate_(_MaxFrameRate), FrameInterval_(1.0f / _MaxFrameRate)
@@ -65,9 +72,14 @@ namespace detail
           return false;
         }
 
+
         CurrentFPS_ = 1.0f / DeltaTime;
         DeltaTime_ = DeltaTime;
         LastTime_ = CurrentTime;
+
+        char c[256];
+        sprintf_s(c, "FPS:%.2f", CurrentFPS_);
+        hdx::System::RenameTitle(c);
 
         //  更新成功
         return true;
@@ -388,10 +400,10 @@ namespace detail
       pImpl_->Present();
     }
 
-    Engine::GetKeyboard()->Update();
-    Engine::GetMouse()->Update();
-    Engine::GetXInput()->Update();
-    Engine::GetGamepad()->Update();
+    GetKeyboard()->Update();
+    GetMouse()->Update();
+    GetXInput()->Update();
+    GetGamepad()->Update();
 
     //  メッセージを全て処理
     MSG Msg{};
@@ -448,6 +460,11 @@ namespace detail
   const hdx::int2& ISystem::GetWindowSize()const
   {
     return pImpl_->pWindow_->Size_;
+  }
+
+  float ISystem::GetDeltaTime()const
+  {
+    return pImpl_->pFrameRate_->GetDeltaTime();
   }
 
   void ISystem::SetWindowLeftTopPos(int _LeftPos, int _TopPos)

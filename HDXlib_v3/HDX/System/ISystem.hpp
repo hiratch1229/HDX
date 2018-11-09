@@ -35,6 +35,7 @@ namespace detail
     int GetWindowWidth()const;
     int GetWindowHeight()const;
     const hdx::int2& GetWindowSize()const;
+    float GetDeltaTime()const;
   public:
     void SetWindowLeftTopPos(int _LeftPos, int _TopPos);
     void SetWindowLeftTopPos(const hdx::int2& _LeftTopPos);

@@ -88,7 +88,7 @@
 
 //  レンダーターゲット
 //  2018.11.07  作成
-#include <HDX/RenderTarget.hpp>
+#include <HDX/RenderTarget/RenderTarget.hpp>
 
 
 //*************************

@@ -54,7 +54,7 @@ namespace detail
     D3D11_RASTERIZER_DESC RasterizerDesc{};
     {
       DXGI_SWAP_CHAIN_DESC SwapDesc;
-      detail::Engine::GetSystem()->GetSwapChain()->GetDesc(&SwapDesc);
+      GetSystem()->GetSwapChain()->GetDesc(&SwapDesc);
 
       RasterizerDesc.FillMode = static_cast<D3D11_FILL_MODE>(_RasterizerState.FillMode_);
       RasterizerDesc.CullMode = static_cast<D3D11_CULL_MODE>(_RasterizerState.CullMode_);
@@ -70,7 +70,7 @@ namespace detail
 
 
     Microsoft::WRL::ComPtr<ID3D11RasterizerState> pRasterizerState;
-    HRESULT hr = detail::Engine::GetSystem()->GetDevice()->CreateRasterizerState(&RasterizerDesc, pRasterizerState.GetAddressOf());
+    HRESULT hr = GetSystem()->GetDevice()->CreateRasterizerState(&RasterizerDesc, pRasterizerState.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateSamplerState");
 
     return pImpl_->RasterizerStateMap_.insert(_RasterizerState, pRasterizerState);

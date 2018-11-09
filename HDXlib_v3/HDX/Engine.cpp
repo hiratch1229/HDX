@@ -12,7 +12,7 @@
 #include <HDX/DepthStencilState/IDepthStencilState.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
-#include <HDX/WIC.hpp>
+#include <HDX/IWIC.hpp>
 #include <HDX/Texture/ITexture.hpp>
 #include <HDX/Random/IRandom.hpp>
 

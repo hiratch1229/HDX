@@ -81,27 +81,26 @@ void Main()
   //    Fbx.Render(WordldViewProjection, World, LightDirection, 1 / 60.0f, hdx::Palette::White, hdx::Input::Keyboard::KeySpace);
   //  }
 
-  hdx::RenderTarget();
-
-  hdx::Renderer2D::SetTexture(hdx::RenderTarget(), 1);
-
   while (hdx::System::Update())
   {
-    if (hdx::Input::Keyboard::Key0.Pressed())
-    {
-      hdx::Renderer2D::SetSamplerState(hdx::SamplerState::Default2D, 0);
-    }
-    else if (hdx::Input::Keyboard::Key1.Pressed())
-    {
-      static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipPoint };
-      hdx::Renderer2D::SetSamplerState(SamplerState, 0);
-    }
-    else if (hdx::Input::Keyboard::Key2.Pressed())
-    {
-      static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipLinear };
-      hdx::Renderer2D::SetSamplerState(SamplerState, 0);
-    }
+    //if (hdx::Input::Keyboard::Key0.Pressed())
+    //{
+    //  hdx::Renderer2D::SetSamplerState(hdx::SamplerState::Default2D, 0);
+    //}
+    //else if (hdx::Input::Keyboard::Key1.Pressed())
+    //{
+    //  static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipPoint };
+    //  hdx::Renderer2D::SetSamplerState(SamplerState, 0);
+    //}
+    //else if (hdx::Input::Keyboard::Key2.Pressed())
+    //{
+    //  static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipLinear };
+    //  hdx::Renderer2D::SetSamplerState(SamplerState, 0);
+    //}
 
-    A.Draw(true);
+    for (int i = 0; i < 275; ++i)
+    {
+      A.Draw(true);
+    }
   }
 }

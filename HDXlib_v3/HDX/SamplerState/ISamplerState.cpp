@@ -69,7 +69,7 @@ namespace detail
     }
 
     Microsoft::WRL::ComPtr<ID3D11SamplerState> pSamplerState;
-    HRESULT hr = detail::Engine::GetSystem()->GetDevice()->CreateSamplerState(&SamplerDesc, pSamplerState.GetAddressOf());
+    HRESULT hr = GetSystem()->GetDevice()->CreateSamplerState(&SamplerDesc, pSamplerState.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateSamplerState");
 
     return pImpl_->SamplerStateMap_.insert(_SamplerState, pSamplerState);

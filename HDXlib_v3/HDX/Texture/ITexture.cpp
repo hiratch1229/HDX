@@ -50,7 +50,7 @@ namespace detail
         InitialData.SysMemSlicePitch = 0;
       }
 
-      Engine::GetSystem()->GetDevice()->CreateBuffer(&BufferDesc, &InitialData, pVertexBuffer_.GetAddressOf());
+      GetSystem()->GetDevice()->CreateBuffer(&BufferDesc, &InitialData, pVertexBuffer_.GetAddressOf());
 
     }
   public:
@@ -78,7 +78,7 @@ namespace detail
       //  エラーチェック用
       HRESULT hr = S_OK;
 
-      ISystem* pSystem = Engine::GetSystem();
+      ISystem* pSystem = GetSystem();
 
       //  シェーダーリソースビュー設定で作成
       D3D11_TEXTURE2D_DESC Texture2dDesc{};
@@ -125,7 +125,7 @@ namespace detail
       //  シェーダーリソースビューを作成
       Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pShaderResouceView;
       {
-        hr = pSystem->GetDevice()->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResouceView.GetAddressOf());
+        hr = GetSystem()->GetDevice()->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResouceView.GetAddressOf());
         _ASSERT_EXPR(SUCCEEDED(hr), L"CreateShaderResourceView");
       }
 

@@ -13,49 +13,49 @@ namespace hdx
     //  ボタンを取得
     Button Gamepad::GetButton(int _Number)const
     {
-      return detail::Engine::GetGamepad()->GetButton(Index_, _Number);
+      return GetGamepad()->GetButton(Index_, _Number);
     }
 
     //  左スティックの入力状態を取得
     float2 Gamepad::GetLeftStick(float _DeadZone)const
     {
-      return detail::Engine::GetGamepad()->GetLeftStick(Index_, _DeadZone);
+      return GetGamepad()->GetLeftStick(Index_, _DeadZone);
     }
 
     //  右スティックの入力状態を取得
     float2 Gamepad::GetRightStick(float _DeadZone)const
     {
-      return detail::Engine::GetGamepad()->GetRightStick(Index_, _DeadZone);
+      return GetGamepad()->GetRightStick(Index_, _DeadZone);
     }
 
     //  左トリガーの入力状態を取得
     float Gamepad::GetLeftTrigger(float _DeadZone)const
     {
-      return detail::Engine::GetGamepad()->GetLeftTrigger(Index_, _DeadZone);
+      return GetGamepad()->GetLeftTrigger(Index_, _DeadZone);
     }
 
     //  右トリガーの入力状態を取得
     float Gamepad::GetRightTrigger(float _DeadZone)const
     {
-      return detail::Engine::GetGamepad()->GetRightTrigger(Index_, _DeadZone);
+      return GetGamepad()->GetRightTrigger(Index_, _DeadZone);
     }
 
     //  接続されているか確認
     bool Gamepad::isConnect()const
     {
-      return detail::Engine::GetGamepad()->isConnect(Index_);
+      return GetGamepad()->isConnect(Index_);
     }
 
     //  コントローラを振動させます
     void Gamepad::SetVibration(float _Speed)const
     {
-      return detail::Engine::GetGamepad()->SetVibration(Index_, _Speed);
+      return GetGamepad()->SetVibration(Index_, _Speed);
     }
 
     //  コントローラの振動を止めます
     void Gamepad::StopVibration()const
     {
-      return detail::Engine::GetGamepad()->StopVibration(Index_);
+      return GetGamepad()->StopVibration(Index_);
     }
   }
 }

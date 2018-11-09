@@ -10,7 +10,7 @@
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
 
-#include <HDX/WIC.hpp>
+#include <HDX/IWIC.hpp>
 #include <HDX/Texture/ITexture.hpp>
 
 #include <HDX/System/System.hpp>
@@ -37,14 +37,14 @@
 namespace hdx
 {
   Texture::Texture(const int2& _Size)
-    : ID_(detail::Engine::GetWIC()->Add(_Size)), Size_(_Size)
+    : ID_(GetWIC()->Add(_Size)), Size_(_Size)
   {
 
   }
 
   //  ファイルパスから画像を作成
   Texture::Texture(const char* FilePath)
-    : ID_(detail::Engine::GetWIC()->Load(FilePath)), Size_(detail::Engine::GetTexture()->GetSize(ID_))
+    : ID_(GetWIC()->Load(FilePath)), Size_(GetTexture()->GetSize(ID_))
   {
 
   }
@@ -136,11 +136,11 @@ namespace hdx
   //  描画最終処理
   void Texture::Draw2D(const detail::Vertex2D* v)const
   {
-    detail::ISystem* pSystem = detail::Engine::GetSystem();
+    detail::ISystem* pSystem = GetSystem();
 
     //  頂点バッファオブジェクトを書き換え
     D3D11_MAPPED_SUBRESOURCE MappedSubresorce;
-    pSystem->Map(detail::Engine::GetTexture()->GetVertexBuffer(), &MappedSubresorce);
+    pSystem->Map(GetTexture()->GetVertexBuffer(), &MappedSubresorce);
 
     detail::Vertex2D* Vertices = reinterpret_cast<detail::Vertex2D*>(MappedSubresorce.pData);
 
@@ -148,25 +148,25 @@ namespace hdx
     memcpy(Vertices, v, sizeof(detail::Vertex2D) * 4);
 
     //  頂点バッファオブジェクトを書き換え終了
-    pSystem->Unmap(detail::Engine::GetTexture()->GetVertexBuffer());
+    pSystem->Unmap(GetTexture()->GetVertexBuffer());
 
     //  シェーダーリソースビューを設定
-    pSystem->SetShaderResouceView(detail::Engine::GetTexture()->GetShaderResourceView(ID_), 0);
+    pSystem->SetShaderResouceView(GetTexture()->GetShaderResourceView(ID_), 0);
 
-    const detail::IRenderer2D* pGraphics2D = detail::Engine::GetRenderer2D();
+    const detail::IRenderer2D* pGraphics2D = GetRenderer2D();
 
     UINT Strides = sizeof(detail::Vertex2D);
-    pSystem->SetVertexBuffers(detail::Engine::GetTexture()->GetAddressOfVertexBuffer(), Strides);
+    pSystem->SetVertexBuffers(GetTexture()->GetAddressOfVertexBuffer(), Strides);
 
-    pSystem->SetBlendState(detail::Engine::GetBlendState()->GetBlendState(pGraphics2D->GetBlendState()));
-    pSystem->SetInputLayout(detail::Engine::GetVertexShader()->GetInputLayout(pGraphics2D->GetVertexShader()));
-    pSystem->SetVertexShader(detail::Engine::GetVertexShader()->GetVertexShader(pGraphics2D->GetVertexShader()));
-    pSystem->SetPixelShader(detail::Engine::GetPixelShader()->GetPixeShader(pGraphics2D->GetPixelShader()));
-    pSystem->SetRasterizerState(detail::Engine::GetRasterizerState()->GetRasterizerState(pGraphics2D->GetRasterizerState()));
-    pSystem->SetDepthStencilState(detail::Engine::GetDepthStencilState()->GetDepthStencilState(pGraphics2D->GetDepthStencilState()));
+    pSystem->SetBlendState(GetBlendState()->GetBlendState(pGraphics2D->GetBlendState()));
+    pSystem->SetInputLayout(GetVertexShader()->GetInputLayout(pGraphics2D->GetVertexShader()));
+    pSystem->SetVertexShader(GetVertexShader()->GetVertexShader(pGraphics2D->GetVertexShader()));
+    pSystem->SetPixelShader(GetPixelShader()->GetPixeShader(pGraphics2D->GetPixelShader()));
+    pSystem->SetRasterizerState(GetRasterizerState()->GetRasterizerState(pGraphics2D->GetRasterizerState()));
+    pSystem->SetDepthStencilState(GetDepthStencilState()->GetDepthStencilState(pGraphics2D->GetDepthStencilState()));
     for (UINT i = 0; i < SamplerStateMaxNum; ++i)
     {
-      pSystem->SetSamplersState(detail::Engine::GetSamplerState()->GetSamplerState(pGraphics2D->GetSamplerState(i)), i);
+      pSystem->SetSamplersState(GetSamplerState()->GetSamplerState(pGraphics2D->GetSamplerState(i)), i);
     }
     for (UINT i = 1; i < TextureMaxNum; ++i)
     {
@@ -174,7 +174,7 @@ namespace hdx
       //  サイズが0の時スルー
       if (Texture.GetSize() == hdx::int2()) continue;
 
-      pSystem->SetShaderResouceView(detail::Engine::GetTexture()->GetShaderResourceView(Texture.GetID()), i);
+      pSystem->SetShaderResouceView(GetTexture()->GetShaderResourceView(Texture.GetID()), i);
     }
 
     //  描画

@@ -67,7 +67,7 @@ namespace detail
 
     Microsoft::WRL::ComPtr<ID3D11BlendState> pBlendState;
 
-    HRESULT hr = detail::Engine::GetSystem()->GetDevice()->CreateBlendState(&BlendDesc, pBlendState.GetAddressOf());
+    HRESULT hr = GetSystem()->GetDevice()->CreateBlendState(&BlendDesc, pBlendState.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState");
 
     //  ƒ}ƒbƒv‚Ö’Ç‰Á

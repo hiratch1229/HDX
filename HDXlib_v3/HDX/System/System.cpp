@@ -7,7 +7,7 @@
 #include <HDX/Input/Gamepad/IGamepad.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
-#include <HDX/WIC.hpp>
+#include <HDX/IWIC.hpp>
 #include <HDX/InputElementDesc.hpp>
 #include <HDX/ConstantBuffer.hpp>
 #include <HDX/Macro.hpp>
@@ -184,7 +184,7 @@ namespace detail
     pPixelShader_ = new IPixelShader;
 
     //  Windows Imaging Component初期化
-    pWIC_ = new WIC;
+    pWIC_ = new IWIC;
 
     //  画像管理クラス初期化
     SpriteManager_.Initialize();
@@ -1239,156 +1239,108 @@ namespace hdx
   //  更新
   int System::Update()
   {
-    //static bool SystemInitialize = false;
-    //
-    ////  一回目
-    //if (!SystemInitialize)
-    //{
-    //  SystemInitialize = true;
-    //  //  初期化
-    //  detail::System::Get()->Initialize();
-    //}
-    ////  それ以降
-    //else
-    //{
-    //  //  描画裏表反転
-    //  detail::System::Get()->Present();
-    //}
-    //
-    ////  入力情報更新
-    //{
-    //  //  キーボード情報更新
-    //  detail::System::Get()->GetKeyboard()->Update();
-    //
-    //  //  マウス情報更新
-    //  detail::System::Get()->GetMouse()->Update();
-    //
-    //  //  XInputコントローラ情報更新
-    //  detail::System::Get()->GetXInput()->Update();
-    //
-    //  //  コントローラ情報更新
-    //  detail::System::Get()->GetGamepad()->Update();
-    //}
-    //
-    ////  メッセージを全て処理
-    //MSG Msg{};
-    //while (PeekMessage(&Msg, nullptr, 0, 0, PM_REMOVE))
-    //{
-    //  TranslateMessage(&Msg);
-    //  DispatchMessage(&Msg);
-    //}
-    //
-    ////  FPS制御
-    //while (!detail::System::Get()->FrameRateUpdate());
-    //
-    ////  画面クリア
-    //detail::System::Get()->ScreenClear();
-    //
-    ////  ウィンドウが閉じられたかどうか
-    //return detail::System::Get()->isNotCloseWindow();
-
-    return detail::Engine::GetSystem()->Update();
+    return GetSystem()->Update();
   }
 
   //  画面幅を取得
   int System::GetWindowWidth()
   {
-    return  detail::Engine::GetSystem()->GetWindowWidth();
+    return GetSystem()->GetWindowWidth();
   }
 
   //  画面高を取得
   int System::GetWindowHeight()
   {
-    return  detail::Engine::GetSystem()->GetWindowHeight();
+    return GetSystem()->GetWindowHeight();
   }
 
   //  画面サイズを取得
   const int2& System::GetWindowSize()
   {
-    return  detail::Engine::GetSystem()->GetWindowSize();
+    return GetSystem()->GetWindowSize();
   }
 
   //  ウィンドウの設定
   void System::SetWindowLeftTopPos(int _LeftPos, int _TopPos)
   {
-    detail::Engine::GetSystem()->SetWindowLeftTopPos({ _LeftPos, _TopPos });
+    GetSystem()->SetWindowLeftTopPos({ _LeftPos, _TopPos });
   }
 
   //  ウィンドウの設定
   void System::SetWindowLeftTopPos(const int2& _LeftTopPos)
   {
-    detail::Engine::GetSystem()->SetWindowLeftTopPos(_LeftTopPos);
+    GetSystem()->SetWindowLeftTopPos(_LeftTopPos);
   }
 
   //  ウィンドウの設定
   void System::SetWindowSize(int _Width, int _Height)
   {
-    detail::Engine::GetSystem()->SetWindowSize({ _Width, _Height });
+    GetSystem()->SetWindowSize({ _Width, _Height });
   }
 
   //  ウィンドウの設定
   void System::SetWindowSize(const int2& _Size)
   {
-    detail::Engine::GetSystem()->SetWindowSize(_Size);
+    GetSystem()->SetWindowSize(_Size);
   }
 
   //  ウィンドウの設定
   void System::SetWindowMode(bool _isFullScreen)
   {
-    detail::Engine::GetSystem()->SetWindowMode(_isFullScreen);
+    GetSystem()->SetWindowMode(_isFullScreen);
   }
 
   //  ウィンドウの設定
   void System::SettingWindow(int _LeftPos, int _TopPos, int _Width, int _Height, bool _isFullScreen)
   {
-    detail::Engine::GetSystem()->SetWindow({ _LeftPos, _TopPos }, { _Width, _Height }, _isFullScreen);
+    GetSystem()->SetWindow({ _LeftPos, _TopPos }, { _Width, _Height }, _isFullScreen);
   }
 
   //  ウィンドウの設定
   void System::SettingWindow(const int2& _LeftTopPos, const int2& _Size, bool _isFullScreen)
   {
-    detail::Engine::GetSystem()->SetWindow(_LeftTopPos, _Size, _isFullScreen);
+    GetSystem()->SetWindow(_LeftTopPos, _Size, _isFullScreen);
   }
 
   //  カーソル表示設定
   void System::ShowCursor(bool _isShowCursor)
   {
-    detail::Engine::GetSystem()->ShowCursor(_isShowCursor);
+    GetSystem()->ShowCursor(_isShowCursor);
   }
 
   //  ウィンドウのタイトルを設定
   void System::SetTitle(const char* _Title)
   {
-    detail::Engine::GetSystem()->SetTitle(_Title);
+    GetSystem()->SetTitle(_Title);
   }
 
   //  背景の色変更
   void System::SetBackColor(const ColorF& _Color)
   {
-    detail::Engine::GetSystem()->SetBackColor(_Color);
+    GetSystem()->SetBackColor(_Color);
   }
 
   //  ウィンドウのモードを変更
   void System::ChangeWindowMode()
   {
-    detail::Engine::GetSystem()->ChangeWindowMode();
+    GetSystem()->ChangeWindowMode();
   }
 
   //  ウィンドウのタイトルを変更
   void System::RenameTitle(const char* _Title)
   {
-    detail::Engine::GetSystem()->RenameTitle(_Title);
+    GetSystem()->RenameTitle(_Title);
   }
 
   //  スクリーンショット
   void System::ScreenShot()
   {
-    detail::Engine::GetSystem()->ScreenShot();
+    GetSystem()->ScreenShot();
   }
 
   //  ソフトを終了
   void System::Exit()
   {
-    detail::Engine::GetSystem()->Exit();
+    GetSystem()->Exit();
   }
 }

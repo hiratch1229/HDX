@@ -1,4 +1,4 @@
-#include <HDX/RenderTarget.hpp>
+#include <HDX/RenderTarget/RenderTarget.hpp>
 
 #include <HDX/System/System.hpp>
 
@@ -17,16 +17,12 @@
 
 namespace hdx
 {
-  RenderTarget::RenderTarget()
-    : Texture(hdx::System::GetWindowSize())
-  {
-
-  }
-
   RenderTarget::RenderTarget(const int2& _Size)
     : Texture(_Size)
   {
+    hdx::int2 A;
 
+    A.X = 0;
   }
 
   RenderTarget::RenderTarget(UINT _Width, UINT _Height)

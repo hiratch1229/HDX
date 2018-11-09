@@ -1,4 +1,4 @@
-#include <HDX/WIC.hpp>
+#include <HDX/IWIC.hpp>
 
 #include <HDX/Engine.hpp>
 #include <HDX/System/ISystem.hpp>
@@ -15,7 +15,7 @@
 
 namespace detail
 {
-  struct WIC::Impl
+  struct IWIC::Impl
   {
     Microsoft::WRL::ComPtr<IWICImagingFactory> pFactory_;
   public:
@@ -47,23 +47,23 @@ namespace detail
     }
   };
 
-  WIC::WIC()
+  IWIC::IWIC()
     : pImpl_(new Impl)
   {
 
   }
 
-  WIC::~WIC()
+  IWIC::~IWIC()
   {
     delete pImpl_;
     pImpl_ = nullptr;
   }
 
-  int WIC::Load(const char* _FilePath)
+  int IWIC::Load(const char* _FilePath)
   {
     //  Šù‚Éì¬‚³‚ê‚Ä‚¢‚é‚©Šm”F
     {
-      const int ID = detail::Engine::GetTexture()->GetTextureID(_FilePath);
+      const int ID = GetTexture()->GetTextureID(_FilePath);
       if (ID >= 0)
       {
         return ID;
@@ -139,7 +139,7 @@ namespace detail
 
     Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture2d;
 
-    ISystem* pSystem = Engine::GetSystem();
+    ISystem* pSystem = GetSystem();
 
     hr = pSystem->GetDevice()->CreateTexture2D(&Texture2dDesc, &InitializeData, pTexture2d.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateTexture2D");
@@ -155,11 +155,11 @@ namespace detail
     hr = pSystem->GetDevice()->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResourceView.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), L"CreateShaderResourceView");
 
-    return Engine::GetTexture()->InsertTexture(_FilePath, pShaderResourceView.Get(), Size);
+    return GetTexture()->InsertTexture(_FilePath, pShaderResourceView.Get(), Size);
   }
 
-  int WIC::Add(const hdx::int2& _Size)
+  int IWIC::Add(const hdx::int2& _Size)
   {
-    return Engine::GetTexture()->CreateTexture(_Size);
+    return GetTexture()->CreateTexture(_Size);
   }
 }

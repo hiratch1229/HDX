@@ -15,43 +15,43 @@ namespace hdx
       //  座標を取得
       int2 GetPos()
       {
-        return detail::Engine::GetMouse()->GetPos();
+        return GetMouse()->GetPos();
       }
 
       //  座標を変更
       void SetPos(const hdx::int2& _Pos)
       {
-        detail::Engine::GetMouse()->SetPos(_Pos);
+        GetMouse()->SetPos(_Pos);
       }
 
       //  移動量を取得
       int2 GetDelta()
       {
-        return detail::Engine::GetMouse()->GetDelta();
+        return GetMouse()->GetDelta();
       }
 
       //  ホイール移動量を取得
       int2 GetWheel()
       {
-        return detail::Engine::GetMouse()->GetWheel();
+        return GetMouse()->GetWheel();
       }
 
       //  何かのボタンが押されていればtrueを返す
       bool AnyButtonPress()
       {
-        return detail::Engine::GetMouse()->AnyButtonPress();
+        return GetMouse()->AnyButtonPress();
       }
 
       //  何かのボタンが押されたならtrueを返す
       bool AnyButtonPressed()
       {
-        return detail::Engine::GetMouse()->AnyButtonPressed();
+        return GetMouse()->AnyButtonPressed();
       }
 
       //  何かのボタンが離されたならtrueを返す
       bool AnyButtonReleased()
       {
-        return detail::Engine::GetMouse()->AnyButtonReleased();
+        return GetMouse()->AnyButtonReleased();
       }
     }
   }

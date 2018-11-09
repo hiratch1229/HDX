@@ -19,45 +19,45 @@ LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (wParam)
     {
     case VK_ESCAPE:
-      detail::Engine::GetSystem()->Exit();
+      GetSystem()->Exit();
       break;
     case VK_F2:
-      detail::Engine::GetSystem()->ScreenShot();
+      GetSystem()->ScreenShot();
       break;
     case VK_F11:
-      detail::Engine::GetSystem()->ChangeWindowMode();
+      GetSystem()->ChangeWindowMode();
       break;
     }
     break;
   case WM_LBUTTONDOWN:  //  マウス左ボタンを押した時
-    detail::Engine::GetMouse()->ButtonPressed(detail::MouseButtons::Left);
+    GetMouse()->ButtonPressed(detail::MouseButtons::Left);
     break;
   case WM_LBUTTONUP:    //  マウス左ボタンを離した時
-    detail::Engine::GetMouse()->ButtonReleased(detail::MouseButtons::Left);
+    GetMouse()->ButtonReleased(detail::MouseButtons::Left);
     break;
   case WM_RBUTTONDOWN:  //  マウス右ボタンを押した時
-    detail::Engine::GetMouse()->ButtonPressed(detail::MouseButtons::Right);
+    GetMouse()->ButtonPressed(detail::MouseButtons::Right);
     break;
   case WM_RBUTTONUP:    //  マウス右ボタンを離した時
-    detail::Engine::GetMouse()->ButtonReleased(detail::MouseButtons::Right);
+    GetMouse()->ButtonReleased(detail::MouseButtons::Right);
     break;
   case WM_MBUTTONDOWN:  //  マウス中ボタンを押した時
-    detail::Engine::GetMouse()->ButtonPressed(detail::MouseButtons::Middle);
+    GetMouse()->ButtonPressed(detail::MouseButtons::Middle);
     break;
   case WM_MBUTTONUP:    //  マウス中ボタンを離した時
-    detail::Engine::GetMouse()->ButtonReleased(detail::MouseButtons::Middle);
+    GetMouse()->ButtonReleased(detail::MouseButtons::Middle);
     break;
   case WM_MOUSEWHEEL:   //  マウスホイール回転
-    detail::Engine::GetMouse()->SetWheel(static_cast<int>(GET_WHEEL_DELTA_WPARAM(wParam)));
+    GetMouse()->SetWheel(static_cast<int>(GET_WHEEL_DELTA_WPARAM(wParam)));
     break;
   case WM_XBUTTONDOWN:  //  マウスXボタンのどちらかを押した時
     switch (GET_XBUTTON_WPARAM(wParam))
     {
     case XBUTTON1:  //  X1ボタン
-      detail::Engine::GetMouse()->ButtonPressed(detail::MouseButtons::X1);
+      GetMouse()->ButtonPressed(detail::MouseButtons::X1);
       break;
     case XBUTTON2:  //  X2ボタン
-      detail::Engine::GetMouse()->ButtonPressed(detail::MouseButtons::X2);
+      GetMouse()->ButtonPressed(detail::MouseButtons::X2);
       break;
     }
     break;
@@ -65,10 +65,10 @@ LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (GET_XBUTTON_WPARAM(wParam))
     {
     case XBUTTON1:  //  X1ボタン
-      detail::Engine::GetMouse()->ButtonReleased(detail::MouseButtons::X1);
+      GetMouse()->ButtonReleased(detail::MouseButtons::X1);
       break;
     case XBUTTON2:  //  X2ボタン
-      detail::Engine::GetMouse()->ButtonReleased(detail::MouseButtons::X2);
+      GetMouse()->ButtonReleased(detail::MouseButtons::X2);
       break;
     }
     break;
