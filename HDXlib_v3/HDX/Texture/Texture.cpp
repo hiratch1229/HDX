@@ -9,6 +9,7 @@
 #include <HDX/DepthStencilState/IDepthStencilState.hpp>
 #include <HDX/VertexShader/IVertexShader.hpp>
 #include <HDX/PixelShader/IPixelShader.hpp>
+#include <HDX/RenderTarget/IRenderTarget.hpp>
 
 #include <HDX/IWIC.hpp>
 #include <HDX/Texture/ITexture.hpp>
@@ -153,29 +154,31 @@ namespace hdx
     //  シェーダーリソースビューを設定
     pSystem->SetShaderResouceView(GetTexture()->GetShaderResourceView(ID_), 0);
 
-    const detail::IRenderer2D* pGraphics2D = GetRenderer2D();
+    const detail::IRenderer2D* pRenderer2D = GetRenderer2D();
 
     UINT Strides = sizeof(detail::Vertex2D);
     pSystem->SetVertexBuffers(GetTexture()->GetAddressOfVertexBuffer(), Strides);
 
-    pSystem->SetBlendState(GetBlendState()->GetBlendState(pGraphics2D->GetBlendState()));
-    pSystem->SetInputLayout(GetVertexShader()->GetInputLayout(pGraphics2D->GetVertexShader()));
-    pSystem->SetVertexShader(GetVertexShader()->GetVertexShader(pGraphics2D->GetVertexShader()));
-    pSystem->SetPixelShader(GetPixelShader()->GetPixeShader(pGraphics2D->GetPixelShader()));
-    pSystem->SetRasterizerState(GetRasterizerState()->GetRasterizerState(pGraphics2D->GetRasterizerState()));
-    pSystem->SetDepthStencilState(GetDepthStencilState()->GetDepthStencilState(pGraphics2D->GetDepthStencilState()));
+    pSystem->SetBlendState(GetBlendState()->GetBlendState(pRenderer2D->GetBlendState()));
+    pSystem->SetInputLayout(GetVertexShader()->GetInputLayout(pRenderer2D->GetVertexShader()));
+    pSystem->SetVertexShader(GetVertexShader()->GetVertexShader(pRenderer2D->GetVertexShader()));
+    pSystem->SetPixelShader(GetPixelShader()->GetPixeShader(pRenderer2D->GetPixelShader()));
+    pSystem->SetRasterizerState(GetRasterizerState()->GetRasterizerState(pRenderer2D->GetRasterizerState()));
+    pSystem->SetDepthStencilState(GetDepthStencilState()->GetDepthStencilState(pRenderer2D->GetDepthStencilState()));
     for (UINT i = 0; i < SamplerStateMaxNum; ++i)
     {
-      pSystem->SetSamplersState(GetSamplerState()->GetSamplerState(pGraphics2D->GetSamplerState(i)), i);
+      pSystem->SetSamplersState(GetSamplerState()->GetSamplerState(pRenderer2D->GetSamplerState(i)), i);
     }
     for (UINT i = 1; i < TextureMaxNum; ++i)
     {
-      const hdx::Texture& Texture = pGraphics2D->GetTexture(i);
+      const hdx::Texture& Texture = pRenderer2D->GetTexture(i);
       //  サイズが0の時スルー
       if (Texture.GetSize() == hdx::int2()) continue;
 
       pSystem->SetShaderResouceView(GetTexture()->GetShaderResourceView(Texture.GetID()), i);
     }
+
+    pSystem->SetRenderTarget(GetRenderTarget()->GetRenderTargetView(pRenderer2D->GetRenderTarget()), GetRenderTarget()->GetDepthStencilView(pRenderer2D->GetRenderTarget()));
 
     //  描画
     pSystem->GetImmediateContext()->Draw(4, 0);

@@ -16,6 +16,7 @@ namespace detail
   class IPixelShader;
   class IWIC;
   class ITexture;
+  class IRenderTarget;
   class IRandom;
 
   template <class Interface>
@@ -59,6 +60,7 @@ namespace detail
     Component<IPixelShader> pPixelShader_;
     Component<IWIC> pWIC_;
     Component<ITexture> pTexture_;
+    Component<IRenderTarget> pRenderTarget_;
     Component<IRandom> pRandom_;
   public:
     Engine();
@@ -78,6 +80,7 @@ namespace detail
     static IPixelShader* GetPixelShader() { return pEngine->pPixelShader_.Get(); }
     static IWIC* GetWIC() { return pEngine->pWIC_.Get(); }
     static ITexture* GetTexture() { return pEngine->pTexture_.Get(); }
+    static IRenderTarget* GetRenderTarget() { return pEngine->pRenderTarget_.Get(); }
     static IRandom* GetRandom() { return pEngine->pRandom_.Get(); }
   };
 }
@@ -121,4 +124,5 @@ GetFunc(VertexShader)
 GetFunc(PixelShader)
 GetFunc(WIC)
 GetFunc(Texture)
+GetFunc(RenderTarget)
 GetFunc(Random)

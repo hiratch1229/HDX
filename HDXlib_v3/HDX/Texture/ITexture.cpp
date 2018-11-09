@@ -4,6 +4,7 @@
 #include <HDX/System/ISystem.hpp>
 
 #include <HDX/Vertex.hpp>
+#include <HDX/RenderTarget/RenderTarget.hpp>
 #include <HDX/NumberMap.hpp>
 #include <HDX/Type2.hpp>
 #include <HDX/Constants.hpp>
@@ -22,7 +23,7 @@ namespace detail
       Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pShaderResourceView;
       hdx::int2 Size_;
     };
-  private:
+  public:
     NumberMap<std::string, TextureData> TextureMap_;
     Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer_;
   private:
@@ -133,7 +134,7 @@ namespace detail
       sprintf_s(FileName, "CreateTextureNumber%d", CreateTextureNum_++);
 
       //  ƒ}ƒbƒv‚Ö’Ç‰Á
-      return TextureMap_.insert(FileName, { pShaderResouceView, hdx::int2(1, 1) });
+      return TextureMap_.insert(FileName, { pShaderResouceView, _Size });
     }
   public:
     int GetDummyTextureID()
@@ -208,5 +209,11 @@ namespace detail
   ID3D11Buffer** ITexture::GetAddressOfVertexBuffer()
   {
     return pImpl_->GetAddressOfVertexBuffer();
+  }
+
+  void ITexture::SetShaderResouceView(const hdx::RenderTarget& _RenderTarget, ID3D11ShaderResourceView* _pShaderResouceView)
+  {
+    //pImpl_->TextureMap_[_RenderTarget.GetID()].pShaderResourceView.Reset();
+    //pImpl_->TextureMap_[_RenderTarget.GetID()].pShaderResourceView = _pShaderResouceView;
   }
 }

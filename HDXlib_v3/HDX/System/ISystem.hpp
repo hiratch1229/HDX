@@ -14,6 +14,8 @@ struct ID3D11Buffer;
 struct ID3D11SamplerState;
 struct ID3D11RasterizerState;
 struct ID3D11DepthStencilState;
+struct ID3D11RenderTargetView;
+struct ID3D11DepthStencilView;
 struct D3D11_MAPPED_SUBRESOURCE;
 struct HWND__;
 typedef struct HWND__ *HWND;
@@ -67,6 +69,7 @@ namespace detail
     void SetSamplersState(ID3D11SamplerState*const* _ppSamplerState, UINT _Slot);
     void SetRasterizerState(ID3D11RasterizerState* _pRasterizerState);
     void SetDepthStencilState(ID3D11DepthStencilState* _pDepthStencilState);
+    void SetRenderTarget(ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView);
   public:
     void Map(ID3D11Buffer* _pVertexBuffer, D3D11_MAPPED_SUBRESOURCE* _pMappedSubresorce);
     void Unmap(ID3D11Buffer* _pVertexBuffer);

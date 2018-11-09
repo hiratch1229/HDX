@@ -14,6 +14,7 @@
 #include <HDX/PixelShader/IPixelShader.hpp>
 #include <HDX/IWIC.hpp>
 #include <HDX/Texture/ITexture.hpp>
+#include <HDX/RenderTarget/IRenderTarget.hpp>
 #include <HDX/Random/IRandom.hpp>
 
 #include <crtdbg.h>
@@ -47,6 +48,9 @@ namespace detail
     pPixelShader_.Release();
     pWIC_.Release();
     pTexture_.Release();
+    pRenderTarget_.Release();
     pRandom_.Release();
+
+    pEngine = nullptr;
   }
 }

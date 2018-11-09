@@ -2,6 +2,7 @@
 
 #include <HDX/Engine.hpp>
 #include <HDX/Texture/ITexture.hpp>
+#include <HDX/RenderTarget/IRenderTarget.hpp>
 
 #include <HDX/VertexShader/VertexShader.hpp>
 #include <HDX/PixelShader/PixelShader.hpp>
@@ -26,7 +27,6 @@ namespace detail
     hdx::DepthStencilState CurrentDepthStencilState_ = hdx::DepthStencilState::Default2D;
     hdx::Texture CurrentTextures_[hdx::TextureMaxNum - 1];
     hdx::RenderTarget CurrentRenderTarget_;
-    bool isDefaultRenderTarget_ = true;
   public:
     Impl()
     {
@@ -104,23 +104,28 @@ namespace detail
     }
   }
 
-  inline void CreateTextureFromRenderTarget(const hdx::RenderTarget& _RenderTarger)
+  inline void CreateTextureFromRenderTarget(const hdx::RenderTarget& _RenderTarget)
   {
-
+    GetTexture()->SetShaderResouceView(_RenderTarget, GetRenderTarget()->GetShaderResourceView(_RenderTarget));
   }
 
   void IRenderer2D::RestoreRenderTarget()
   {
-    pImpl_->isDefaultRenderTarget_ = true;
-    CreateTextureFromRenderTarget(pImpl_->CurrentRenderTarget_);
+    if (pImpl_->CurrentRenderTarget_.GetSize() != hdx::int2())
+    {
+      CreateTextureFromRenderTarget(pImpl_->CurrentRenderTarget_);
+      pImpl_->CurrentRenderTarget_ = hdx::RenderTarget();
+    }
   }
 
   void IRenderer2D::SetRenderTarget(const hdx::RenderTarget& _RenderTarger)
   {
-    pImpl_->isDefaultRenderTarget_ = false;
     if (pImpl_->CurrentRenderTarget_ != _RenderTarger)
     {
-      CreateTextureFromRenderTarget(pImpl_->CurrentRenderTarget_);
+      if (pImpl_->CurrentRenderTarget_.GetSize() != hdx::int2())
+      {
+        CreateTextureFromRenderTarget(pImpl_->CurrentRenderTarget_);
+      }
       pImpl_->CurrentRenderTarget_ = _RenderTarger;
     }
   }
@@ -160,8 +165,8 @@ namespace detail
     return pImpl_->CurrentTextures_[_Slot - 1];
   }
 
-  //const hdx::RenderTarget& IRenderer2D::GetRenderTarget()const
-  //{
-  //  return pImpl_
-  //}
+  const hdx::RenderTarget& IRenderer2D::GetRenderTarget()const
+  {
+    return pImpl_->CurrentRenderTarget_;
+  }
 }

@@ -81,8 +81,14 @@ void Main()
   //    Fbx.Render(WordldViewProjection, World, LightDirection, 1 / 60.0f, hdx::Palette::White, hdx::Input::Keyboard::KeySpace);
   //  }
 
+  hdx::RenderTarget RenderTarget(hdx::System::GetWindowSize());
+
   while (hdx::System::Update())
   {
+    //RenderTarget.Clear();
+    //
+    //hdx::Renderer2D::SetRenderTarget(RenderTarget);
+
     //if (hdx::Input::Keyboard::Key0.Pressed())
     //{
     //  hdx::Renderer2D::SetSamplerState(hdx::SamplerState::Default2D, 0);
@@ -98,9 +104,13 @@ void Main()
     //  hdx::Renderer2D::SetSamplerState(SamplerState, 0);
     //}
 
-    for (int i = 0; i < 275; ++i)
+    for (int i = 0; i < 300; ++i)
     {
-      A.Draw(true);
+      A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
     }
+
+    //hdx::Renderer2D::RestoreRenderTarget();
+    //
+    //RenderTarget.Draw();
   }
 }

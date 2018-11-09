@@ -630,6 +630,36 @@ namespace detail
     }
   }
 
+  void ISystem::SetRenderTarget(ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView)
+  {
+    struct State
+    {
+      ID3D11RenderTargetView** ppRenderTargetView = nullptr;
+      ID3D11DepthStencilView* pDepthStencilView = nullptr;
+      State(ID3D11RenderTargetView** _ppRenderTargetView = nullptr, ID3D11DepthStencilView* _pDepthStencilView = nullptr)
+        : ppRenderTargetView(_ppRenderTargetView), pDepthStencilView(_pDepthStencilView)
+      {
+
+      }
+    };
+
+    auto Comparison = [](const State& _State1, const State& _State2)->bool
+    {
+      return _State1.ppRenderTargetView == _State2.ppRenderTargetView && _State1.pDepthStencilView == _State2.pDepthStencilView;
+    };
+
+    static State CurrentState;
+
+    State _State = (_ppRenderTargetView == nullptr && _pDepthStencilView == nullptr)
+      ? State(pImpl_->pRenderTargetView_.GetAddressOf(), pImpl_->pDepthStencilView_.Get()) : State(_ppRenderTargetView, _pDepthStencilView);
+
+    if (!Comparison(CurrentState, _State))
+    {
+      CurrentState = _State;
+      pImpl_->pImmediateContext_->OMSetRenderTargets(1, CurrentState.ppRenderTargetView, CurrentState.pDepthStencilView);
+    }
+  }
+
   void ISystem::Map(ID3D11Buffer* _pVertexBuffer, D3D11_MAPPED_SUBRESOURCE* _pMappedSubresorce)
   {
     //  エラーチェック用

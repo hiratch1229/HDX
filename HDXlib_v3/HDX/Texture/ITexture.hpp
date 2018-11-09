@@ -7,6 +7,7 @@ struct ID3D11Buffer;
 namespace hdx
 {
   struct int2;
+  class RenderTarget;
 }
 
 namespace detail
@@ -25,6 +26,7 @@ namespace detail
     ID3D11ShaderResourceView** GetShaderResourceView(int _ID);
     ID3D11Buffer* GetVertexBuffer();
     ID3D11Buffer** GetAddressOfVertexBuffer();
+    void SetShaderResouceView(const hdx::RenderTarget& _RenderTarget, ID3D11ShaderResourceView* _pShaderResouceView);
   public:
     ITexture();
     ~ITexture();

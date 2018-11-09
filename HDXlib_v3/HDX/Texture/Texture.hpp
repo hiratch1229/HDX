@@ -49,9 +49,6 @@ namespace hdx
     void Draw(float _Left, int _Top) {}
   };
 
-  class VertexShader;
-  class PixelShader;
-
   //  2D‰æ‘œ
   class Texture
   {

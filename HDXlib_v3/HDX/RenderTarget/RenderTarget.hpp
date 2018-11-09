@@ -14,7 +14,7 @@ namespace hdx
   class RenderTarget : public hdx::Texture
   {
   public:
-    RenderTarget() = default;
+    RenderTarget();
     RenderTarget(const int2& _Size);
     RenderTarget(UINT _Width, UINT _Height);
   public:
