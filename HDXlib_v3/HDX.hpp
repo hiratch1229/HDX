@@ -7,7 +7,7 @@
 //  システム
 //  2018.07.31  作成
 //  TODO:前バージョンからほとんど持ってきたので、色々改善
-#include <HDX/System/System.hpp>
+#include "HDX/Include/System.hpp"
 
 
 //*************************
@@ -18,23 +18,23 @@
 //  2018.08.25  作成
 //  2018.08.26  組み合わせを実装
 //  TODO:組み合わせを3つ以上指定出来るように
-#include <HDX/Input/Button.hpp>
+#include "HDX/Include/Button.hpp"
 
 //  キーボード
-//  2018.08.25  作成 
-#include <HDX/Input/Keyboard/Keyboard.hpp>
+//  2018.08.25  作成
+#include "HDX/Include/Keyboard.hpp"
 
 //  マウス
 //  2018.08.26  作成 
-#include <HDX/Input/Mouse/Mouse.hpp>
+#include "HDX/Include/Mouse.hpp"
 
 //  XInputコントローラ
 //  2018.09.20  作成
-#include <HDX/Input/XInput/XInput.hpp>
+#include "HDX/Include/XInput.hpp"
 
-//  コントローラ全般
+//  DirectInputコントローラ
 //  2018.09.02  作成 
-#include <HDX/Input/Gamepad/Gamepad.hpp>
+#include "HDX/Include/Gamepad.hpp"
 
 
 //*************************
@@ -43,52 +43,52 @@
 
 //  色
 //  2018.08.09  作成
-#include <HDX/Color.hpp>
+#include "HDX/Include/Color.hpp"
 
 //  2D画像
 //  2018.08.09  作成
 //  TODO:もっと簡単に描画出来るように
 //  TODO:バッチ処理
-#include <HDX/Texture/Texture.hpp>
+#include "HDX/Include/Texture.hpp"
 
 //  3D基本形オブジェクト
 //  2018.09.26  作成
 //  TODO:前バージョンからほとんど持ってきたので、色々改善
-#include <HDX/GeometricPrimitive.hpp>
+#include "HDX/Include/GeometricPrimitive.hpp"
 
 //  3Dモデル
 //  2018.09.26  作成
 //  TODO:前バージョンからほとんど持ってきたので、色々改善
-#include <HDX/Model.hpp>
+#include "HDX/Include/Model.hpp"
 
 //  FBXモデル
 //  2018.09.28  作成
 //  TODO:授業課題から改善
-#include <HDX/SkinnedMesh.hpp>
+#include "HDX/Include/GeometricPrimitive.hpp"
 
 //  レンダラー2D
 //  2018.10.28  作成
-#include <HDX/Renderer/Renderer2D.hpp>
+#include "HDX/Include/Renderer2D.hpp"
 
 //  ブレンドステート
 //  2018.10.29  作成
-#include <HDX/BlendState/BlendState.hpp>
+#include "HDX/Include/BlendState.hpp"
 
 //  サンプラーステート
 //  2018.11.06  作成
-#include <HDX/SamplerState/SamplerState.hpp>
+#include "HDX/Include/SamplerState.hpp"
 
 //  ラスタライーザーステート
 //  2018.11.07  作成
-#include <HDX/RasterizerState/RasterizerState.hpp>
+#include "HDX/Include/RasterizerState.hpp"
 
 //  デプスステンシルステート
 //  2018.11.07  作成
-#include <HDX/DepthStencilState/DepthStencilState.hpp>
+#include "HDX/Include/DepthStencilState.hpp"
 
 //  レンダーターゲット
 //  2018.11.07  作成
-#include <HDX/RenderTarget/RenderTarget.hpp>
+#include "HDX/Include/RenderTarget.hpp"
 
 
 //*************************
@@ -96,19 +96,19 @@
 //*************************
 
 //  コンスタントバッファ
-#include <HDX/ConstantBuffer.hpp>
+#include "HDX/Include/ConstantBuffer.hpp"
 
 //  インプットレイアウト
 //  2018.10.04  作成
-#include <HDX/InputElementDesc.hpp>
+#include "HDX/Include/InputElementDesc.hpp"
 
 //  頂点シェーダー
 //  2018.09.30  作成
-#include <HDX/VertexShader/VertexShader.hpp>
+#include "HDX/Include/VertexShader.hpp"
 
 //  ピクセルシェーダー
 //  2018.09.30  作成
-#include <HDX/PixelShader/PixelShader.hpp>
+#include "HDX/Include/PixelShader.hpp"
 
 
 //*************************
@@ -118,7 +118,7 @@
 //  サウンド
 //  2018.09.02  作成
 //  TODO:前バージョンからほとんど持ってきたので、色々改善
-#include <HDX/Sound.hpp>
+#include "HDX/Include/Sound.hpp"
 
 
 //*************************
@@ -127,11 +127,11 @@
 
 //  数学定数
 //  2018.08.09  作成
-#include <HDX/MathConstants.hpp>
+#include "HDX/Include/MathConstants.hpp"
 
 //  数学
 //  2018.08.09  作成
-#include <HDX/Math.hpp>
+#include "HDX/Include/Math.hpp"
 
 
 //*************************
@@ -140,35 +140,35 @@
 
 //  float,int2つの型
 //  2018.08.09  作成
-#include <HDX/Type2.hpp>
+#include "HDX/Include/Type2.hpp"
 
 //  float,int3つの型
 //  2018.08.09  作成
-#include <HDX/Type3.hpp>
+#include "HDX/Include/Type3.hpp"
 
 //  角度自動正規化クラス
 //  2018.08.09  作成
-#include <HDX/Angle.hpp>
+#include "HDX/Include/Angle.hpp"
 
 //  ランダム(Xorshift)クラス
 //  2018.09.23  作成
-#include <HDX/Random/Random.hpp>
+#include "HDX/Include/Random.hpp"
 
 //  コピー禁止クラス
 //  2018.07.31  作成
-#include <HDX/NonCopy.hpp>
+#include "HDX/Include/NonCopy.hpp"
 
 //  シングルトン(デザインパターン)
 //  2018.07.31  作成
-#include <HDX/Singleton.hpp>
+#include "HDX/Include/Singleton.hpp"
 
 //  イージング
 //  2018.09.02  作成
-#include <HDX/Easing.hpp>
+#include "HDX/Include/Easing.hpp"
 
 //  マクロ
 //  2018.09.03  作成
-#include <HDX/Macro.hpp>
+#include "HDX/Include/Macro.hpp"
 
 
 //--------------------------------------------------
