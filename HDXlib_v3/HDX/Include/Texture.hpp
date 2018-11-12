@@ -3,11 +3,7 @@
 #include "Color.hpp"
 #include "Angle.hpp"
 
-//  前方宣言
-namespace detail
-{
-  struct Vertex2D;
-}
+struct Vertex2D;
 
 //  ライブラリ
 namespace hdx
@@ -58,7 +54,7 @@ namespace hdx
   private:
     //  描画最終処理
     //  (描画関数を追加する場合最後に呼んでください)
-    void Draw2D(const detail::Vertex2D* v)const;
+    void Draw2D(const Vertex2D* v)const;
   protected:
     Texture(const int2& _Size);
   public:

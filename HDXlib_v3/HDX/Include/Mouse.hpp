@@ -1,43 +1,66 @@
 #pragma once
 #include "Button.hpp"
-#include "Type2.hpp"
 
 //  ライブラリ
 namespace hdx
 {
+  struct int2;
+
   //  入力系
   namespace Input
   {
     //  マウス
-    namespace Mouse
+    class Mouse
     {
-      //  左 ボタン
-      constexpr Button ButtonLeft{ detail::InputDevice::Mouse, 0 };
-      //  中(ホイール) ボタン
-      constexpr Button ButtonCenter{ detail::InputDevice::Mouse, 1 };
-      //  右 ボタン
-      constexpr Button ButtonRight{ detail::InputDevice::Mouse, 2 };
-      //  X1(戻る) ボタン
-      constexpr Button ButtonX1{ detail::InputDevice::Mouse, 3 };
-      //  X2(進む) ボタン
-      constexpr Button ButtonX2{ detail::InputDevice::Mouse, 4 };
+    public:
+      //  使うボタン
+      enum Buttons
+      {
+        Left,
+        Middle,
+        Right,
+        X1,
+        X2
+      };
+    public:
+      //  マウスを作成
+      constexpr Mouse()
+        : ButtonLeft(InputDevice::Mouse, Buttons::Left),
+        ButtonCenter(InputDevice::Mouse, Buttons::Middle),
+        ButtonRight(InputDevice::Mouse, Buttons::Right),
+        ButtonX1(InputDevice::Mouse, Buttons::X1),
+        ButtonX2(InputDevice::Mouse, Buttons::X2)
+      {
 
+      }
+    public:
+      //  左 ボタン
+      const Button ButtonLeft;
+      //  中(ホイール) ボタン
+      const Button ButtonCenter;
+      //  右 ボタン
+      const Button ButtonRight;
+      //  X1(戻る) ボタン
+      const Button ButtonX1;
+      //  X2(進む) ボタン
+      const Button ButtonX2;
+    public:
       //  座標を取得
-      int2 GetPos();
+      const int2& GetPos()const;
       //  座標を変更
-      void SetPos(const hdx::int2& _Pos);
+      void SetPos(const int2& _Pos)const;
       //  移動量を取得
-      int2 GetDelta();
+      const int2& GetDelta()const;
       //  ホイール移動量を取得
       //  正の数：奥,負の数：手前
-      int2 GetWheel();
-
+      int GetWheel()const;
+    public:
       //  何かのボタンが押されていればtrueを返す
-      bool AnyButtonPress();
+      bool AnyButtonPress()const;
       //  何かのボタンが押されたならtrueを返す
-      bool AnyButtonPressed();
+      bool AnyButtonPressed()const;
       //  何かのボタンが離されたならtrueを返す
-      bool AnyButtonReleased();
+      bool AnyButtonReleased()const;
     };
   }
 }

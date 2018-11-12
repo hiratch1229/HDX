@@ -5,17 +5,14 @@ namespace hdx
   struct int2;
 }
 
-namespace detail
+class IWIC
 {
-  class IWIC
-  {
-    struct Impl;
-  private:
-    Impl* pImpl_;
-  public:
-    IWIC();
-    ~IWIC();
-    int Load(const char* _FilePath);
-    int Add(const hdx::int2& _Size);
-  };
-}
+  struct Impl;
+private:
+  Impl* pImpl_;
+public:
+  IWIC();
+  ~IWIC();
+  int Load(const char* _FilePath);
+  int Add(const hdx::int2& _Size);
+};

@@ -1,6 +1,6 @@
 #include "../../Include/Sound.hpp"
 
-#include "../Engine/Engine.hpp"
+#include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 
 #include "../../Include/Constants.hpp"
@@ -15,7 +15,7 @@ namespace hdx
     size_t Num;
     mbstowcs_s(&Num, wFilePath, FilePath, MaxCharLimit);
     
-    HRESULT hr = MFPCreateMediaPlayer(wFilePath, false, MFP_OPTION_NONE, nullptr, GetSystem()->GetHWND(), pMediaPlayer_.GetAddressOf());
+    HRESULT hr = MFPCreateMediaPlayer(wFilePath, false, MFP_OPTION_NONE, nullptr, Engine::GetSystem()->GetHWND(), pMediaPlayer_.GetAddressOf());
 
     //  ƒGƒ‰[ˆ—
     NOT_FOUND(hr, wFilePath);

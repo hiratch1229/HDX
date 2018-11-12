@@ -1,6 +1,6 @@
 #include "../../Include/GeometricPrimitive.hpp"
 
-#include "../Engine/Engine.hpp"
+#include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 #include "../VertexShader/IVertexShader.hpp"
 #include "../PixelShader/IPixelShader.hpp"

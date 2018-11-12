@@ -1,6 +1,6 @@
-#include "../Include/System.hpp"
+#include "Engine.hpp"
 
-#include "Engine/Engine.hpp"
+#include "../Include/System.hpp"
 #include "../Include/Renderer2D.hpp"
 
 #include <Windows.h>
@@ -50,7 +50,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
   }
 
   //  エンジンの作成
-  detail::Engine Engine;
+  Engine Engine;
 
   //  シェーダーの初期設定
   {

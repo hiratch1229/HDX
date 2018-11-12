@@ -340,9 +340,19 @@ namespace hdx
     }
   public:
     //  ‰ÁZ
+    constexpr float2 operator +(int _Value)const noexcept
+    {
+      return{ X + _Value, Y + _Value };
+    }
+    //  ‰ÁZ
     constexpr float2 operator +(float _Value)const noexcept
     {
       return{ X + _Value, Y + _Value };
+    }
+    //  Œ¸Z
+    constexpr float2 operator -(int _Value)const noexcept
+    {
+      return{ X - _Value, Y - _Value };
     }
     //  Œ¸Z
     constexpr float2 operator -(float _Value)const noexcept
@@ -350,9 +360,19 @@ namespace hdx
       return{ X - _Value, Y - _Value };
     }
     //  æZ
+    constexpr float2 operator *(int _Value)const noexcept
+    {
+      return{ X * _Value, Y * _Value };
+    }
+    //  æZ
     constexpr float2 operator *(float _Value)const noexcept
     {
       return{ X * _Value, Y * _Value };
+    }
+    //  œZ
+    constexpr float2 operator /(int _Value)const noexcept
+    {
+      return{ X / _Value, Y / _Value };
     }
     //  œZ
     constexpr float2 operator /(float _Value)const noexcept

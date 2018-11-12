@@ -7,8 +7,6 @@ namespace hdx
   class SamplerState;
 }
 
-namespace detail
-{
   class ISamplerState
   {
     struct Impl;
@@ -22,4 +20,3 @@ namespace detail
     ISamplerState();
     ~ISamplerState();
   };
-}

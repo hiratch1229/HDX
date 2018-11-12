@@ -1225,7 +1225,7 @@
 
 #include "../../Include/System.hpp"
 
-#include "../Engine/Engine.hpp"
+#include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 
 namespace hdx
@@ -1239,108 +1239,108 @@ namespace hdx
   //  更新
   int System::Update()
   {
-    return GetSystem()->Update();
+    return Engine::GetSystem()->Update();
   }
 
   //  画面幅を取得
   int System::GetWindowWidth()
   {
-    return GetSystem()->GetWindowWidth();
+    return Engine::GetSystem()->GetWindowWidth();
   }
 
   //  画面高を取得
   int System::GetWindowHeight()
   {
-    return GetSystem()->GetWindowHeight();
+    return Engine::GetSystem()->GetWindowHeight();
   }
 
   //  画面サイズを取得
   const int2& System::GetWindowSize()
   {
-    return GetSystem()->GetWindowSize();
+    return Engine::GetSystem()->GetWindowSize();
   }
 
   //  ウィンドウの設定
   void System::SetWindowLeftTopPos(int _LeftPos, int _TopPos)
   {
-    GetSystem()->SetWindowLeftTopPos({ _LeftPos, _TopPos });
+    Engine::GetSystem()->SetWindowLeftTopPos({ _LeftPos, _TopPos });
   }
 
   //  ウィンドウの設定
   void System::SetWindowLeftTopPos(const int2& _LeftTopPos)
   {
-    GetSystem()->SetWindowLeftTopPos(_LeftTopPos);
+    Engine::GetSystem()->SetWindowLeftTopPos(_LeftTopPos);
   }
 
   //  ウィンドウの設定
   void System::SetWindowSize(int _Width, int _Height)
   {
-    GetSystem()->SetWindowSize({ _Width, _Height });
+    Engine::GetSystem()->SetWindowSize({ _Width, _Height });
   }
 
   //  ウィンドウの設定
   void System::SetWindowSize(const int2& _Size)
   {
-    GetSystem()->SetWindowSize(_Size);
+    Engine::GetSystem()->SetWindowSize(_Size);
   }
 
   //  ウィンドウの設定
   void System::SetWindowMode(bool _isFullScreen)
   {
-    GetSystem()->SetWindowMode(_isFullScreen);
+    Engine::GetSystem()->SetWindowMode(_isFullScreen);
   }
 
   //  ウィンドウの設定
   void System::SettingWindow(int _LeftPos, int _TopPos, int _Width, int _Height, bool _isFullScreen)
   {
-    GetSystem()->SetWindow({ _LeftPos, _TopPos }, { _Width, _Height }, _isFullScreen);
+    Engine::GetSystem()->SetWindow({ _LeftPos, _TopPos }, { _Width, _Height }, _isFullScreen);
   }
 
   //  ウィンドウの設定
   void System::SettingWindow(const int2& _LeftTopPos, const int2& _Size, bool _isFullScreen)
   {
-    GetSystem()->SetWindow(_LeftTopPos, _Size, _isFullScreen);
+    Engine::GetSystem()->SetWindow(_LeftTopPos, _Size, _isFullScreen);
   }
 
   //  カーソル表示設定
   void System::ShowCursor(bool _isShowCursor)
   {
-    GetSystem()->ShowCursor(_isShowCursor);
+    Engine::GetSystem()->ShowCursor(_isShowCursor);
   }
 
   //  ウィンドウのタイトルを設定
   void System::SetTitle(const char* _Title)
   {
-    GetSystem()->SetTitle(_Title);
+    Engine::GetSystem()->SetTitle(_Title);
   }
 
   //  背景の色変更
   void System::SetBackColor(const ColorF& _Color)
   {
-    GetSystem()->SetBackColor(_Color);
+    Engine::GetSystem()->SetBackColor(_Color);
   }
 
   //  ウィンドウのモードを変更
   void System::ChangeWindowMode()
   {
-    GetSystem()->ChangeWindowMode();
+    Engine::GetSystem()->ChangeWindowMode();
   }
 
   //  ウィンドウのタイトルを変更
   void System::RenameTitle(const char* _Title)
   {
-    GetSystem()->RenameTitle(_Title);
+    Engine::GetSystem()->RenameTitle(_Title);
   }
 
   //  スクリーンショット
   void System::ScreenShot()
   {
-    GetSystem()->ScreenShot();
+    Engine::GetSystem()->ScreenShot();
   }
 
   //  ソフトを終了
   void System::Exit()
   {
-    GetSystem()->Exit();
+    Engine::GetSystem()->Exit();
   }
 }

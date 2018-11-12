@@ -1,6 +1,6 @@
 #include "../../Include/RenderTarget.hpp"
 
-#include "../Engine/Engine.hpp"
+#include "../Engine.hpp"
 #include "../RenderTarget/IRenderTarget.hpp"
 
 //#include <HDX/Color.hpp>
@@ -20,7 +20,7 @@ namespace hdx
 {
   inline void CreateRenderTarget(const RenderTarget& _RenderTarget)
   {
-    GetRenderTarget()->CreateRenderTarget(_RenderTarget);
+    Engine::GetRenderTarget()->CreateRenderTarget(_RenderTarget);
   }
 
   RenderTarget::RenderTarget()
@@ -42,7 +42,7 @@ namespace hdx
 
   void RenderTarget::Clear(const ColorF& _Color)
   {
-    GetRenderTarget()->ClearRenderTarget(*this, _Color);
+    Engine::GetRenderTarget()->ClearRenderTarget(*this, _Color);
   }
 
   //class RenderTarget::Impl

@@ -1,6 +1,6 @@
 #include "../../../Include/Mouse.hpp"
 
-#include "../../Engine/Engine.hpp"
+#include "../../Engine.hpp"
 #include "../../Input/Mouse/IMouse.hpp"
 
 //  ライブラリ
@@ -9,50 +9,46 @@ namespace hdx
   //  入力系
   namespace Input
   {
-    //  マウス
-    namespace Mouse
+    //  座標を取得
+    const int2& Mouse::GetPos()const
     {
-      //  座標を取得
-      int2 GetPos()
-      {
-        return GetMouse()->GetPos();
-      }
+      return Engine::GetMouse()->GetPos();
+    }
 
-      //  座標を変更
-      void SetPos(const hdx::int2& _Pos)
-      {
-        GetMouse()->SetPos(_Pos);
-      }
+    //  座標を変更
+    void Mouse::SetPos(const int2& _Pos)const
+    {
+      Engine::GetMouse()->SetPos(_Pos);
+    }
 
-      //  移動量を取得
-      int2 GetDelta()
-      {
-        return GetMouse()->GetDelta();
-      }
+    //  移動量を取得
+    const int2& Mouse::GetDelta()const
+    {
+      return Engine::GetMouse()->GetDelta();
+    }
 
-      //  ホイール移動量を取得
-      int2 GetWheel()
-      {
-        return GetMouse()->GetWheel();
-      }
+    //  ホイール移動量を取得
+    int Mouse::GetWheel()const
+    {
+      return Engine::GetMouse()->GetWheel();
+    }
 
-      //  何かのボタンが押されていればtrueを返す
-      bool AnyButtonPress()
-      {
-        return GetMouse()->AnyButtonPress();
-      }
+    //  何かのボタンが押されていればtrueを返す
+    bool Mouse::AnyButtonPress()const
+    {
+      return Engine::GetMouse()->AnyButtonPress();
+    }
 
-      //  何かのボタンが押されたならtrueを返す
-      bool AnyButtonPressed()
-      {
-        return GetMouse()->AnyButtonPressed();
-      }
+    //  何かのボタンが押されたならtrueを返す
+    bool Mouse::AnyButtonPressed()const
+    {
+      return Engine::GetMouse()->AnyButtonPressed();
+    }
 
-      //  何かのボタンが離されたならtrueを返す
-      bool AnyButtonReleased()
-      {
-        return GetMouse()->AnyButtonReleased();
-      }
+    //  何かのボタンが離されたならtrueを返す
+    bool Mouse::AnyButtonReleased()const
+    {
+      return Engine::GetMouse()->AnyButtonReleased();
     }
   }
 }

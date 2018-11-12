@@ -12,23 +12,42 @@ namespace hdx
     {
       const int Index_;
     public:
+      //  使うボタン
+      enum Buttons
+      {
+        Up,
+        Down,
+        Left,
+        Right,
+        Start,
+        Select,
+        LeftStick,
+        RightStick,
+        LeftShoulder,
+        RightShoulder,
+        A,
+        B,
+        X,
+        Y,
+      };
+    public:
       //  ゲームパッドを作成
       //  _Index:ゲームパッドの番号
       constexpr XInput(int _Index)noexcept : Index_(_Index),
-        ButtonUp({ detail::InputDevice::XInput, 0, _Index }),
-        ButtonDown({ detail::InputDevice::XInput, 1, _Index }),
-        ButtonLeft({ detail::InputDevice::XInput, 2, _Index }),
-        ButtonRight({ detail::InputDevice::XInput, 3, _Index }),
-        ButtonStart({ detail::InputDevice::XInput, 4, _Index }),
-        ButtonSelect({ detail::InputDevice::XInput, 5, _Index }),
-        ButtonLeftStick({ detail::InputDevice::XInput, 6, _Index }),
-        ButtonRightStick({ detail::InputDevice::XInput, 7, _Index }),
-        ButtonLB({ detail::InputDevice::XInput, 8, _Index }),
-        ButtonRB({ detail::InputDevice::XInput, 9, _Index }),
-        ButtonA({ detail::InputDevice::XInput, 10, _Index }),
-        ButtonB({ detail::InputDevice::XInput, 11, _Index }),
-        ButtonX({ detail::InputDevice::XInput, 12, _Index }),
-        ButtonY({ detail::InputDevice::XInput, 13, _Index })
+        ButtonUp(InputDevice::XInput, Buttons::Up, _Index),
+        ButtonDown(InputDevice::XInput, Buttons::Down, _Index),
+        ButtonLeft(InputDevice::XInput, Buttons::Left, _Index),
+        ButtonRight(InputDevice::XInput, Buttons::Right, _Index),
+        ButtonStart(InputDevice::XInput, Buttons::Start, _Index),
+        ButtonSelect(InputDevice::XInput, Buttons::Select, _Index),
+        ButtonLeftStick(InputDevice::XInput, Buttons::LeftStick, _Index),
+        ButtonRightStick(InputDevice::XInput, Buttons::RightStick, _Index),
+        ButtonLB(InputDevice::XInput, Buttons::LeftShoulder, _Index),
+        ButtonRB(InputDevice::XInput, Buttons::RightShoulder, _Index),
+        ButtonA(InputDevice::XInput, Buttons::A, _Index),
+        ButtonB(InputDevice::XInput, Buttons::B, _Index),
+        ButtonX(InputDevice::XInput, Buttons::X, _Index),
+        ButtonY(InputDevice::XInput, Buttons::Y, _Index)
       {
 
       }
@@ -64,6 +83,15 @@ namespace hdx
     public:
       //  接続されているならtrueを返す
       operator bool()const { return isConnect(); }
+    public:
+      bool operator==(const XInput& _XInput)const
+      {
+        return Index_ == _XInput.Index_;
+      }
+      bool operator!=(const XInput& _XInput)const
+      {
+        return !((*this) == _XInput);
+      }
     public:
       //  左スティックの入力状態を取得
       //  -1~1の範囲で表現されてます

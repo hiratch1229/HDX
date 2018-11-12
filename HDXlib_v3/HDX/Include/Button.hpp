@@ -1,14 +1,11 @@
 #pragma once
 
-//  前方宣言
+//  ライブラリ
 namespace hdx
 {
   class ButtonCombinationAND;
   class ButtonCombinationOR;
-}
 
-namespace detail
-{
   //  入力デバイス
   enum class InputDevice
   {
@@ -18,25 +15,24 @@ namespace detail
     XInput,
     Gamepad,
   };
-}
 
-//  ライブラリ
-namespace hdx
-{
   //  ボタン
   //  入力状態を表現します
   class Button
   {
-    const detail::InputDevice InputDevice_ = detail::InputDevice::None; //  入力デバイス
-    const int Number_ = -1;                                             //  それぞれの入力デバイスでボタンの決められた番号
-    const int Index_ = -1;                                              //  それぞれの入力デバイスの番号
+    //  入力デバイス
+    InputDevice InputDevice_;
+    //  それぞれの入力デバイスでボタンの決められた番号
+    int Number_;
+    //  それぞれの入力デバイスの番号
+    int Index_;
   public:
     //  ボタンを作成
     Button() = default;
     //  ボタンを作成
     //  _InputDevice:入力デバイス
     //  _ButtonNumber:それぞれの入力デバイスでボタンの決められた番号
-    constexpr Button(detail::InputDevice _InputDevice, int _Number, int _Index = 0)noexcept : InputDevice_(_InputDevice), Number_(_Number), Index_(_Index) {}
+    constexpr Button(InputDevice _InputDevice, int _Number, int _Index = 0)noexcept : InputDevice_(_InputDevice), Number_(_Number), Index_(_Index) {}
   public:
     //  入力状態を判別
     //  押されているならtrueを返す
@@ -77,7 +73,7 @@ namespace hdx
   //  入力状態を表現します
   class ButtonCombinationAND
   {
-    const Button Button1_, Button2_;
+    Button Button1_, Button2_;
   public:
     //  キーの論理積の組み合わせを作成
     ButtonCombinationAND() = default;
@@ -126,7 +122,7 @@ namespace hdx
   //  入力状態を表現します
   class ButtonCombinationOR
   {
-    const Button Button1_, Button2_;
+    Button Button1_, Button2_;
   public:
     //  キーの論理和の組み合わせを作成
     ButtonCombinationOR() = default;

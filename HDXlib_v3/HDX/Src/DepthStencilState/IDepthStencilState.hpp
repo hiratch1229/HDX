@@ -7,8 +7,6 @@ namespace hdx
   class DepthStencilState;
 }
 
-namespace detail
-{
   class IDepthStencilState
   {
     struct Impl;
@@ -22,4 +20,3 @@ namespace detail
     IDepthStencilState();
     ~IDepthStencilState();
   };
-}

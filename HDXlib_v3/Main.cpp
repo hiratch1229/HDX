@@ -8,6 +8,8 @@ void Main()
 
   hdx::Texture A{ "DATA/exp.png" };
 
+  GetInputState();
+
   //  hdx::SkinnedMesh Fbx("DATA/FBX/005_cube.fbx");
   //
   //  hdx::float3 Position;

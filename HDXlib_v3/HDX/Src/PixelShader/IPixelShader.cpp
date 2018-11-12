@@ -1,6 +1,6 @@
 #include "IPixelShader.hpp"
 
-#include "../Engine/Engine.hpp"
+#include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 
 #include "../NumberMap.hpp"
@@ -9,79 +9,76 @@
 #include <wrl.h>
 #include <memory>
 
-namespace detail
+class IPixelShader::Impl
 {
-  class IPixelShader::Impl
-  {
-  public:
-    NumberMap<std::string, Microsoft::WRL::ComPtr<ID3D11PixelShader>> PixelShaderMap_;
-  public:
-    Impl() { PixelShaderMap_.clear(); }
-    ~Impl() { PixelShaderMap_.clear(); }
-  };
+public:
+  NumberMap<std::string, Microsoft::WRL::ComPtr<ID3D11PixelShader>> PixelShaderMap_;
+public:
+  Impl() { PixelShaderMap_.clear(); }
+  ~Impl() { PixelShaderMap_.clear(); }
+};
 
-  //  初期化
-  IPixelShader::IPixelShader()
-    : pImpl_(new Impl)
-  {
+//  初期化
+IPixelShader::IPixelShader()
+  : pImpl_(new Impl)
+{
 
+}
+
+//  解放
+IPixelShader::~IPixelShader()
+{
+  delete pImpl_;
+  pImpl_ = nullptr;
+}
+
+hdx::PixelShader IPixelShader::CreateDefault2D()
+{
+  return hdx::PixelShader(kDefault2DFilePath);
+}
+
+//  ピクセルシェーダー作成
+int IPixelShader::Create(const char* _FilePath)
+{
+  int ID = pImpl_->PixelShaderMap_.find(_FilePath);
+
+  //  存在しなかった場合
+  if (ID < 0)
+  {
+    //  エラーチェック用
+    HRESULT hr = S_OK;
+
+    FILE* fp;
+    fopen_s(&fp, _FilePath, "rb");
+    _ASSERT_EXPR(fp, L"fopen_s");
+
+    fseek(fp, 0, SEEK_END);
+    long Size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    std::unique_ptr<unsigned char[]> Data = std::make_unique<unsigned char[]>(Size);
+    fread(Data.get(), Size, 1, fp);
+    fclose(fp);
+
+    Microsoft::WRL::ComPtr<ID3D11PixelShader> pPixelShader;
+    //  ピクセルシェーダーの作成
+    hr = Engine::GetSystem()->GetDevice()->CreatePixelShader(Data.get(), Size, nullptr, pPixelShader.GetAddressOf());
+    _ASSERT_EXPR(SUCCEEDED(hr), L"CreatePixelShader");
+
+    ID = pImpl_->PixelShaderMap_.insert(_FilePath, pPixelShader);
   }
 
-  //  解放
-  IPixelShader::~IPixelShader()
+  return ID;
+}
+
+ID3D11PixelShader* IPixelShader::GetPixeShader(const hdx::PixelShader& _PixelShader)
+{
+  const int ID = _PixelShader.GetID();
+
+  if (ID < 0)
   {
-    delete pImpl_;
-    pImpl_ = nullptr;
+    return nullptr;
   }
 
-  hdx::PixelShader IPixelShader::CreateDefault2D()
-  {
-    return hdx::PixelShader(kDefault2DFilePath);
-  }
-
-  //  ピクセルシェーダー作成
-  int IPixelShader::Create(const char* _FilePath)
-  {
-    int ID = pImpl_->PixelShaderMap_.find(_FilePath);
-
-    //  存在しなかった場合
-    if (ID < 0)
-    {
-      //  エラーチェック用
-      HRESULT hr = S_OK;
-
-      FILE* fp;
-      fopen_s(&fp, _FilePath, "rb");
-      _ASSERT_EXPR(fp, L"fopen_s");
-
-      fseek(fp, 0, SEEK_END);
-      long Size = ftell(fp);
-      fseek(fp, 0, SEEK_SET);
-
-      std::unique_ptr<unsigned char[]> Data = std::make_unique<unsigned char[]>(Size);
-      fread(Data.get(), Size, 1, fp);
-      fclose(fp);
-
-      Microsoft::WRL::ComPtr<ID3D11PixelShader> pPixelShader;
-      //  ピクセルシェーダーの作成
-      hr = GetSystem()->GetDevice()->CreatePixelShader(Data.get(), Size, nullptr, pPixelShader.GetAddressOf());
-      _ASSERT_EXPR(SUCCEEDED(hr), L"CreatePixelShader");
-
-      ID = pImpl_->PixelShaderMap_.insert(_FilePath, pPixelShader);
-    }
-
-    return ID;
-  }
-
-  ID3D11PixelShader* IPixelShader::GetPixeShader(const hdx::PixelShader& _PixelShader)
-  {
-    const int ID = _PixelShader.GetID();
-
-    if (ID < 0)
-    {
-      return nullptr;
-    }
-
-    return pImpl_->PixelShaderMap_[ID].Get();
-  }
+  return pImpl_->PixelShaderMap_[ID].Get();
 }
