@@ -22,6 +22,8 @@
 
 #include <memory>
 
+#include "../../Include/Timer.hpp"
+
 class ISystem::Impl
 {
   class FrameRate
@@ -69,13 +71,12 @@ class ISystem::Impl
         return false;
       }
 
-
       CurrentFPS_ = 1.0f / DeltaTime;
       DeltaTime_ = DeltaTime;
       LastTime_ = CurrentTime;
 
       char c[256];
-      sprintf_s(c, "FPS:%.2f", CurrentFPS_);
+      sprintf_s(c, "DeltaTime:%f", DeltaTime);
       hdx::System::RenameTitle(c);
 
       //  更新成功
@@ -98,7 +99,7 @@ class ISystem::Impl
     void SetUpWindow()
     {
       //  マウスをキャプチャー
-      SetCapture(hWnd_);
+      ::SetCapture(hWnd_);
 
       //  カーソル表示設定
       ::ShowCursor(isShowCursor_);
@@ -112,7 +113,7 @@ class ISystem::Impl
       }
 
       //  ウィンドウ設定&表示
-      SetWindowPos(hWnd_, HWND_TOP, LeftTopPos_.X, LeftTopPos_.Y, Size_.X, Size_.Y, SWP_SHOWWINDOW);
+      ::SetWindowPos(hWnd_, HWND_TOP, LeftTopPos_.X, LeftTopPos_.Y, Size_.X, Size_.Y, SWP_SHOWWINDOW);
     }
   public:
     Window()
@@ -134,7 +135,10 @@ class ISystem::Impl
 
       //  COM初期化
       hr = CoInitialize(nullptr);
-      _ASSERT_EXPR(SUCCEEDED(hr), L"CoCreateInstance");
+      _ASSERT_EXPR(SUCCEEDED(hr), L"CoInitialize");
+
+      //  ウィンドウハンドルをアクティブ化
+      ::SetActiveWindow(hWnd_);
     }
     ~Window() = default;
   };
@@ -683,9 +687,4 @@ ID3D11DeviceContext* ISystem::GetImmediateContext()
 IDXGISwapChain* ISystem::GetSwapChain()
 {
   return pImpl_->pSwapChain_.Get();
-}
-
-HWND ISystem::GetHWND()
-{
-  return pImpl_->pWindow_->hWnd_;
 }

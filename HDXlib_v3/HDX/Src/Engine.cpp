@@ -12,7 +12,6 @@
 #include "DepthStencilState/IDepthStencilState.hpp"
 #include "VertexShader/IVertexShader.hpp"
 #include "PixelShader/IPixelShader.hpp"
-#include "WIC/IWIC.hpp"
 #include "Texture/ITexture.hpp"
 #include "RenderTarget/IRenderTarget.hpp"
 #include "Random/IRandom.hpp"
@@ -44,7 +43,6 @@ Engine::~Engine()
   pDepthStencilState_.Release();
   pVertexShader_.Release();
   pPixelShader_.Release();
-  pWIC_.Release();
   pTexture_.Release();
   pRenderTarget_.Release();
   pRandom_.Release();

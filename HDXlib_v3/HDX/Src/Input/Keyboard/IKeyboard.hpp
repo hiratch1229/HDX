@@ -8,15 +8,32 @@ class IKeyboard
   static constexpr int kKeyNum = 256;
 private:
   InputState InputStatus_[kKeyNum];
+private:
+  bool isWithinRange(int _Number)const
+  {
+    return (0 <= _Number && _Number < kKeyNum);
+  }
 public:
   //  ‰Ÿ‚³‚ê‚Ä‚¢‚é‚È‚çtrue‚ð•Ô‚·
-  bool Press(int _Number)const { return InputStatus_[_Number].Press(); }
+  bool Press(int _Number)const
+  {
+    return isWithinRange(_Number) ? InputStatus_[_Number].Press() : false;
+  }
   //  ‰Ÿ‚³‚ê‚½uŠÔ‚È‚çtrue‚ð•Ô‚·
-  bool Pressed(int _Number)const { return InputStatus_[_Number].Pressed(); }
+  bool Pressed(int _Number)const
+  {
+    return isWithinRange(_Number) ? InputStatus_[_Number].Pressed() : false;
+  }
   //  —£‚³‚ê‚½uŠÔ‚È‚çtrue‚ð•Ô‚·
-  bool Released(int _Number)const { return InputStatus_[_Number].Released(); }
+  bool Released(int _Number)const
+  {
+    return isWithinRange(_Number) ? InputStatus_[_Number].Released() : false;
+  }
   //  ‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢‚È‚çtrue‚ð•Ô‚·
-  bool Release(int _Number)const { return InputStatus_[_Number].Release(); }
+  bool Release(int _Number)const
+  {
+    return isWithinRange(_Number) ? InputStatus_[_Number].Release() : false;
+  }
 public:
   //  ‰½‚©‚ÌƒL[‚ª‰Ÿ‚³‚ê‚Ä‚¢‚ê‚Îtrue‚ð•Ô‚·
   bool AnyKeyPress()const

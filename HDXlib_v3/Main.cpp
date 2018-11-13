@@ -8,8 +8,6 @@ void Main()
 
   hdx::Texture A{ "DATA/exp.png" };
 
-  GetInputState();
-
   //  hdx::SkinnedMesh Fbx("DATA/FBX/005_cube.fbx");
   //
   //  hdx::float3 Position;
@@ -85,12 +83,14 @@ void Main()
 
   hdx::RenderTarget RenderTarget(hdx::System::GetWindowSize());
 
+  static constexpr hdx::Input::Gamepad Gamepads[2] = { hdx::Input::Gamepad(0),hdx::Input::Gamepad(1) };
+
   while (hdx::System::Update())
   {
     //RenderTarget.Clear();
     //
     //hdx::Renderer2D::SetRenderTarget(RenderTarget);
-
+    //
     //if (hdx::Input::Keyboard::Key0.Pressed())
     //{
     //  hdx::Renderer2D::SetSamplerState(hdx::SamplerState::Default2D, 0);
@@ -106,10 +106,21 @@ void Main()
     //  hdx::Renderer2D::SetSamplerState(SamplerState, 0);
     //}
 
-    for (int i = 0; i < 300; ++i)
+    for (int i = 0; i < 1024; ++i)
     {
       A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
     }
+
+    //for (int i = 0; i < 2; ++i)
+    //{
+    //  for (int j = 0; j < hdx::Input::Gamepad::kMaxButtonNum; ++j)
+    //  {
+    //    if (Gamepads[i].GetButton(j))
+    //    {
+    //      A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
+    //    }
+    //  }
+    //}
 
     //hdx::Renderer2D::RestoreRenderTarget();
     //

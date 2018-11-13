@@ -17,8 +17,6 @@ struct ID3D11DepthStencilState;
 struct ID3D11RenderTargetView;
 struct ID3D11DepthStencilView;
 struct D3D11_MAPPED_SUBRESOURCE;
-struct HWND__;
-typedef struct HWND__ *HWND;
 
 namespace hdx
 {
@@ -56,7 +54,6 @@ public:
   ID3D11Device* GetDevice();
   ID3D11DeviceContext* GetImmediateContext();
   IDXGISwapChain* GetSwapChain();
-  HWND GetHWND();
 public:
   void SetShaderResouceView(ID3D11ShaderResourceView** _ppShaderResourceView, UINT _Slot);
   void SetBlendState(ID3D11BlendState* _pBlendState);

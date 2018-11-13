@@ -12,8 +12,6 @@
 #include "../PixelShader/IPixelShader.hpp"
 #include "../RenderTarget/IRenderTarget.hpp"
 
-#include "../WIC/IWIC.hpp"
-
 #include "../../Include/System.hpp"
 #include "../../Include/Math.hpp"
 #include "../../Include/Vertex.hpp"
@@ -29,14 +27,14 @@
 namespace hdx
 {
   Texture::Texture(const int2& _Size)
-    : ID_(Engine::GetWIC()->Add(_Size)), Size_(_Size)
+    : ID_(Engine::GetTexture()->Add(_Size)), Size_(_Size)
   {
 
   }
 
   //  ファイルパスから画像を作成
   Texture::Texture(const char* FilePath)
-    : ID_(Engine::GetWIC()->Load(FilePath)), Size_(Engine::GetTexture()->GetSize(ID_))
+    : ID_(Engine::GetTexture()->Load(FilePath)), Size_(Engine::GetTexture()->GetSize(ID_))
   {
 
   }
@@ -157,18 +155,20 @@ namespace hdx
     pSystem->SetPixelShader(Engine::GetPixelShader()->GetPixeShader(pRenderer2D->GetPixelShader()));
     pSystem->SetRasterizerState(Engine::GetRasterizerState()->GetRasterizerState(pRenderer2D->GetRasterizerState()));
     pSystem->SetDepthStencilState(Engine::GetDepthStencilState()->GetDepthStencilState(pRenderer2D->GetDepthStencilState()));
-    for (UINT i = 0; i < SamplerStateMaxNum; ++i)
-    {
-      pSystem->SetSamplersState(Engine::GetSamplerState()->GetSamplerState(pRenderer2D->GetSamplerState(i)), i);
-    }
-    for (UINT i = 1; i < TextureMaxNum; ++i)
-    {
-      const hdx::Texture& Texture = pRenderer2D->GetTexture(i);
-      //  サイズが0の時スルー
-      if (Texture.GetSize() == hdx::int2()) continue;
+    pSystem->SetSamplersState(Engine::GetSamplerState()->GetSamplerState(pRenderer2D->GetSamplerState(0)), 0);
 
-      pSystem->SetShaderResouceView(pTexture->GetShaderResourceView(Texture.GetID()), i);
-    }
+    //for (UINT i = 0; i < SamplerStateMaxNum; ++i)
+    //{
+    //  pSystem->SetSamplersState(Engine::GetSamplerState()->GetSamplerState(pRenderer2D->GetSamplerState(i)), i);
+    //}
+    //for (UINT i = 1; i < TextureMaxNum; ++i)
+    //{
+    //  const hdx::Texture& Texture = pRenderer2D->GetTexture(i);
+    //  //  サイズが0の時スルー
+    //  if (Texture.GetSize() == hdx::int2()) continue;
+    //
+    //  pSystem->SetShaderResouceView(pTexture->GetShaderResourceView(Texture.GetID()), i);
+    //}
 
     pSystem->SetRenderTarget(Engine::GetRenderTarget()->GetRenderTargetView(pRenderer2D->GetRenderTarget()), Engine::GetRenderTarget()->GetDepthStencilView(pRenderer2D->GetRenderTarget()));
 

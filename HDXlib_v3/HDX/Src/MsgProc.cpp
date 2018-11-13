@@ -15,7 +15,8 @@ LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
   case WM_PAINT:
     ValidateRect(hWnd, NULL);
     break;
-  case WM_KEYDOWN:      //  キーを押した時
+    //  キーを押した時
+  case WM_KEYDOWN:
     switch (wParam)
     {
     case VK_ESCAPE:
@@ -29,7 +30,8 @@ LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
       break;
     }
     break;
-  case WM_MOUSEWHEEL:   //  マウスホイール回転
+    //  マウスホイール回転
+  case WM_MOUSEWHEEL:
     Engine::GetMouse()->SetWheel(static_cast<int>(GET_WHEEL_DELTA_WPARAM(wParam)));
     break;
   default:

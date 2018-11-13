@@ -12,7 +12,6 @@ class IRasterizerState;
 class IDepthStencilState;
 class IVertexShader;
 class IPixelShader;
-class IWIC;
 class ITexture;
 class IRenderTarget;
 class IRandom;
@@ -56,7 +55,6 @@ private:
   Component<IDepthStencilState> pDepthStencilState_;
   Component<IVertexShader> pVertexShader_;
   Component<IPixelShader> pPixelShader_;
-  Component<IWIC> pWIC_;
   Component<ITexture> pTexture_;
   Component<IRenderTarget> pRenderTarget_;
   Component<IRandom> pRandom_;
@@ -76,7 +74,6 @@ public:
   static IDepthStencilState* GetDepthStencilState() { return pEngine->pDepthStencilState_.Get(); }
   static IVertexShader* GetVertexShader() { return pEngine->pVertexShader_.Get(); }
   static IPixelShader* GetPixelShader() { return pEngine->pPixelShader_.Get(); }
-  static IWIC* GetWIC() { return pEngine->pWIC_.Get(); }
   static ITexture* GetTexture() { return pEngine->pTexture_.Get(); }
   static IRenderTarget* GetRenderTarget() { return pEngine->pRenderTarget_.Get(); }
   static IRandom* GetRandom() { return pEngine->pRandom_.Get(); }

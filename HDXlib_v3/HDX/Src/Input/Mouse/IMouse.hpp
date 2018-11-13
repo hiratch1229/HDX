@@ -16,15 +16,32 @@ private:
   hdx::int2 Delta_;
   //  ホイール移動量
   int Wheel_;
+private:
+  bool isWithinRange(int _Number)const
+  {
+    return (0 <= _Number && _Number < kButtonNum);
+  }
 public:
   //  押されているならtrueを返す
-  bool Press(int _Number)const { return InputStatus_[_Number].Press(); }
+  bool Press(int _Number)const 
+  {
+    return isWithinRange(_Number) ? InputStatus_[_Number].Press() : false; 
+  }
   //  押された瞬間ならtrueを返す
-  bool Pressed(int _Number)const { return InputStatus_[_Number].Pressed(); }
+  bool Pressed(int _Number)const 
+  { 
+    return isWithinRange(_Number) ? InputStatus_[_Number].Pressed() : false; 
+  }
   //  離された瞬間ならtrueを返す
-  bool Released(int _Number)const { return InputStatus_[_Number].Released(); }
+  bool Released(int _Number)const 
+  {
+    return isWithinRange(_Number) ? InputStatus_[_Number].Released() : false; 
+  }
   //  押されていないならtrueを返す
-  bool Release(int _Number)const { return InputStatus_[_Number].Release(); }
+  bool Release(int _Number)const 
+  {
+    return isWithinRange(_Number) ? InputStatus_[_Number].Release() : false;
+  }
 public:
   //  座標を取得
   const hdx::int2& GetPos()const { return Pos_; }

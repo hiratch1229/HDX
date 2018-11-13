@@ -51,7 +51,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 
   //  エンジンの作成
   Engine Engine;
-
+  
   //  シェーダーの初期設定
   {
     //  2D

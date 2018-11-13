@@ -15,9 +15,6 @@ namespace hdx
 
 class IRenderer2D
 {
-  struct Impl;
-private:
-  Impl* pImpl_;
 public:
   void SetVertexShader(const hdx::VertexShader& _VertexShader);
   void SetPixelShader(const hdx::PixelShader& _PixelShader);
@@ -39,5 +36,4 @@ public:
   const hdx::RenderTarget& GetRenderTarget()const;
 public:
   IRenderer2D();
-  ~IRenderer2D();
 };
