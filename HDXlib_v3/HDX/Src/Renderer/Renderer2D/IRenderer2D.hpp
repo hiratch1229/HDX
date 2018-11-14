@@ -1,6 +1,8 @@
 #pragma once
 #include "../../../Include/Types.hpp"
 
+#include "../Renderer.hpp"
+
 namespace hdx
 {
   class VertexShader;
@@ -11,9 +13,13 @@ namespace hdx
   class DepthStencilState;
   class Texture;
   class RenderTarget;
+
+  struct float2;
+  class Radian;
+  struct ColorF;
 }
 
-class IRenderer2D
+class IRenderer2D : public IRenderer
 {
 public:
   void SetVertexShader(const hdx::VertexShader& _VertexShader);
@@ -26,14 +32,9 @@ public:
   void RestoreRenderTarget();
   void SetRenderTarget(const hdx::RenderTarget& _RenderTarger);
 public:
-  const hdx::VertexShader& GetVertexShader()const;
-  const hdx::PixelShader& GetPixelShader()const;
-  const hdx::BlendState& GetBlendState()const;
-  const hdx::SamplerState& GetSamplerState(UINT _Slot)const;
-  const hdx::RasterizerState& GetRasterizerState()const;
-  const hdx::DepthStencilState& GetDepthStencilState()const;
-  const hdx::Texture& GetTexture(UINT _Slot)const;
-  const hdx::RenderTarget& GetRenderTarget()const;
+  void Begin(const hdx::Texture& _Texture);
+  void End();
+  void Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeftTop, const hdx::float2& _DstSize, const hdx::float2& _SrcLeftPos, const hdx::float2& _SrcSize, const hdx::Radian& _Angle, bool _HorizontalFlip, bool _VerticalFlip, const hdx::ColorF& _Color);
 public:
   IRenderer2D();
 };

@@ -1228,6 +1228,8 @@
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 
+#include "../../Include/Type2.hpp"
+
 namespace hdx
 {
   //**************************************************

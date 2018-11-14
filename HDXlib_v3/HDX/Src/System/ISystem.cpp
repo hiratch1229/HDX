@@ -5,11 +5,12 @@
 #include "../Input/Mouse/IMouse.hpp"
 #include "../Input/XInput/IXInput.hpp"
 #include "../Input/Gamepad/IGamepad.hpp"
+#include "../Renderer/Renderer2D/IRenderer2D.hpp"
 
 #include "../../Include/System.hpp"
 #include "../../Include/Type2.hpp"
 #include "../../Include/Color.hpp"
-#include "../../Include/Constants.hpp"
+//
 
 #include <Windows.h>
 #include <d3d11.h>
@@ -76,7 +77,7 @@ class ISystem::Impl
       LastTime_ = CurrentTime;
 
       char c[256];
-      sprintf_s(c, "DeltaTime:%f", DeltaTime);
+      sprintf_s(c, "FPS:%.2f", CurrentFPS_);
       hdx::System::RenameTitle(c);
 
       //  XV¬Œ÷
@@ -316,6 +317,7 @@ public:
   }
   void Present()const
   {
+    Engine::GetRenderer2D()->End();
     pSwapChain_->Present(0, 0);
   }
   void ChangeWindowMode()
@@ -524,156 +526,6 @@ void ISystem::SetBackColor(const hdx::ColorF& _Color)
   pImpl_->pWindow_->BackColor_ = _Color;
 }
 
-void ISystem::SetShaderResouceView(ID3D11ShaderResourceView** _ppShaderResourceView, UINT _Slot)
-{
-  static ID3D11ShaderResourceView*const* ppShaderResourceViews[hdx::TextureMaxNum] = { nullptr };
-
-  ID3D11ShaderResourceView*const*& ppShaderResourceView = ppShaderResourceViews[_Slot];
-  if (ppShaderResourceView != _ppShaderResourceView)
-  {
-    ppShaderResourceView = _ppShaderResourceView;
-    //  Ý’è‚ð”½‰f
-    pImpl_->pImmediateContext_->PSSetShaderResources(_Slot, 1, ppShaderResourceView);
-  }
-}
-
-void ISystem::SetBlendState(ID3D11BlendState* _pBlendState)
-{
-  static ID3D11BlendState* pBlendState = nullptr;
-
-  //  Œ»Ý‚Ì‚Æ“¯‚¶‚È‚çÝ’è‚µ‚È‚¢
-  if (pBlendState != _pBlendState)
-  {
-    pBlendState = _pBlendState;
-    //  Ý’è‚ð”½‰f
-    pImpl_->pImmediateContext_->OMSetBlendState(pBlendState, nullptr, 0xFFFFFFFF);
-  }
-}
-
-void ISystem::SetInputLayout(ID3D11InputLayout* _pInputLayout)
-{
-  static ID3D11InputLayout* pInputLayout = nullptr;
-  if (pInputLayout != _pInputLayout)
-  {
-    pInputLayout = _pInputLayout;
-    //  Ý’è‚ð”½‰f
-    pImpl_->pImmediateContext_->IASetInputLayout(pInputLayout);
-  }
-}
-
-void ISystem::SetVertexShader(ID3D11VertexShader* _pVertexShader)
-{
-  static ID3D11VertexShader* pVertexShader = nullptr;
-  if (pVertexShader != _pVertexShader)
-  {
-    pVertexShader = _pVertexShader;
-    //  Ý’è‚ð”½‰f
-    pImpl_->pImmediateContext_->VSSetShader(pVertexShader, nullptr, 0);
-  }
-}
-
-void ISystem::SetPixelShader(ID3D11PixelShader* _pPixelShader)
-{
-  static ID3D11PixelShader* pPixelShader = nullptr;
-  if (pPixelShader != _pPixelShader)
-  {
-    pPixelShader = _pPixelShader;
-    //  Ý’è‚ð”½‰f
-    pImpl_->pImmediateContext_->PSSetShader(pPixelShader, nullptr, 0);
-  }
-}
-
-void ISystem::SetVertexBuffers(ID3D11Buffer*const* _ppVertexBuffer, UINT _Strides)
-{
-  static ID3D11Buffer*const* ppVertexBuffer = nullptr;
-  if (ppVertexBuffer != _ppVertexBuffer)
-  {
-    ppVertexBuffer = _ppVertexBuffer;
-    UINT Offset = 0;
-
-    //  Ý’è‚ð”½‰f
-    pImpl_->pImmediateContext_->IASetVertexBuffers(0, 1, ppVertexBuffer, &_Strides, &Offset);
-  }
-}
-
-void ISystem::SetSamplersState(ID3D11SamplerState*const* _ppSamplerState, UINT _Slot)
-{
-  static ID3D11SamplerState*const* ppSamplerStatus[hdx::SamplerStateMaxNum] = { nullptr };
-
-  ID3D11SamplerState*const*& ppSamplerState = ppSamplerStatus[_Slot];
-  if (ppSamplerState != _ppSamplerState)
-  {
-    ppSamplerState = _ppSamplerState;
-    //  Ý’è‚ð”½‰f
-    pImpl_->pImmediateContext_->PSSetSamplers(_Slot, 1, ppSamplerState);
-  }
-}
-
-void ISystem::SetRasterizerState(ID3D11RasterizerState* _pRasterizerState)
-{
-  static ID3D11RasterizerState* pRasterizerState = nullptr;
-  if (pRasterizerState != _pRasterizerState)
-  {
-    pRasterizerState = _pRasterizerState;
-    //  Ý’è‚ð”½‰f
-    pImpl_->pImmediateContext_->RSSetState(pRasterizerState);
-  }
-}
-
-void ISystem::SetDepthStencilState(ID3D11DepthStencilState* _pDepthStencilState)
-{
-  static ID3D11DepthStencilState* pDepthStencilState = nullptr;
-  if (pDepthStencilState != _pDepthStencilState)
-  {
-    pDepthStencilState = _pDepthStencilState;
-    //  Ý’è‚ð”½‰f
-    pImpl_->pImmediateContext_->OMSetDepthStencilState(pDepthStencilState, 1);
-  }
-}
-
-void ISystem::SetRenderTarget(ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView)
-{
-  struct State
-  {
-    ID3D11RenderTargetView** ppRenderTargetView = nullptr;
-    ID3D11DepthStencilView* pDepthStencilView = nullptr;
-    State(ID3D11RenderTargetView** _ppRenderTargetView = nullptr, ID3D11DepthStencilView* _pDepthStencilView = nullptr)
-      : ppRenderTargetView(_ppRenderTargetView), pDepthStencilView(_pDepthStencilView)
-    {
-
-    }
-  };
-
-  auto Comparison = [](const State& _State1, const State& _State2)->bool
-  {
-    return _State1.ppRenderTargetView == _State2.ppRenderTargetView && _State1.pDepthStencilView == _State2.pDepthStencilView;
-  };
-
-  static State CurrentState;
-
-  State _State = (_ppRenderTargetView == nullptr && _pDepthStencilView == nullptr)
-    ? State(pImpl_->pRenderTargetView_.GetAddressOf(), pImpl_->pDepthStencilView_.Get()) : State(_ppRenderTargetView, _pDepthStencilView);
-
-  if (!Comparison(CurrentState, _State))
-  {
-    CurrentState = _State;
-    pImpl_->pImmediateContext_->OMSetRenderTargets(1, CurrentState.ppRenderTargetView, CurrentState.pDepthStencilView);
-  }
-}
-
-void ISystem::Map(ID3D11Buffer* _pVertexBuffer, D3D11_MAPPED_SUBRESOURCE* _pMappedSubresorce)
-{
-  //  ƒGƒ‰[ƒ`ƒFƒbƒN—p
-  HRESULT hr = S_OK;
-
-  pImpl_->pImmediateContext_->Map(_pVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, _pMappedSubresorce);
-}
-
-void ISystem::Unmap(ID3D11Buffer* _pVertexBuffer)
-{
-  pImpl_->pImmediateContext_->Unmap(_pVertexBuffer, 0);
-}
-
 ID3D11Device* ISystem::GetDevice()
 {
   return pImpl_->pDevice_.Get();
@@ -687,4 +539,14 @@ ID3D11DeviceContext* ISystem::GetImmediateContext()
 IDXGISwapChain* ISystem::GetSwapChain()
 {
   return pImpl_->pSwapChain_.Get();
+}
+
+ID3D11RenderTargetView** ISystem::GetRenderTargetView()
+{
+  return pImpl_->pRenderTargetView_.GetAddressOf();
+}
+
+ID3D11DepthStencilView* ISystem::GetDepthStencilView()
+{
+  return pImpl_->pDepthStencilView_.Get();
 }

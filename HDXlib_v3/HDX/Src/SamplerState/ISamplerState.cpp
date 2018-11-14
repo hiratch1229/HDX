@@ -18,31 +18,21 @@ struct std::hash<hdx::SamplerState>
   }
 };
 
-struct ISamplerState::Impl
+namespace
 {
-  NumberMap<hdx::SamplerState, Microsoft::WRL::ComPtr<ID3D11SamplerState>> SamplerStateMap_;
-public:
-  Impl() { SamplerStateMap_.clear(); }
-  ~Impl() { SamplerStateMap_.clear(); }
-};
-
-ISamplerState::ISamplerState()
-  : pImpl_(new Impl)
-{
-
+  NumberMap<hdx::SamplerState, Microsoft::WRL::ComPtr<ID3D11SamplerState>> SamplerStateMap;
 }
 
-ISamplerState::~ISamplerState()
+ISamplerState::ISamplerState()
 {
-  delete pImpl_;
-  pImpl_ = nullptr;
+  SamplerStateMap.clear();
 }
 
 int ISamplerState::Create(const hdx::SamplerState& _SamplerState)
 {
   //  既に作成されているか確認
   {
-    const int ID = pImpl_->SamplerStateMap_.find(_SamplerState);
+    const int ID = SamplerStateMap.find(_SamplerState);
     if (ID >= 0)
     {
       return ID;
@@ -70,20 +60,20 @@ int ISamplerState::Create(const hdx::SamplerState& _SamplerState)
   HRESULT hr = Engine::GetSystem()->GetDevice()->CreateSamplerState(&SamplerDesc, pSamplerState.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), L"CreateSamplerState");
 
-  return pImpl_->SamplerStateMap_.insert(_SamplerState, pSamplerState);
+  return SamplerStateMap.insert(_SamplerState, pSamplerState);
 }
 
 ID3D11SamplerState** ISamplerState::GetSamplerState(const hdx::SamplerState& _SamplerState)
 {
   //  既に作成されているか確認
   {
-    const int ID = pImpl_->SamplerStateMap_.find(_SamplerState);
+    const int ID = SamplerStateMap.find(_SamplerState);
     if (ID >= 0)
     {
-      return pImpl_->SamplerStateMap_[ID].GetAddressOf();
+      return SamplerStateMap[ID].GetAddressOf();
     }
   }
 
   //  作成して返す
-  return pImpl_->SamplerStateMap_[Create(_SamplerState)].GetAddressOf();
+  return SamplerStateMap[Create(_SamplerState)].GetAddressOf();
 }

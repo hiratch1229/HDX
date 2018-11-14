@@ -81,9 +81,7 @@ void Main()
   //    Fbx.Render(WordldViewProjection, World, LightDirection, 1 / 60.0f, hdx::Palette::White, hdx::Input::Keyboard::KeySpace);
   //  }
 
-  hdx::RenderTarget RenderTarget(hdx::System::GetWindowSize());
-
-  static constexpr hdx::Input::Gamepad Gamepads[2] = { hdx::Input::Gamepad(0),hdx::Input::Gamepad(1) };
+  //hdx::RenderTarget RenderTarget(hdx::System::GetWindowSize());
 
   while (hdx::System::Update())
   {
@@ -106,21 +104,10 @@ void Main()
     //  hdx::Renderer2D::SetSamplerState(SamplerState, 0);
     //}
 
-    for (int i = 0; i < 1024; ++i)
+    for (int i = 0; i < 10000; ++i)
     {
       A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
     }
-
-    //for (int i = 0; i < 2; ++i)
-    //{
-    //  for (int j = 0; j < hdx::Input::Gamepad::kMaxButtonNum; ++j)
-    //  {
-    //    if (Gamepads[i].GetButton(j))
-    //    {
-    //      A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
-    //    }
-    //  }
-    //}
 
     //hdx::Renderer2D::RestoreRenderTarget();
     //

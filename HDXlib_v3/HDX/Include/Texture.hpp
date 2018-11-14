@@ -49,12 +49,8 @@ namespace hdx
   class Texture
   {
   protected:
-    int ID_;
+    int ID_ = -1;
     int2 Size_;
-  private:
-    //  •`‰æÅIˆ—
-    //  (•`‰æŠÖ”‚ğ’Ç‰Á‚·‚éê‡ÅŒã‚ÉŒÄ‚ñ‚Å‚­‚¾‚³‚¢)
-    void Draw2D(const Vertex2D* v)const;
   protected:
     Texture(const int2& _Size);
   public:

@@ -10,33 +10,21 @@
 #include <wrl.h>
 #include <memory>
 
-class IVertexShader::Impl
+namespace
 {
-public:
   struct State
   {
     Microsoft::WRL::ComPtr<ID3D11VertexShader> pVertexShader;
     Microsoft::WRL::ComPtr<ID3D11InputLayout> pInputLayout;
   };
-public:
-  NumberMap<std::string, State> StateMap_;
-public:
-  Impl() { StateMap_.clear(); }
-  ~Impl() { StateMap_.clear(); }
-};
+
+  NumberMap<std::string, State> StateMap;
+}
 
 //  初期化
 IVertexShader::IVertexShader()
-  : pImpl_(new Impl)
 {
-
-}
-
-//  解放
-IVertexShader::~IVertexShader()
-{
-  delete pImpl_;
-  pImpl_ = nullptr;
+  StateMap.clear();
 }
 
 hdx::VertexShader IVertexShader::CreateDefault2D()
@@ -44,8 +32,13 @@ hdx::VertexShader IVertexShader::CreateDefault2D()
   hdx::InputElementDesc InputElementDescs[] =
   {
     hdx::InputElementDesc::Position,
-    hdx::InputElementDesc::Color,
-    hdx::InputElementDesc::Texcoord
+    hdx::InputElementDesc::Texcoord,
+    { "NDC_TRANSFORM", 0, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
+    { "NDC_TRANSFORM", 1, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
+    { "NDC_TRANSFORM", 2, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
+    { "NDC_TRANSFORM", 3, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
+    { "TEXCOORD_TRANSFORM", 0, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
+    { "COLOR", 0, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
   };
 
   return hdx::VertexShader(kDefault2DFilePath, InputElementDescs, ARRAYSIZE(InputElementDescs));
@@ -54,7 +47,7 @@ hdx::VertexShader IVertexShader::CreateDefault2D()
 //  バーテックスシェーダー作成
 int IVertexShader::Create(const char* _FilePath, const hdx::InputElementDesc _InputElementDescs[], UINT _NumElements)
 {
-  int ID = pImpl_->StateMap_.find(_FilePath);
+  int ID = StateMap.find(_FilePath);
 
   //  存在しなかった場合
   if (ID < 0)
@@ -76,7 +69,7 @@ int IVertexShader::Create(const char* _FilePath, const hdx::InputElementDesc _In
 
     ISystem* pSystem = Engine::GetSystem();
 
-    Impl::State State;
+    State State;
     {
       //  頂点シェーダーの作成
       hr = pSystem->GetDevice()->CreateVertexShader(Data.get(), Size, nullptr, State.pVertexShader.GetAddressOf());
@@ -100,7 +93,7 @@ int IVertexShader::Create(const char* _FilePath, const hdx::InputElementDesc _In
       _ASSERT_EXPR(SUCCEEDED(hr), L"CreateInputLayout");
     }
 
-    ID = pImpl_->StateMap_.insert(_FilePath, State);
+    ID = StateMap.insert(_FilePath, State);
   }
 
   return ID;
@@ -115,7 +108,7 @@ ID3D11InputLayout* IVertexShader::GetInputLayout(const hdx::VertexShader& _Verte
     return nullptr;
   }
 
-  return pImpl_->StateMap_[ID].pInputLayout.Get();
+  return StateMap[ID].pInputLayout.Get();
 }
 
 ID3D11VertexShader* IVertexShader::GetVertexShader(const hdx::VertexShader& _VertexShader)
@@ -127,5 +120,5 @@ ID3D11VertexShader* IVertexShader::GetVertexShader(const hdx::VertexShader& _Ver
     return nullptr;
   }
 
-  return pImpl_->StateMap_[ID].pVertexShader.Get();
+  return StateMap[ID].pVertexShader.Get();
 }

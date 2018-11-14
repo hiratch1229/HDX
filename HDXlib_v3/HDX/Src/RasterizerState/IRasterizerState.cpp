@@ -18,31 +18,21 @@ struct std::hash<hdx::RasterizerState>
   }
 };
 
-struct IRasterizerState::Impl
+namespace
 {
-  NumberMap<hdx::RasterizerState, Microsoft::WRL::ComPtr<ID3D11RasterizerState>> RasterizerStateMap_;
-public:
-  Impl() { RasterizerStateMap_.clear(); }
-  ~Impl() { RasterizerStateMap_.clear(); }
-};
-
-IRasterizerState::IRasterizerState()
-  : pImpl_(new Impl)
-{
-
+  NumberMap<hdx::RasterizerState, Microsoft::WRL::ComPtr<ID3D11RasterizerState>> RasterizerStateMap;
 }
 
-IRasterizerState::~IRasterizerState()
+IRasterizerState::IRasterizerState()
 {
-  delete pImpl_;
-  pImpl_ = nullptr;
+  RasterizerStateMap.clear();
 }
 
 int IRasterizerState::Create(const hdx::RasterizerState& _RasterizerState)
 {
   //  既に作成されているか確認
   {
-    const int ID = pImpl_->RasterizerStateMap_.find(_RasterizerState);
+    const int ID = RasterizerStateMap.find(_RasterizerState);
     if (ID >= 0)
     {
       return ID;
@@ -67,26 +57,25 @@ int IRasterizerState::Create(const hdx::RasterizerState& _RasterizerState)
     RasterizerDesc.MultisampleEnable = (SwapDesc.SampleDesc.Count != 1) ? true : false; //  スワップチェーンのマルチサンプリング設定に合わせる
     RasterizerDesc.AntialiasedLineEnable = _RasterizerState.AntialiasedLineAnable_;
   }
-
-
+  
   Microsoft::WRL::ComPtr<ID3D11RasterizerState> pRasterizerState;
   HRESULT hr = pSystem->GetDevice()->CreateRasterizerState(&RasterizerDesc, pRasterizerState.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), L"CreateSamplerState");
 
-  return pImpl_->RasterizerStateMap_.insert(_RasterizerState, pRasterizerState);
+  return RasterizerStateMap.insert(_RasterizerState, pRasterizerState);
 }
 
 ID3D11RasterizerState* IRasterizerState::GetRasterizerState(const hdx::RasterizerState& _SamplerState)
 {
   //  既に作成されているか確認
   {
-    const int ID = pImpl_->RasterizerStateMap_.find(_SamplerState);
+    const int ID = RasterizerStateMap.find(_SamplerState);
     if (ID >= 0)
     {
-      return pImpl_->RasterizerStateMap_[ID].Get();
+      return RasterizerStateMap[ID].Get();
     }
   }
 
   //  作成して返す
-  return pImpl_->RasterizerStateMap_[Create(_SamplerState)].Get();
+  return RasterizerStateMap[Create(_SamplerState)].Get();
 }

@@ -18,31 +18,21 @@ struct std::hash<hdx::DepthStencilState>
   }
 };
 
-struct IDepthStencilState::Impl
+namespace
 {
-  NumberMap<hdx::DepthStencilState, Microsoft::WRL::ComPtr<ID3D11DepthStencilState>> DepthStencilStateMap_;
-public:
-  Impl() { DepthStencilStateMap_.clear(); }
-  ~Impl() { DepthStencilStateMap_.clear(); }
-};
-
-IDepthStencilState::IDepthStencilState()
-  : pImpl_(new Impl)
-{
-
+  NumberMap<hdx::DepthStencilState, Microsoft::WRL::ComPtr<ID3D11DepthStencilState>> DepthStencilStateMap;
 }
 
-IDepthStencilState::~IDepthStencilState()
+IDepthStencilState::IDepthStencilState()
 {
-  delete pImpl_;
-  pImpl_ = nullptr;
+  DepthStencilStateMap.clear();
 }
 
 int IDepthStencilState::Create(const hdx::DepthStencilState& _DepthStencilState)
 {
   //  既に作成されているか確認
   {
-    const int ID = pImpl_->DepthStencilStateMap_.find(_DepthStencilState);
+    const int ID = DepthStencilStateMap.find(_DepthStencilState);
     if (ID >= 0)
     {
       return ID;
@@ -73,20 +63,20 @@ int IDepthStencilState::Create(const hdx::DepthStencilState& _DepthStencilState)
   _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState");
 
   //  マップへ追加
-  return pImpl_->DepthStencilStateMap_.insert(_DepthStencilState, pDepthStencilState);
+  return DepthStencilStateMap.insert(_DepthStencilState, pDepthStencilState);
 }
 
 ID3D11DepthStencilState* IDepthStencilState::GetDepthStencilState(const hdx::DepthStencilState& _DepthStencilState)
 {
   //  既に作成されているか確認
   {
-    const int ID = pImpl_->DepthStencilStateMap_.find(_DepthStencilState);
+    const int ID = DepthStencilStateMap.find(_DepthStencilState);
     if (ID >= 0)
     {
-      return pImpl_->DepthStencilStateMap_[ID].Get();
+      return DepthStencilStateMap[ID].Get();
     }
   }
 
   //  作成して返す
-  return pImpl_->DepthStencilStateMap_[Create(_DepthStencilState)].Get();
+  return DepthStencilStateMap[Create(_DepthStencilState)].Get();
 }

@@ -45,7 +45,6 @@ namespace
   int CreateTextureNum = 0;
 
   NumberMap<std::string, TextureData> TextureMap;
-  Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
 
   int CreateDammyTexture(const hdx::int2& _Size)
   {
@@ -108,33 +107,6 @@ namespace
 
     //  マップへ追加
     return TextureMap.insert(FileName, { pShaderResouceView, _Size });
-  }
-
-  void CreateVertexBuffer()
-  {
-    //  エラーチェック用
-    HRESULT hr = S_OK;
-
-    Vertex2D Vertices[4]{};
-
-    D3D11_BUFFER_DESC BufferDesc{};
-    {
-      BufferDesc.ByteWidth = sizeof(Vertices);
-      BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-      BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-      BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-      BufferDesc.MiscFlags = 0;
-      BufferDesc.StructureByteStride = 0;
-    }
-
-    D3D11_SUBRESOURCE_DATA InitialData{};
-    {
-      InitialData.pSysMem = Vertices;
-      InitialData.SysMemPitch = 0;
-      InitialData.SysMemSlicePitch = 0;
-    }
-
-    Engine::GetSystem()->GetDevice()->CreateBuffer(&BufferDesc, &InitialData, pVertexBuffer.GetAddressOf());
   }
 }
 
@@ -280,27 +252,6 @@ int ITexture::InsertTexture(const char* _FilePath, ID3D11ShaderResourceView* _pS
 ID3D11ShaderResourceView** ITexture::GetShaderResourceView(int _ID)
 {
   return TextureMap[_ID].pShaderResourceView.GetAddressOf();
-}
-
-inline void CheckCreateVertexBuffer()
-{
-  if (pVertexBuffer) return;
-
-  CreateVertexBuffer();
-}
-
-ID3D11Buffer* ITexture::GetVertexBuffer()
-{
-  CheckCreateVertexBuffer();
-
-  return pVertexBuffer.Get();
-}
-
-ID3D11Buffer** ITexture::GetAddressOfVertexBuffer()
-{
-  CheckCreateVertexBuffer();
-
-  return pVertexBuffer.GetAddressOf();
 }
 
 void ITexture::SetShaderResouceView(const hdx::RenderTarget& _RenderTarget, ID3D11ShaderResourceView* _pShaderResouceView)

@@ -9,14 +9,9 @@ namespace hdx
 
 class IRasterizerState
 {
-  struct Impl;
-private:
-  Impl* pImpl_;
-private:
   int Create(const hdx::RasterizerState& _RasterizerState);
 public:
   ID3D11RasterizerState* GetRasterizerState(const hdx::RasterizerState& _RasterizerState);
 public:
   IRasterizerState();
-  ~IRasterizerState();
 };

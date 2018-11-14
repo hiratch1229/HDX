@@ -19,31 +19,21 @@ struct std::hash<hdx::BlendState>
   }
 };
 
-struct IBlendState::Impl
+namespace
 {
-  NumberMap<hdx::BlendState, Microsoft::WRL::ComPtr<ID3D11BlendState>> BlendStateMap_;
-public:
-  Impl() { BlendStateMap_.clear(); }
-  ~Impl() { BlendStateMap_.clear(); }
-};
-
-IBlendState::IBlendState()
-  : pImpl_(new Impl)
-{
-
+  NumberMap<hdx::BlendState, Microsoft::WRL::ComPtr<ID3D11BlendState>> BlendStateMap;
 }
 
-IBlendState::~IBlendState()
+IBlendState::IBlendState()
 {
-  delete pImpl_;
-  pImpl_ = nullptr;
+  BlendStateMap.clear();
 }
 
 int IBlendState::Create(const hdx::BlendState& _BlendState)
 {
   //  既に作成されているか確認
   {
-    const int ID = pImpl_->BlendStateMap_.find(_BlendState);
+    const int ID = BlendStateMap.find(_BlendState);
     if (ID >= 0)
     {
       return ID;
@@ -70,20 +60,20 @@ int IBlendState::Create(const hdx::BlendState& _BlendState)
   _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState");
 
   //  マップへ追加
-  return pImpl_->BlendStateMap_.insert(_BlendState, pBlendState);
+  return BlendStateMap.insert(_BlendState, pBlendState);
 }
 
 ID3D11BlendState* IBlendState::GetBlendState(const hdx::BlendState& _BlendState)
 {
   //  既に作成されているか確認
   {
-    const int ID = pImpl_->BlendStateMap_.find(_BlendState);
+    const int ID = BlendStateMap.find(_BlendState);
     if (ID >= 0)
     {
-      return pImpl_->BlendStateMap_[ID].Get();
+      return BlendStateMap[ID].Get();
     }
   }
 
   //  作成して返す
-  return pImpl_->BlendStateMap_[Create(_BlendState)].Get();
+  return BlendStateMap[Create(_BlendState)].Get();
 }

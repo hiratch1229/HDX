@@ -5,10 +5,6 @@ struct ID3D11PixelShader;
 
 class IPixelShader
 {
-  class Impl;
-private:
-  Impl* pImpl_;
-private:
   static constexpr char* kDefault2DFilePath = "SpritePS.cso";
 public:
   hdx::PixelShader CreateDefault2D();
@@ -16,5 +12,4 @@ public:
   ID3D11PixelShader* GetPixeShader(const hdx::PixelShader& _PixelShader);
 public:
   IPixelShader();
-  ~IPixelShader();
 };

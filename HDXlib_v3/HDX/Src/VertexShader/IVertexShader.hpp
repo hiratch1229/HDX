@@ -12,10 +12,6 @@ namespace hdx
 
 class IVertexShader
 {
-  class Impl;
-private:
-  Impl* pImpl_;
-private:
   static constexpr char* kDefault2DFilePath = "SpriteVS.cso";
 public:
   hdx::VertexShader CreateDefault2D();
@@ -24,5 +20,4 @@ public:
   ID3D11VertexShader* GetVertexShader(const hdx::VertexShader& _VertexShader);
 public:
   IVertexShader();
-  ~IVertexShader();
 };
