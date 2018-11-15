@@ -2,11 +2,13 @@
 
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
+#include "../Error.hpp"
 
 #include "../NumberMap.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>
+#include <assert.h>
 #include <memory>
 
 namespace
@@ -38,7 +40,7 @@ int IPixelShader::Create(const char* _FilePath)
 
     FILE* fp;
     fopen_s(&fp, _FilePath, "rb");
-    _ASSERT_EXPR(fp, L"fopen_s");
+    assert(fp);
 
     fseek(fp, 0, SEEK_END);
     long Size = ftell(fp);
@@ -51,7 +53,7 @@ int IPixelShader::Create(const char* _FilePath)
     Microsoft::WRL::ComPtr<ID3D11PixelShader> pPixelShader;
     //  ピクセルシェーダーの作成
     hr = Engine::GetSystem()->GetDevice()->CreatePixelShader(Data.get(), Size, nullptr, pPixelShader.GetAddressOf());
-    _ASSERT_EXPR(SUCCEEDED(hr), L"CreatePixelShader");
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
     ID = PixelShaderMap.insert(_FilePath, pPixelShader);
   }

@@ -3,11 +3,13 @@
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 #include "../NumberMap.hpp"
+#include "../Error.hpp"
 
 #include "../../Include/InputElementDesc.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>
+#include <assert.h>
 #include <memory>
 
 namespace
@@ -57,7 +59,7 @@ int IVertexShader::Create(const char* _FilePath, const hdx::InputElementDesc _In
 
     FILE* fp;
     fopen_s(&fp, _FilePath, "rb");
-    _ASSERT_EXPR(fp, L"fopen_s");
+    assert(fp);
 
     fseek(fp, 0, SEEK_END);
     long Size = ftell(fp);
@@ -73,7 +75,7 @@ int IVertexShader::Create(const char* _FilePath, const hdx::InputElementDesc _In
     {
       //  頂点シェーダーの作成
       hr = pSystem->GetDevice()->CreateVertexShader(Data.get(), Size, nullptr, State.pVertexShader.GetAddressOf());
-      _ASSERT_EXPR(SUCCEEDED(hr), L"CreateVertexShader");
+      _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
       std::unique_ptr<D3D11_INPUT_ELEMENT_DESC[]> InputElementDescs = std::make_unique<D3D11_INPUT_ELEMENT_DESC[]>(_NumElements);
 
@@ -90,7 +92,7 @@ int IVertexShader::Create(const char* _FilePath, const hdx::InputElementDesc _In
 
       //  入力レイアウトの作成
       hr = pSystem->GetDevice()->CreateInputLayout(InputElementDescs.get(), _NumElements, Data.get(), Size, State.pInputLayout.GetAddressOf());
-      _ASSERT_EXPR(SUCCEEDED(hr), L"CreateInputLayout");
+      _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     }
 
     ID = StateMap.insert(_FilePath, State);

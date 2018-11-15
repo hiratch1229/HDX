@@ -5,6 +5,7 @@
 #include "../../Engine.hpp"
 #include "../../System/ISystem.hpp"
 #include "../../Input/XInput/IXInput.hpp"
+#include "../../Error.hpp"
 
 #include "../../../Include/Math.hpp"
 #include "../../../Include/Macro.hpp"
@@ -53,14 +54,14 @@ namespace
     HRESULT hr = S_OK;
 
     DirectInputData& pDirectInputData = pDirectInputDatas[CreateDeviceNum];
-    auto HWND = ::GetActiveWindow();
+
     //  ジョイスティックを作成
     hr = pDirectInput->CreateDevice(GuidProductFromDirectInput, &pDirectInputData.pJoyStick, nullptr);
-    _ASSERT_EXPR(SUCCEEDED(hr), L"CreateDevice");
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     hr = pDirectInputData.pJoyStick->SetDataFormat(&c_dfDIJoystick);
-    _ASSERT_EXPR(SUCCEEDED(hr), L"SetDataFormat");
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     hr = pDirectInputData.pJoyStick->SetCooperativeLevel(::GetActiveWindow(), DISCL_NONEXCLUSIVE | DISCL_BACKGROUND);
-    _ASSERT_EXPR(SUCCEEDED(hr), L"SetCooperativeLevel");
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
     // 軸の値の範囲を設定
     DIPROPRANGE DirectInputPropatyRange;
@@ -304,12 +305,12 @@ IGamepad::IGamepad()
     }
 
     //  DirectInputを作成
-    hr = DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)&pDirectInput, NULL);
-    _ASSERT_EXPR(SUCCEEDED(hr), L"DirectInput8Create");
+    hr = DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)pDirectInput.GetAddressOf(), NULL);
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
     //  Joystickを作成
     hr = pDirectInput->EnumDevices(DI8DEVCLASS_GAMECTRL, EnumJoysticksCallback, nullptr, DIEDFL_ATTACHEDONLY);
-    _ASSERT_EXPR(SUCCEEDED(hr), L"EnumDevices");
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   }
 }
 

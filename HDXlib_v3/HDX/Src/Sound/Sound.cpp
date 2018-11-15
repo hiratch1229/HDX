@@ -2,10 +2,9 @@
 
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
+#include "../Error.hpp"
 
 #include "../../Include/Constants.hpp"
-
-#include "../Error.hpp"
 
 namespace hdx
 {
@@ -18,7 +17,7 @@ namespace hdx
     HRESULT hr = MFPCreateMediaPlayer(wFilePath, false, MFP_OPTION_NONE, nullptr, GetActiveWindow(), pMediaPlayer_.GetAddressOf());
 
     //  ÉGÉâÅ[èàóù
-    NOT_FOUND(hr, wFilePath);
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   }
 
   //  âπó ê›íË

@@ -20,3 +20,23 @@ public:
   //  Œ©‚Â‚©‚ç‚È‚¢ê‡-1‚ğ•Ô‚·
   int find(T Key) { return (Map_.find(Key) == Map_.end()) ? -1 : Map_[Key]; }
 };
+
+struct ID
+{
+  int Value;
+  ID(int _Value) : Value(_Value) { }
+};
+
+inline bool operator==(const ID& _ID1, const ID& _ID2)
+{
+  return _ID1.Value == _ID2.Value;
+}
+
+template<>
+struct std::hash<ID>
+{
+  size_t operator()(const ID& _ID)const
+  {
+    return _ID.Value;
+  }
+};

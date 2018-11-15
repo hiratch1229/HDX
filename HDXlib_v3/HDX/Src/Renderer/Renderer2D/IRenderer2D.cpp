@@ -11,6 +11,8 @@
 #include "../../VertexShader/IVertexShader.hpp"
 #include "../../PixelShader/IPixelShader.hpp"
 #include "../../RenderTarget/IRenderTarget.hpp"
+#include "../../NumberMap.hpp"
+#include "../../Error.hpp"
 
 #include "../../../Include/System.hpp"
 #include "../../../Include/VertexShader.hpp"
@@ -102,7 +104,7 @@ void IRenderer2D::Begin(const hdx::Texture& _Texture)
         InitialData.SysMemSlicePitch = 0;
       }
       hr = pDevice->CreateBuffer(&BufferDesc, &InitialData, pVertexBuffer.GetAddressOf());
-      _ASSERT_EXPR(SUCCEEDED(hr), L"CreateVertexBuffer");
+      _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     }
 
     //  インスタンスバッファを作成
@@ -127,7 +129,7 @@ void IRenderer2D::Begin(const hdx::Texture& _Texture)
       }
 
       hr = pDevice->CreateBuffer(&BufferDesc, &InitialData, pInstanceBuffer.GetAddressOf());
-      _ASSERT_EXPR(SUCCEEDED(hr), L"CreateInstanceBuffer");
+      _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
       delete[] Instances;
     }
@@ -165,13 +167,15 @@ void IRenderer2D::Begin(const hdx::Texture& _Texture)
 
 void IRenderer2D::End()
 {
-  if (Count == 0)return;
+  if (!Instances)return;
 
   Unmap(pInstanceBuffer.Get());
   DrawInstanced(4, Count, 0, 0);
 
   CurrentTextures[0] = hdx::Texture();
   Count = 0;
+
+  Instances = nullptr;
 }
 
 void IRenderer2D::Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeftTop, const hdx::float2& _DstSize, const hdx::float2& _SrcLeftPos, const hdx::float2& _SrcSize, const hdx::Radian& _Angle, bool _HorizontalFlip, bool _VerticalFlip, const hdx::ColorF& _Color)

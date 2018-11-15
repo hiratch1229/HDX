@@ -3,6 +3,7 @@
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 #include "../NumberMap.hpp"
+#include "../Error.hpp"
 
 #include "../../Include/SamplerState.hpp"
 
@@ -58,7 +59,7 @@ int ISamplerState::Create(const hdx::SamplerState& _SamplerState)
 
   Microsoft::WRL::ComPtr<ID3D11SamplerState> pSamplerState;
   HRESULT hr = Engine::GetSystem()->GetDevice()->CreateSamplerState(&SamplerDesc, pSamplerState.GetAddressOf());
-  _ASSERT_EXPR(SUCCEEDED(hr), L"CreateSamplerState");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   return SamplerStateMap.insert(_SamplerState, pSamplerState);
 }

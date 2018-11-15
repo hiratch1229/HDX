@@ -2,6 +2,7 @@
 
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
+#include "../Error.hpp"
 
 #include "../../Include/BlendState.hpp"
 
@@ -57,7 +58,7 @@ int IBlendState::Create(const hdx::BlendState& _BlendState)
   Microsoft::WRL::ComPtr<ID3D11BlendState> pBlendState;
 
   HRESULT hr = Engine::GetSystem()->GetDevice()->CreateBlendState(&BlendDesc, pBlendState.GetAddressOf());
-  _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   //  ƒ}ƒbƒv‚Ö’Ç‰Á
   return BlendStateMap.insert(_BlendState, pBlendState);

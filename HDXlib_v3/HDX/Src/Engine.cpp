@@ -16,14 +16,14 @@
 #include "RenderTarget/IRenderTarget.hpp"
 #include "Random/IRandom.hpp"
 
-#include <crtdbg.h>
+#include <assert.h>
 
 Engine* Engine::pEngine = nullptr;
 
 Engine::Engine()
 {
   //  二度目以降作成時エラー
-  _ASSERT_EXPR(!pEngine, L"Engineの二度目の作成です");
+  assert(!pEngine);
 
   //  作成時にデータを取り出せるようにする
   pEngine = this;

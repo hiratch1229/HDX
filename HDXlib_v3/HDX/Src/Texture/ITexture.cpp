@@ -3,6 +3,7 @@
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 #include "../NumberMap.hpp"
+#include "../Error.hpp"
 
 #include "../../Include/Vertex.hpp"
 #include "../../Include/RenderTarget.hpp"
@@ -10,8 +11,9 @@
 #include "../../Include/Constants.hpp"
 
 #include <d3d11.h>
-#include <wincodec.h>
 #include <wrl.h>
+#include <wincodec.h>
+#include <assert.h>
 
 namespace
 {
@@ -82,7 +84,7 @@ namespace
     Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture2d;
     {
       hr = pSystem->GetDevice()->CreateTexture2D(&Texture2dDesc, &SubresourceData, pTexture2d.GetAddressOf());
-      _ASSERT_EXPR(SUCCEEDED(hr), L"CreateTexture2D");
+      _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     }
 
     //  シェーダーリソースビューをスワップチェーン設定で作成
@@ -99,7 +101,7 @@ namespace
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pShaderResouceView;
     {
       hr = pSystem->GetDevice()->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResouceView.GetAddressOf());
-      _ASSERT_EXPR(SUCCEEDED(hr), L"CreateShaderResourceView");
+      _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     }
 
     char FileName[hdx::MaxCharLimit];
@@ -116,7 +118,7 @@ ITexture::ITexture()
   HRESULT hr = S_OK;
 
   hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(pFactory.GetAddressOf()));
-  _ASSERT_EXPR(SUCCEEDED(hr), L"CoCreateInstance");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 }
 
 int ITexture::Load(const char* _FilePath)
@@ -139,24 +141,24 @@ int ITexture::Load(const char* _FilePath)
   mbstowcs_s(nullptr, wFilePath, _FilePath, hdx::MaxCharLimit);
 
   hr = pFactory->CreateDecoderFromFilename(wFilePath, 0, GENERIC_READ, WICDecodeMetadataCacheOnDemand, Decoder.GetAddressOf());
-  _ASSERT_EXPR(SUCCEEDED(hr), L"CreateDecoderFromFilename");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   Microsoft::WRL::ComPtr<IWICBitmapFrameDecode> Frame;
   hr = Decoder->GetFrame(0, Frame.GetAddressOf());
-  _ASSERT_EXPR(SUCCEEDED(hr), L"GetFrame");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   hdx::int2 Size;
   {
     UINT Width, Height;
     hr = Frame->GetSize(&Width, &Height);
-    _ASSERT_EXPR(SUCCEEDED(hr), L"GetSize");
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     Size = { static_cast<int>(Width), static_cast<int>(Height) };
-    _ASSERT_EXPR(Size.X > 0 && Size.Y > 0, L"Size");
+    assert(Size.X > 0 && Size.Y > 0, L"Size");
   }
 
   WICPixelFormatGUID PixelFormat;
   hr = Frame->GetPixelFormat(&PixelFormat);
-  _ASSERT_EXPR(SUCCEEDED(hr), L"GetPixelFormat");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   Image Image(Size);
 
@@ -165,18 +167,18 @@ int ITexture::Load(const char* _FilePath)
     Microsoft::WRL::ComPtr<IWICFormatConverter> pConverter;
 
     hr = pFactory->CreateFormatConverter(pConverter.GetAddressOf());
-    _ASSERT_EXPR(SUCCEEDED(hr), L"CreateFormatConverter");
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
     hr = pConverter->Initialize(Frame.Get(), GUID_WICPixelFormat32bppRGBA, WICBitmapDitherTypeErrorDiffusion, nullptr, 0, WICBitmapPaletteTypeCustom);
-    _ASSERT_EXPR(SUCCEEDED(hr), L"Initialize");
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
     hr = pConverter->CopyPixels(0, Image.Stride(), Image.BufferSize(), Image.Buffer());
-    _ASSERT_EXPR(SUCCEEDED(hr), L"CopyPixels");
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   }
   else
   {
     hr = Frame->CopyPixels(0, Image.Stride(), Image.BufferSize(), Image.Buffer());
-    _ASSERT_EXPR(SUCCEEDED(hr), L"CopyPixels");
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   }
 
   D3D11_TEXTURE2D_DESC Texture2dDesc;
@@ -202,7 +204,7 @@ int ITexture::Load(const char* _FilePath)
   ISystem* pSystem = Engine::GetSystem();
 
   hr = pSystem->GetDevice()->CreateTexture2D(&Texture2dDesc, &InitializeData, pTexture2d.GetAddressOf());
-  _ASSERT_EXPR(SUCCEEDED(hr), L"CreateTexture2D");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   DXGI_SWAP_CHAIN_DESC SwapChainDesc;
   pSystem->GetSwapChain()->GetDesc(&SwapChainDesc);
@@ -213,7 +215,7 @@ int ITexture::Load(const char* _FilePath)
 
   Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pShaderResourceView;
   hr = pSystem->GetDevice()->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResourceView.GetAddressOf());
-  _ASSERT_EXPR(SUCCEEDED(hr), L"CreateShaderResourceView");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   return InsertTexture(_FilePath, pShaderResourceView.Get(), Size);
 }

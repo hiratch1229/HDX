@@ -16,9 +16,6 @@ namespace hdx
 
 class ISystem
 {
-  class Impl;
-private:
-  Impl* pImpl_;
 public:
   int GetWindowWidth()const;
   int GetWindowHeight()const;
@@ -50,5 +47,4 @@ public:
   bool Update();
 public:
   ISystem();
-  ~ISystem();
 };

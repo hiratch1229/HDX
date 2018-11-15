@@ -2,6 +2,7 @@
 
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
+#include "../Error.hpp"
 
 #include "../../Include/DepthStencilState.hpp"
 #include "../NumberMap.hpp"
@@ -60,7 +61,7 @@ int IDepthStencilState::Create(const hdx::DepthStencilState& _DepthStencilState)
   Microsoft::WRL::ComPtr<ID3D11DepthStencilState> pDepthStencilState;
 
   HRESULT hr = Engine::GetSystem()->GetDevice()->CreateDepthStencilState(&DepthStencilDesc, pDepthStencilState.GetAddressOf());
-  _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBlendState");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   //  ƒ}ƒbƒv‚Ö’Ç‰Á
   return DepthStencilStateMap.insert(_DepthStencilState, pDepthStencilState);

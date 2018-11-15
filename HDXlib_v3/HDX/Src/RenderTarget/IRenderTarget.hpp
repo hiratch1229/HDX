@@ -12,9 +12,6 @@ namespace hdx
 
 class IRenderTarget
 {
-  class Impl;
-private:
-  Impl* pImpl_;
 public:
   void CreateRenderTarget(const hdx::RenderTarget& _RenderTarget);
   ID3D11ShaderResourceView* GetShaderResourceView(const hdx::RenderTarget& _RenderTarget);
@@ -23,5 +20,4 @@ public:
   ID3D11DepthStencilView* GetDepthStencilView(const hdx::RenderTarget& _RenderTarget)const;
 public:
   IRenderTarget();
-  ~IRenderTarget();
 };

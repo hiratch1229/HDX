@@ -3,6 +3,7 @@
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 #include "../NumberMap.hpp"
+#include "../Error.hpp"
 
 #include "../../Include/RasterizerState.hpp"
 
@@ -60,7 +61,7 @@ int IRasterizerState::Create(const hdx::RasterizerState& _RasterizerState)
   
   Microsoft::WRL::ComPtr<ID3D11RasterizerState> pRasterizerState;
   HRESULT hr = pSystem->GetDevice()->CreateRasterizerState(&RasterizerDesc, pRasterizerState.GetAddressOf());
-  _ASSERT_EXPR(SUCCEEDED(hr), L"CreateSamplerState");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   return RasterizerStateMap.insert(_RasterizerState, pRasterizerState);
 }

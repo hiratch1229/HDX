@@ -183,9 +183,6 @@ void IRenderer::SetRenderTarget(ID3D11RenderTargetView** _ppRenderTargetView, ID
 
 void IRenderer::Map(ID3D11Buffer* _pVertexBuffer, D3D11_MAPPED_SUBRESOURCE* _pMappedSubresorce)
 {
-  //  エラーチェック用
-  HRESULT hr = S_OK;
-
   GetImmediateContext()->Map(_pVertexBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, _pMappedSubresorce);
 }
 

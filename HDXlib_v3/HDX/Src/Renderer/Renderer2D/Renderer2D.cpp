@@ -14,7 +14,7 @@
 
 #include "../../../Include/Constants.hpp"
 
-#include <crtdbg.h>
+#include <assert.h>
 
 //  ライブラリ
 namespace hdx
@@ -48,7 +48,7 @@ namespace hdx
 
     void SetSamplerState(const SamplerState& _SamplerState, UINT _Slot)
     {
-      _ASSERT_EXPR(_Slot >= 0 && _Slot <= hdx::SamplerStateMaxNum, L"サンプラーステートのスロットは0～hdx::SamplerStateMaxNumを指定してください");
+      assert(_Slot >= 0 && _Slot <= hdx::SamplerStateMaxNum);
 
       Engine::GetRenderer2D()->SetSamplerState(_SamplerState, _Slot);
     }
@@ -60,7 +60,7 @@ namespace hdx
 
     void SetTexture(const Texture& _Texture, UINT _Slot)
     {
-      _ASSERT_EXPR(_Slot >= 1 && _Slot <= hdx::TextureMaxNum, L"テクスチャのスロットは1～hdx::TextureMaxNumを指定してください");
+      assert(_Slot >= 1 && _Slot <= hdx::TextureMaxNum);
 
       Engine::GetRenderer2D()->SetTexture(_Texture, _Slot);
     }

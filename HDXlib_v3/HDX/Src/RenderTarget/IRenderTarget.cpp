@@ -2,6 +2,7 @@
 
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
+#include "../Error.hpp"
 
 #include "../NumberMap.hpp"
 
@@ -10,64 +11,33 @@
 #include <d3d11.h>
 #include <wrl.h>
 
-struct ID
+namespace
 {
-  int Value;
-  ID(int _Value) : Value(_Value) { }
-};
-
-bool operator==(const ID& _ID1, const ID& _ID2)
-{
-  return _ID1.Value == _ID2.Value;
-}
-
-template<>
-struct std::hash<ID>
-{
-  size_t operator()(const ID& _ID)const
-  {
-    return _ID.Value;
-  }
-};
-
-class IRenderTarget::Impl
-{
-public:
   struct State
   {
     Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pRenderTargetView;
     Microsoft::WRL::ComPtr<ID3D11DepthStencilView>  pDepthStencilView;
   };
-public:
-  NumberMap<ID, State> StateMap_;
-public:
-  Impl() { StateMap_.clear(); }
-  ~Impl() { StateMap_.clear(); }
-};
 
-IRenderTarget::IRenderTarget()
-  : pImpl_(new Impl)
-{
-
+  NumberMap<ID, State> StateMap;
 }
 
-IRenderTarget::~IRenderTarget()
+IRenderTarget::IRenderTarget()
 {
-  delete pImpl_;
-  pImpl_ = nullptr;
+  StateMap.clear();
 }
 
 void IRenderTarget::CreateRenderTarget(const hdx::RenderTarget& _RenderTarget)
 {
   HRESULT hr = S_OK;
 
-  Impl::State State;
+  State State;
 
   ISystem* pSystem = Engine::GetSystem();
 
   Microsoft::WRL::ComPtr<ID3D11Texture2D> pBackBuffer;
   hr = pSystem->GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(pBackBuffer.GetAddressOf()));
-  _ASSERT_EXPR(SUCCEEDED(hr), L"GetBuffer");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   D3D11_TEXTURE2D_DESC RenderTargetDesc;
   pBackBuffer->GetDesc(&RenderTargetDesc);
@@ -77,10 +47,10 @@ void IRenderTarget::CreateRenderTarget(const hdx::RenderTarget& _RenderTarget)
 
   Microsoft::WRL::ComPtr<ID3D11Texture2D> pRenderTarget;
   hr = pSystem->GetDevice()->CreateTexture2D(&RenderTargetDesc, nullptr, pRenderTarget.GetAddressOf());
-  _ASSERT_EXPR(SUCCEEDED(hr), L"CreateTexture2D");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   hr = pSystem->GetDevice()->CreateRenderTargetView(pRenderTarget.Get(), nullptr, State.pRenderTargetView.GetAddressOf());
-  _ASSERT_EXPR(SUCCEEDED(hr), L"CreateRenderTargetView");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   //  深度ステンシルビューの作成
   {
@@ -94,7 +64,7 @@ void IRenderTarget::CreateRenderTarget(const hdx::RenderTarget& _RenderTarget)
     DepthStencilBufferDesc.MiscFlags = 0;
 
     hr = pSystem->GetDevice()->CreateTexture2D(&DepthStencilBufferDesc, nullptr, DepthStencilBuffer.GetAddressOf());
-    _ASSERT_EXPR(SUCCEEDED(hr), L"CreateTexture2D");
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
     DXGI_SWAP_CHAIN_DESC SwapChainDesc{};
     pSystem->GetSwapChain()->GetDesc(&SwapChainDesc);
@@ -106,10 +76,10 @@ void IRenderTarget::CreateRenderTarget(const hdx::RenderTarget& _RenderTarget)
     DepthStencilViewDesc.Texture2D.MipSlice = 0;
 
     hr = pSystem->GetDevice()->CreateDepthStencilView(DepthStencilBuffer.Get(), &DepthStencilViewDesc, State.pDepthStencilView.GetAddressOf());
-    _ASSERT_EXPR(SUCCEEDED(hr), L"CreateDepthStencilView");
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   }
 
-  pImpl_->StateMap_.insert({ _RenderTarget.GetID() }, State);
+  StateMap.insert({ _RenderTarget.GetID() }, State);
 }
 
 ID3D11ShaderResourceView* IRenderTarget::GetShaderResourceView(const hdx::RenderTarget& _RenderTarget)
@@ -120,13 +90,13 @@ ID3D11ShaderResourceView* IRenderTarget::GetShaderResourceView(const hdx::Render
 
   Microsoft::WRL::ComPtr<ID3D11Resource> pResource;
 
-  Impl::State& State = pImpl_->StateMap_[ID(_RenderTarget.GetID())];
+  State& State = StateMap[ID(_RenderTarget.GetID())];
 
   State.pRenderTargetView->GetResource(pResource.GetAddressOf());
 
   Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture2D;
   hr = pResource.Get()->QueryInterface<ID3D11Texture2D>(pTexture2D.GetAddressOf());
-  _ASSERT_EXPR(SUCCEEDED(hr), L"QueryInterface");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   D3D11_TEXTURE2D_DESC Texture2dDesc;
   pTexture2D->GetDesc(&Texture2dDesc);
 
@@ -139,7 +109,7 @@ ID3D11ShaderResourceView* IRenderTarget::GetShaderResourceView(const hdx::Render
 
   Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> ShaderResourceView;
   hr = pSystem->GetDevice()->CreateShaderResourceView(pTexture2D.Get(), &ShaderResourceViewDesc, ShaderResourceView.GetAddressOf());
-  _ASSERT_EXPR(SUCCEEDED(hr), L"CreateShaderResourceView");
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   return ShaderResourceView.Get();
 }
@@ -148,7 +118,7 @@ void IRenderTarget::ClearRenderTarget(const hdx::RenderTarget& _RenderTarget, co
 {
   ISystem* pSystem = Engine::GetSystem();
 
-  Impl::State& State = pImpl_->StateMap_[ID(_RenderTarget.GetID())];
+  State& State = StateMap[ID(_RenderTarget.GetID())];
 
   //  クリア色
   const float ClearColor[4] = { _Color.R,_Color.G,_Color.B,_Color.A };
@@ -159,10 +129,10 @@ void IRenderTarget::ClearRenderTarget(const hdx::RenderTarget& _RenderTarget, co
 
 ID3D11RenderTargetView** IRenderTarget::GetRenderTargetView(const hdx::RenderTarget& _RenderTarget)const
 {
-  return (_RenderTarget.GetSize() == hdx::int2()) ? nullptr : pImpl_->StateMap_[ID(_RenderTarget.GetID())].pRenderTargetView.GetAddressOf();
+  return (_RenderTarget.GetSize() == hdx::int2()) ? nullptr : StateMap[ID(_RenderTarget.GetID())].pRenderTargetView.GetAddressOf();
 }
 
 ID3D11DepthStencilView* IRenderTarget::GetDepthStencilView(const hdx::RenderTarget& _RenderTarget)const
 {
-  return (_RenderTarget.GetSize() == hdx::int2()) ? nullptr : pImpl_->StateMap_[ID(_RenderTarget.GetID())].pDepthStencilView.Get();
+  return (_RenderTarget.GetSize() == hdx::int2()) ? nullptr : StateMap[ID(_RenderTarget.GetID())].pDepthStencilView.Get();
 }
