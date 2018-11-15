@@ -119,6 +119,8 @@ ITexture::ITexture()
 
   hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(pFactory.GetAddressOf()));
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
+
+  Engine::End("Texture");
 }
 
 int ITexture::Load(const char* _FilePath)
@@ -153,7 +155,7 @@ int ITexture::Load(const char* _FilePath)
     hr = Frame->GetSize(&Width, &Height);
     _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     Size = { static_cast<int>(Width), static_cast<int>(Height) };
-    assert(Size.X > 0 && Size.Y > 0, L"Size");
+    assert(Size.X > 0 && Size.Y > 0);
   }
 
   WICPixelFormatGUID PixelFormat;

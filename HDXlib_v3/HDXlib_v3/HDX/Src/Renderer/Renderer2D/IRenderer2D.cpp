@@ -3,7 +3,6 @@
 #include "../../Engine.hpp"
 #include "../../System/ISystem.hpp"
 #include "../../Texture/ITexture.hpp"
-#include "../../Renderer/Renderer2D/IRenderer2D.hpp"
 #include "../../BlendState/IBlendState.hpp"
 #include "../../SamplerState/ISamplerState.hpp"
 #include "../../RasterizerState/IRasterizerState.hpp"
@@ -11,7 +10,6 @@
 #include "../../VertexShader/IVertexShader.hpp"
 #include "../../PixelShader/IPixelShader.hpp"
 #include "../../RenderTarget/IRenderTarget.hpp"
-#include "../../NumberMap.hpp"
 #include "../../Error.hpp"
 
 #include "../../../Include/System.hpp"
@@ -32,6 +30,7 @@
 
 #include <d3d11.h>
 #include <wrl.h>
+#include <unordered_map>
 #include <DirectXMath.h>
 
 namespace
@@ -235,6 +234,8 @@ void IRenderer2D::Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeft
 IRenderer2D::IRenderer2D()
 {
   CurrentSamplerStatus[0] = hdx::SamplerState::Default2D;
+
+  Engine::End("Renderer2D");
 }
 
 void IRenderer2D::SetVertexShader(const hdx::VertexShader& _VertexShader)

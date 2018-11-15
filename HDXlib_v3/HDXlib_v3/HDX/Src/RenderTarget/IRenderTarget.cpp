@@ -25,6 +25,8 @@ namespace
 IRenderTarget::IRenderTarget()
 {
   StateMap.clear();
+
+  Engine::End("RenderTarget");
 }
 
 void IRenderTarget::CreateRenderTarget(const hdx::RenderTarget& _RenderTarget)

@@ -16,7 +16,17 @@
 #include "RenderTarget/IRenderTarget.hpp"
 #include "Random/IRandom.hpp"
 
+#include "../Include/System.hpp"
+
+#include <Windows.h>
 #include <assert.h>
+
+#include <chrono>
+
+namespace
+{
+  std::chrono::high_resolution_clock::time_point Start = std::chrono::high_resolution_clock::now();
+}
 
 Engine* Engine::pEngine = nullptr;
 
@@ -48,4 +58,15 @@ Engine::~Engine()
   pRandom_.Release();
 
   pEngine = nullptr;
+}
+
+#include <string>
+void Engine::End(const char* _InterfaceName)
+{
+  char c[256];
+  sprintf_s(c, "%s Œo‰ßŽžŠÔ:%sms\n", _InterfaceName, std::to_string(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - Start).count()).c_str());
+
+  hdx::System::OutputDebug(c);
+
+  Start = std::chrono::high_resolution_clock::now();
 }

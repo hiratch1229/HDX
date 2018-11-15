@@ -28,6 +28,8 @@ namespace
 IBlendState::IBlendState()
 {
   BlendStateMap.clear();
+
+  Engine::End("BlendState");
 }
 
 int IBlendState::Create(const hdx::BlendState& _BlendState)

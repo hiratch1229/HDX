@@ -99,7 +99,7 @@ public:
   }
 public:
   //  ‰Šú‰»
-  IMouse() = default;
+  IMouse();
   //  ó‘Ô‚ÌXV
   void Update();
 };

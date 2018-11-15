@@ -1,6 +1,13 @@
 #include "IKeyboard.hpp"
 
+#include "../../Engine.hpp"
+
 #include <Windows.h>
+
+IKeyboard::IKeyboard()
+{
+  Engine::End("Keyboard");
+}
 
 //  ó‘Ô‚ÌXV
 void IKeyboard::Update()

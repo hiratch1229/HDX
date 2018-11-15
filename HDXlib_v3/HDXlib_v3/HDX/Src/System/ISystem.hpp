@@ -6,6 +6,8 @@ struct ID3D11DeviceContext;
 struct IDXGISwapChain;
 struct ID3D11RenderTargetView;
 struct ID3D11DepthStencilView;
+struct HWND__;
+typedef HWND__* HWND;
 
 namespace hdx
 {
@@ -43,6 +45,7 @@ public:
   IDXGISwapChain* GetSwapChain();
   ID3D11RenderTargetView** GetRenderTargetView();
   ID3D11DepthStencilView* GetDepthStencilView();
+  const HWND& GethWnd();
 public:
   bool Update();
 public:

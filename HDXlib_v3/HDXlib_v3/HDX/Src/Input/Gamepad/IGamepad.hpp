@@ -24,9 +24,9 @@ private:
   struct Status
   {
     //  接続状態
-    bool isConnect = true;
+    bool isConnect = false;
     //  入力状態
-    InputState InputStatus[kButtonNum];
+    InputState* InputStatus;
     //  左のアナログスティックの入力状態
     hdx::float2 LeftStick;
     //  右のアナログスティックの入力状態
@@ -35,44 +35,51 @@ private:
     float LeftTrigger;
     //  右のトリガーの入力状態
     float RightTrigger;
+    //  ボタン数
+    int ButtonNum = 0;
   };
 private:
   Status Status_[kControllerNum];
 private:
   bool isWithinRange(int _Index)const
   {
-    return (0 <= _Index && _Index < kControllerNum);
+    return (Status_[_Index].isConnect && 0 <= _Index && _Index < kControllerNum);
   }
   bool isWithinRange(int _Number, int _Index)const
   {
-    return (0 <= _Number && _Number < kButtonNum && 0 <= _Index && _Index < kControllerNum);
+    return (Status_[_Index].isConnect && 0 <= _Number && _Number < Status_[_Index].ButtonNum && 0 <= _Index && _Index < kControllerNum);
   }
 public:
   //  押されているならtrueを返す
-  bool Press(int _Number, int _Index)const 
+  bool Press(int _Number, int _Index)const
   {
-    return isWithinRange(_Number, _Index) ? Status_[_Index].InputStatus[_Number].Press() : false; 
+    return isWithinRange(_Number, _Index) ? Status_[_Index].InputStatus[_Number].Press() : false;
   }
   //  押された瞬間ならtrueを返す
-  bool Pressed(int _Number, int _Index)const 
+  bool Pressed(int _Number, int _Index)const
   {
-    return isWithinRange(_Number, _Index) ? Status_[_Index].InputStatus[_Number].Pressed() : false; 
+    return isWithinRange(_Number, _Index) ? Status_[_Index].InputStatus[_Number].Pressed() : false;
   }
   //  離された瞬間ならtrueを返す
-  bool Released(int _Number, int _Index)const 
+  bool Released(int _Number, int _Index)const
   {
-    return isWithinRange(_Number, _Index) ? Status_[_Index].InputStatus[_Number].Released() : false; 
+    return isWithinRange(_Number, _Index) ? Status_[_Index].InputStatus[_Number].Released() : false;
   }
   //  押されていないならtrueを返す
-  bool Release(int _Number, int _Index)const 
+  bool Release(int _Number, int _Index)const
   {
-    return isWithinRange(_Number, _Index) ? Status_[_Index].InputStatus[_Number].Release() : false; 
+    return isWithinRange(_Number, _Index) ? Status_[_Index].InputStatus[_Number].Release() : false;
   }
 public:
   //  接続されているか確認
-  bool isConnect(int _Index)const 
+  bool isConnect(int _Index)const
   {
     return isWithinRange(_Index) ? Status_[_Index].isConnect : false;
+  }
+  //  ボタンの数を取得
+  int GetButtonNum(int _Index)const
+  {
+    return isWithinRange(_Index) ? Status_[_Index].ButtonNum : 0;
   }
 public:
   //  何かのボタンが押されていればtrueを返す
@@ -125,9 +132,9 @@ public:
   }
 public:
   //  ボタンを取得
-  hdx::Button GetButton(int _Index, int _Number)const 
+  hdx::Button GetButton(int _Index, int _Number)const
   {
-    return isWithinRange(_Index) ? hdx::Button(hdx::InputDevice::Gamepad, _Number, _Index) : hdx::Button(); 
+    return isWithinRange(_Index) ? hdx::Button(hdx::InputDevice::Gamepad, _Number, _Index) : hdx::Button();
   }
 public:
   //  左スティックの入力状態を取得

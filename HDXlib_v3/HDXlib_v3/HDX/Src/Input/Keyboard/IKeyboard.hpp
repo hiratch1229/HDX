@@ -79,7 +79,7 @@ public:
   }
 public:
   //  ‰Šú‰»
-  IKeyboard() = default;
+  IKeyboard();
   //  ó‘Ô‚ÌXV
   void Update();
 };

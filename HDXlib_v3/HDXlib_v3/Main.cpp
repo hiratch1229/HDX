@@ -83,8 +83,23 @@ void Main()
 
   //hdx::RenderTarget RenderTarget(hdx::System::GetWindowSize());
 
+  constexpr hdx::Input::Gamepad Gampads[3] = { 0, 1, 2 };
+
   while (hdx::System::Update())
   {
+    for (int i = 0; i < 3; ++i)
+    {
+      const int ButtonNum = Gampads[i].GetButtonNum();
+
+      for (int j = 0; j < ButtonNum; ++j)
+      {
+        if (Gampads[i].GetButton(j))
+        {
+          A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
+        }
+      }
+    }
+
     //RenderTarget.Clear();
     //
     //hdx::Renderer2D::SetRenderTarget(RenderTarget);
@@ -104,10 +119,10 @@ void Main()
     //  hdx::Renderer2D::SetSamplerState(SamplerState, 0);
     //}
 
-    for (int i = 0; i < 10000; ++i)
-    {
-      A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
-    }
+    //for (int i = 0; i < 10000; ++i)
+    //{
+    //  A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
+    //}
 
     //hdx::Renderer2D::RestoreRenderTarget();
     //

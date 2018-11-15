@@ -1229,6 +1229,9 @@
 #include "../System/ISystem.hpp"
 
 #include "../../Include/Type2.hpp"
+#include "../../Include/Constants.hpp"
+
+#include <Windows.h>
 
 namespace hdx
 {
@@ -1338,6 +1341,14 @@ namespace hdx
   void System::ScreenShot()
   {
     Engine::GetSystem()->ScreenShot();
+  }
+
+  //  出力に文字を描画
+  void System::OutputDebug(const char* _Str)
+  {
+    wchar_t Str[MaxCharLimit];
+    mbstowcs_s(nullptr, Str, _Str, MaxCharLimit);
+    OutputDebugString(Str);
   }
 
   //  ソフトを終了

@@ -27,6 +27,8 @@ namespace
 ISamplerState::ISamplerState()
 {
   SamplerStateMap.clear();
+
+  Engine::End("SamplerState");
 }
 
 int ISamplerState::Create(const hdx::SamplerState& _SamplerState)

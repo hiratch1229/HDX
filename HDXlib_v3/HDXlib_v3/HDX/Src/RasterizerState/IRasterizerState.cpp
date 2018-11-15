@@ -27,6 +27,8 @@ namespace
 IRasterizerState::IRasterizerState()
 {
   RasterizerStateMap.clear();
+
+  Engine::End("RasterizerState");
 }
 
 int IRasterizerState::Create(const hdx::RasterizerState& _RasterizerState)

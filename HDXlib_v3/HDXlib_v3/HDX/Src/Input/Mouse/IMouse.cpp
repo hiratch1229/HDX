@@ -5,6 +5,11 @@
 
 #include <Windows.h>
 
+IMouse::IMouse()
+{
+  Engine::End("Mouse");
+}
+
 //  XV
 void IMouse::Update()
 {

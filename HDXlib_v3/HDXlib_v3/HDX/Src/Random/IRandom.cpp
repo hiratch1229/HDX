@@ -1,10 +1,14 @@
 #include "IRandom.hpp"
 
+#include "../Engine.hpp"
+
 #include <random>
 
 IRandom::IRandom()
 {
   SetSeed(std::random_device()());
+
+  Engine::End("Random");
 }
 
 UINT IRandom::Get()

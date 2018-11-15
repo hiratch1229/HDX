@@ -11,7 +11,7 @@ class NumberMap
   std::vector<U> List_;
 public:
   U& operator[](int Number) { return List_[Number]; }
-  U& operator[](const T Key) { return List_[Map_[Key]]; }
+  U& operator[](const T& Key) { return List_[Map_[Key]]; }
 public:
   size_t size()const noexcept { return Map_.size(); }
   bool empty()const noexcept { return Map_.empty(); }

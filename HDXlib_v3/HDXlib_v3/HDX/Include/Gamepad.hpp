@@ -39,6 +39,8 @@ namespace hdx
       //  接続されているか確認
       //  接続中はtrue
       bool isConnect()const;
+      //  ボタンの数を取得
+      int GetButtonNum()const;
       //  コントローラを振動させます
       //  0は停止、1は最大速度
       void SetVibration(float _Speed)const;

@@ -20,6 +20,8 @@ namespace
 IPixelShader::IPixelShader()
 {
   PixelShaderMap.clear();
+
+  Engine::End("PixelShader");
 }
 
 hdx::PixelShader IPixelShader::CreateDefault2D()

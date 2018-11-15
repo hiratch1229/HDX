@@ -27,6 +27,8 @@ namespace
 IVertexShader::IVertexShader()
 {
   StateMap.clear();
+
+  Engine::End("VertexShader");
 }
 
 hdx::VertexShader IVertexShader::CreateDefault2D()

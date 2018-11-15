@@ -8,3 +8,5 @@
 #define SAFE_FREE(Obj)  if( Obj ){ free( Obj ); Obj = nullptr; }	
 //  ”z—ñ‚Ì—v‘f”‚ğ‹‚ß‚é
 #define ARRAY_SIZE(Array) sizeof(Array) / sizeof(Array[0])
+
+#define O

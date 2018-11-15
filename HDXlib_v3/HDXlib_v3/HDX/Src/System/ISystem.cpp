@@ -315,6 +315,8 @@ ISystem::ISystem()
 
   //  スワップチェーンの作成
   CreateSwapChain();
+
+  Engine::End("System");
 }
 
 bool ISystem::Update()
@@ -514,4 +516,9 @@ ID3D11RenderTargetView** ISystem::GetRenderTargetView()
 ID3D11DepthStencilView* ISystem::GetDepthStencilView()
 {
   return pDepthStencilView.Get();
+}
+
+const HWND & ISystem::GethWnd()
+{
+  return pWindow->hWnd_;
 }

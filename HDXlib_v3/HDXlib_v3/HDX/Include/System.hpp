@@ -394,6 +394,8 @@ namespace hdx
     //  スクリーンショット
     //  SCREENSHOTフォルダに保存
     static void ScreenShot();
+    //  出力に文字を描画
+    static void OutputDebug(const char* _Str);
     //  ソフトを終了
     static void Exit();
   public:

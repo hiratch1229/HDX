@@ -1,11 +1,17 @@
 #include "IXInput.hpp"
 
+#include "../../Engine.hpp"
 #include "../InputState.hpp"
 
 #include "../../../Include/Math.hpp"
 
 #include <Windows.h>
 #include <Xinput.h>
+
+IXInput::IXInput()
+{
+  Engine::End("XInput");
+}
 
 //  çXêV
 void IXInput::Update()

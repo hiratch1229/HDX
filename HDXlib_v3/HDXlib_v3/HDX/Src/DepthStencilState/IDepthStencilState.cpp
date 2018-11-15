@@ -27,6 +27,8 @@ namespace
 IDepthStencilState::IDepthStencilState()
 {
   DepthStencilStateMap.clear();
+
+  Engine::End("DepthStencilState");
 }
 
 int IDepthStencilState::Create(const hdx::DepthStencilState& _DepthStencilState)

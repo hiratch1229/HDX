@@ -13,7 +13,7 @@ public:
 private:
   State State_ = State::Released;
 public:
-  bool Press()const { return static_cast<int>(State_) & 0x01; }
+  bool Press()const;
   bool Pressed()const { return State_ == State::Pressed; }
   bool Released()const { return State_ == State::Released; }
   bool Release()const { return !Press(); }
@@ -32,3 +32,8 @@ public:
     }
   }
 };
+
+inline bool InputState::Press()const
+{
+  return (static_cast<int>(State_) & 0x01) != 0;
+}

@@ -11,12 +11,9 @@ namespace hdx
   Sound::Sound(const char* FilePath)
   {
     wchar_t wFilePath[MaxCharLimit]{};
-    size_t Num;
-    mbstowcs_s(&Num, wFilePath, FilePath, MaxCharLimit);
-    
-    HRESULT hr = MFPCreateMediaPlayer(wFilePath, false, MFP_OPTION_NONE, nullptr, GetActiveWindow(), pMediaPlayer_.GetAddressOf());
+    mbstowcs_s(nullptr, wFilePath, FilePath, MaxCharLimit);
 
-    //  ƒGƒ‰[ˆ—
+    HRESULT hr = MFPCreateMediaPlayer(wFilePath, false, MFP_OPTION_NONE, nullptr, Engine::GetSystem()->GethWnd(), pMediaPlayer_.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   }
 

@@ -48,11 +48,11 @@ private:
 private:
   bool isWithinRange(int _Index)const
   {
-    return (0 <= _Index && _Index < kControllerNum);
+    return (Status_[_Index].isConnect && 0 <= _Index && _Index < kControllerNum);
   }
   bool isWithinRange(int _Number, int _Index)const
   {
-    return (0 <= _Number && _Number < kButtonNum && 0 <= _Index && _Index < kControllerNum);
+    return (Status_[_Index].isConnect && 0 <= _Number && _Number < kButtonNum && 0 <= _Index && _Index < kControllerNum);
   }
 public:
   const InputState& GetInputState(int _Number, int _Index)const
@@ -149,7 +149,7 @@ public:
   void StopVibration(int _Index)const;
 public:
   //  ‰Šú‰»
-  IXInput() = default;
+  IXInput();
   //  ó‘Ô‚ÌXV
   void Update();
   //  ‰ð•ú

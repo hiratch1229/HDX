@@ -47,6 +47,12 @@ namespace hdx
       return Engine::GetGamepad()->isConnect(Index_);
     }
 
+    //  ボタンの数を取得
+    int Gamepad::GetButtonNum()const
+    {
+      return Engine::GetGamepad()->GetButtonNum(Index_);
+    }
+
     //  コントローラを振動させます
     void Gamepad::SetVibration(float _Speed)const
     {

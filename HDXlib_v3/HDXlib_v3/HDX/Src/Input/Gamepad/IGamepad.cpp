@@ -28,6 +28,9 @@ namespace
   //  コントローラの数
   int ControllerNum = 0;
 
+  //  現在のジョイスティック数
+  int DeviceNum = 0;
+
   struct DirectInputData
   {
     //  ジョイスティック
@@ -43,15 +46,17 @@ namespace
   //  XInput判別用リスト
   std::vector<LONG> XInputList;
 
+  //  DirectInputコントローラのID
+  std::vector<UINT> JoyIDList;
+
   constexpr int kStickMaxValue = 10000;
   constexpr int kTriggerMaxValue = 65535;
 
   void CreateDirectInputDevice(const GUID& GuidProductFromDirectInput)
   {
-    //  作成済みジョイスティック数
-    static int CreateDeviceNum = 0;
-
     HRESULT hr = S_OK;
+
+    int CreateDeviceNum = JoyIDList.size();
 
     DirectInputData& pDirectInputData = pDirectInputDatas[CreateDeviceNum];
 
@@ -72,13 +77,13 @@ namespace
       DirectInputPropatyRange.diph.dwHow = DIPH_BYOFFSET;
       DirectInputPropatyRange.lMin = -kStickMaxValue;
       DirectInputPropatyRange.lMax = +kStickMaxValue;
-      pDirectInputData.pJoyStick->SetProperty(DIPROP_RANGE, &DirectInputPropatyRange.diph);
+      hr = pDirectInputData.pJoyStick->SetProperty(DIPROP_RANGE, &DirectInputPropatyRange.diph);
       DirectInputPropatyRange.diph.dwObj = DIJOFS_Y;
-      pDirectInputData.pJoyStick->SetProperty(DIPROP_RANGE, &DirectInputPropatyRange.diph);
+      hr = pDirectInputData.pJoyStick->SetProperty(DIPROP_RANGE, &DirectInputPropatyRange.diph);
       DirectInputPropatyRange.diph.dwObj = DIJOFS_Z;
-      pDirectInputData.pJoyStick->SetProperty(DIPROP_RANGE, &DirectInputPropatyRange.diph);
+      hr = pDirectInputData.pJoyStick->SetProperty(DIPROP_RANGE, &DirectInputPropatyRange.diph);
       DirectInputPropatyRange.diph.dwObj = DIJOFS_RZ;
-      pDirectInputData.pJoyStick->SetProperty(DIPROP_RANGE, &DirectInputPropatyRange.diph);
+      hr = pDirectInputData.pJoyStick->SetProperty(DIPROP_RANGE, &DirectInputPropatyRange.diph);
     }
 
     //  振動を設定
@@ -118,7 +123,7 @@ namespace
 
     //  ジョイスティック初期化終了
     pDirectInputData.pJoyStick->Acquire();
-    ++CreateDeviceNum;
+    JoyIDList.push_back(DeviceNum - 1);
   }
 }
 
@@ -139,6 +144,8 @@ BOOL CALLBACK EnumJoysticksCallback(const DIDEVICEINSTANCE* pdidInstance, void*)
     //  XInputではない
     return false;
   };
+
+  ++DeviceNum;
 
   //  XInputの時次へ
   if (isXInput(pdidInstance->guidProduct))
@@ -185,6 +192,10 @@ IGamepad::IGamepad()
       {
         ++DirectInputNum;
       }
+      else
+      {
+        break;
+      }
     }
   }
 
@@ -199,9 +210,10 @@ IGamepad::IGamepad()
     ControllerNum = kControllerNum;
   }
 
-  pDirectInputDatas = std::make_unique<DirectInputData[]>(ControllerNum);
-
+  if (ControllerNum > 0)
   {
+    pDirectInputDatas = std::make_unique<DirectInputData[]>(ControllerNum);
+
     //  エラーチェック用
     HRESULT hr = S_OK;
 
@@ -302,16 +314,38 @@ IGamepad::IGamepad()
           }
         }
       }
+
+      //  DirectInputを作成
+      hr = DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)pDirectInput.GetAddressOf(), NULL);
+      _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
+
+      //  Joystickを作成
+      hr = pDirectInput->EnumDevices(DI8DEVCLASS_GAMECTRL, EnumJoysticksCallback, nullptr, DIEDFL_ATTACHEDONLY);
+      _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
+
+      //  ボタンの数を保存
+      {
+        for (int i = 0; i < XInputNum; ++i)
+        {
+          Status_[i].ButtonNum = IXInput::kButtonNum;
+          Status_[i].InputStatus = new InputState[IXInput::kButtonNum];
+        }
+
+        JOYCAPS JoyCaps;
+        for (int i = XInputNum; i < ControllerNum; ++i)
+        {
+          joyGetDevCaps(JoyIDList[i - XInputNum], &JoyCaps, sizeof(JoyCaps));
+
+          const int ButtonNum = JoyCaps.wNumButtons + kPovDirectionNum;
+
+          Status_[i].ButtonNum = ButtonNum;
+          Status_[i].InputStatus = new InputState[ButtonNum];
+        }
+      }
     }
-
-    //  DirectInputを作成
-    hr = DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)pDirectInput.GetAddressOf(), NULL);
-    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
-
-    //  Joystickを作成
-    hr = pDirectInput->EnumDevices(DI8DEVCLASS_GAMECTRL, EnumJoysticksCallback, nullptr, DIEDFL_ATTACHEDONLY);
-    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   }
+
+  Engine::End("Gamepad");
 }
 
 //  状態の更新
@@ -402,9 +436,9 @@ void IGamepad::Update()
       Status.InputStatus[j].Update(isInput[j]);
     }
 
-    for (int j = kPovDirectionNum; j < kButtonNum; ++j)
+    for (int j = kPovDirectionNum; j < Status.ButtonNum; ++j)
     {
-      Status.InputStatus[j].Update((State.rgbButtons[j] & 0x80) != 0);
+      Status.InputStatus[j].Update((State.rgbButtons[j - kPovDirectionNum] & 0x80) != 0);
     }
   };
 
@@ -430,6 +464,11 @@ IGamepad::~IGamepad()
     {
       pDirectInputDatas[i].pJoyStick->Unacquire();
     }
+  }
+
+  for (int i = 0; i < ControllerNum; ++i)
+  {
+    delete[] Status_[i].InputStatus;
   }
 }
 
