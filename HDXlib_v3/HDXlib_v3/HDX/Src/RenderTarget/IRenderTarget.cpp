@@ -2,7 +2,7 @@
 
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
-#include "../Error.hpp"
+#include "../Misc.hpp"
 
 #include "../NumberMap.hpp"
 
@@ -20,13 +20,6 @@ namespace
   };
 
   NumberMap<ID, State> StateMap;
-}
-
-IRenderTarget::IRenderTarget()
-{
-  StateMap.clear();
-
-  Engine::End("RenderTarget");
 }
 
 void IRenderTarget::CreateRenderTarget(const hdx::RenderTarget& _RenderTarget)

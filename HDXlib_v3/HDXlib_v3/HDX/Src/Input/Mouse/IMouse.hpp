@@ -23,22 +23,22 @@ private:
   }
 public:
   //  ‰Ÿ‚³‚ê‚Ä‚¢‚é‚È‚çtrue‚ğ•Ô‚·
-  bool Press(int _Number)const 
+  bool Press(int _Number)const
   {
-    return isWithinRange(_Number) ? InputStatus_[_Number].Press() : false; 
+    return isWithinRange(_Number) ? InputStatus_[_Number].Press() : false;
   }
   //  ‰Ÿ‚³‚ê‚½uŠÔ‚È‚çtrue‚ğ•Ô‚·
-  bool Pressed(int _Number)const 
-  { 
-    return isWithinRange(_Number) ? InputStatus_[_Number].Pressed() : false; 
+  bool Pressed(int _Number)const
+  {
+    return isWithinRange(_Number) ? InputStatus_[_Number].Pressed() : false;
   }
   //  —£‚³‚ê‚½uŠÔ‚È‚çtrue‚ğ•Ô‚·
-  bool Released(int _Number)const 
+  bool Released(int _Number)const
   {
-    return isWithinRange(_Number) ? InputStatus_[_Number].Released() : false; 
+    return isWithinRange(_Number) ? InputStatus_[_Number].Released() : false;
   }
   //  ‰Ÿ‚³‚ê‚Ä‚¢‚È‚¢‚È‚çtrue‚ğ•Ô‚·
-  bool Release(int _Number)const 
+  bool Release(int _Number)const
   {
     return isWithinRange(_Number) ? InputStatus_[_Number].Release() : false;
   }
@@ -98,8 +98,7 @@ public:
     return false;
   }
 public:
-  //  ‰Šú‰»
-  IMouse();
+  IMouse() = default;
   //  ó‘Ô‚ÌXV
   void Update();
 };

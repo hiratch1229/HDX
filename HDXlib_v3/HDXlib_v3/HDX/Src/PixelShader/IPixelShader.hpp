@@ -11,5 +11,5 @@ public:
   int Create(const char* _FilePath);
   ID3D11PixelShader* GetPixeShader(const hdx::PixelShader& _PixelShader);
 public:
-  IPixelShader();
+  IPixelShader() = default;
 };

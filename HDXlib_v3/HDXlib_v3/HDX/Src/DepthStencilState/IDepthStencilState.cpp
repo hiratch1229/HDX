@@ -2,7 +2,7 @@
 
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
-#include "../Error.hpp"
+#include "../Misc.hpp"
 
 #include "../../Include/DepthStencilState.hpp"
 #include "../NumberMap.hpp"
@@ -22,13 +22,6 @@ struct std::hash<hdx::DepthStencilState>
 namespace
 {
   NumberMap<hdx::DepthStencilState, Microsoft::WRL::ComPtr<ID3D11DepthStencilState>> DepthStencilStateMap;
-}
-
-IDepthStencilState::IDepthStencilState()
-{
-  DepthStencilStateMap.clear();
-
-  Engine::End("DepthStencilState");
 }
 
 int IDepthStencilState::Create(const hdx::DepthStencilState& _DepthStencilState)

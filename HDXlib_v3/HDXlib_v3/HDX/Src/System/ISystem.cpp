@@ -6,7 +6,7 @@
 #include "../Input/XInput/IXInput.hpp"
 #include "../Input/Gamepad/IGamepad.hpp"
 #include "../Renderer/Renderer2D/IRenderer2D.hpp"
-#include "../Error.hpp"
+#include "../Misc.hpp"
 
 #include "../../Include/System.hpp"
 #include "../../Include/Type2.hpp"
@@ -23,6 +23,7 @@
 #include <ScreenGrab.h>
 
 #include <memory>
+#include <functional>
 
 namespace
 {
@@ -301,6 +302,8 @@ namespace
 
 ISystem::ISystem()
 {
+  TIMER_START("System");
+
   //  フレームレートの作成
   pFrameRate = std::make_unique<FrameRate>(60);
 
@@ -316,7 +319,7 @@ ISystem::ISystem()
   //  スワップチェーンの作成
   CreateSwapChain();
 
-  Engine::End("System");
+  TIMER_END("System");
 }
 
 bool ISystem::Update()
@@ -329,8 +332,8 @@ bool ISystem::Update()
     ResizeSwapChain();
     CreateRenderTargetViewAndDepthStencilView();
   }
+
   //  描画裏表反転
-  else
   {
     Engine::GetRenderer2D()->End();
     pSwapChain->Present(0, 0);
@@ -518,7 +521,7 @@ ID3D11DepthStencilView* ISystem::GetDepthStencilView()
   return pDepthStencilView.Get();
 }
 
-const HWND & ISystem::GethWnd()
+const HWND& ISystem::GethWnd()
 {
   return pWindow->hWnd_;
 }

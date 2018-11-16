@@ -78,8 +78,8 @@ public:
     return false;
   }
 public:
-  //  ‰Šú‰»
-  IKeyboard();
+  IKeyboard() = default;
+public:
   //  ó‘Ô‚ÌXV
   void Update();
 };

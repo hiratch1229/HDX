@@ -2,7 +2,7 @@
 
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
-#include "../Error.hpp"
+#include "../Misc.hpp"
 
 #include "../../Include/BlendState.hpp"
 
@@ -23,13 +23,6 @@ struct std::hash<hdx::BlendState>
 namespace
 {
   NumberMap<hdx::BlendState, Microsoft::WRL::ComPtr<ID3D11BlendState>> BlendStateMap;
-}
-
-IBlendState::IBlendState()
-{
-  BlendStateMap.clear();
-
-  Engine::End("BlendState");
 }
 
 int IBlendState::Create(const hdx::BlendState& _BlendState)

@@ -8,11 +8,6 @@
 #include <Windows.h>
 #include <Xinput.h>
 
-IXInput::IXInput()
-{
-  Engine::End("XInput");
-}
-
 //  XV
 void IXInput::Update()
 {

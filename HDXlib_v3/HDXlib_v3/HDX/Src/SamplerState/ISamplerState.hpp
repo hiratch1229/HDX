@@ -13,5 +13,5 @@ class ISamplerState
 public:
   ID3D11SamplerState** GetSamplerState(const hdx::SamplerState& _SamplerState);
 public:
-  ISamplerState();
+  ISamplerState() = default;
 };

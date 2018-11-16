@@ -3,7 +3,7 @@
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 #include "../NumberMap.hpp"
-#include "../Error.hpp"
+#include "../Misc.hpp"
 
 #include "../../Include/InputElementDesc.hpp"
 
@@ -21,14 +21,6 @@ namespace
   };
 
   NumberMap<std::string, State> StateMap;
-}
-
-//  ‰Šú‰»
-IVertexShader::IVertexShader()
-{
-  StateMap.clear();
-
-  Engine::End("VertexShader");
 }
 
 hdx::VertexShader IVertexShader::CreateDefault2D()

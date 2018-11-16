@@ -19,5 +19,5 @@ public:
   ID3D11InputLayout* GetInputLayout(const hdx::VertexShader& _VertexShader);
   ID3D11VertexShader* GetVertexShader(const hdx::VertexShader& _VertexShader);
 public:
-  IVertexShader();
+  IVertexShader() = default;
 };

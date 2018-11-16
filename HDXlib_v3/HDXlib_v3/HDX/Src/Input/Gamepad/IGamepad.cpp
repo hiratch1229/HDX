@@ -5,7 +5,7 @@
 #include "../../Engine.hpp"
 #include "../../System/ISystem.hpp"
 #include "../../Input/XInput/IXInput.hpp"
-#include "../../Error.hpp"
+#include "../../Misc.hpp"
 
 #include "../../../Include/Math.hpp"
 #include "../../../Include/Macro.hpp"
@@ -166,6 +166,8 @@ BOOL CALLBACK EnumJoysticksCallback(const DIDEVICEINSTANCE* pdidInstance, void*)
 //  作成
 IGamepad::IGamepad()
 {
+  TIMER_START("Gamepad");
+
   //  接続されているXInputコントローラの数を取得
   {
     for (; XInputNum < XUSER_MAX_COUNT; ++XInputNum)
@@ -345,7 +347,7 @@ IGamepad::IGamepad()
     }
   }
 
-  Engine::End("Gamepad");
+  TIMER_END("Gamepad");
 }
 
 //  状態の更新
@@ -359,7 +361,7 @@ void IGamepad::Update()
 
     for (int i = 0; i < IXInput::kButtonNum; ++i)
     {
-      Status.InputStatus[i] = pXInput->GetInputState(i, _Index);
+      Status.InputStatus[i].Update(pXInput->Press(i, _Index));
     }
 
     Status.isConnect = pXInput->isConnect(_Index);

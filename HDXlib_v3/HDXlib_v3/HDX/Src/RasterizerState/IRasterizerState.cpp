@@ -3,7 +3,7 @@
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 #include "../NumberMap.hpp"
-#include "../Error.hpp"
+#include "../Misc.hpp"
 
 #include "../../Include/RasterizerState.hpp"
 
@@ -22,13 +22,6 @@ struct std::hash<hdx::RasterizerState>
 namespace
 {
   NumberMap<hdx::RasterizerState, Microsoft::WRL::ComPtr<ID3D11RasterizerState>> RasterizerStateMap;
-}
-
-IRasterizerState::IRasterizerState()
-{
-  RasterizerStateMap.clear();
-
-  Engine::End("RasterizerState");
 }
 
 int IRasterizerState::Create(const hdx::RasterizerState& _RasterizerState)

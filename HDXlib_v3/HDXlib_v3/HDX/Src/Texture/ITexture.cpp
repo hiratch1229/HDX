@@ -3,7 +3,7 @@
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 #include "../NumberMap.hpp"
-#include "../Error.hpp"
+#include "../Misc.hpp"
 
 #include "../../Include/Vertex.hpp"
 #include "../../Include/RenderTarget.hpp"
@@ -114,13 +114,15 @@ namespace
 
 ITexture::ITexture()
 {
+  TIMER_START("Texture");
+
   //  エラーチェック用
   HRESULT hr = S_OK;
 
   hr = CoCreateInstance(CLSID_WICImagingFactory, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(pFactory.GetAddressOf()));
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
-  Engine::End("Texture");
+  TIMER_END("Texture");
 }
 
 int ITexture::Load(const char* _FilePath)

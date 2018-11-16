@@ -1,6 +1,9 @@
 #pragma once
 #include <Windows.h>
 
+//--------------------------------------------------
+//  エラー
+//--------------------------------------------------
 #if defined( DEBUG ) || defined( _DEBUG )
 #define _ASSERT_EXPR_A(expr, msg) \
 	(void)((!!(expr)) || \
@@ -17,3 +20,14 @@ inline LPWSTR hResultTrace(HRESULT hr)
 #define  _ASSERT_EXPR_A(expr, expr_str) ((void)0)
 #endif
 
+
+//--------------------------------------------------
+//  デバッグ用
+//--------------------------------------------------
+#if defined( DEBUG ) || defined( _DEBUG )
+#define TIMER_START(str) Engine::Start(str)
+#define TIMER_END(str) Engine::End(str)
+#else
+#define TIMER_START(str)
+#define TIMER_END(str)
+#endif

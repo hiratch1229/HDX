@@ -19,5 +19,5 @@ public:
   ID3D11RenderTargetView** GetRenderTargetView(const hdx::RenderTarget& _RenderTarget)const;
   ID3D11DepthStencilView* GetDepthStencilView(const hdx::RenderTarget& _RenderTarget)const;
 public:
-  IRenderTarget();
+  IRenderTarget() = default;
 };

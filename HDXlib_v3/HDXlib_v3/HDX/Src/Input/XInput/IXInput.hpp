@@ -55,11 +55,6 @@ private:
     return (Status_[_Index].isConnect && 0 <= _Number && _Number < kButtonNum && 0 <= _Index && _Index < kControllerNum);
   }
 public:
-  const InputState& GetInputState(int _Number, int _Index)const
-  {
-    return Status_[_Index].InputStatus[_Number];
-  }
-public:
   //  押されているならtrueを返す
   bool Press(int _Number, int _Index)const
   {
@@ -148,8 +143,7 @@ public:
   //  コントローラの振動を止めます
   void StopVibration(int _Index)const;
 public:
-  //  初期化
-  IXInput();
+  IXInput() = default;
   //  状態の更新
   void Update();
   //  解放

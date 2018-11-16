@@ -3,7 +3,7 @@
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
 #include "../NumberMap.hpp"
-#include "../Error.hpp"
+#include "../Misc.hpp"
 
 #include "../../Include/SamplerState.hpp"
 
@@ -22,13 +22,6 @@ struct std::hash<hdx::SamplerState>
 namespace
 {
   NumberMap<hdx::SamplerState, Microsoft::WRL::ComPtr<ID3D11SamplerState>> SamplerStateMap;
-}
-
-ISamplerState::ISamplerState()
-{
-  SamplerStateMap.clear();
-
-  Engine::End("SamplerState");
 }
 
 int ISamplerState::Create(const hdx::SamplerState& _SamplerState)

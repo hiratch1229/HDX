@@ -2,7 +2,7 @@
 
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"
-#include "../Error.hpp"
+#include "../Misc.hpp"
 
 #include "../NumberMap.hpp"
 
@@ -14,14 +14,6 @@
 namespace
 {
   NumberMap<std::string, Microsoft::WRL::ComPtr<ID3D11PixelShader>> PixelShaderMap;
-}
-
-//  èâä˙âª
-IPixelShader::IPixelShader()
-{
-  PixelShaderMap.clear();
-
-  Engine::End("PixelShader");
 }
 
 hdx::PixelShader IPixelShader::CreateDefault2D()

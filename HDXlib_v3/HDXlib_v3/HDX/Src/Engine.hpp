@@ -62,7 +62,8 @@ public:
   Engine();
   ~Engine();
 public:
-  static void End(const char* _InterfaceName);
+  static void Start(const char* _InterfaceName);
+  static long long End(const char* _InterfaceName);
 public:
   static ISystem* GetSystem() { return pEngine->pSystem_.Get(); }
   static IRenderer2D* GetRenderer2D() { return pEngine->pRenderer2D_.Get(); }

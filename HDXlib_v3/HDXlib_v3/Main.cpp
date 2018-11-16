@@ -83,49 +83,49 @@ void Main()
 
   //hdx::RenderTarget RenderTarget(hdx::System::GetWindowSize());
 
-  constexpr hdx::Input::Gamepad Gampads[3] = { 0, 1, 2 };
+  //constexpr hdx::Input::Gamepad Gampads[3] = { 0, 1, 2 };
 
-  while (hdx::System::Update())
-  {
-    for (int i = 0; i < 3; ++i)
-    {
-      const int ButtonNum = Gampads[i].GetButtonNum();
+  while (hdx::System::Update());
+  //{
+  //  for (int i = 0; i < 3; ++i)
+  //  {
+  //    const int ButtonNum = Gampads[i].GetButtonNum();
 
-      for (int j = 0; j < ButtonNum; ++j)
-      {
-        if (Gampads[i].GetButton(j))
-        {
-          A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
-        }
-      }
-    }
+  //    for (int j = 0; j < ButtonNum; ++j)
+  //    {
+  //      if (Gampads[i].GetButton(j))
+  //      {
+  //        A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
+  //      }
+  //    }
+  //  }
 
-    //RenderTarget.Clear();
-    //
-    //hdx::Renderer2D::SetRenderTarget(RenderTarget);
-    //
-    //if (hdx::Input::Keyboard::Key0.Pressed())
-    //{
-    //  hdx::Renderer2D::SetSamplerState(hdx::SamplerState::Default2D, 0);
-    //}
-    //else if (hdx::Input::Keyboard::Key1.Pressed())
-    //{
-    //  static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipPoint };
-    //  hdx::Renderer2D::SetSamplerState(SamplerState, 0);
-    //}
-    //else if (hdx::Input::Keyboard::Key2.Pressed())
-    //{
-    //  static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipLinear };
-    //  hdx::Renderer2D::SetSamplerState(SamplerState, 0);
-    //}
+  //  //RenderTarget.Clear();
+  //  //
+  //  //hdx::Renderer2D::SetRenderTarget(RenderTarget);
+  //  //
+  //  //if (hdx::Input::Keyboard::Key0.Pressed())
+  //  //{
+  //  //  hdx::Renderer2D::SetSamplerState(hdx::SamplerState::Default2D, 0);
+  //  //}
+  //  //else if (hdx::Input::Keyboard::Key1.Pressed())
+  //  //{
+  //  //  static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipPoint };
+  //  //  hdx::Renderer2D::SetSamplerState(SamplerState, 0);
+  //  //}
+  //  //else if (hdx::Input::Keyboard::Key2.Pressed())
+  //  //{
+  //  //  static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipLinear };
+  //  //  hdx::Renderer2D::SetSamplerState(SamplerState, 0);
+  //  //}
 
-    //for (int i = 0; i < 10000; ++i)
-    //{
-    //  A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
-    //}
+  //  //for (int i = 0; i < 10000; ++i)
+  //  //{
+  //  //  A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
+  //  //}
 
-    //hdx::Renderer2D::RestoreRenderTarget();
-    //
-    //RenderTarget.Draw();
-  }
+  //  //hdx::Renderer2D::RestoreRenderTarget();
+  //  //
+  //  //RenderTarget.Draw();
+  //}
 }

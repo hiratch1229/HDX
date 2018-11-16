@@ -20,12 +20,13 @@
 
 #include <Windows.h>
 #include <assert.h>
+#include <string>
 
-#include <chrono>
+#include "Benchmark.hpp"
 
 namespace
 {
-  std::chrono::high_resolution_clock::time_point Start = std::chrono::high_resolution_clock::now();
+  Benchmark Timer;
 }
 
 Engine* Engine::pEngine = nullptr;
@@ -60,13 +61,24 @@ Engine::~Engine()
   pEngine = nullptr;
 }
 
-#include <string>
-void Engine::End(const char* _InterfaceName)
+void Engine::Start(const char* _InterfaceName)
 {
   char c[256];
-  sprintf_s(c, "%s 経過時間:%sms\n", _InterfaceName, std::to_string(std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - Start).count()).c_str());
+  sprintf_s(c, "%s 開始\n", _InterfaceName);
+  
+  hdx::System::OutputDebug(c);
+
+  Timer.Start();
+}
+
+long long Engine::End(const char* _InterfaceName)
+{
+  long long Time = Timer.End<std::chrono::nanoseconds>();
+
+  char c[256];
+  sprintf_s(c, "%s 終了 経過時間:%sns\n", _InterfaceName, std::to_string(Time).c_str());
 
   hdx::System::OutputDebug(c);
 
-  Start = std::chrono::high_resolution_clock::now();
+  return Time;
 }
