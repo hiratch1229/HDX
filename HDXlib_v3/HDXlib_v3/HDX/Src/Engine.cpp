@@ -15,6 +15,7 @@
 #include "Texture/ITexture.hpp"
 #include "RenderTarget/IRenderTarget.hpp"
 #include "Random/IRandom.hpp"
+#include "GUI/IGUI.hpp"
 
 #include "../Include/System.hpp"
 
@@ -57,6 +58,7 @@ Engine::~Engine()
   pTexture_.Release();
   pRenderTarget_.Release();
   pRandom_.Release();
+  pGUI_.Release();
 
   pEngine = nullptr;
 }

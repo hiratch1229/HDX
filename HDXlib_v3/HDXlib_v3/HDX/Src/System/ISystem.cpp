@@ -6,6 +6,7 @@
 #include "../Input/XInput/IXInput.hpp"
 #include "../Input/Gamepad/IGamepad.hpp"
 #include "../Renderer/Renderer2D/IRenderer2D.hpp"
+#include "../GUI/IGUI.hpp"
 #include "../Misc.hpp"
 
 #include "../../Include/System.hpp"
@@ -62,11 +63,23 @@ namespace
       //  現在のフレーム経過時間を取得
       const float DeltaTime = (CurrentTime.QuadPart - LastTime_.QuadPart) / static_cast<float>(FreqTime_.QuadPart);
 
+#if 1
       //  経過時間が短いなら失敗
       if (DeltaTime < FrameInterval_)
       {
         return false;
       }
+#else
+      //  経過時間が短いならスリープ
+      if (DeltaTime < FrameInterval_)
+      {
+        DWORD SleepTime = static_cast<DWORD>((FrameInterval_ - DeltaTime) * 1000);
+        timeBeginPeriod(1);
+        Sleep(SleepTime);
+        timeEndPeriod(1);
+        return false;
+      }
+#endif
 
       CurrentFPS_ = 1.0f / DeltaTime;
       DeltaTime_ = DeltaTime;
@@ -324,7 +337,7 @@ ISystem::ISystem()
 
 bool ISystem::Update()
 {
-  //  ウィンドウ設定
+  //  ウィンドウ初期設定
   if (!isSetUpWindow)
   {
     isSetUpWindow = true;
@@ -333,16 +346,22 @@ bool ISystem::Update()
     CreateRenderTargetViewAndDepthStencilView();
   }
 
-  //  描画裏表反転
+  //  入力系更新
   {
-    Engine::GetRenderer2D()->End();
-    pSwapChain->Present(0, 0);
+    Engine::GetKeyboard()->Update();
+    Engine::GetMouse()->Update();
+    Engine::GetXInput()->Update();
+    Engine::GetGamepad()->Update();
   }
 
-  Engine::GetKeyboard()->Update();
-  Engine::GetMouse()->Update();
-  Engine::GetXInput()->Update();
-  Engine::GetGamepad()->Update();
+  //  残っているスプライトの描画
+  Engine::GetRenderer2D()->End();
+
+  //  GUIの更新と描画
+  Engine::GetGUI()->Update();
+
+  //  描画裏表反転
+  pSwapChain->Present(0, 0);
 
   //  メッセージを全て処理
   MSG Msg{};
@@ -371,7 +390,7 @@ bool ISystem::Update()
   }
 
   //  ウィンドウの状態を返す
-  return IsWindow(pWindow->hWnd_) != 0;
+  return ::IsWindow(pWindow->hWnd_) != 0;
 }
 
 void ISystem::ChangeWindowMode()
@@ -409,7 +428,7 @@ void ISystem::ScreenShot()
     _mkdir("SCREENSHOT");
 
     wchar_t wstr[hdx::MaxCharLimit];
-    swprintf_s(wstr, L"SCREENSHOT\\%04d%02d%02d%02d%02d%02d.png", TM.tm_year + 1900, TM.tm_mon + 1, TM.tm_mday, TM.tm_hour, TM.tm_min, TM.tm_sec);
+    swprintf_s(wstr, L"SCREENSHOT/%04d%02d%02d%02d%02d%02d.png", TM.tm_year + 1900, TM.tm_mon + 1, TM.tm_mday, TM.tm_hour, TM.tm_min, TM.tm_sec);
 
     DirectX::SaveWICTextureToFile(pImmediateContext.Get(), BackBuffer.Get(), GUID_ContainerFormatPng, wstr);
   }

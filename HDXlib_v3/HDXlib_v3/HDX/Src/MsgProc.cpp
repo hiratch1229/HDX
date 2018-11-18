@@ -5,8 +5,12 @@
 
 #include <Windows.h>
 
+extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+  //  ImGuiのメッセージプロシージャ
+  ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam);
+
   switch (msg)
   {
   case WM_DESTROY:

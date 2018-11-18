@@ -1265,6 +1265,11 @@ namespace hdx
     return Engine::GetSystem()->GetWindowSize();
   }
 
+  float System::GetDeltaTime()
+  {
+    return Engine::GetSystem()->GetDeltaTime();
+  }
+
   //  ウィンドウの設定
   void System::SetWindowLeftTopPos(int _LeftPos, int _TopPos)
   {

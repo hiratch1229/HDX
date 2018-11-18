@@ -1,7 +1,7 @@
 #pragma once
 #include "../../../Include/Types.hpp"
 
-#include "../Renderer.hpp"
+#include "../IRenderer.hpp"
 
 namespace hdx
 {

@@ -1,4 +1,4 @@
-#include "Renderer.hpp"
+#include "IRenderer.hpp"
 
 #include "../Engine.hpp"
 #include "../System/ISystem.hpp"

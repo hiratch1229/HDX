@@ -30,7 +30,6 @@
 
 #include <d3d11.h>
 #include <wrl.h>
-#include <unordered_map>
 #include <DirectXMath.h>
 
 namespace
@@ -38,11 +37,12 @@ namespace
   hdx::VertexShader CurrentVertexShader;
   hdx::PixelShader CurrentPixelShader;
   hdx::BlendState CurrentBlendState = hdx::BlendState::Default;
-  hdx::SamplerState CurrentSamplerStatus[hdx::SamplerStateMaxNum];
   hdx::RasterizerState CurrentRasterizerState = hdx::RasterizerState::Default2D;
   hdx::DepthStencilState CurrentDepthStencilState = hdx::DepthStencilState::Default2D;
-  hdx::Texture CurrentTextures[hdx::TextureMaxNum];
   hdx::RenderTarget CurrentRenderTarget;
+
+  hdx::SamplerState CurrentSamplerStatus[hdx::SamplerStateMaxNum];
+  hdx::Texture CurrentTextures[hdx::TextureMaxNum];
 
   Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
   Microsoft::WRL::ComPtr<ID3D11Buffer> pInstanceBuffer;
@@ -242,74 +242,67 @@ IRenderer2D::IRenderer2D()
 
 void IRenderer2D::SetVertexShader(const hdx::VertexShader& _VertexShader)
 {
-  if (CurrentVertexShader != _VertexShader)
-  {
-    CurrentVertexShader = _VertexShader;
-    End();
-    Begin(CurrentTextures[0]);
-  }
+  if (CurrentVertexShader == _VertexShader)return;
+
+  CurrentVertexShader = _VertexShader;
+  End();
+  Begin(CurrentTextures[0]);
 }
 
 void IRenderer2D::SetPixelShader(const hdx::PixelShader& _PixelShader)
 {
-  if (CurrentPixelShader != _PixelShader)
-  {
-    CurrentPixelShader = _PixelShader;
-    End();
-    Begin(CurrentTextures[0]);
-  }
+  if (CurrentPixelShader == _PixelShader)return;
+
+  CurrentPixelShader = _PixelShader;
+  End();
+  Begin(CurrentTextures[0]);
 }
 
 void IRenderer2D::SetBlendState(const hdx::BlendState& _BlendState)
 {
-  if (CurrentBlendState != _BlendState)
-  {
-    CurrentBlendState = _BlendState;
-    End();
-    Begin(CurrentTextures[0]);
-  }
+  if (CurrentBlendState == _BlendState)return;
+
+  CurrentBlendState = _BlendState;
+  End();
+  Begin(CurrentTextures[0]);
 }
 
 void IRenderer2D::SetSamplerState(const hdx::SamplerState& _SamplerState, UINT _Slot)
 {
   hdx::SamplerState& CurrentSamplerState = CurrentSamplerStatus[_Slot];
-  if (CurrentSamplerState != _SamplerState)
-  {
-    CurrentSamplerState = _SamplerState;
-    End();
-    Begin(CurrentTextures[0]);
-  }
+  if (CurrentSamplerState == _SamplerState)return;
+
+  CurrentSamplerState = _SamplerState;
+  End();
+  Begin(CurrentTextures[0]);
 }
 
 void IRenderer2D::SetRasterizerState(const hdx::RasterizerState& _RasterizerState)
 {
-  if (CurrentRasterizerState != _RasterizerState)
-  {
-    CurrentRasterizerState = _RasterizerState;
-    End();
-    Begin(CurrentTextures[0]);
-  }
+  if (CurrentRasterizerState == _RasterizerState)return;
+
+  CurrentRasterizerState = _RasterizerState;
+  End();
+  Begin(CurrentTextures[0]);
 }
 
 void IRenderer2D::SetDepthStencilState(const hdx::DepthStencilState& _DepthStencilState)
 {
-  if (CurrentDepthStencilState != _DepthStencilState)
-  {
-    CurrentDepthStencilState = _DepthStencilState;
-    End();
-    Begin(CurrentTextures[0]);
-  }
+  if (CurrentDepthStencilState == _DepthStencilState)return;
+
+  CurrentDepthStencilState = _DepthStencilState;
+  End();
+  Begin(CurrentTextures[0]);
 }
 
 void IRenderer2D::SetTexture(const hdx::Texture& _Texture, UINT _Slot)
 {
-  hdx::Texture& CurrentTexture = CurrentTextures[_Slot - 1];
-  if (CurrentTexture != _Texture)
-  {
-    CurrentTexture = _Texture;
-    End();
-    Begin(CurrentTextures[0]);
-  }
+  hdx::Texture& CurrentTexture = CurrentTextures[_Slot];
+  if (CurrentTexture == _Texture)return;
+
+  CurrentTexture = _Texture;
+  End();
+  Begin(CurrentTextures[0]);
 }
 
 inline void CreateTextureFromRenderTarget(const hdx::RenderTarget& _RenderTarget)
@@ -319,21 +312,19 @@ inline void CreateTextureFromRenderTarget(const hdx::RenderTarget& _RenderTarget
 
 void IRenderer2D::RestoreRenderTarget()
 {
-  if (CurrentRenderTarget.GetSize() != hdx::int2())
-  {
-    CreateTextureFromRenderTarget(CurrentRenderTarget);
-    CurrentRenderTarget = hdx::RenderTarget();
-  }
+  if (CurrentRenderTarget.GetSize() == hdx::int2())return;
+
+  CreateTextureFromRenderTarget(CurrentRenderTarget);
+  CurrentRenderTarget = hdx::RenderTarget();
 }
 
 void IRenderer2D::SetRenderTarget(const hdx::RenderTarget& _RenderTarger)
 {
-  if (CurrentRenderTarget != _RenderTarger)
+  if (CurrentRenderTarget == _RenderTarger)return;
+
+  if (CurrentRenderTarget.GetSize() != hdx::int2())
   {
-    if (CurrentRenderTarget.GetSize() != hdx::int2())
-    {
-      CreateTextureFromRenderTarget(CurrentRenderTarget);
-    }
-    CurrentRenderTarget = _RenderTarger;
+    CreateTextureFromRenderTarget(CurrentRenderTarget);
   }
+  CurrentRenderTarget = _RenderTarger;
 }

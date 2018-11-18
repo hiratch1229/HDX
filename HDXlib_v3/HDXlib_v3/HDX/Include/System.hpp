@@ -341,6 +341,8 @@ namespace hdx
     static int GetWindowHeight();
     //  画面サイズを取得
     static const int2& GetWindowSize();
+    //  経過時間を取得
+    static float GetDeltaTime();
   public:
     //  ウィンドウの設定
     //  _LeftPos:左上座標X

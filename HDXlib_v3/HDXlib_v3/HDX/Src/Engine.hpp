@@ -15,6 +15,7 @@ class IPixelShader;
 class ITexture;
 class IRenderTarget;
 class IRandom;
+class IGUI;
 
 template <class Interface>
 class Component
@@ -58,6 +59,7 @@ private:
   Component<ITexture> pTexture_;
   Component<IRenderTarget> pRenderTarget_;
   Component<IRandom> pRandom_;
+  Component<IGUI> pGUI_;
 public:
   Engine();
   ~Engine();
@@ -80,4 +82,5 @@ public:
   static ITexture* GetTexture() { return pEngine->pTexture_.Get(); }
   static IRenderTarget* GetRenderTarget() { return pEngine->pRenderTarget_.Get(); }
   static IRandom* GetRandom() { return pEngine->pRandom_.Get(); }
+  static IGUI* GetGUI() { return pEngine->pGUI_.Get(); }
 };
