@@ -6,6 +6,7 @@
 #include <Windows.h>
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
   //  ImGuiのメッセージプロシージャ
@@ -24,19 +25,19 @@ LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     switch (wParam)
     {
     case VK_ESCAPE:
-      Engine::GetSystem()->Exit();
+      Engine::Get<ISystem>()->Exit();
       break;
     case VK_F2:
-      Engine::GetSystem()->ScreenShot();
+      Engine::Get<ISystem>()->ScreenShot();
       break;
     case VK_F11:
-      Engine::GetSystem()->ChangeWindowMode();
+      Engine::Get<ISystem>()->ChangeWindowMode();
       break;
     }
     break;
     //  マウスホイール回転
   case WM_MOUSEWHEEL:
-    Engine::GetMouse()->SetWheel(static_cast<int>(GET_WHEEL_DELTA_WPARAM(wParam)));
+    Engine::Get<IMouse>()->SetWheel(static_cast<int>(GET_WHEEL_DELTA_WPARAM(wParam)));
     break;
   default:
     return DefWindowProc(hWnd, msg, wParam, lParam);

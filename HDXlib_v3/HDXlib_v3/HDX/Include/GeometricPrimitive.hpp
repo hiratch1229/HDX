@@ -32,7 +32,7 @@ namespace hdx
     GeometricPrimitive(const char* _FilePath);
     virtual ~GeometricPrimitive();
     //void Render(const DirectX::XMFLOAT4X4& _WorldViewProjection, const DirectX::XMFLOAT4X4& _World, const DirectX::XMFLOAT4& _LightDirection, const ColorF& _MaterialColor = ColorF(1.0f, 1.0f, 1.0f, 1.0f), bool isWireFrame = false, const VertexShader* _pVertexShader = nullptr, const PixelShader* _pPixelShader = nullptr)const;
-    void Render(const ConstantBuffer& _ConstantBuffer, bool isWireFrame = false, const VertexShader* _pVertexShader = nullptr, const PixelShader* _pPixelShader = nullptr)const;
+    //void Render(const ConstantBuffer& _ConstantBuffer, bool isWireFrame = false, const VertexShader* _pVertexShader = nullptr, const PixelShader* _pPixelShader = nullptr)const;
   };
 
   class Rectangle : public GeometricPrimitive

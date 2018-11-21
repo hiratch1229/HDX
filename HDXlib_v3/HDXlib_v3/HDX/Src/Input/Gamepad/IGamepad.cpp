@@ -353,7 +353,7 @@ IGamepad::IGamepad()
 //  ó‘Ô‚ÌXV
 void IGamepad::Update()
 {
-  IXInput* pXInput = Engine::GetXInput();
+  IXInput* pXInput = Engine::Get<IXInput>();
 
   auto XInputUpdate = [&](int _Index)
   {
@@ -532,7 +532,7 @@ void IGamepad::SetVibration(int _Index, float _Speed)const
   //  XInput‚ğU“®‚³‚¹‚é
   if (_Index < XInputNum)
   {
-    Engine::GetXInput()->SetVibration(_Index, _Speed);
+    Engine::Get<IXInput>()->SetVibration(_Index, _Speed);
     return;
   }
 
@@ -548,7 +548,7 @@ void IGamepad::StopVibration(int _Index)const
   //  XInput‚ÌU“®‚ğ~‚ß‚é
   if (_Index < XInputNum)
   {
-    Engine::GetXInput()->StopVibration(_Index);
+    Engine::Get<IXInput>()->StopVibration(_Index);
     return;
   }
 

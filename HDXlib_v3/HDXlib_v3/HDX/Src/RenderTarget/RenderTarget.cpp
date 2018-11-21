@@ -7,7 +7,7 @@ namespace hdx
 {
   inline void CreateRenderTarget(const RenderTarget& _RenderTarget)
   {
-    Engine::GetRenderTarget()->CreateRenderTarget(_RenderTarget);
+    Engine::Get<IRenderTarget>()->CreateRenderTarget(_RenderTarget);
   }
 
   RenderTarget::RenderTarget()
@@ -29,6 +29,6 @@ namespace hdx
 
   void RenderTarget::Clear(const ColorF& _Color)
   {
-    Engine::GetRenderTarget()->ClearRenderTarget(*this, _Color);
+    Engine::Get<IRenderTarget>()->ClearRenderTarget(*this, _Color);
   }
 }

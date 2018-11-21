@@ -12,7 +12,7 @@ void IMouse::Update()
 
   for (int i = 0; i < kButtonNum; ++i)
   {
-    InputStatus_[i].Update(Engine::GetKeyboard()->Press(kVirtualCodes[i]));
+    InputStatus_[i].Update(Engine::Get<IKeyboard>()->Press(kVirtualCodes[i]));
   }
 
   //  カーソルの移動量と座標を保存

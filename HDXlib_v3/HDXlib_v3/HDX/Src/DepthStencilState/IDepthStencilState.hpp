@@ -14,4 +14,6 @@ public:
   ID3D11DepthStencilState* GetDepthStencilState(const hdx::DepthStencilState& _DepthStencilState);
 public:
   IDepthStencilState() = default;
+public:
+  void Initialize();
 };

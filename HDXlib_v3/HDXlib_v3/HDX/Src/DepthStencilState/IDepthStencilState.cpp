@@ -22,19 +22,16 @@ struct std::hash<hdx::DepthStencilState>
 namespace
 {
   NumberMap<hdx::DepthStencilState, Microsoft::WRL::ComPtr<ID3D11DepthStencilState>> DepthStencilStateMap;
+  ID3D11Device* pDevice = nullptr;
 }
 
-int IDepthStencilState::Create(const hdx::DepthStencilState& _DepthStencilState)
+void IDepthStencilState::Initialize()
 {
-  //  既に作成されているか確認
-  {
-    const int ID = DepthStencilStateMap.find(_DepthStencilState);
-    if (ID >= 0)
-    {
-      return ID;
-    }
-  }
+  pDevice = Engine::Get<ISystem>()->GetDevice();
+}
 
+inline int IDepthStencilState::Create(const hdx::DepthStencilState& _DepthStencilState)
+{
   D3D11_DEPTH_STENCIL_DESC DepthStencilDesc{};
   {
     DepthStencilDesc.DepthEnable = _DepthStencilState.DepthEnable_;
@@ -55,7 +52,7 @@ int IDepthStencilState::Create(const hdx::DepthStencilState& _DepthStencilState)
 
   Microsoft::WRL::ComPtr<ID3D11DepthStencilState> pDepthStencilState;
 
-  HRESULT hr = Engine::GetSystem()->GetDevice()->CreateDepthStencilState(&DepthStencilDesc, pDepthStencilState.GetAddressOf());
+  HRESULT hr = pDevice->CreateDepthStencilState(&DepthStencilDesc, pDepthStencilState.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   //  マップへ追加

@@ -49,12 +49,12 @@ namespace hdx
   class Texture
   {
   protected:
-    int ID_ = -1;
+    int ID_;
     int2 Size_;
   protected:
     Texture(const int2& _Size);
   public:
-    Texture() = default;
+    Texture();
     //  ファイルパスから画像を作成
     Texture(const char* FilePath);
     ~Texture() = default;

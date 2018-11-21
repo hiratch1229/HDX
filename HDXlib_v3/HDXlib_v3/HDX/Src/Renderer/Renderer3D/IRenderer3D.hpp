@@ -1,5 +1,6 @@
 #pragma once
 #include "../../../Include/Types.hpp"
+#include "../../../Include/Matrix.hpp"
 
 #include "../IRenderer.hpp"
 
@@ -13,13 +14,15 @@ namespace hdx
   class DepthStencilState;
   class Texture;
   class RenderTarget;
+  struct Camera;
 
   struct float2;
   class Radian;
   struct ColorF;
+  class Model;
 }
 
-class IRenderer2D : public IRenderer
+class IRenderer3D : public IRenderer
 {
 public:
   void SetVertexShader(const hdx::VertexShader& _VertexShader);
@@ -31,13 +34,10 @@ public:
   void SetTexture(const hdx::Texture& _Texture, UINT _Slot);
   void RestoreRenderTarget();
   void SetRenderTarget(const hdx::RenderTarget& _RenderTarger);
-private:
-  void Begin(const hdx::Texture& _Texture);
+  void SetCamera(const hdx::Camera& _Camera);
 public:
-  void End();
-  void Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeftTop, const hdx::float2& _DstSize, const hdx::float2& _SrcLeftPos, const hdx::float2& _SrcSize, const hdx::Radian& _Angle, bool _HorizontalFlip, bool _VerticalFlip, const hdx::ColorF& _Color);
+  void Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::ColorF& _Color);
+  void CalcProjection();
 public:
-  IRenderer2D();
-public:
-  void Initialize();
+  IRenderer3D();
 };

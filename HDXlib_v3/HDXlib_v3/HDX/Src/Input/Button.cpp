@@ -14,13 +14,13 @@ namespace hdx
     switch (InputDevice_)
     {
     case InputDevice::Keyboard:
-      return Engine::GetKeyboard()->Press(Number_);
+      return Engine::Get<IKeyboard>()->Press(Number_);
     case InputDevice::Mouse:
-      return Engine::GetMouse()->Press(Number_);
+      return Engine::Get<IMouse>()->Press(Number_);
     case InputDevice::XInput:
-      return Engine::GetXInput()->Press(Number_, Index_);
+      return Engine::Get<IXInput>()->Press(Number_, Index_);
     case InputDevice::Gamepad:
-      return Engine::GetGamepad()->Press(Number_, Index_);
+      return Engine::Get<IGamepad>()->Press(Number_, Index_);
     }
 
     return false;
@@ -32,13 +32,13 @@ namespace hdx
     switch (InputDevice_)
     {
     case InputDevice::Keyboard:
-      return Engine::GetKeyboard()->Pressed(Number_);
+      return Engine::Get<IKeyboard>()->Pressed(Number_);
     case InputDevice::Mouse:
-      return Engine::GetMouse()->Pressed(Number_);
+      return Engine::Get<IMouse>()->Pressed(Number_);
     case InputDevice::XInput:
-      return Engine::GetXInput()->Pressed(Number_, Index_);
+      return Engine::Get<IXInput>()->Pressed(Number_, Index_);
     case InputDevice::Gamepad:
-      return Engine::GetGamepad()->Pressed(Number_, Index_);
+      return Engine::Get<IGamepad>()->Pressed(Number_, Index_);
     }
 
     return false;
@@ -50,13 +50,13 @@ namespace hdx
     switch (InputDevice_)
     {
     case InputDevice::Keyboard:
-      return Engine::GetKeyboard()->Released(Number_);
+      return Engine::Get<IKeyboard>()->Released(Number_);
     case InputDevice::Mouse:
-      return Engine::GetMouse()->Released(Number_);
+      return Engine::Get<IMouse>()->Released(Number_);
     case InputDevice::XInput:
-      return Engine::GetXInput()->Released(Number_, Index_);
+      return Engine::Get<IXInput>()->Released(Number_, Index_);
     case InputDevice::Gamepad:
-      return Engine::GetGamepad()->Released(Number_, Index_);
+      return Engine::Get<IGamepad>()->Released(Number_, Index_);
     }
 
     return false;
@@ -68,13 +68,13 @@ namespace hdx
     switch (InputDevice_)
     {
     case InputDevice::Keyboard:
-      return Engine::GetKeyboard()->Release(Number_);
+      return Engine::Get<IKeyboard>()->Release(Number_);
     case InputDevice::Mouse:
-      return Engine::GetMouse()->Release(Number_);
+      return Engine::Get<IMouse>()->Release(Number_);
     case InputDevice::XInput:
-      return Engine::GetXInput()->Release(Number_, Index_);
+      return Engine::Get<IXInput>()->Release(Number_, Index_);
     case InputDevice::Gamepad:
-      return Engine::GetGamepad()->Release(Number_, Index_);
+      return Engine::Get<IGamepad>()->Release(Number_, Index_);
     }
 
     return false;

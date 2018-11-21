@@ -18,7 +18,7 @@ inline ID3D11DeviceContext* GetImmediateContext()
 {
   if (!pImmediateContext)
   {
-    pImmediateContext = Engine::GetSystem()->GetImmediateContext();
+    pImmediateContext = Engine::Get<ISystem>()->GetImmediateContext();
   }
 
   return pImmediateContext;
@@ -28,7 +28,7 @@ inline ID3D11RenderTargetView** GetRenderTargetView()
 {
   if (!pRenderTargetView)
   {
-    pRenderTargetView = Engine::GetSystem()->GetRenderTargetView();
+    pRenderTargetView = Engine::Get<ISystem>()->GetRenderTargetView();
   }
 
   return pRenderTargetView;
@@ -38,7 +38,7 @@ inline ID3D11DepthStencilView* GetDepthStencilView()
 {
   if (!pDepthStencilView)
   {
-    pDepthStencilView = Engine::GetSystem()->GetDepthStencilView();
+    pDepthStencilView = Engine::Get<ISystem>()->GetDepthStencilView();
   }
 
   return pDepthStencilView;

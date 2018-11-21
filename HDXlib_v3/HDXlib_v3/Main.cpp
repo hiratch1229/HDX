@@ -8,6 +8,11 @@ void Main()
 
   hdx::Texture A{ "DATA/exp.png" };
 
+  hdx::Model Models[] = {
+    { "DATA/000_cube.fbx" },
+    { "DATA/001_cube.fbx" }
+  };
+
   //  hdx::SkinnedMesh Fbx("DATA/FBX/005_cube.fbx");
   //
   //  hdx::float3 Position;
@@ -89,7 +94,10 @@ void Main()
   {
     ImGui::Begin("DeltaTime");
     ImGui::Text("DeltaTime %f", hdx::System::GetDeltaTime());
+    ImGui::Text("");
     ImGui::End();
+
+    hdx::Texture().Draw(0, hdx::float2(500.0f, 500.0f));
 
     //for (int i = 0; i < 3; ++i)
     //{
@@ -122,12 +130,12 @@ void Main()
     //  static constexpr hdx::SamplerState SamplerState{ hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::AddressMode::Clamp, hdx::Filter::MinMagMipLinear };
     //  hdx::Renderer2D::SetSamplerState(SamplerState, 0);
     //}
-
-    for (int i = 0; i < 10000; ++i)
-    {
-      A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
-    }
-
+    //
+    //for (int i = 0; i < 10000; ++i)
+    //{
+    //  A.Draw(hdx::int2((i % 50) * 64, (i / 50) * 64), hdx::int2(64, 64));
+    //}
+    //
     //hdx::Renderer2D::RestoreRenderTarget();
     //
     //RenderTarget.Draw();

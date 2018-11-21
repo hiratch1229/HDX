@@ -13,7 +13,7 @@ namespace hdx
     wchar_t wFilePath[MaxCharLimit]{};
     mbstowcs_s(nullptr, wFilePath, FilePath, MaxCharLimit);
 
-    HRESULT hr = MFPCreateMediaPlayer(wFilePath, false, MFP_OPTION_NONE, nullptr, Engine::GetSystem()->GethWnd(), pMediaPlayer_.GetAddressOf());
+    HRESULT hr = MFPCreateMediaPlayer(wFilePath, false, MFP_OPTION_NONE, nullptr, Engine::Get<ISystem>()->GethWnd(), pMediaPlayer_.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   }
 

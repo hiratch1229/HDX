@@ -22,19 +22,16 @@ struct std::hash<hdx::SamplerState>
 namespace
 {
   NumberMap<hdx::SamplerState, Microsoft::WRL::ComPtr<ID3D11SamplerState>> SamplerStateMap;
+  ID3D11Device* pDevice = nullptr;
 }
 
-int ISamplerState::Create(const hdx::SamplerState& _SamplerState)
+void ISamplerState::Initialize()
 {
-  //  Šù‚Éì¬‚³‚ê‚Ä‚¢‚é‚©Šm”F
-  {
-    const int ID = SamplerStateMap.find(_SamplerState);
-    if (ID >= 0)
-    {
-      return ID;
-    }
-  }
+  pDevice = Engine::Get<ISystem>()->GetDevice();
+}
 
+inline int ISamplerState::Create(const hdx::SamplerState& _SamplerState)
+{
   D3D11_SAMPLER_DESC SamplerDesc{};
   {
     SamplerDesc.Filter = static_cast<D3D11_FILTER>(_SamplerState.Filter_);
@@ -53,7 +50,7 @@ int ISamplerState::Create(const hdx::SamplerState& _SamplerState)
   }
 
   Microsoft::WRL::ComPtr<ID3D11SamplerState> pSamplerState;
-  HRESULT hr = Engine::GetSystem()->GetDevice()->CreateSamplerState(&SamplerDesc, pSamplerState.GetAddressOf());
+  HRESULT hr = pDevice->CreateSamplerState(&SamplerDesc, pSamplerState.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   return SamplerStateMap.insert(_SamplerState, pSamplerState);

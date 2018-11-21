@@ -2,6 +2,7 @@
 
 class ISystem;
 class IRenderer2D;
+class IRenderer3D;
 class IKeyboard;
 class IMouse;
 class IXInput;
@@ -13,6 +14,7 @@ class IDepthStencilState;
 class IVertexShader;
 class IPixelShader;
 class ITexture;
+class IModel;
 class IRenderTarget;
 class IRandom;
 class IGUI;
@@ -32,6 +34,11 @@ public:
     pInterface_ = nullptr;
   }
 public:
+  Interface* operator->()
+  {
+    return pInterface_;
+  }
+public:
   Component()
     : pInterface_(new Interface)
   {
@@ -46,6 +53,7 @@ class Engine
 private:
   Component<ISystem> pSystem_;
   Component<IRenderer2D> pRenderer2D_;
+  Component<IRenderer3D> pRenderer3D_;
   Component<IKeyboard> pKeyboard_;
   Component<IMouse> pMouse_;
   Component<IXInput> pXInput_;
@@ -57,6 +65,7 @@ private:
   Component<IVertexShader> pVertexShader_;
   Component<IPixelShader> pPixelShader_;
   Component<ITexture> pTexture_;
+  Component<IModel> pModel_;
   Component<IRenderTarget> pRenderTarget_;
   Component<IRandom> pRandom_;
   Component<IGUI> pGUI_;
@@ -66,21 +75,25 @@ public:
 public:
   static void Start(const char* _InterfaceName);
   static long long End(const char* _InterfaceName);
+private:
 public:
-  static ISystem* GetSystem() { return pEngine->pSystem_.Get(); }
-  static IRenderer2D* GetRenderer2D() { return pEngine->pRenderer2D_.Get(); }
-  static IKeyboard* GetKeyboard() { return pEngine->pKeyboard_.Get(); }
-  static IMouse* GetMouse() { return pEngine->pMouse_.Get(); }
-  static IXInput* GetXInput() { return pEngine->pXInput_.Get(); }
-  static IGamepad* GetGamepad() { return pEngine->pGamepad_.Get(); }
-  static IBlendState* GetBlendState() { return pEngine->pBlendState_.Get(); }
-  static ISamplerState* GetSamplerState() { return pEngine->pSamplerState_.Get(); }
-  static IRasterizerState* GetRasterizerState() { return pEngine->pRasterizerState_.Get(); }
-  static IDepthStencilState* GetDepthStencilState() { return pEngine->pDepthStencilState_.Get(); }
-  static IVertexShader* GetVertexShader() { return pEngine->pVertexShader_.Get(); }
-  static IPixelShader* GetPixelShader() { return pEngine->pPixelShader_.Get(); }
-  static ITexture* GetTexture() { return pEngine->pTexture_.Get(); }
-  static IRenderTarget* GetRenderTarget() { return pEngine->pRenderTarget_.Get(); }
-  static IRandom* GetRandom() { return pEngine->pRandom_.Get(); }
-  static IGUI* GetGUI() { return pEngine->pGUI_.Get(); }
+  template<class T> static T* Get() { return nullptr; }
+  template<> static ISystem* Get() { return pEngine->pSystem_.Get(); }
+  template<> static IRenderer2D* Get() { return pEngine->pRenderer2D_.Get(); }
+  template<> static IRenderer3D* Get() { return pEngine->pRenderer3D_.Get(); }
+  template<> static IKeyboard* Get() { return pEngine->pKeyboard_.Get(); }
+  template<> static IMouse* Get() { return pEngine->pMouse_.Get(); }
+  template<> static IXInput* Get() { return pEngine->pXInput_.Get(); }
+  template<> static IGamepad* Get() { return pEngine->pGamepad_.Get(); }
+  template<> static IBlendState* Get() { return pEngine->pBlendState_.Get(); }
+  template<> static ISamplerState* Get() { return pEngine->pSamplerState_.Get(); }
+  template<> static IRasterizerState* Get() { return pEngine->pRasterizerState_.Get(); }
+  template<> static IDepthStencilState* Get() { return pEngine->pDepthStencilState_.Get(); }
+  template<> static IVertexShader* Get() { return pEngine->pVertexShader_.Get(); }
+  template<> static IPixelShader* Get() { return pEngine->pPixelShader_.Get(); }
+  template<> static ITexture* Get() { return pEngine->pTexture_.Get(); }
+  template<> static IModel* Get() { return pEngine->pModel_.Get(); }
+  template<> static IRenderTarget* Get() { return pEngine->pRenderTarget_.Get(); }
+  template<> static IRandom* Get() { return pEngine->pRandom_.Get(); }
+  template<> static IGUI* Get() { return pEngine->pGUI_.Get(); }
 };

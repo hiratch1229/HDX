@@ -65,125 +65,84 @@ namespace
   constexpr int Num = 10000;
 }
 
-void IRenderer2D::Begin(const hdx::Texture& _Texture)
+IRenderer2D::IRenderer2D()
 {
-  CurrentTextures[0] = _Texture;
+  TIMER_START("Renderer2D");
 
-  if (!pVertexBuffer)
-  {
-    //  エラーチェック用
-    HRESULT hr = S_OK;
+  CurrentSamplerStatus[0] = hdx::SamplerState::Default2D;
 
-    ID3D11Device* pDevice = Engine::GetSystem()->GetDevice();
-
-    //  頂点バッファを作成
-    {
-      Vertex Vertices[] =
-      {
-        { hdx::float3(0.0f, 0.0f, 0.0f), hdx::float2(0.0f, 0.0f) },
-        { hdx::float3(1.0f, 0.0f, 0.0f), hdx::float2(1.0f, 0.0f) },
-        { hdx::float3(0.0f, 1.0f, 0.0f), hdx::float2(0.0f, 1.0f) },
-        { hdx::float3(1.0f, 1.0f, 0.0f), hdx::float2(1.0f, 1.0f) },
-      };
-
-      D3D11_BUFFER_DESC BufferDesc{};
-      {
-        BufferDesc.ByteWidth = sizeof(Vertices);
-        BufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-        BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-        BufferDesc.CPUAccessFlags = 0;
-        BufferDesc.MiscFlags = 0;
-        BufferDesc.StructureByteStride = 0;
-      }
-
-      D3D11_SUBRESOURCE_DATA InitialData{};
-      {
-        InitialData.pSysMem = Vertices;
-        InitialData.SysMemPitch = 0;
-        InitialData.SysMemSlicePitch = 0;
-      }
-      hr = pDevice->CreateBuffer(&BufferDesc, &InitialData, pVertexBuffer.GetAddressOf());
-      _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
-    }
-
-    //  インスタンスバッファを作成
-    {
-      Instance* Instances = new Instance[Num];
-
-      D3D11_BUFFER_DESC BufferDesc{};
-      {
-        BufferDesc.ByteWidth = sizeof(Instance) * Num;
-        BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
-        BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-        BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        BufferDesc.MiscFlags = 0;
-        BufferDesc.StructureByteStride = 0;
-      }
-
-      D3D11_SUBRESOURCE_DATA InitialData{};
-      {
-        InitialData.pSysMem = Instances;
-        InitialData.SysMemPitch = 0;
-        InitialData.SysMemSlicePitch = 0;
-      }
-
-      hr = pDevice->CreateBuffer(&BufferDesc, &InitialData, pInstanceBuffer.GetAddressOf());
-      _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
-
-      delete[] Instances;
-    }
-  }
-
-  IRenderer::SetVertexBuffer(pVertexBuffer.GetAddressOf(), sizeof(Vertex), 0);
-  IRenderer::SetVertexBuffer(pInstanceBuffer.GetAddressOf(), sizeof(Instance), 1);
-
-  IRenderer::SetVertexShader(Engine::GetVertexShader()->GetVertexShader(CurrentVertexShader));
-  IRenderer::SetInputLayout(Engine::GetVertexShader()->GetInputLayout(CurrentVertexShader));
-  IRenderer::SetPixelShader(Engine::GetPixelShader()->GetPixeShader(CurrentPixelShader));
-  IRenderer::SetBlendState(Engine::GetBlendState()->GetBlendState(CurrentBlendState));
-  for (int i = 0; i < hdx::SamplerStateMaxNum; ++i)
-  {
-    IRenderer::SetSamplersState(Engine::GetSamplerState()->GetSamplerState(CurrentSamplerStatus[i]), i);
-  }
-  IRenderer::SetRasterizerState(Engine::GetRasterizerState()->GetRasterizerState(CurrentRasterizerState));
-  IRenderer::SetDepthStencilState(Engine::GetDepthStencilState()->GetDepthStencilState(CurrentDepthStencilState));
-
-  for (int i = 0; i < hdx::TextureMaxNum; ++i)
-  {
-    const int ID = CurrentTextures[i].GetID();
-    if (ID < 0)continue;
-
-    IRenderer::SetShaderResouceView(Engine::GetTexture()->GetShaderResourceView(CurrentTextures[i].GetID()), i);
-  }
-
-  IRenderer::SetRenderTarget(Engine::GetRenderTarget()->GetRenderTargetView(CurrentRenderTarget), Engine::GetRenderTarget()->GetDepthStencilView(CurrentRenderTarget));
-
-  //  頂点バッファオブジェクトを書き換え
-  D3D11_MAPPED_SUBRESOURCE MappedSubresorce;
-  Map(pInstanceBuffer.Get(), &MappedSubresorce);
-  Instances = static_cast<Instance*>(MappedSubresorce.pData);
+  TIMER_END("Renderer2D");
 }
 
-void IRenderer2D::End()
+void IRenderer2D::Initialize()
 {
-  if (!Instances)return;
+  //  エラーチェック用
+  HRESULT hr = S_OK;
 
-  Unmap(pInstanceBuffer.Get());
-  DrawInstanced(4, Count, 0, 0);
+  ID3D11Device* pDevice = Engine::Get<ISystem>()->GetDevice();
 
-  CurrentTextures[0] = hdx::Texture();
-  Count = 0;
+  //  頂点バッファを作成
+  {
+    Vertex Vertices[] =
+    {
+      { hdx::float3(0.0f, 0.0f, 0.0f), hdx::float2(0.0f, 0.0f) },
+      { hdx::float3(1.0f, 0.0f, 0.0f), hdx::float2(1.0f, 0.0f) },
+      { hdx::float3(0.0f, 1.0f, 0.0f), hdx::float2(0.0f, 1.0f) },
+      { hdx::float3(1.0f, 1.0f, 0.0f), hdx::float2(1.0f, 1.0f) },
+    };
 
-  Instances = nullptr;
+    D3D11_BUFFER_DESC BufferDesc{};
+    {
+      BufferDesc.ByteWidth = sizeof(Vertices);
+      BufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
+      BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+      BufferDesc.CPUAccessFlags = 0;
+      BufferDesc.MiscFlags = 0;
+      BufferDesc.StructureByteStride = 0;
+    }
+
+    D3D11_SUBRESOURCE_DATA InitialData{};
+    {
+      InitialData.pSysMem = Vertices;
+      InitialData.SysMemPitch = 0;
+      InitialData.SysMemSlicePitch = 0;
+    }
+    hr = pDevice->CreateBuffer(&BufferDesc, &InitialData, pVertexBuffer.GetAddressOf());
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
+  }
+
+  //  インスタンスバッファを作成
+  {
+    Instances = new Instance[Num];
+
+    D3D11_BUFFER_DESC BufferDesc{};
+    {
+      BufferDesc.ByteWidth = sizeof(Instance) * Num;
+      BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+      BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+      BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+      BufferDesc.MiscFlags = 0;
+      BufferDesc.StructureByteStride = 0;
+    }
+
+    D3D11_SUBRESOURCE_DATA InitialData{};
+    {
+      InitialData.pSysMem = Instances;
+      InitialData.SysMemPitch = 0;
+      InitialData.SysMemSlicePitch = 0;
+    }
+
+    hr = pDevice->CreateBuffer(&BufferDesc, &InitialData, pInstanceBuffer.GetAddressOf());
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
+
+    delete[] Instances;
+    Instances = nullptr;
+  }
 }
 
 void IRenderer2D::Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeftTop, const hdx::float2& _DstSize, const hdx::float2& _SrcLeftPos, const hdx::float2& _SrcSize, const hdx::Radian& _Angle, bool _HorizontalFlip, bool _VerticalFlip, const hdx::ColorF& _Color)
 {
-  if (!pVertexBuffer)
-  {
-    Begin(_Texture);
-  }
-  else if (CurrentTextures[0] != _Texture)
+  if (!Instances || CurrentTextures[0] != _Texture)
   {
     End();
     Begin(_Texture);
@@ -231,13 +190,51 @@ void IRenderer2D::Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeft
   }
 }
 
-IRenderer2D::IRenderer2D()
+void IRenderer2D::Begin(const hdx::Texture& _Texture)
 {
-  TIMER_START("Renderer2D");
+  CurrentTextures[0] = _Texture;
 
-  CurrentSamplerStatus[0] = hdx::SamplerState::Default2D;
+  IRenderer::SetVertexBuffer(pVertexBuffer.GetAddressOf(), sizeof(Vertex), 0);
+  IRenderer::SetVertexBuffer(pInstanceBuffer.GetAddressOf(), sizeof(Instance), 1);
 
-  TIMER_END("Renderer2D");
+  IRenderer::SetVertexShader(Engine::Get<IVertexShader>()->GetVertexShader(CurrentVertexShader));
+  IRenderer::SetInputLayout(Engine::Get<IVertexShader>()->GetInputLayout(CurrentVertexShader));
+  IRenderer::SetPixelShader(Engine::Get<IPixelShader>()->GetPixeShader(CurrentPixelShader));
+  IRenderer::SetBlendState(Engine::Get<IBlendState>()->GetBlendState(CurrentBlendState));
+  for (int i = 0; i < hdx::SamplerStateMaxNum; ++i)
+  {
+    IRenderer::SetSamplersState(Engine::Get<ISamplerState>()->GetSamplerState(CurrentSamplerStatus[i]), i);
+  }
+  IRenderer::SetRasterizerState(Engine::Get<IRasterizerState>()->GetRasterizerState(CurrentRasterizerState));
+  IRenderer::SetDepthStencilState(Engine::Get<IDepthStencilState>()->GetDepthStencilState(CurrentDepthStencilState));
+
+  for (int i = 0; i < hdx::TextureMaxNum; ++i)
+  {
+    const int ID = CurrentTextures[i].GetID();
+    if (ID < 0)continue;
+
+    IRenderer::SetShaderResouceView(Engine::Get<ITexture>()->GetShaderResourceView(CurrentTextures[i].GetID()), i);
+  }
+
+  IRenderer::SetRenderTarget(Engine::Get<IRenderTarget>()->GetRenderTargetView(CurrentRenderTarget), Engine::Get<IRenderTarget>()->GetDepthStencilView(CurrentRenderTarget));
+
+  //  頂点バッファオブジェクトを書き換え
+  D3D11_MAPPED_SUBRESOURCE MappedSubresorce;
+  Map(pInstanceBuffer.Get(), &MappedSubresorce);
+  Instances = static_cast<Instance*>(MappedSubresorce.pData);
+}
+
+void IRenderer2D::End()
+{
+  if (!Instances)return;
+
+  Unmap(pInstanceBuffer.Get());
+  DrawInstanced(4, Count, 0, 0);
+
+  CurrentTextures[0] = hdx::Texture();
+  Count = 0;
+
+  Instances = nullptr;
 }
 
 void IRenderer2D::SetVertexShader(const hdx::VertexShader& _VertexShader)
@@ -307,7 +304,7 @@ void IRenderer2D::SetTexture(const hdx::Texture& _Texture, UINT _Slot)
 
 inline void CreateTextureFromRenderTarget(const hdx::RenderTarget& _RenderTarget)
 {
-  Engine::GetTexture()->SetShaderResouceView(_RenderTarget, Engine::GetRenderTarget()->GetShaderResourceView(_RenderTarget));
+  Engine::Get<ITexture>()->SetShaderResouceView(_RenderTarget, Engine::Get<IRenderTarget>()->GetShaderResourceView(_RenderTarget));
 }
 
 void IRenderer2D::RestoreRenderTarget()

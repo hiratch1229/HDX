@@ -12,14 +12,16 @@ namespace hdx
 class ITexture
 {
 public:
+  static constexpr int kDummyTextureID = 0;
+  static constexpr int kDummyTextureSize = 1;
+public:
   int Load(const char* _FilePath);
   int Add(const hdx::int2& _Size);
-  int GetDummyTextureID();
-  int GetTextureID(const char* _FilePath);
   const hdx::int2& GetSize(int _ID);
-  int InsertTexture(const char* _FilePath, ID3D11ShaderResourceView* _pShaderResourceView, const hdx::int2& _Size);
   ID3D11ShaderResourceView** GetShaderResourceView(int _ID);
   void SetShaderResouceView(const hdx::RenderTarget& _RenderTarget, ID3D11ShaderResourceView* _pShaderResouceView);
 public:
   ITexture();
+public:
+  void Initialize();
 };

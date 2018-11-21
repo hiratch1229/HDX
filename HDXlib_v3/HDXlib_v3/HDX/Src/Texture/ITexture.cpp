@@ -17,8 +17,6 @@
 
 namespace
 {
-  Microsoft::WRL::ComPtr<IWICImagingFactory> pFactory;
-
   class Image
   {
     static constexpr int kPixelBytes = 4;
@@ -45,15 +43,15 @@ namespace
   };
 
   int CreateTextureNum = 0;
-
+  Microsoft::WRL::ComPtr<IWICImagingFactory> pFactory;
   NumberMap<std::string, TextureData> TextureMap;
+  ID3D11Device* pDevice = nullptr;
+  IDXGISwapChain* pSwapChain = nullptr;
 
   int CreateDammyTexture(const hdx::int2& _Size)
   {
     //  エラーチェック用
     HRESULT hr = S_OK;
-
-    ISystem* pSystem = Engine::GetSystem();
 
     //  シェーダーリソースビュー設定で作成
     D3D11_TEXTURE2D_DESC Texture2dDesc{};
@@ -83,7 +81,7 @@ namespace
     //  Texture2Dを作成
     Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture2d;
     {
-      hr = pSystem->GetDevice()->CreateTexture2D(&Texture2dDesc, &SubresourceData, pTexture2d.GetAddressOf());
+      hr = pDevice->CreateTexture2D(&Texture2dDesc, &SubresourceData, pTexture2d.GetAddressOf());
       _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     }
 
@@ -91,7 +89,7 @@ namespace
     D3D11_SHADER_RESOURCE_VIEW_DESC ShaderResourceViewDesc{};
     {
       DXGI_SWAP_CHAIN_DESC SwapChainDesc;
-      pSystem->GetSwapChain()->GetDesc(&SwapChainDesc);
+      pSwapChain->GetDesc(&SwapChainDesc);
       ShaderResourceViewDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
       ShaderResourceViewDesc.ViewDimension = (SwapChainDesc.SampleDesc.Count != 1) ? D3D11_SRV_DIMENSION_TEXTURE2DMS : D3D11_SRV_DIMENSION_TEXTURE2D;
       ShaderResourceViewDesc.Texture2D.MipLevels = 1;
@@ -100,7 +98,7 @@ namespace
     //  シェーダーリソースビューを作成
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pShaderResouceView;
     {
-      hr = pSystem->GetDevice()->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResouceView.GetAddressOf());
+      hr = pDevice->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResouceView.GetAddressOf());
       _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     }
 
@@ -125,11 +123,18 @@ ITexture::ITexture()
   TIMER_END("Texture");
 }
 
+void ITexture::Initialize()
+{
+  pDevice = Engine::Get<ISystem>()->GetDevice();
+  pSwapChain = Engine::Get<ISystem>()->GetSwapChain();
+  CreateDammyTexture(kDummyTextureSize);
+}
+
 int ITexture::Load(const char* _FilePath)
 {
   //  既に作成されているか確認
   {
-    const int ID = GetTextureID(_FilePath);
+    const int ID = TextureMap.find(_FilePath);
     if (ID >= 0)
     {
       return ID;
@@ -205,7 +210,7 @@ int ITexture::Load(const char* _FilePath)
 
   Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture2d;
 
-  ISystem* pSystem = Engine::GetSystem();
+  ISystem* pSystem = Engine::Get<ISystem>();
 
   hr = pSystem->GetDevice()->CreateTexture2D(&Texture2dDesc, &InitializeData, pTexture2d.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
@@ -221,7 +226,7 @@ int ITexture::Load(const char* _FilePath)
   hr = pSystem->GetDevice()->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResourceView.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
-  return InsertTexture(_FilePath, pShaderResourceView.Get(), Size);
+  return TextureMap.insert(_FilePath, { pShaderResourceView, Size });
 }
 
 int ITexture::Add(const hdx::int2& _Size)
@@ -229,30 +234,9 @@ int ITexture::Add(const hdx::int2& _Size)
   return CreateDammyTexture(_Size);
 }
 
-int ITexture::GetDummyTextureID()
-{
-  int ID = TextureMap.find("");
-  if (ID >= 0)
-  {
-    return ID;
-  }
-
-  return CreateDammyTexture(1);
-}
-
-int ITexture::GetTextureID(const char* _FilePath)
-{
-  return TextureMap.find(_FilePath);
-}
-
 const hdx::int2& ITexture::GetSize(int _ID)
 {
   return TextureMap[_ID].Size;
-}
-
-int ITexture::InsertTexture(const char* _FilePath, ID3D11ShaderResourceView* _pShaderResourceView, const hdx::int2& _Size)
-{
-  return TextureMap.insert(_FilePath, { _pShaderResourceView, _Size });
 }
 
 ID3D11ShaderResourceView** ITexture::GetShaderResourceView(int _ID)

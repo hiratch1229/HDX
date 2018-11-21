@@ -51,20 +51,20 @@
 //  TODO:バッチ処理
 #include "HDX/Include/Texture.hpp"
 
-//  3D基本形オブジェクト
-//  2018.09.26  作成
-//  TODO:前バージョンからほとんど持ってきたので、色々改善
-#include "HDX/Include/GeometricPrimitive.hpp"
+////  3D基本形オブジェクト
+////  2018.09.26  作成
+////  TODO:前バージョンからほとんど持ってきたので、色々改善
+//#include "HDX/Include/GeometricPrimitive.hpp"
 
 //  3Dモデル
 //  2018.09.26  作成
 //  TODO:前バージョンからほとんど持ってきたので、色々改善
 #include "HDX/Include/Model.hpp"
 
-//  FBXモデル
-//  2018.09.28  作成
-//  TODO:授業課題から改善
-#include "HDX/Include/GeometricPrimitive.hpp"
+////  FBXモデル
+////  2018.09.28  作成
+////  TODO:授業課題から改善
+//#include "HDX/Include/GeometricPrimitive.hpp"
 
 //  レンダラー2D
 //  2018.10.28  作成
@@ -135,7 +135,7 @@
 
 
 //*************************
-//  便利系
+//  基本系
 //*************************
 
 //  float,int2つの型
@@ -149,6 +149,15 @@
 //  角度自動正規化クラス
 //  2018.08.09  作成
 #include "HDX/Include/Angle.hpp"
+
+//  行列クラス
+//  2018.11.19  作成
+#include "HDX/Include/Matrix.hpp"
+
+
+//*************************
+//  便利系
+//*************************
 
 //  ランダム(Xorshift)クラス
 //  2018.09.23  作成

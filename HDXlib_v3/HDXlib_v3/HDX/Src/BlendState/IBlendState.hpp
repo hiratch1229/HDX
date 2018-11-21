@@ -14,4 +14,6 @@ public:
   ID3D11BlendState* GetBlendState(const hdx::BlendState& _BlendState);
 public:
   IBlendState() = default;
+public:
+  void Initialize();
 };

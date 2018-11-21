@@ -6,6 +6,7 @@
 #include "../Input/XInput/IXInput.hpp"
 #include "../Input/Gamepad/IGamepad.hpp"
 #include "../Renderer/Renderer2D/IRenderer2D.hpp"
+#include "../Renderer/Renderer3D/IRenderer3D.hpp"
 #include "../GUI/IGUI.hpp"
 #include "../Misc.hpp"
 
@@ -84,10 +85,6 @@ namespace
       CurrentFPS_ = 1.0f / DeltaTime;
       DeltaTime_ = DeltaTime;
       LastTime_ = CurrentTime;
-
-      char c[256];
-      sprintf_s(c, "FPS:%.2f", CurrentFPS_);
-      hdx::System::RenameTitle(c);
 
       //  更新成功
       return true;
@@ -344,21 +341,23 @@ bool ISystem::Update()
     pWindow->SetUpWindow();
     ResizeSwapChain();
     CreateRenderTargetViewAndDepthStencilView();
+
+    Engine::Get<IRenderer3D>()->CalcProjection();
   }
 
   //  入力系更新
   {
-    Engine::GetKeyboard()->Update();
-    Engine::GetMouse()->Update();
-    Engine::GetXInput()->Update();
-    Engine::GetGamepad()->Update();
+    Engine::Get<IKeyboard>()->Update();
+    Engine::Get<IMouse>()->Update();
+    Engine::Get<IXInput>()->Update();
+    Engine::Get<IGamepad>()->Update();
   }
 
   //  残っているスプライトの描画
-  Engine::GetRenderer2D()->End();
+  Engine::Get<IRenderer2D>()->End();
 
   //  GUIの更新と描画
-  Engine::GetGUI()->Update();
+  Engine::Get<IGUI>()->Update();
 
   //  描画裏表反転
   pSwapChain->Present(0, 0);

@@ -22,25 +22,22 @@ struct std::hash<hdx::RasterizerState>
 namespace
 {
   NumberMap<hdx::RasterizerState, Microsoft::WRL::ComPtr<ID3D11RasterizerState>> RasterizerStateMap;
+  ID3D11Device* pDevice = nullptr;
+  IDXGISwapChain* pSwapChain = nullptr;
 }
 
-int IRasterizerState::Create(const hdx::RasterizerState& _RasterizerState)
+void IRasterizerState::Initialize()
 {
-  //  既に作成されているか確認
-  {
-    const int ID = RasterizerStateMap.find(_RasterizerState);
-    if (ID >= 0)
-    {
-      return ID;
-    }
-  }
+  pDevice = Engine::Get<ISystem>()->GetDevice();
+  pSwapChain = Engine::Get<ISystem>()->GetSwapChain();
+}
 
-  ISystem* pSystem = Engine::GetSystem();
-
+inline int IRasterizerState::Create(const hdx::RasterizerState& _RasterizerState)
+{
   D3D11_RASTERIZER_DESC RasterizerDesc{};
   {
     DXGI_SWAP_CHAIN_DESC SwapDesc;
-    pSystem->GetSwapChain()->GetDesc(&SwapDesc);
+    pSwapChain->GetDesc(&SwapDesc);
 
     RasterizerDesc.FillMode = static_cast<D3D11_FILL_MODE>(_RasterizerState.FillMode_);
     RasterizerDesc.CullMode = static_cast<D3D11_CULL_MODE>(_RasterizerState.CullMode_);
@@ -53,9 +50,9 @@ int IRasterizerState::Create(const hdx::RasterizerState& _RasterizerState)
     RasterizerDesc.MultisampleEnable = (SwapDesc.SampleDesc.Count != 1) ? true : false; //  スワップチェーンのマルチサンプリング設定に合わせる
     RasterizerDesc.AntialiasedLineEnable = _RasterizerState.AntialiasedLineAnable_;
   }
-  
+
   Microsoft::WRL::ComPtr<ID3D11RasterizerState> pRasterizerState;
-  HRESULT hr = pSystem->GetDevice()->CreateRasterizerState(&RasterizerDesc, pRasterizerState.GetAddressOf());
+  HRESULT hr = pDevice->CreateRasterizerState(&RasterizerDesc, pRasterizerState.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   return RasterizerStateMap.insert(_RasterizerState, pRasterizerState);

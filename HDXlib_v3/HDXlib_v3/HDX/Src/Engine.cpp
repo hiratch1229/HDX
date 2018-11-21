@@ -2,6 +2,7 @@
 
 #include "System/ISystem.hpp"
 #include "Renderer/Renderer2D/IRenderer2D.hpp"
+#include "Renderer/Renderer3D/IRenderer3D.hpp"
 #include "Input/Keyboard/IKeyboard.hpp"
 #include "Input/Mouse/IMouse.hpp"
 #include "Input/XInput/IXInput.hpp"
@@ -13,6 +14,7 @@
 #include "VertexShader/IVertexShader.hpp"
 #include "PixelShader/IPixelShader.hpp"
 #include "Texture/ITexture.hpp"
+#include "Model/IModel.hpp"
 #include "RenderTarget/IRenderTarget.hpp"
 #include "Random/IRandom.hpp"
 #include "GUI/IGUI.hpp"
@@ -39,12 +41,28 @@ Engine::Engine()
 
   //  作成時にデータを取り出せるようにする
   pEngine = this;
+
+  //  初期化
+  {
+    pRenderer2D_->Initialize();
+    pBlendState_->Initialize();
+    pSamplerState_->Initialize();
+    pRasterizerState_->Initialize();
+    pDepthStencilState_->Initialize();
+    pVertexShader_->Initialize();
+    pPixelShader_->Initialize();
+    pTexture_->Initialize();
+    pModel_->Initialize();
+    pRenderTarget_->Initialize();
+    pGUI_->Initialize();
+  }
 }
 
 Engine::~Engine()
 {
   pSystem_.Release();
   pRenderer2D_.Release();
+  pRenderer3D_.Release();
   pKeyboard_.Release();
   pMouse_.Release();
   pXInput_.Release();
@@ -56,6 +74,7 @@ Engine::~Engine()
   pVertexShader_.Release();
   pPixelShader_.Release();
   pTexture_.Release();
+  pModel_.Release();
   pRenderTarget_.Release();
   pRandom_.Release();
   pGUI_.Release();
@@ -67,7 +86,7 @@ void Engine::Start(const char* _InterfaceName)
 {
   char c[256];
   sprintf_s(c, "%s 開始\n", _InterfaceName);
-  
+
   hdx::System::OutputDebug(c);
 
   Timer.Start();

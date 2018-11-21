@@ -9,11 +9,6 @@
 
 #include <Windows.h>
 
-namespace
-{
-  bool isSetUpWindow = false;
-}
-
 //IGUI::IGUI()
 //{
 //  Engine::Start("GUI");
@@ -39,25 +34,25 @@ namespace
 //  Engine::End("GUI");
 //}
 
+void IGUI::Initialize()
+{
+  ISystem* pSystem = Engine::Get<ISystem>();
+
+  IMGUI_CHECKVERSION();
+  ImGui::CreateContext();
+
+  ImGui_ImplWin32_Init(pSystem->GethWnd());
+  ImGui_ImplDX11_Init(pSystem->GetDevice(), pSystem->GetImmediateContext());
+
+  ImGui_ImplDX11_NewFrame();
+  ImGui_ImplWin32_NewFrame();
+  ImGui::NewFrame();
+}
+
 void IGUI::Update()
 {
-  if (!isSetUpWindow)
-  {
-    isSetUpWindow = true;
-
-    ISystem* pSystem = Engine::GetSystem();
-
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-
-    ImGui_ImplWin32_Init(pSystem->GethWnd());
-    ImGui_ImplDX11_Init(pSystem->GetDevice(), pSystem->GetImmediateContext());
-  }
-  else
-  {
-    ImGui::Render();
-    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-  }
+  ImGui::Render();
+  ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
   ImGui_ImplDX11_NewFrame();
   ImGui_ImplWin32_NewFrame();

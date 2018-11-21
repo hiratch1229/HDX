@@ -23,19 +23,17 @@ struct std::hash<hdx::BlendState>
 namespace
 {
   NumberMap<hdx::BlendState, Microsoft::WRL::ComPtr<ID3D11BlendState>> BlendStateMap;
+
+  ID3D11Device* pDevice = nullptr;
 }
 
-int IBlendState::Create(const hdx::BlendState& _BlendState)
+void IBlendState::Initialize()
 {
-  //  既に作成されているか確認
-  {
-    const int ID = BlendStateMap.find(_BlendState);
-    if (ID >= 0)
-    {
-      return ID;
-    }
-  }
+  pDevice = Engine::Get<ISystem>()->GetDevice();
+}
 
+inline int IBlendState::Create(const hdx::BlendState& _BlendState)
+{
   D3D11_BLEND_DESC BlendDesc{};
   {
     BlendDesc.AlphaToCoverageEnable = _BlendState.AlphaToCoverageEnable_;
@@ -52,7 +50,7 @@ int IBlendState::Create(const hdx::BlendState& _BlendState)
 
   Microsoft::WRL::ComPtr<ID3D11BlendState> pBlendState;
 
-  HRESULT hr = Engine::GetSystem()->GetDevice()->CreateBlendState(&BlendDesc, pBlendState.GetAddressOf());
+  HRESULT hr = pDevice->CreateBlendState(&BlendDesc, pBlendState.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   //  マップへ追加

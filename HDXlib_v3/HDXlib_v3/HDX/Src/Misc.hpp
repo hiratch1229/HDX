@@ -20,7 +20,6 @@ inline LPWSTR hResultTrace(HRESULT hr)
 #define  _ASSERT_EXPR_A(expr, expr_str) ((void)0)
 #endif
 
-
 //--------------------------------------------------
 //  デバッグ用
 //--------------------------------------------------

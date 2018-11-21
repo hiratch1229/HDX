@@ -14,10 +14,13 @@ class IVertexShader
 {
   static constexpr char* kDefault2DFilePath = "SpriteVS.cso";
 public:
-  hdx::VertexShader CreateDefault2D();
   int Create(const char* _FilePath, const hdx::InputElementDesc _InputElementDescs[], UINT _NumElements);
+  hdx::VertexShader CreateDefault2D();
+public:
   ID3D11InputLayout* GetInputLayout(const hdx::VertexShader& _VertexShader);
   ID3D11VertexShader* GetVertexShader(const hdx::VertexShader& _VertexShader);
 public:
   IVertexShader() = default;
+public:
+  void Initialize();
 };

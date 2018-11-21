@@ -20,6 +20,16 @@ namespace
   };
 
   NumberMap<ID, State> StateMap;
+  ID3D11Device* pDevice = nullptr;
+  ID3D11DeviceContext* pImmediateContext = nullptr;
+  IDXGISwapChain* pSwapChain = nullptr;
+}
+
+void IRenderTarget::Initialize()
+{
+  pDevice = Engine::Get<ISystem>()->GetDevice();
+  pImmediateContext = Engine::Get<ISystem>()->GetImmediateContext();
+  pSwapChain = Engine::Get<ISystem>()->GetSwapChain();
 }
 
 void IRenderTarget::CreateRenderTarget(const hdx::RenderTarget& _RenderTarget)
@@ -28,23 +38,23 @@ void IRenderTarget::CreateRenderTarget(const hdx::RenderTarget& _RenderTarget)
 
   State State;
 
-  ISystem* pSystem = Engine::GetSystem();
-
   Microsoft::WRL::ComPtr<ID3D11Texture2D> pBackBuffer;
-  hr = pSystem->GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(pBackBuffer.GetAddressOf()));
+  hr = pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(pBackBuffer.GetAddressOf()));
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   D3D11_TEXTURE2D_DESC RenderTargetDesc;
-  pBackBuffer->GetDesc(&RenderTargetDesc);
-  RenderTargetDesc.Width = _RenderTarget.GetWidth();
-  RenderTargetDesc.Height = _RenderTarget.GetHeight();
-  RenderTargetDesc.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
+  {
+    pBackBuffer->GetDesc(&RenderTargetDesc);
+    RenderTargetDesc.Width = _RenderTarget.GetWidth();
+    RenderTargetDesc.Height = _RenderTarget.GetHeight();
+    RenderTargetDesc.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
+  }
 
   Microsoft::WRL::ComPtr<ID3D11Texture2D> pRenderTarget;
-  hr = pSystem->GetDevice()->CreateTexture2D(&RenderTargetDesc, nullptr, pRenderTarget.GetAddressOf());
+  hr = pDevice->CreateTexture2D(&RenderTargetDesc, nullptr, pRenderTarget.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
-  hr = pSystem->GetDevice()->CreateRenderTargetView(pRenderTarget.Get(), nullptr, State.pRenderTargetView.GetAddressOf());
+  hr = pDevice->CreateRenderTargetView(pRenderTarget.Get(), nullptr, State.pRenderTargetView.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   //  深度ステンシルビューの作成
@@ -58,19 +68,21 @@ void IRenderTarget::CreateRenderTarget(const hdx::RenderTarget& _RenderTarget)
     DepthStencilBufferDesc.CPUAccessFlags = 0;
     DepthStencilBufferDesc.MiscFlags = 0;
 
-    hr = pSystem->GetDevice()->CreateTexture2D(&DepthStencilBufferDesc, nullptr, DepthStencilBuffer.GetAddressOf());
+    hr = pDevice->CreateTexture2D(&DepthStencilBufferDesc, nullptr, DepthStencilBuffer.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
     DXGI_SWAP_CHAIN_DESC SwapChainDesc{};
-    pSystem->GetSwapChain()->GetDesc(&SwapChainDesc);
+    pSwapChain->GetDesc(&SwapChainDesc);
 
     D3D11_DEPTH_STENCIL_VIEW_DESC DepthStencilViewDesc;
-    DepthStencilViewDesc.Format = DepthStencilBufferDesc.Format;
-    DepthStencilViewDesc.ViewDimension = (SwapChainDesc.SampleDesc.Count != 1) ? D3D11_DSV_DIMENSION_TEXTURE2DMS : D3D11_DSV_DIMENSION_TEXTURE2D;
-    DepthStencilViewDesc.Flags = 0;
-    DepthStencilViewDesc.Texture2D.MipSlice = 0;
+    {
+      DepthStencilViewDesc.Format = DepthStencilBufferDesc.Format;
+      DepthStencilViewDesc.ViewDimension = (SwapChainDesc.SampleDesc.Count != 1) ? D3D11_DSV_DIMENSION_TEXTURE2DMS : D3D11_DSV_DIMENSION_TEXTURE2D;
+      DepthStencilViewDesc.Flags = 0;
+      DepthStencilViewDesc.Texture2D.MipSlice = 0;
+    }
 
-    hr = pSystem->GetDevice()->CreateDepthStencilView(DepthStencilBuffer.Get(), &DepthStencilViewDesc, State.pDepthStencilView.GetAddressOf());
+    hr = pDevice->CreateDepthStencilView(DepthStencilBuffer.Get(), &DepthStencilViewDesc, State.pDepthStencilView.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   }
 
@@ -80,8 +92,6 @@ void IRenderTarget::CreateRenderTarget(const hdx::RenderTarget& _RenderTarget)
 ID3D11ShaderResourceView* IRenderTarget::GetShaderResourceView(const hdx::RenderTarget& _RenderTarget)
 {
   HRESULT hr = S_OK;
-
-  ISystem* pSystem = Engine::GetSystem();
 
   Microsoft::WRL::ComPtr<ID3D11Resource> pResource;
 
@@ -98,12 +108,12 @@ ID3D11ShaderResourceView* IRenderTarget::GetShaderResourceView(const hdx::Render
   D3D11_SHADER_RESOURCE_VIEW_DESC ShaderResourceViewDesc{};
   ShaderResourceViewDesc.Format = Texture2dDesc.Format;
   DXGI_SWAP_CHAIN_DESC SwapChainDesc;
-  pSystem->GetSwapChain()->GetDesc(&SwapChainDesc);
+  pSwapChain->GetDesc(&SwapChainDesc);
   ShaderResourceViewDesc.ViewDimension = (SwapChainDesc.SampleDesc.Count != 1) ? D3D11_SRV_DIMENSION_TEXTURE2DMS : D3D11_SRV_DIMENSION_TEXTURE2D;
   ShaderResourceViewDesc.Texture2D.MipLevels = Texture2dDesc.MipLevels;
 
   Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> ShaderResourceView;
-  hr = pSystem->GetDevice()->CreateShaderResourceView(pTexture2D.Get(), &ShaderResourceViewDesc, ShaderResourceView.GetAddressOf());
+  hr = pDevice->CreateShaderResourceView(pTexture2D.Get(), &ShaderResourceViewDesc, ShaderResourceView.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   return ShaderResourceView.Get();
@@ -111,15 +121,13 @@ ID3D11ShaderResourceView* IRenderTarget::GetShaderResourceView(const hdx::Render
 
 void IRenderTarget::ClearRenderTarget(const hdx::RenderTarget& _RenderTarget, const hdx::ColorF& _Color)
 {
-  ISystem* pSystem = Engine::GetSystem();
-
   State& State = StateMap[ID(_RenderTarget.GetID())];
 
   //  クリア色
   const float ClearColor[4] = { _Color.R,_Color.G,_Color.B,_Color.A };
 
-  pSystem->GetImmediateContext()->ClearRenderTargetView(State.pRenderTargetView.Get(), ClearColor);
-  pSystem->GetImmediateContext()->ClearDepthStencilView(State.pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+  pImmediateContext->ClearRenderTargetView(State.pRenderTargetView.Get(), ClearColor);
+  pImmediateContext->ClearDepthStencilView(State.pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
 ID3D11RenderTargetView** IRenderTarget::GetRenderTargetView(const hdx::RenderTarget& _RenderTarget)const
