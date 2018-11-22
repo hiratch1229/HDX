@@ -11,6 +11,7 @@ class IBlendState;
 class ISamplerState;
 class IRasterizerState;
 class IDepthStencilState;
+class IConstantBuffer;
 class IVertexShader;
 class IPixelShader;
 class ITexture;
@@ -62,6 +63,7 @@ private:
   Component<ISamplerState> pSamplerState_;
   Component<IRasterizerState> pRasterizerState_;
   Component<IDepthStencilState> pDepthStencilState_;
+  Component<IConstantBuffer> pConstantBuffer_;
   Component<IVertexShader> pVertexShader_;
   Component<IPixelShader> pPixelShader_;
   Component<ITexture> pTexture_;
@@ -89,6 +91,7 @@ public:
   template<> static ISamplerState* Get() { return pEngine->pSamplerState_.Get(); }
   template<> static IRasterizerState* Get() { return pEngine->pRasterizerState_.Get(); }
   template<> static IDepthStencilState* Get() { return pEngine->pDepthStencilState_.Get(); }
+  template<> static IConstantBuffer* Get() { return pEngine->pConstantBuffer_.Get(); }
   template<> static IVertexShader* Get() { return pEngine->pVertexShader_.Get(); }
   template<> static IPixelShader* Get() { return pEngine->pPixelShader_.Get(); }
   template<> static ITexture* Get() { return pEngine->pTexture_.Get(); }

@@ -9,8 +9,10 @@ void Main()
   hdx::Texture A{ "DATA/exp.png" };
 
   hdx::Model Models[] = {
+    //{ hdx::Cube{} },
     { "DATA/000_cube.fbx" },
-    { "DATA/001_cube.fbx" }
+    //{ "DATA/001_cube.fbx" },
+  //{"DATA/005_cube.fbx"}
   };
 
   //  hdx::SkinnedMesh Fbx("DATA/FBX/005_cube.fbx");
@@ -90,15 +92,52 @@ void Main()
 
   constexpr hdx::Input::Gamepad Gampads[3] = { 0, 1, 2 };
 
+  hdx::Camera Camera;
+
   while (hdx::System::Update())
   {
-    ImGui::Begin("DeltaTime");
-    ImGui::Text("DeltaTime %f", hdx::System::GetDeltaTime());
-    ImGui::Text("");
-    ImGui::End();
+    //ImGui::Begin("DeltaTime");
+    //ImGui::Text("DeltaTime %f", hdx::System::GetDeltaTime());
+    //ImGui::Text("");
+    //ImGui::End();
+    //
+    //if (hdx::Input::Keyboard::KeyDown)
+    //{
+    //  Camera.Pos.Z += 0.01f;
+    //}
 
-    hdx::Texture().Draw(0, hdx::float2(500.0f, 500.0f));
+    if (hdx::Input::Keyboard::KeyUp)
+    {
+      Camera.Pos.Y += 0.1f;
+    }
+    if (hdx::Input::Keyboard::KeyDown)
+    {
+      Camera.Pos.Y -= 0.1f;
+    }
+    if (hdx::Input::Keyboard::KeyLeft)
+    {
+      Camera.Pos.X -= 0.1f;
+    }
+    if (hdx::Input::Keyboard::KeyRight)
+    {
+      Camera.Pos.X += 0.1f;
+    }
 
+    hdx::Renderer3D::SetCamera(Camera);
+
+    static hdx::float3 Rotation;
+    Rotation.X += hdx::System::GetDeltaTime()*1.0f;
+    Rotation.Y += hdx::System::GetDeltaTime()*0.5f;
+
+    Models[0].Draw(DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f)
+      *DirectX::XMMatrixRotationRollPitchYaw(Rotation.X, Rotation.Y, 0.0f)
+      *DirectX::XMMatrixTranslation(0.0f, 0.0f, -5.0f));
+
+    //Models[0].Draw(
+    //  DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f)
+    //  *DirectX::XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f)
+    //  *DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+    //
     //for (int i = 0; i < 3; ++i)
     //{
     //  const int ButtonNum = Gampads[i].GetButtonNum();

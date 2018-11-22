@@ -5,7 +5,6 @@
 #include "../NumberMap.hpp"
 #include "../Misc.hpp"
 
-#include "../../Include/Vertex.hpp"
 #include "../../Include/RenderTarget.hpp"
 #include "../../Include/Type2.hpp"
 #include "../../Include/Constants.hpp"

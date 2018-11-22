@@ -7,13 +7,13 @@ namespace hdx
   struct Camera
   {
     //  ˆÊ’u
-    float3 Pos;
+    float3 Pos = { 0.0f, 0.0f, -10.0f };
     //  ’‹“_
-    float3 Target;
+    float3 Target = { 0.0f, 0.0f, 0.0f };
     //  ã•ûŒü
-    float3 Up;
+    float3 Up = { 0.0f, 1.0f, 0.0f };
     //  Å‹ß–Ê
-    float Near = 0.0f;
+    float Near = 0.1f;
     //  Å‰“–Ê
     float Far = 1000.0f;
     //  ‹–ìŠp

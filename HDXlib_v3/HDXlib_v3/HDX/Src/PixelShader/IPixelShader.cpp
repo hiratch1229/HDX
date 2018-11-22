@@ -62,6 +62,11 @@ hdx::PixelShader IPixelShader::CreateDefault2D()
   return hdx::PixelShader(kDefault2DFilePath);
 }
 
+hdx::PixelShader IPixelShader::CreateDefault3D()
+{
+  return hdx::PixelShader(kDefault3DFilePath);
+}
+
 ID3D11PixelShader* IPixelShader::GetPixeShader(const hdx::PixelShader& _PixelShader)
 {
   const int ID = _PixelShader.GetID();

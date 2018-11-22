@@ -138,6 +138,8 @@ void IRenderer2D::Initialize()
     delete[] Instances;
     Instances = nullptr;
   }
+
+  IRenderer::Initialize();
 }
 
 void IRenderer2D::Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeftTop, const hdx::float2& _DstSize, const hdx::float2& _SrcLeftPos, const hdx::float2& _SrcSize, const hdx::Radian& _Angle, bool _HorizontalFlip, bool _VerticalFlip, const hdx::ColorF& _Color)

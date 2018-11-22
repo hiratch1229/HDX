@@ -1,4 +1,5 @@
 #pragma once
+#include "Types.hpp"
 
 //  前方宣言
 namespace hdx
@@ -13,10 +14,10 @@ namespace hdx
   //  R,G,B,A それぞれ0~255で色を表現します
   struct Color
   {
-    int R; //  赤
-    int G; //  緑
-    int B; //  赤
-    int A; //  不透明度
+    uint8 R; //  赤
+    uint8 G; //  緑
+    uint8 B; //  赤
+    uint8 A; //  不透明度
   public:
     //  不透明度最大(255)の白(255,255,255)で初期化
     constexpr Color() : R(255), G(255), B(255), A(255) {}
@@ -31,15 +32,15 @@ namespace hdx
     //  _G:緑
     //  _B:青
     //  _A:不透明度
-    constexpr Color(int _R, int _G, int _B, int _A = 255)noexcept : R(_R), G(_G), B(_B), A(_A) {}
+    constexpr Color(uint8 _R, uint8 _G, uint8 _B, uint8 _A = 255)noexcept : R(_R), G(_G), B(_B), A(_A) {}
     //  色を作成
     //  _RGB:赤,緑,青
     //  _A:不透明度
-    constexpr Color(int _RGB, int _A = 255)noexcept : R(_RGB), G(_RGB), B(_RGB), A(_A) {}
+    constexpr Color(uint8 _RGB, uint8 _A = 255)noexcept : R(_RGB), G(_RGB), B(_RGB), A(_A) {}
     //  色を作成
     //  _RGB:赤,緑,青
     //  _A:不透明度
-    constexpr Color(const Color& _RGB, int _A)noexcept : R(_RGB.R), G(_RGB.G), B(_RGB.B), A(_A) {}
+    constexpr Color(const Color& _RGB, uint8 _A)noexcept : R(_RGB.R), G(_RGB.G), B(_RGB.B), A(_A) {}
   public:
     //  色を代入
     //  _Color:代入する色
@@ -130,7 +131,7 @@ namespace hdx
   //  色を変換してコピー
   //  _Color:コピーする色
   inline constexpr Color::Color(const ColorF& _Color)noexcept
-    : R(static_cast<int>(_Color.R * 255.0f)), G(static_cast<int>(_Color.G * 255.0f)), B(static_cast<int>(_Color.B * 255.0f)), A(static_cast<int>(_Color.A * 255.0f))
+    : R(static_cast<uint8>(_Color.R * 255.0f)), G(static_cast<uint8>(_Color.G * 255.0f)), B(static_cast<uint8>(_Color.B * 255.0f)), A(static_cast<uint8>(_Color.A * 255.0f))
   {
 
   }

@@ -100,6 +100,20 @@ hdx::VertexShader IVertexShader::CreateDefault2D()
   return hdx::VertexShader(kDefault2DFilePath, InputElementDescs, ARRAYSIZE(InputElementDescs));
 }
 
+hdx::VertexShader IVertexShader::CreateDefault3D()
+{
+  static const hdx::InputElementDesc InputElementDescs[] =
+  {
+    { "POSITION", 0, hdx::Format::R32G32B32_FLOAT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+    { "NORMAL", 0, hdx::Format::R32G32B32_FLOAT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+    { "TEXCOORD", 0, hdx::Format::R32G32_FLOAT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+    { "WEIGHTS", 0, hdx::Format::R32G32B32A32_FLOAT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+    { "BONES", 0, hdx::Format::R32G32B32A32_UINT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+  };
+
+  return hdx::VertexShader(kDefault3DFilePath, InputElementDescs, ARRAYSIZE(InputElementDescs));
+}
+
 ID3D11InputLayout* IVertexShader::GetInputLayout(const hdx::VertexShader& _VertexShader)
 {
   const int ID = _VertexShader.GetID();

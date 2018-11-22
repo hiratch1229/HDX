@@ -18,7 +18,6 @@ namespace hdx
       return static_cast<int>(Linear(static_cast<float>(_Time), static_cast<float>(_TotalTime), static_cast<float>(_Max), static_cast<float>(_Min)));
     }
 
-
     struct Sine
     {
       static float In(float _Time, float _TotalTime, float _Max = 1.0f, float _Min = 0.0f);

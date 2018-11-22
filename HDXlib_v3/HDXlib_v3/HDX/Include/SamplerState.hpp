@@ -70,7 +70,7 @@ namespace hdx
       AddressMode _AddressModeV = AddressMode::Clamp,
       AddressMode _AddressModeW = AddressMode::Clamp,
       Filter _Filter = Filter::MinMagMipLinear,
-      UINT _MaxAnisotropy = 16,
+      uint8 _MaxAnisotropy = 16,
       const Color& _BorderColor = Color(Palette::Black, 0))
       : Filter_(_Filter),
       AddressModeU_(_AddressModeU),

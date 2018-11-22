@@ -324,7 +324,7 @@ ISystem::ISystem()
   CreateDevice();
 
   //  三角リスト設定
-  pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+  pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
   //  スワップチェーンの作成
   CreateSwapChain();
@@ -370,10 +370,6 @@ bool ISystem::Update()
     DispatchMessage(&Msg);
   }
 
-  //  FPS制御
-  //  時間が来るまで無限ループ(仮)
-  while (!pFrameRate->Update());
-
   //  スクリーンを初期化
   {
     //  クリア色
@@ -387,6 +383,10 @@ bool ISystem::Update()
     pImmediateContext->ClearDepthStencilView(pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
     pImmediateContext->OMSetRenderTargets(1, pRenderTargetView.GetAddressOf(), pDepthStencilView.Get());
   }
+
+  //  FPS制御
+  //  時間が来るまで無限ループ(仮)
+  while (!pFrameRate->Update());
 
   //  ウィンドウの状態を返す
   return ::IsWindow(pWindow->hWnd_) != 0;

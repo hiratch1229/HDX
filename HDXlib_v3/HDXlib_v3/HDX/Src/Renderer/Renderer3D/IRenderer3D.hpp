@@ -38,6 +38,7 @@ public:
 public:
   void Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::ColorF& _Color);
   void CalcProjection();
+  void FreeCamera();
 public:
   IRenderer3D();
 };

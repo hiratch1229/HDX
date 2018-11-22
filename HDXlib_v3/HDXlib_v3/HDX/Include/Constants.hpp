@@ -12,6 +12,8 @@ namespace hdx
 
   constexpr UINT TextureMaxNum = 128;
 
+  constexpr UINT ConstantBufferMaxNum = 14;
+
   constexpr UINT ControllerMaxNum = 4;
 
   constexpr UINT kMaxBoneInfluences = 4;

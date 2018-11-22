@@ -12,6 +12,6 @@ void IKeyboard::Update()
   //  全てのキーの情報を更新
   for (int i = 0; i < kKeyNum; ++i)
   {
-    InputStatus_[i].Update((buf[i] & 0x8000) != 0);
+    InputStatus_[i].Update((buf[i] & 0x80) != 0);
   }
 }

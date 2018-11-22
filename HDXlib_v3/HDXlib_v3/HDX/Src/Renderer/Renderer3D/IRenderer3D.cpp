@@ -1,15 +1,16 @@
 #include "IRenderer3D.hpp"
 
 #include "../../Engine.hpp"
-#include "../../System/ISystem.hpp"
 #include "../../Texture/ITexture.hpp"
 #include "../../BlendState/IBlendState.hpp"
 #include "../../SamplerState/ISamplerState.hpp"
 #include "../../RasterizerState/IRasterizerState.hpp"
 #include "../../DepthStencilState/IDepthStencilState.hpp"
+#include "../../ConstantBuffer/IConstantBuffer.hpp"
 #include "../../VertexShader/IVertexShader.hpp"
 #include "../../PixelShader/IPixelShader.hpp"
 #include "../../RenderTarget/IRenderTarget.hpp"
+#include "../../Renderer/Renderer2D/IRenderer2D.hpp"
 #include "../../Model/IModel.hpp"
 #include "../../Misc.hpp"
 
@@ -20,6 +21,7 @@
 #include "../../../Include/SamplerState.hpp"
 #include "../../../Include/RasterizerState.hpp"
 #include "../../../Include/DepthStencilState.hpp"
+#include "../../../Include/ConstantBuffer.hpp"
 #include "../../../Include/Texture.hpp"
 #include "../../../Include/RenderTarget.hpp"
 #include "../../../Include/Model.hpp"
@@ -32,15 +34,25 @@ namespace
   hdx::VertexShader CurrentVertexShader;
   hdx::PixelShader CurrentPixelShader;
   hdx::BlendState CurrentBlendState = hdx::BlendState::Default;
-  hdx::RasterizerState CurrentRasterizerState = hdx::RasterizerState::Default2D;
-  hdx::DepthStencilState CurrentDepthStencilState = hdx::DepthStencilState::Default2D;
+  hdx::RasterizerState CurrentRasterizerState = hdx::RasterizerState::Default3D;
+  hdx::DepthStencilState CurrentDepthStencilState = hdx::DepthStencilState::Default3D;
   hdx::RenderTarget CurrentRenderTarget;
 
   hdx::SamplerState CurrentSamplerStatus[hdx::SamplerStateMaxNum];
   hdx::Texture CurrentTextures[hdx::TextureMaxNum - 1];
 
+  hdx::ConstantBuffer ConstantBuffer;
+
   hdx::Camera Camera;
+  hdx::Matrix ViewMatrix;
   hdx::Matrix ProjectionMatrix;
+
+  inline void CalcView()
+  {
+    ViewMatrix = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(Camera.Pos.X, Camera.Pos.Y, Camera.Pos.Z, 1.0f),
+      DirectX::XMVectorSet(Camera.Target.X, Camera.Target.Y, Camera.Target.Z, 1.0f),
+      DirectX::XMVectorSet(Camera.Up.X, Camera.Up.Y, Camera.Up.Z, 0.0f));
+  }
 }
 
 IRenderer3D::IRenderer3D()
@@ -54,6 +66,8 @@ IRenderer3D::IRenderer3D()
 
 void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::ColorF& _Color)
 {
+  Engine::Get<IRenderer2D>()->End();
+
   const ModelData& ModelData = Engine::Get<IModel>()->GetModelData(_Model.GetID());
 
   IRenderer::SetVertexShader(Engine::Get<IVertexShader>()->GetVertexShader(CurrentVertexShader));
@@ -75,15 +89,36 @@ void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix
   }
   IRenderer::SetRenderTarget(Engine::Get<IRenderTarget>()->GetRenderTargetView(CurrentRenderTarget), Engine::Get<IRenderTarget>()->GetDepthStencilView(CurrentRenderTarget));
 
+  CalcView();
+  CalcProjection();
+
+  ConstantBuffer.Data_.LightDirection = { 0.0f, 0.0f, 1.0f, 0.0f };
+
   UINT Strides = sizeof(Vertex);
   for (auto& Mesh : ModelData.Meshes)
   {
     IRenderer::SetVertexBuffer(Mesh.pVertexBuffer.GetAddressOf(), Strides);
+    IRenderer::SetIndexBuffer(Mesh.pIndexBuffer.Get());
+
+    const hdx::Matrix GlobalTransform = DirectX::XMLoadFloat4x4(&Mesh.GlobalTransform);
+
+    DirectX::XMStoreFloat4x4(&ConstantBuffer.Data_.WorldViewProjection, GlobalTransform * _WorldMatrix*ViewMatrix*ProjectionMatrix);
+    DirectX::XMStoreFloat4x4(&ConstantBuffer.Data_.World, GlobalTransform * _WorldMatrix);
+
     for (auto& Subset : Mesh.Subsets)
     {
+      ConstantBuffer.Data_.MaterialColor = {
+        Subset.Diffuse.Color.R*_Color.R,
+        Subset.Diffuse.Color.G*_Color.G,
+        Subset.Diffuse.Color.B*_Color.B,
+        Subset.Diffuse.Color.A*_Color.A };
+      auto pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size);
+      IRenderer::UpdateSubresource(pConstantBuffer, &ConstantBuffer.Data_);
+      IRenderer::SetConstatBuffer(&pConstantBuffer, 0);
+
       IRenderer::SetShaderResouceView(Engine::Get<ITexture>()->GetShaderResourceView(Subset.Diffuse.TextureID), 0);
 
-      Engine::Get<ISystem>()->GetImmediateContext()->DrawIndexed(Subset.IndexCount, Subset.IndexStart, 0);
+      IRenderer::DrawIndexed(Subset.IndexCount, Subset.IndexStart, 0);
     }
   }
 }
@@ -185,4 +220,10 @@ void IRenderer3D::SetCamera(const hdx::Camera& _Camera)
   Camera = _Camera;
 
   CalcProjection();
+  CalcView();
+}
+
+void IRenderer3D::FreeCamera()
+{
+
 }

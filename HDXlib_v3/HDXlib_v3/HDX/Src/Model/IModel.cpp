@@ -456,14 +456,14 @@ int IModel::Load(const char* _FilePath)
   {
     //  Initialize the importer.
     bool ImportStatus = pImporter->Initialize(_FilePath, -1, pManager->GetIOSettings());
-    _ASSERT_EXPR(ImportStatus, pImporter->GetStatus().GetErrorString());
+    _ASSERT_EXPR_A(ImportStatus, pImporter->GetStatus().GetErrorString());
 
     //  Create a new scene so it can be populated by the imported file.
     fbxsdk::FbxScene* pScene = fbxsdk::FbxScene::Create(pManager, "");
 
     //  Import the contentts of the file into the scene.
     ImportStatus = pImporter->Import(pScene);
-    _ASSERT_EXPR(ImportStatus, pImporter->GetStatus().GetErrorString());
+    _ASSERT_EXPR_A(ImportStatus, pImporter->GetStatus().GetErrorString());
 
     //  Convert mesh,NURBS and patch into triangle mesh
     fbxsdk::FbxGeometryConverter GeometryConverter(pManager);
@@ -494,19 +494,17 @@ int IModel::Load(const char* _FilePath)
     };
     Traverse(pScene->GetRootNode());
 
-    //fbxsdk::FbxMesh* pFbxMesh = FetchedMeshed.at(0)->GetMesh(); //  Currently only one mesh.
     const int NumberOfMeshes = FetchedMeshed.size();
 
     ModelData ModelData;
-
     ModelData.Meshes.resize(NumberOfMeshes);
 
     for (int i = 0; i < NumberOfMeshes; ++i)
     {
       fbxsdk::FbxMesh* pFbxMesh = FetchedMeshed.at(i)->GetMesh();
-      fbxsdk::FbxAMatrix GlobalTransform = pFbxMesh->GetNode()->EvaluateGlobalTransform(0);
-
       Mesh& Mesh = ModelData.Meshes.at(i);
+
+      fbxsdk::FbxAMatrix GlobalTransform = pFbxMesh->GetNode()->EvaluateGlobalTransform(0);
 
       for (int Row = 0; Row < 4; ++Row)
       {
@@ -517,11 +515,6 @@ int IModel::Load(const char* _FilePath)
       }
 
       FetchBoneInfluences(pFbxMesh, &ModelData.BoneInfluences);
-
-      //fbxsdk::FbxTime FrameTime;
-      //FrameTime.SetTime(0, 0, 0, 1, 0, pFbxMesh->GetScene()->GetGlobalSettings().GetTimeMode());
-      //FetchBoneMatrices(pFbxMesh, Mesh.Skeletal, FrameTime * 20);
-
       FetchAnimations(pFbxMesh, Mesh.SkeletalAnimation);
 
       std::vector<Subset>& Subsets = Mesh.Subsets;
@@ -533,8 +526,8 @@ int IModel::Load(const char* _FilePath)
 
       //  Fetch material properties.
       const int NumberOfMaterials = pFbxMesh->GetNode()->GetMaterialCount();
-      //  1つも無い時は1つ作成(仮)
-      Subsets.resize((NumberOfMaterials == 0) ? 1 : NumberOfMaterials);
+      //  1つも無い時は1つ作成
+      Subsets.resize((NumberOfMaterials > 0) ? NumberOfMaterials : 1);
 
       const int NumberOfPolygons = pFbxMesh->GetPolygonCount();
       Indices.resize(NumberOfPolygons * 3);
@@ -693,7 +686,7 @@ int IModel::Load(const char* _FilePath)
         Subset.Diffuse.TextureID = pTexture->kDummyTextureID;
       }
 
-      std::sort(Subsets.begin(), Subsets.end());
+      //std::sort(Subsets.begin(), Subsets.end());
 
       //  バッファの作成
       CreateBuffers(Vertices.data(), Vertices.size(), Indices.data(), Indices.size(), Mesh.pVertexBuffer.GetAddressOf(), Mesh.pIndexBuffer.GetAddressOf());
@@ -741,6 +734,7 @@ int IModel::Load(const hdx::Rectangle& _Rectangle)
   Mesh.Subsets.resize(1);
 
   Mesh.Subsets[0].Diffuse.TextureID = TextureID;
+  Mesh.Subsets[0].IndexCount = 6;
 
   //  頂点情報設定
   Vertex Vertices[4];
@@ -794,6 +788,7 @@ int IModel::Load(const hdx::Cube& _Cube)
   Mesh.Subsets.resize(1);
 
   Mesh.Subsets[0].Diffuse.TextureID = TextureID;
+  Mesh.Subsets[0].IndexCount = 36;
 
   //  頂点情報設定
   Vertex Vertices[24];
@@ -933,6 +928,9 @@ int IModel::Load(const hdx::Cylinder& _Cylinder)
     }
   }
 
+  const int VertexNum = (Slices + 1) * 2;
+  const int IndexNum = Slices * 6 + Slices * 6;
+
   ModelData ModelData;
   ModelData.Meshes.resize(1);
 
@@ -940,9 +938,10 @@ int IModel::Load(const hdx::Cylinder& _Cylinder)
   Mesh.Subsets.resize(1);
 
   Mesh.Subsets[0].Diffuse.TextureID = TextureID;
+  Mesh.Subsets[0].IndexCount = IndexNum;
 
-  std::unique_ptr<Vertex[]> Vertices(new Vertex[(Slices + 1) * 2]);
-  std::unique_ptr<UINT[]> Indices(new UINT[Slices * 6 + Slices * 6]);
+  std::unique_ptr<Vertex[]> Vertices(new Vertex[VertexNum]);
+  std::unique_ptr<UINT[]> Indices(new UINT[IndexNum]);
 
   //  1つの三角形の角度
   const float Degree = 360.0f / Slices;
@@ -1017,7 +1016,7 @@ int IModel::Load(const hdx::Cylinder& _Cylinder)
     }
   }
 
-  CreateBuffers(Vertices.get(), (Slices + 1) * 2, Indices.get(), Slices * 6 + Slices * 6, Mesh.pVertexBuffer.GetAddressOf(), Mesh.pIndexBuffer.GetAddressOf());
+  CreateBuffers(Vertices.get(), VertexNum, Indices.get(), IndexNum, Mesh.pVertexBuffer.GetAddressOf(), Mesh.pIndexBuffer.GetAddressOf());
 
   return ModelMap.insert(ModelName, ModelData);
 }

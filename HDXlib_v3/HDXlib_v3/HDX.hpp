@@ -51,24 +51,22 @@
 //  TODO:バッチ処理
 #include "HDX/Include/Texture.hpp"
 
-////  3D基本形オブジェクト
-////  2018.09.26  作成
-////  TODO:前バージョンからほとんど持ってきたので、色々改善
-//#include "HDX/Include/GeometricPrimitive.hpp"
-
 //  3Dモデル
 //  2018.09.26  作成
 //  TODO:前バージョンからほとんど持ってきたので、色々改善
 #include "HDX/Include/Model.hpp"
 
-////  FBXモデル
-////  2018.09.28  作成
-////  TODO:授業課題から改善
-//#include "HDX/Include/GeometricPrimitive.hpp"
+//  カメラ
+//  2018.11.21  作成
+#include "HDX/Include/Camera.hpp"
 
 //  レンダラー2D
 //  2018.10.28  作成
 #include "HDX/Include/Renderer2D.hpp"
+
+//  レンダラー3D
+//  2018.11.21  作成
+#include "HDX/Include/Renderer3D.hpp"
 
 //  ブレンドステート
 //  2018.10.29  作成
@@ -85,6 +83,10 @@
 //  デプスステンシルステート
 //  2018.11.07  作成
 #include "HDX/Include/DepthStencilState.hpp"
+
+//  コンスタントバッファ
+//  2018.11.21  作成
+#include "HDX/Include/ConstantBuffer.hpp"
 
 //  レンダーターゲット
 //  2018.11.07  作成

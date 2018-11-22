@@ -11,6 +11,7 @@
 #include "SamplerState/ISamplerState.hpp"
 #include "RasterizerState/IRasterizerState.hpp"
 #include "DepthStencilState/IDepthStencilState.hpp"
+#include "ConstantBuffer/IConstantBuffer.hpp"
 #include "VertexShader/IVertexShader.hpp"
 #include "PixelShader/IPixelShader.hpp"
 #include "Texture/ITexture.hpp"
@@ -49,6 +50,7 @@ Engine::Engine()
     pSamplerState_->Initialize();
     pRasterizerState_->Initialize();
     pDepthStencilState_->Initialize();
+    pConstantBuffer_->Initialize();
     pVertexShader_->Initialize();
     pPixelShader_->Initialize();
     pTexture_->Initialize();
@@ -71,6 +73,7 @@ Engine::~Engine()
   pSamplerState_.Release();
   pRasterizerState_.Release();
   pDepthStencilState_.Release();
+  pConstantBuffer_.Release();
   pVertexShader_.Release();
   pPixelShader_.Release();
   pTexture_.Release();
