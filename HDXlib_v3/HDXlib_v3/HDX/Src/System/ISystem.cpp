@@ -17,6 +17,7 @@
 #include "../Input/Gamepad/IGamepad.hpp"
 #include "../Texture/ITexture.hpp"
 #include "../Model/IModel.hpp"
+#include "../Sound/ISound.hpp"
 #include "../Random/IRandom.hpp"
 #include "../GUI/IGUI.hpp"
 #include "../Misc.hpp"
@@ -330,9 +331,6 @@ ISystem::ISystem()
   //  デバイスの作成
   CreateDevice();
 
-  //  三角リスト設定
-  pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
   //  スワップチェーンの作成
   CreateSwapChain();
 
@@ -353,6 +351,7 @@ void ISystem::Initialize()
   Engine::Get<IRenderer3D>()->Initialize();
   Engine::Get<IGamepad>()->Initialize(pWindow->hWnd_);
   Engine::Get<ITexture>()->Initialize(pDevice.Get(), pSwapChain.Get());
+  Engine::Get<ISound>()->Initialize(pWindow->hWnd_);
   Engine::Get<IModel>()->Initialize(pDevice.Get());
   Engine::Get<IGUI>()->Initialize(pDevice.Get(), pImmediateContext.Get(), pWindow->hWnd_);
 }
@@ -383,6 +382,9 @@ bool ISystem::Update()
 
   //  GUIの更新と描画
   Engine::Get<IGUI>()->Update();
+
+  //  サウンドのループ処理
+  Engine::Get<ISound>()->Update();
 
   //  描画裏表反転
   pSwapChain->Present(0, 0);

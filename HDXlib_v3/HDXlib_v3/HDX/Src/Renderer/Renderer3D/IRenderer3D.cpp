@@ -60,7 +60,6 @@ IRenderer3D::IRenderer3D()
   TIMER_START("Renderer3D");
 
   CurrentSamplerStatus[0] = hdx::SamplerState::Default3D;
-
   ConstantBuffer.Data_.LightDirection = { 0.0f, 0.0f, 1.0f, 0.0f };
 
   TIMER_END("Renderer3D");
@@ -84,13 +83,13 @@ void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix
   IRenderer::SetInputLayout(Engine::Get<IVertexShader>()->GetInputLayout(CurrentVertexShader));
   IRenderer::SetPixelShader(Engine::Get<IPixelShader>()->GetPixeShader(CurrentPixelShader));
   IRenderer::SetBlendState(Engine::Get<IBlendState>()->GetBlendState(CurrentBlendState));
-  for (int i = 0; i < hdx::SamplerStateMaxNum; ++i)
+  for (int i = 0; i < 1; ++i)
   {
     IRenderer::SetSamplersState(Engine::Get<ISamplerState>()->GetSamplerState(CurrentSamplerStatus[i]), i);
   }
   IRenderer::SetRasterizerState(Engine::Get<IRasterizerState>()->GetRasterizerState(CurrentRasterizerState));
   IRenderer::SetDepthStencilState(Engine::Get<IDepthStencilState>()->GetDepthStencilState(CurrentDepthStencilState));
-  for (int i = 1; i < hdx::TextureMaxNum - 1; ++i)
+  for (int i = 1; i < 1; ++i)
   {
     const int ID = CurrentTextures[i - 1].GetID();
     if (ID < 0)continue;
@@ -98,8 +97,7 @@ void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix
     IRenderer::SetShaderResouceView(Engine::Get<ITexture>()->GetShaderResourceView(CurrentTextures[i].GetID()), i);
   }
   IRenderer::SetRenderTarget(Engine::Get<IRenderTarget>()->GetRenderTargetView(CurrentRenderTarget), Engine::Get<IRenderTarget>()->GetDepthStencilView(CurrentRenderTarget));
-
-  ConstantBuffer.Data_.LightDirection = { 0.0f, 0.0f, 1.0f, 0.0f };
+  IRenderer::SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
   UINT Strides = sizeof(Vertex);
   for (auto& Mesh : ModelData.Meshes)
@@ -112,6 +110,8 @@ void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix
     DirectX::XMStoreFloat4x4(&ConstantBuffer.Data_.WorldViewProjection, GlobalTransform * _WorldMatrix*ViewMatrix*ProjectionMatrix);
     DirectX::XMStoreFloat4x4(&ConstantBuffer.Data_.World, GlobalTransform * _WorldMatrix);
 
+    //ConstantBuffer.Data_.BoneTransforms[0] = 0;
+
     for (auto& Subset : Mesh.Subsets)
     {
       ConstantBuffer.Data_.MaterialColor = {
@@ -119,7 +119,7 @@ void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix
         Subset.Diffuse.Color.G*_Color.G,
         Subset.Diffuse.Color.B*_Color.B,
         Subset.Diffuse.Color.A*_Color.A };
-      auto pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size);
+      ID3D11Buffer* pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size);
       IRenderer::UpdateSubresource(pConstantBuffer, &ConstantBuffer.Data_);
       IRenderer::SetConstatBuffer(&pConstantBuffer, 0);
 

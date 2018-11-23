@@ -60,8 +60,6 @@ namespace
 
   Instance* Instances = nullptr;
   int Count = 0;
-
-  constexpr int Num = 10000;
 }
 
 IRenderer2D::IRenderer2D()
@@ -110,11 +108,11 @@ void IRenderer2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImme
 
   //  インスタンスバッファを作成
   {
-    Instances = new Instance[Num];
+    Instances = new Instance[hdx::kSpriteBatchMaxNum];
 
     D3D11_BUFFER_DESC BufferDesc{};
     {
-      BufferDesc.ByteWidth = sizeof(Instance) * Num;
+      BufferDesc.ByteWidth = sizeof(Instance) * hdx::kSpriteBatchMaxNum;
       BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
       BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
       BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -185,7 +183,7 @@ void IRenderer2D::Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeft
 
   Instance.Color = _Color;
 
-  if (++Count >= Num)
+  if (++Count >= hdx::kSpriteBatchMaxNum)
   {
     End();
     Begin(_Texture);
@@ -209,7 +207,6 @@ void IRenderer2D::Begin(const hdx::Texture& _Texture)
   }
   IRenderer::SetRasterizerState(Engine::Get<IRasterizerState>()->GetRasterizerState(CurrentRasterizerState));
   IRenderer::SetDepthStencilState(Engine::Get<IDepthStencilState>()->GetDepthStencilState(CurrentDepthStencilState));
-
   for (int i = 0; i < hdx::TextureMaxNum; ++i)
   {
     const int ID = CurrentTextures[i].GetID();
@@ -217,8 +214,8 @@ void IRenderer2D::Begin(const hdx::Texture& _Texture)
 
     IRenderer::SetShaderResouceView(Engine::Get<ITexture>()->GetShaderResourceView(CurrentTextures[i].GetID()), i);
   }
-
   IRenderer::SetRenderTarget(Engine::Get<IRenderTarget>()->GetRenderTargetView(CurrentRenderTarget), Engine::Get<IRenderTarget>()->GetDepthStencilView(CurrentRenderTarget));
+  IRenderer::SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
   //  頂点バッファオブジェクトを書き換え
   D3D11_MAPPED_SUBRESOURCE MappedSubresorce;

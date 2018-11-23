@@ -165,6 +165,16 @@ void IRenderer::SetConstatBuffer(ID3D11Buffer*const* _ppConstantBuffer, UINT _Sl
   pImmediateContext->VSSetConstantBuffers(_Slot, 1, pConstantBuffer);
 }
 
+void IRenderer::SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY _Topology)
+{
+  static D3D_PRIMITIVE_TOPOLOGY Topology = D3D_PRIMITIVE_TOPOLOGY_UNDEFINED;
+  if (Topology == _Topology)return;
+
+  Topology = _Topology;
+  //  Ý’è‚ð”½‰f
+  pImmediateContext->IASetPrimitiveTopology(Topology);
+}
+
 void IRenderer::UpdateSubresource(ID3D11Buffer* _pConstantBuffer, const void* _pSrcData)
 {
   pImmediateContext->UpdateSubresource(_pConstantBuffer, 0, 0, _pSrcData, 0, 0);

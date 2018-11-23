@@ -1,8 +1,5 @@
 #pragma once
-#include "../../../Include/Types.hpp"
 #include "../IRenderer.hpp"
-
-struct ID3D11Device;
 
 namespace hdx
 {

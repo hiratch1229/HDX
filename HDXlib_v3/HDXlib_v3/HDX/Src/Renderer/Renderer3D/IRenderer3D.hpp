@@ -1,5 +1,4 @@
 #pragma once
-#include "../../../Include/Types.hpp"
 #include "../../../Include/Matrix.hpp"
 
 #include "../IRenderer.hpp"

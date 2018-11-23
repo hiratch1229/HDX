@@ -17,6 +17,7 @@
 #include "Input/Gamepad/IGamepad.hpp"
 #include "Texture/ITexture.hpp"
 #include "Model/IModel.hpp"
+#include "Sound/ISound.hpp"
 #include "Random/IRandom.hpp"
 #include "GUI/IGUI.hpp"
 
@@ -66,6 +67,7 @@ Engine::~Engine()
   pGamepad_.Release();
   pTexture_.Release();
   pModel_.Release();
+  pSound_.Release();
   pRandom_.Release();
   pGUI_.Release();
 

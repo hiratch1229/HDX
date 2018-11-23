@@ -17,6 +17,7 @@ class IXInput;
 class IGamepad;
 class ITexture;
 class IModel;
+class ISound;
 class IRandom;
 class IGUI;
 
@@ -68,6 +69,7 @@ private:
   Component<IGamepad> pGamepad_;
   Component<ITexture> pTexture_;
   Component<IModel> pModel_;
+  Component<ISound> pSound_;
   Component<IRandom> pRandom_;
   Component<IGUI> pGUI_;
 public:
@@ -96,6 +98,7 @@ public:
   template<> static IGamepad* Get() { return pEngine->pGamepad_.Get(); }
   template<> static ITexture* Get() { return pEngine->pTexture_.Get(); }
   template<> static IModel* Get() { return pEngine->pModel_.Get(); }
+  template<> static ISound* Get() { return pEngine->pSound_.Get(); }
   template<> static IRandom* Get() { return pEngine->pRandom_.Get(); }
   template<> static IGUI* Get() { return pEngine->pGUI_.Get(); }
 };

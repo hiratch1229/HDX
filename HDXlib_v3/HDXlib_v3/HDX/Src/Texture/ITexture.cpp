@@ -13,6 +13,7 @@
 #include <wrl.h>
 #include <wincodec.h>
 #include <assert.h>
+#include <memory>
 
 namespace
 {
@@ -47,7 +48,7 @@ namespace
   ID3D11Device* pDevice = nullptr;
   IDXGISwapChain* pSwapChain = nullptr;
 
-  int CreateDammyTexture(const hdx::int2& _Size)
+  int CreateDummyTexture(const hdx::int2& _Size)
   {
     //  エラーチェック用
     HRESULT hr = S_OK;
@@ -68,13 +69,20 @@ namespace
       Texture2dDesc.MiscFlags = 0;
     }
 
+
+    const UINT SysMemSize = _Size.X*_Size.Y;
+    std::unique_ptr<UINT[]> pSysmem = std::make_unique<UINT[]>(SysMemSize);
+
     //  白色設定で作成
     D3D11_SUBRESOURCE_DATA SubresourceData{};
     {
-      u_int color = 0xFFFFFFFF;
-      SubresourceData.pSysMem = &color;
-      SubresourceData.SysMemPitch = 4;
-      SubresourceData.SysMemSlicePitch = 4;
+      for (UINT i = 0; i < SysMemSize; ++i)
+      {
+        pSysmem[i] = 0xFFFFFFFF;
+      }
+      SubresourceData.pSysMem = pSysmem.get();
+      SubresourceData.SysMemPitch = sizeof(UINT)*_Size.X;
+      SubresourceData.SysMemSlicePitch = 0;
     }
 
     //  Texture2Dを作成
@@ -126,7 +134,7 @@ void ITexture::Initialize(ID3D11Device* _pDevice, IDXGISwapChain* _pSwapChain)
 {
   pDevice = _pDevice;
   pSwapChain = _pSwapChain;
-  CreateDammyTexture(kDummyTextureSize);
+  CreateDummyTexture(kDummyTextureSize);
 }
 
 int ITexture::Load(const char* _FilePath)
@@ -228,7 +236,7 @@ int ITexture::Load(const char* _FilePath)
 
 int ITexture::Add(const hdx::int2& _Size)
 {
-  return CreateDammyTexture(_Size);
+  return CreateDummyTexture(_Size);
 }
 
 const hdx::int2& ITexture::GetSize(int _ID)

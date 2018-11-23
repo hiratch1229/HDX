@@ -17,4 +17,6 @@ namespace hdx
   constexpr UINT ControllerMaxNum = 4;
 
   constexpr UINT kMaxBoneInfluences = 4;
+
+  constexpr UINT kSpriteBatchMaxNum = 10000;
 }

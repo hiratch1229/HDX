@@ -3,6 +3,7 @@ Release/
 *.cso
 *.vcxproj
 *.vcxproj.filters
+*.vcxproj.user
 *.sln
 *.VC.db
 *.VC.VC.opendb

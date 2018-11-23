@@ -1,58 +1,64 @@
 #include "../../Include/Sound.hpp"
 
 #include "../Engine.hpp"
-#include "../System/ISystem.hpp"
-#include "../Misc.hpp"
+#include "../Sound/ISound.hpp"
 
 #include "../../Include/Constants.hpp"
 
 namespace hdx
 {
-  Sound::Sound(const char* FilePath)
+  //  ファイルパスからサウンドを作成
+  Sound::Sound(const char* _FilePath)
+    : ID_(Engine::Get<ISound>()->Load(_FilePath))
   {
-    //wchar_t wFilePath[MaxCharLimit]{};
-    //mbstowcs_s(nullptr, wFilePath, FilePath, MaxCharLimit);
 
-    //HRESULT hr = MFPCreateMediaPlayer(wFilePath, false, MFP_OPTION_NONE, nullptr, Engine::Get<ISystem>()->GethWnd(), pMediaPlayer_.GetAddressOf());
-    //_ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
-  }
-
-  //  音量設定
-  void Sound::SetVolume(float Volume)const
-  {
-    pMediaPlayer_->SetVolume(Volume);
   }
 
   //  再生
-  void Sound::Play()const
+  void Sound::Play(bool _Loop)const
   {
-    pMediaPlayer_->Play();
+    Engine::Get<ISound>()->Play(ID_, _Loop);
   }
 
   //  一時停止
   void Sound::Pause()const
   {
-    pMediaPlayer_->Pause();
+    Engine::Get<ISound>()->Pause(ID_);
   }
 
   //  停止
   void Sound::Stop()const
   {
-    pMediaPlayer_->Stop();
+    Engine::Get<ISound>()->Stop(ID_);
   }
 
-  //  再生中か確認
-  bool Sound::NowPlaying()const
+  //  再生中ならtrueを返します
+  bool Sound::isPlaying()const
   {
-    MFP_MEDIAPLAYER_STATE state = MFP_MEDIAPLAYER_STATE_EMPTY;
-    pMediaPlayer_->GetState(&state);
-
-    return (state == MFP_MEDIAPLAYER_STATE_PLAYING);
+    return Engine::Get<ISound>()->isPlaying(ID_);
   }
 
-  //  無限ループ
-  void Sound::Loop()const
+  //  停止中ならtrueを返します
+  bool Sound::isPause()const
   {
-    if (!NowPlaying()) Play();
+    return Engine::Get<ISound>()->isPause(ID_);
+  }
+
+  //  ループ設定ならtrueを返します
+  bool Sound::isLoop()const
+  {
+    return Engine::Get<ISound>()->isLoop(ID_);
+  }
+
+  //  音量を設定
+  void Sound::SetVolume(float _Volume)const
+  {
+    Engine::Get<ISound>()->SetVolume(ID_, _Volume);
+  }
+
+  //  速さを設定
+  void Sound::SetSpeed(float _Speed)const
+  {
+    Engine::Get<ISound>()->SetVolume(ID_, _Speed);
   }
 }
