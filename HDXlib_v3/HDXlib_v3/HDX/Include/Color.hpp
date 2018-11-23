@@ -1,23 +1,19 @@
 #pragma once
 #include "Types.hpp"
 
-//  前方宣言
-namespace hdx
-{
-  struct ColorF;
-}
-
 //  ライブラリ
 namespace hdx
 {
+  struct ColorF;
+
   //  カラー
   //  R,G,B,A それぞれ0~255で色を表現します
   struct Color
   {
-    uint8 R; //  赤
-    uint8 G; //  緑
-    uint8 B; //  赤
-    uint8 A; //  不透明度
+    uint8 R : 8; //  赤
+    uint8 G : 8; //  緑
+    uint8 B : 8; //  赤
+    uint8 A : 8; //  不透明度
   public:
     //  不透明度最大(255)の白(255,255,255)で初期化
     constexpr Color() : R(255), G(255), B(255), A(255) {}

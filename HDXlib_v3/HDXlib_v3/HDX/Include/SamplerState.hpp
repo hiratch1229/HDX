@@ -47,6 +47,7 @@ namespace hdx
   public:
     using DataType = uint64;
   public:
+#pragma warning(disable:4201)
     union
     {
       struct
@@ -65,6 +66,7 @@ namespace hdx
       };
       DataType DataType_;
     };
+#pragma warning(default:4201)
   public:
     constexpr SamplerState(AddressMode _AddressModeU = AddressMode::Clamp,
       AddressMode _AddressModeV = AddressMode::Clamp,

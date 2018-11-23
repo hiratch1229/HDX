@@ -95,5 +95,5 @@ public:
   IModel();
   ~IModel();
 public:
-  void Initialize();
+  void Initialize(ID3D11Device* _pDevice);
 };

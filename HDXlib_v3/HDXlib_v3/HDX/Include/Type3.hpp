@@ -1,14 +1,10 @@
 #pragma once
 
-//  前方宣言
-namespace hdx
-{
-  struct float3;
-}
-
 //  ライブラリ
 namespace hdx
 {
+  struct float3;
+
   //  intを3つ保有
   struct int3
   {

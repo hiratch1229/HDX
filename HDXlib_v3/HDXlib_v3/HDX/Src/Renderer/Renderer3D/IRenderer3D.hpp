@@ -17,6 +17,7 @@ namespace hdx
   struct Camera;
 
   struct float2;
+  struct float3;
   class Radian;
   struct ColorF;
   class Model;
@@ -35,10 +36,13 @@ public:
   void RestoreRenderTarget();
   void SetRenderTarget(const hdx::RenderTarget& _RenderTarger);
   void SetCamera(const hdx::Camera& _Camera);
+  void SetLightDirection(const hdx::float3& _LightDirection);
 public:
   void Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::ColorF& _Color);
   void CalcProjection();
   void FreeCamera();
 public:
   IRenderer3D();
+public:
+  void Initialize();
 };

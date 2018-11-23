@@ -1,6 +1,6 @@
 #pragma once
-#include "../InputState.hpp"
 #include "../../../Include/Type2.hpp"
+#include "../InputState.hpp"
 
 //  マウス
 class IMouse
@@ -98,7 +98,6 @@ public:
     return false;
   }
 public:
-  IMouse() = default;
   //  状態の更新
   void Update();
 };

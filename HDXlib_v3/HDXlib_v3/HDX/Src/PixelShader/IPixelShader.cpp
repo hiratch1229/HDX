@@ -1,10 +1,8 @@
 #include "IPixelShader.hpp"
 
 #include "../Engine.hpp"
-#include "../System/ISystem.hpp"
-#include "../Misc.hpp"
-
 #include "../NumberMap.hpp"
+#include "../Misc.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>
@@ -17,9 +15,9 @@ namespace
   ID3D11Device* pDevice = nullptr;
 }
 
-void IPixelShader::Initialize()
+void IPixelShader::Initialize(ID3D11Device* _pDevice)
 {
-  pDevice = Engine::Get<ISystem>()->GetDevice();
+  pDevice = _pDevice;
 }
 
 //  ピクセルシェーダー作成

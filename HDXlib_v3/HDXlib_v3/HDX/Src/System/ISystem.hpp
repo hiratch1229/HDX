@@ -1,14 +1,6 @@
 #pragma once
 #include "../../Include/Types.hpp"
 
-struct ID3D11Device;
-struct ID3D11DeviceContext;
-struct IDXGISwapChain;
-struct ID3D11RenderTargetView;
-struct ID3D11DepthStencilView;
-struct HWND__;
-typedef HWND__* HWND;
-
 namespace hdx
 {
   class BlendState;
@@ -40,14 +32,8 @@ public:
   void ScreenShot();
   void Exit();
 public:
-  ID3D11Device* GetDevice();
-  ID3D11DeviceContext* GetImmediateContext();
-  IDXGISwapChain* GetSwapChain();
-  ID3D11RenderTargetView** GetRenderTargetView();
-  ID3D11DepthStencilView* GetDepthStencilView();
-  const HWND& GethWnd();
-public:
-  bool Update();
-public:
   ISystem();
+public:
+  void Initialize();
+  bool Update();
 };

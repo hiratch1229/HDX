@@ -1,7 +1,5 @@
 #include "ISamplerState.hpp"
 
-#include "../Engine.hpp"
-#include "../System/ISystem.hpp"
 #include "../NumberMap.hpp"
 #include "../Misc.hpp"
 
@@ -25,9 +23,9 @@ namespace
   ID3D11Device* pDevice = nullptr;
 }
 
-void ISamplerState::Initialize()
+void ISamplerState::Initialize(ID3D11Device* _pDevice)
 {
-  pDevice = Engine::Get<ISystem>()->GetDevice();
+  pDevice = _pDevice;
 }
 
 inline int ISamplerState::Create(const hdx::SamplerState& _SamplerState)
@@ -50,7 +48,11 @@ inline int ISamplerState::Create(const hdx::SamplerState& _SamplerState)
   }
 
   Microsoft::WRL::ComPtr<ID3D11SamplerState> pSamplerState;
-  HRESULT hr = pDevice->CreateSamplerState(&SamplerDesc, pSamplerState.GetAddressOf());
+
+  //  エラーチェック用
+  HRESULT hr = S_OK;
+
+  hr = pDevice->CreateSamplerState(&SamplerDesc, pSamplerState.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   return SamplerStateMap.insert(_SamplerState, pSamplerState);

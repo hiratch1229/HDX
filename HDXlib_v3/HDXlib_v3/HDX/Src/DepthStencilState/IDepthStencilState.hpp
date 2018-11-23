@@ -1,5 +1,6 @@
 #pragma once
 
+struct ID3D11Device;
 struct ID3D11DepthStencilState;
 
 namespace hdx
@@ -13,7 +14,5 @@ class IDepthStencilState
 public:
   ID3D11DepthStencilState* GetDepthStencilState(const hdx::DepthStencilState& _DepthStencilState);
 public:
-  IDepthStencilState() = default;
-public:
-  void Initialize();
+  void Initialize(ID3D11Device* _pDevice);
 };

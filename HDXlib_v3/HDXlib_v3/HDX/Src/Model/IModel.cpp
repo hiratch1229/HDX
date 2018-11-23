@@ -39,7 +39,7 @@ namespace
 
   NumberMap<std::string, ModelData> ModelMap;
 
-  void CreateBuffers(Vertex _Vertices[], int _VerticesNum, UINT _Indices[], int _IndicesNum, ID3D11Buffer** _ppVertexBuffer, ID3D11Buffer** _ppIndexBuffer)
+  inline void CreateBuffers(Vertex _Vertices[], int _VerticesNum, UINT _Indices[], int _IndicesNum, ID3D11Buffer** _ppVertexBuffer, ID3D11Buffer** _ppIndexBuffer)
   {
     //  エラーチェック用
     HRESULT hr = S_OK;
@@ -228,9 +228,9 @@ IModel::~IModel()
   pManager->Destroy();
 }
 
-void IModel::Initialize()
+void IModel::Initialize(ID3D11Device* _pDevice)
 {
-  pDevice = Engine::Get<ISystem>()->GetDevice();
+  pDevice = _pDevice;
 }
 
 int IModel::Load(const char* _FilePath)
@@ -529,15 +529,13 @@ int IModel::Load(const char* _FilePath)
       //  1つも無い時は1つ作成
       Subsets.resize((NumberOfMaterials > 0) ? NumberOfMaterials : 1);
 
+        //  Count the faces of each material
       const int NumberOfPolygons = pFbxMesh->GetPolygonCount();
       Indices.resize(NumberOfPolygons * 3);
 
       //  Count the polygon count of each material
       if (NumberOfMaterials > 0)
       {
-        //  Count the faces of each material
-        const int NumberOfPolygons = pFbxMesh->GetPolygonCount();
-
         for (int IndexOfPolygon = 0; IndexOfPolygon < NumberOfPolygons; ++IndexOfPolygon)
         {
           const UINT MaterialIndex = pFbxMesh->GetElementMaterial()->GetIndexArray().GetAt(IndexOfPolygon);
@@ -607,7 +605,6 @@ int IModel::Load(const char* _FilePath)
           }
 
           Vertices.push_back(Vertex);
-          //Indices.push_back(VertexCount++);
           Indices.at(IndexOffset + IndexOfVertex) = static_cast<UINT>(VertexCount++);
         }
         Subset.IndexCount += 3;
@@ -686,7 +683,7 @@ int IModel::Load(const char* _FilePath)
         Subset.Diffuse.TextureID = pTexture->kDummyTextureID;
       }
 
-      //std::sort(Subsets.begin(), Subsets.end());
+      std::sort(Subsets.begin(), Subsets.end());
 
       //  バッファの作成
       CreateBuffers(Vertices.data(), Vertices.size(), Indices.data(), Indices.size(), Mesh.pVertexBuffer.GetAddressOf(), Mesh.pIndexBuffer.GetAddressOf());
@@ -747,6 +744,10 @@ int IModel::Load(const hdx::Rectangle& _Rectangle)
     Vertices[1].Normal = { +0.0f, +0.0f, -1.0f };
     Vertices[2].Normal = { +0.0f, +0.0f, -1.0f };
     Vertices[3].Normal = { +0.0f, +0.0f, -1.0f };
+    Vertices[0].Texcoord = { +0.0f, +0.0f };
+    Vertices[1].Texcoord = { +1.0f, +0.0f };
+    Vertices[2].Texcoord = { +0.0f, +1.0f };
+    Vertices[3].Texcoord = { +1.0f, +1.0f };
   }
 
   //  インデックス設定
@@ -803,6 +804,10 @@ int IModel::Load(const hdx::Cube& _Cube)
       Vertices[1].Normal = { +0.0f, +0.0f, -1.0f };
       Vertices[2].Normal = { +0.0f, +0.0f, -1.0f };
       Vertices[3].Normal = { +0.0f, +0.0f, -1.0f };
+      Vertices[0].Texcoord = { +0.0f, +0.0f };
+      Vertices[1].Texcoord = { +1.0f, +0.0f };
+      Vertices[2].Texcoord = { +0.0f, +1.0f };
+      Vertices[3].Texcoord = { +1.0f, +1.0f };
     }
 
     //	右
@@ -815,6 +820,10 @@ int IModel::Load(const hdx::Cube& _Cube)
       Vertices[5].Normal = { +1.0f, +0.0f, +0.0f };
       Vertices[6].Normal = { +1.0f, +0.0f, +0.0f };
       Vertices[7].Normal = { +1.0f, +0.0f, +0.0f };
+      Vertices[4].Texcoord = { +0.0f, +0.0f };
+      Vertices[5].Texcoord = { +1.0f, +0.0f };
+      Vertices[6].Texcoord = { +0.0f, +1.0f };
+      Vertices[7].Texcoord = { +1.0f, +1.0f };
     }
 
     //	上
@@ -827,6 +836,10 @@ int IModel::Load(const hdx::Cube& _Cube)
       Vertices[9].Normal = { +0.0f, +1.0f, +0.0f };
       Vertices[10].Normal = { +0.0f, +1.0f, +0.0f };
       Vertices[11].Normal = { +0.0f, +1.0f, +0.0f };
+      Vertices[8].Texcoord = { +0.0f, +0.0f };
+      Vertices[9].Texcoord = { +1.0f, +0.0f };
+      Vertices[10].Texcoord = { +0.0f, +1.0f };
+      Vertices[11].Texcoord = { +1.0f, +1.0f };
     }
 
     //	左
@@ -839,6 +852,10 @@ int IModel::Load(const hdx::Cube& _Cube)
       Vertices[13].Normal = { -1.0f, +0.0f, +0.0f };
       Vertices[14].Normal = { -1.0f, +0.0f, +0.0f };
       Vertices[15].Normal = { -1.0f, +0.0f, +0.0f };
+      Vertices[12].Texcoord = { +0.0f, +0.0f };
+      Vertices[13].Texcoord = { +1.0f, +0.0f };
+      Vertices[14].Texcoord = { +0.0f, +1.0f };
+      Vertices[15].Texcoord = { +1.0f, +1.0f };
     }
 
     //	下
@@ -851,6 +868,10 @@ int IModel::Load(const hdx::Cube& _Cube)
       Vertices[17].Normal = { +0.0f, -1.0f, +0.0f };
       Vertices[18].Normal = { +0.0f, -1.0f, +0.0f };
       Vertices[19].Normal = { +0.0f, -1.0f, +0.0f };
+      Vertices[16].Texcoord = { +0.0f, +0.0f };
+      Vertices[17].Texcoord = { +1.0f, +0.0f };
+      Vertices[18].Texcoord = { +0.0f, +1.0f };
+      Vertices[19].Texcoord = { +1.0f, +1.0f };
     }
 
     //	奥
@@ -863,6 +884,10 @@ int IModel::Load(const hdx::Cube& _Cube)
       Vertices[21].Normal = { +0.0f, +0.0f, +1.0f };
       Vertices[22].Normal = { +0.0f, +0.0f, +1.0f };
       Vertices[23].Normal = { +0.0f, +0.0f, +1.0f };
+      Vertices[20].Texcoord = { +0.0f, +0.0f };
+      Vertices[21].Texcoord = { +1.0f, +0.0f };
+      Vertices[22].Texcoord = { +0.0f, +1.0f };
+      Vertices[23].Texcoord = { +1.0f, +1.0f };
     }
   }
 

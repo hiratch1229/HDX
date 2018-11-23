@@ -122,10 +122,10 @@ ITexture::ITexture()
   TIMER_END("Texture");
 }
 
-void ITexture::Initialize()
+void ITexture::Initialize(ID3D11Device* _pDevice, IDXGISwapChain* _pSwapChain)
 {
-  pDevice = Engine::Get<ISystem>()->GetDevice();
-  pSwapChain = Engine::Get<ISystem>()->GetSwapChain();
+  pDevice = _pDevice;
+  pSwapChain = _pSwapChain;
   CreateDammyTexture(kDummyTextureSize);
 }
 
@@ -209,20 +209,18 @@ int ITexture::Load(const char* _FilePath)
 
   Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture2d;
 
-  ISystem* pSystem = Engine::Get<ISystem>();
-
-  hr = pSystem->GetDevice()->CreateTexture2D(&Texture2dDesc, &InitializeData, pTexture2d.GetAddressOf());
+  hr = pDevice->CreateTexture2D(&Texture2dDesc, &InitializeData, pTexture2d.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   DXGI_SWAP_CHAIN_DESC SwapChainDesc;
-  pSystem->GetSwapChain()->GetDesc(&SwapChainDesc);
+  pSwapChain->GetDesc(&SwapChainDesc);
   D3D11_SHADER_RESOURCE_VIEW_DESC ShaderResourceViewDesc{};
   ShaderResourceViewDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
   ShaderResourceViewDesc.ViewDimension = (SwapChainDesc.SampleDesc.Count != 1) ? D3D11_SRV_DIMENSION_TEXTURE2DMS : D3D11_SRV_DIMENSION_TEXTURE2D;
   ShaderResourceViewDesc.Texture2D.MipLevels = 1;
 
   Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pShaderResourceView;
-  hr = pSystem->GetDevice()->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResourceView.GetAddressOf());
+  hr = pDevice->CreateShaderResourceView(pTexture2d.Get(), &ShaderResourceViewDesc, pShaderResourceView.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   return TextureMap.insert(_FilePath, { pShaderResourceView, Size });
@@ -245,6 +243,8 @@ ID3D11ShaderResourceView** ITexture::GetShaderResourceView(int _ID)
 
 void ITexture::SetShaderResouceView(const hdx::RenderTarget& _RenderTarget, ID3D11ShaderResourceView* _pShaderResouceView)
 {
-  //pImpl_->TextureMap_[_RenderTarget.GetID()].pShaderResourceView.Reset();
-  //pImpl_->TextureMap_[_RenderTarget.GetID()].pShaderResourceView = _pShaderResouceView;
+  const int ID = _RenderTarget.GetID();
+
+  //pImpl_->TextureMap_[ID].pShaderResourceView.Reset();
+  //pImpl_->TextureMap_[ID].pShaderResourceView = _pShaderResouceView;
 }

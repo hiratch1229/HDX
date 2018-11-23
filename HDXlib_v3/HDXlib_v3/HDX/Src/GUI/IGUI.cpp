@@ -1,13 +1,8 @@
 #include "IGUI.hpp"
 
-#include "../Engine.hpp"
-#include "../System/ISystem.hpp"
-
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_dx11.h"
 #include "ImGui/imgui_impl_win32.h"
-
-#include <Windows.h>
 
 //IGUI::IGUI()
 //{
@@ -34,15 +29,13 @@
 //  Engine::End("GUI");
 //}
 
-void IGUI::Initialize()
+void IGUI::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, const HWND& _hWnd)
 {
-  ISystem* pSystem = Engine::Get<ISystem>();
-
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
 
-  ImGui_ImplWin32_Init(pSystem->GethWnd());
-  ImGui_ImplDX11_Init(pSystem->GetDevice(), pSystem->GetImmediateContext());
+  ImGui_ImplWin32_Init(_hWnd);
+  ImGui_ImplDX11_Init(_pDevice, _pImmediateContext);
 
   ImGui_ImplDX11_NewFrame();
   ImGui_ImplWin32_NewFrame();

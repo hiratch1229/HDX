@@ -1,7 +1,8 @@
 #pragma once
 
+struct ID3D11Device;
+struct IDXGISwapChain;
 struct ID3D11ShaderResourceView;
-struct ID3D11Buffer;
 
 namespace hdx
 {
@@ -23,5 +24,5 @@ public:
 public:
   ITexture();
 public:
-  void Initialize();
+  void Initialize(ID3D11Device* _pDevice, IDXGISwapChain* _pSwapChain);
 };

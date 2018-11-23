@@ -25,11 +25,11 @@ namespace
   IDXGISwapChain* pSwapChain = nullptr;
 }
 
-void IRenderTarget::Initialize()
+void IRenderTarget::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, IDXGISwapChain* _pSwapChain)
 {
-  pDevice = Engine::Get<ISystem>()->GetDevice();
-  pImmediateContext = Engine::Get<ISystem>()->GetImmediateContext();
-  pSwapChain = Engine::Get<ISystem>()->GetSwapChain();
+  pDevice = _pDevice;
+  pImmediateContext = _pImmediateContext;
+  pSwapChain = _pSwapChain;
 }
 
 void IRenderTarget::CreateRenderTarget(const hdx::RenderTarget& _RenderTarget)

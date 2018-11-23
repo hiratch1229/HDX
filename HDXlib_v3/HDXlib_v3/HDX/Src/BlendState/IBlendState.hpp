@@ -1,5 +1,6 @@
 #pragma once
 
+struct ID3D11Device;
 struct ID3D11BlendState;
 
 namespace hdx
@@ -13,7 +14,5 @@ class IBlendState
 public:
   ID3D11BlendState* GetBlendState(const hdx::BlendState& _BlendState);
 public:
-  IBlendState() = default;
-public:
-  void Initialize();
+  void Initialize(ID3D11Device* _pDevice);
 };

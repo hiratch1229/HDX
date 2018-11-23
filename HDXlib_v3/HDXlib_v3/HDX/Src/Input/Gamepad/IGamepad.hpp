@@ -5,6 +5,9 @@
 
 #include "../InputState.hpp"
 
+struct HWND__;
+typedef HWND__* HWND;
+
 class IGamepad
 {
 private:
@@ -43,11 +46,11 @@ private:
 private:
   bool isWithinRange(int _Index)const
   {
-    return (Status_[_Index].isConnect && 0 <= _Index && _Index < kControllerNum);
+    return (0 <= _Index && _Index < kControllerNum && Status_[_Index].isConnect);
   }
   bool isWithinRange(int _Number, int _Index)const
   {
-    return (Status_[_Index].isConnect && 0 <= _Number && _Number < Status_[_Index].ButtonNum && 0 <= _Index && _Index < kControllerNum);
+    return (0 <= _Index && _Index < kControllerNum && Status_[_Index].isConnect && 0 <= _Number && _Number < Status_[_Index].ButtonNum);
   }
 public:
   //  ‰Ÿ‚³‚ê‚Ä‚¢‚é‚È‚çtrue‚ð•Ô‚·
@@ -154,6 +157,7 @@ public:
 public:
   //  ‰Šú‰»
   IGamepad();
+  void Initialize(const HWND& _hWnd);
   //  ó‘Ô‚ÌXV
   void Update();
   //  ‰ð•ú

@@ -51,6 +51,7 @@ namespace hdx
   private:
     using DataType = uint32;
   public:
+#pragma warning(disable:4201)
     union
     {
       struct
@@ -66,6 +67,7 @@ namespace hdx
       };
       DataType DataType_;
     };
+#pragma warning(default:4201)
   public:
     constexpr BlendState(bool _AlphaToCoverageEnable = false,
       bool _BlendEnable = false,

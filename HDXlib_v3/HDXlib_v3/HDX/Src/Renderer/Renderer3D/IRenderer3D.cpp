@@ -61,7 +61,17 @@ IRenderer3D::IRenderer3D()
 
   CurrentSamplerStatus[0] = hdx::SamplerState::Default3D;
 
+  ConstantBuffer.Data_.LightDirection = { 0.0f, 0.0f, 1.0f, 0.0f };
+
   TIMER_END("Renderer3D");
+}
+
+void IRenderer3D::Initialize()
+{
+  CurrentVertexShader = Engine::Get<IVertexShader>()->CreateDefault3D();
+  CurrentPixelShader = Engine::Get<IPixelShader>()->CreateDefault3D();
+
+  CalcView();
 }
 
 void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::ColorF& _Color)
@@ -88,9 +98,6 @@ void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix
     IRenderer::SetShaderResouceView(Engine::Get<ITexture>()->GetShaderResourceView(CurrentTextures[i].GetID()), i);
   }
   IRenderer::SetRenderTarget(Engine::Get<IRenderTarget>()->GetRenderTargetView(CurrentRenderTarget), Engine::Get<IRenderTarget>()->GetDepthStencilView(CurrentRenderTarget));
-
-  CalcView();
-  CalcProjection();
 
   ConstantBuffer.Data_.LightDirection = { 0.0f, 0.0f, 1.0f, 0.0f };
 
@@ -221,6 +228,13 @@ void IRenderer3D::SetCamera(const hdx::Camera& _Camera)
 
   CalcProjection();
   CalcView();
+}
+
+void IRenderer3D::SetLightDirection(const hdx::float3& _LightDirection)
+{
+  ConstantBuffer.Data_.LightDirection.x = _LightDirection.X;
+  ConstantBuffer.Data_.LightDirection.y = _LightDirection.Y;
+  ConstantBuffer.Data_.LightDirection.z = _LightDirection.Z;
 }
 
 void IRenderer3D::FreeCamera()

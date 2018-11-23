@@ -143,7 +143,6 @@ public:
   //  コントローラの振動を止めます
   void StopVibration(int _Index)const;
 public:
-  IXInput() = default;
   //  状態の更新
   void Update();
   //  解放

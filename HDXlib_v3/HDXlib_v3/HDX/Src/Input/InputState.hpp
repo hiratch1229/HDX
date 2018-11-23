@@ -11,7 +11,7 @@ public:
     Pressed,  //  ‰Ÿ‚³‚ê‚½uŠÔ
   };
 private:
-  State State_ = State::Released;
+  State State_ = State::Release;
 public:
   bool Press()const { return (static_cast<int>(State_) & 0x01) != 0; }
   bool Pressed()const { return State_ == State::Pressed; }

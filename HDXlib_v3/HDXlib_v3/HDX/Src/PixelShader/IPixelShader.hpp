@@ -1,6 +1,7 @@
 #pragma once
 #include "../../Include/PixelShader.hpp"
 
+struct ID3D11Device;
 struct ID3D11PixelShader;
 
 class IPixelShader
@@ -14,7 +15,5 @@ public:
 public:
   ID3D11PixelShader* GetPixeShader(const hdx::PixelShader& _PixelShader);
 public:
-  IPixelShader() = default;
-public:
-  void Initialize();
+  void Initialize(ID3D11Device* _pDevice);
 };

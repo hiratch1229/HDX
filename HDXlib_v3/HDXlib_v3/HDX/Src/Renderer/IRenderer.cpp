@@ -1,8 +1,5 @@
 #include "IRenderer.hpp"
 
-#include "../Engine.hpp"
-#include "../System/ISystem.hpp"
-
 #include "../../Include/Constants.hpp"
 
 #include <d3d11.h>
@@ -10,15 +7,15 @@
 namespace
 {
   ID3D11DeviceContext* pImmediateContext = nullptr;
-  ID3D11RenderTargetView** pRenderTargetView = nullptr;
+  ID3D11RenderTargetView** ppRenderTargetView = nullptr;
   ID3D11DepthStencilView* pDepthStencilView = nullptr;
 }
 
-void IRenderer::Initialize()
+void IRenderer::Initialize(ID3D11DeviceContext* _pImmediateContext, ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView)
 {
-  pImmediateContext = Engine::Get<ISystem>()->GetImmediateContext();
-  pRenderTargetView = Engine::Get<ISystem>()->GetRenderTargetView();
-  pDepthStencilView = Engine::Get<ISystem>()->GetDepthStencilView();
+  pImmediateContext = _pImmediateContext;
+  ppRenderTargetView = _ppRenderTargetView;
+  pDepthStencilView = _pDepthStencilView;
 }
 
 void IRenderer::SetShaderResouceView(ID3D11ShaderResourceView** _ppShaderResourceView, UINT _Slot)
@@ -148,7 +145,7 @@ void IRenderer::SetRenderTarget(ID3D11RenderTargetView** _ppRenderTargetView, ID
   static State CurrentState;
 
   State _State = (_ppRenderTargetView == nullptr && _pDepthStencilView == nullptr)
-    ? State(pRenderTargetView, pDepthStencilView) : State(_ppRenderTargetView, _pDepthStencilView);
+    ? State(ppRenderTargetView, pDepthStencilView) : State(_ppRenderTargetView, _pDepthStencilView);
 
   if (CurrentState == _State)return;
 

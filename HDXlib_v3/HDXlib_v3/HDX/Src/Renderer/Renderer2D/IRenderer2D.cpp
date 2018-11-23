@@ -1,7 +1,6 @@
 #include "IRenderer2D.hpp"
 
 #include "../../Engine.hpp"
-#include "../../System/ISystem.hpp"
 #include "../../Texture/ITexture.hpp"
 #include "../../BlendState/IBlendState.hpp"
 #include "../../SamplerState/ISamplerState.hpp"
@@ -74,12 +73,10 @@ IRenderer2D::IRenderer2D()
   TIMER_END("Renderer2D");
 }
 
-void IRenderer2D::Initialize()
+void IRenderer2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView)
 {
   //  エラーチェック用
   HRESULT hr = S_OK;
-
-  ID3D11Device* pDevice = Engine::Get<ISystem>()->GetDevice();
 
   //  頂点バッファを作成
   {
@@ -107,7 +104,7 @@ void IRenderer2D::Initialize()
       InitialData.SysMemPitch = 0;
       InitialData.SysMemSlicePitch = 0;
     }
-    hr = pDevice->CreateBuffer(&BufferDesc, &InitialData, pVertexBuffer.GetAddressOf());
+    hr = _pDevice->CreateBuffer(&BufferDesc, &InitialData, pVertexBuffer.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   }
 
@@ -132,14 +129,17 @@ void IRenderer2D::Initialize()
       InitialData.SysMemSlicePitch = 0;
     }
 
-    hr = pDevice->CreateBuffer(&BufferDesc, &InitialData, pInstanceBuffer.GetAddressOf());
+    hr = _pDevice->CreateBuffer(&BufferDesc, &InitialData, pInstanceBuffer.GetAddressOf());
     _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
     delete[] Instances;
     Instances = nullptr;
   }
 
-  IRenderer::Initialize();
+  IRenderer::Initialize(_pImmediateContext, _ppRenderTargetView, _pDepthStencilView);
+
+  CurrentVertexShader = Engine::Get<IVertexShader>()->CreateDefault2D();
+  CurrentPixelShader = Engine::Get<IPixelShader>()->CreateDefault2D();
 }
 
 void IRenderer2D::Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeftTop, const hdx::float2& _DstSize, const hdx::float2& _SrcLeftPos, const hdx::float2& _SrcSize, const hdx::Radian& _Angle, bool _HorizontalFlip, bool _VerticalFlip, const hdx::ColorF& _Color)

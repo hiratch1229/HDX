@@ -1,7 +1,5 @@
 #include "IVertexShader.hpp"
 
-#include "../Engine.hpp"
-#include "../System/ISystem.hpp"
 #include "../NumberMap.hpp"
 #include "../Misc.hpp"
 
@@ -24,9 +22,9 @@ namespace
   ID3D11Device* pDevice = nullptr;
 }
 
-void IVertexShader::Initialize()
+void IVertexShader::Initialize(ID3D11Device* _pDevice)
 {
-  pDevice = Engine::Get<ISystem>()->GetDevice();
+  pDevice = _pDevice;
 }
 
 //  バーテックスシェーダー作成

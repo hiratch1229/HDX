@@ -1,12 +1,9 @@
 #include "IBlendState.hpp"
 
-#include "../Engine.hpp"
-#include "../System/ISystem.hpp"
+#include "../NumberMap.hpp"
 #include "../Misc.hpp"
 
 #include "../../Include/BlendState.hpp"
-
-#include "../NumberMap.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>
@@ -27,9 +24,9 @@ namespace
   ID3D11Device* pDevice = nullptr;
 }
 
-void IBlendState::Initialize()
+void IBlendState::Initialize(ID3D11Device* _pDevice)
 {
-  pDevice = Engine::Get<ISystem>()->GetDevice();
+  pDevice = _pDevice;
 }
 
 inline int IBlendState::Create(const hdx::BlendState& _BlendState)
@@ -50,7 +47,10 @@ inline int IBlendState::Create(const hdx::BlendState& _BlendState)
 
   Microsoft::WRL::ComPtr<ID3D11BlendState> pBlendState;
 
-  HRESULT hr = pDevice->CreateBlendState(&BlendDesc, pBlendState.GetAddressOf());
+  //  エラーチェック用
+  HRESULT hr = S_OK;
+  
+  hr = pDevice->CreateBlendState(&BlendDesc, pBlendState.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   //  マップへ追加

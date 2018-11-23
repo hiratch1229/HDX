@@ -10,11 +10,11 @@ namespace hdx
 {
   Sound::Sound(const char* FilePath)
   {
-    wchar_t wFilePath[MaxCharLimit]{};
-    mbstowcs_s(nullptr, wFilePath, FilePath, MaxCharLimit);
+    //wchar_t wFilePath[MaxCharLimit]{};
+    //mbstowcs_s(nullptr, wFilePath, FilePath, MaxCharLimit);
 
-    HRESULT hr = MFPCreateMediaPlayer(wFilePath, false, MFP_OPTION_NONE, nullptr, Engine::Get<ISystem>()->GethWnd(), pMediaPlayer_.GetAddressOf());
-    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
+    //HRESULT hr = MFPCreateMediaPlayer(wFilePath, false, MFP_OPTION_NONE, nullptr, Engine::Get<ISystem>()->GethWnd(), pMediaPlayer_.GetAddressOf());
+    //_ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   }
 
   //  âπó ê›íË

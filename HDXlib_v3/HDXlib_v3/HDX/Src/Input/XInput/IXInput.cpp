@@ -1,7 +1,6 @@
 #include "IXInput.hpp"
 
 #include "../../Engine.hpp"
-#include "../InputState.hpp"
 
 #include "../../../Include/Math.hpp"
 

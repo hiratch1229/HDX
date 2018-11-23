@@ -1,9 +1,5 @@
 #include "Engine.hpp"
 
-#include "../Include/System.hpp"
-#include "../Include/Renderer2D.hpp"
-#include "../Include/Renderer3D.hpp"
-
 #include <Windows.h>
 #include <crtdbg.h>
 
@@ -52,20 +48,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 
   //  エンジンの作成
   Engine Engine;
-
-  //  シェーダーの初期設定
-  {
-    //  2D
-    {
-      hdx::Renderer2D::RestoreVertexShader();
-      hdx::Renderer2D::RestorePixelShader();
-    }
-    //  3D
-    {
-      hdx::Renderer3D::RestoreVertexShader();
-      hdx::Renderer3D::RestorePixelShader();
-    }
-  }
 
   //  プログラムの実行
   Main();

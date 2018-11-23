@@ -1,11 +1,7 @@
 #include "IConstantBuffer.hpp"
 
-#include "../Engine.hpp"
-#include "../System/ISystem.hpp"
-
 #include <d3d11.h>
 #include <wrl.h>
-
 #include <unordered_map>
 
 namespace
@@ -14,9 +10,9 @@ namespace
   ID3D11Device* pDevice;
 }
 
-void IConstantBuffer::Initialize()
+void IConstantBuffer::Initialize(ID3D11Device* _pDevice)
 {
-  pDevice = Engine::Get<ISystem>()->GetDevice();
+  pDevice = _pDevice;
 }
 
 inline void IConstantBuffer::Create(UINT _Size)

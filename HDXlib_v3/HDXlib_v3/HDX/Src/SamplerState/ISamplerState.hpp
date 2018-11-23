@@ -1,5 +1,6 @@
 #pragma once
 
+struct ID3D11Device;
 struct ID3D11SamplerState;
 
 namespace hdx
@@ -13,7 +14,5 @@ class ISamplerState
 public:
   ID3D11SamplerState** GetSamplerState(const hdx::SamplerState& _SamplerState);
 public:
-  ISamplerState() = default;
-public:
-  void Initialize();
+  void Initialize(ID3D11Device* _pDevice);
 };

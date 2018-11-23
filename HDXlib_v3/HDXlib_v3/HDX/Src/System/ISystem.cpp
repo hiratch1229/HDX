@@ -1,12 +1,23 @@
 #include "ISystem.hpp"
 
 #include "../Engine.hpp"
+#include "../BlendState/IBlendState.hpp"
+#include "../ConstantBuffer/IConstantBuffer.hpp"
+#include "../DepthStencilState/IDepthStencilState.hpp"
+#include "../RasterizerState/IRasterizerState.hpp"
+#include "../RenderTarget/IRenderTarget.hpp"
+#include "../SamplerState/ISamplerState.hpp"
+#include "../VertexShader/IVertexShader.hpp"
+#include "../PixelShader/IPixelShader.hpp"
+#include "../Renderer/Renderer2D/IRenderer2D.hpp"
+#include "../Renderer/Renderer3D/IRenderer3D.hpp"
 #include "../Input/Keyboard/IKeyboard.hpp"
 #include "../Input/Mouse/IMouse.hpp"
 #include "../Input/XInput/IXInput.hpp"
 #include "../Input/Gamepad/IGamepad.hpp"
-#include "../Renderer/Renderer2D/IRenderer2D.hpp"
-#include "../Renderer/Renderer3D/IRenderer3D.hpp"
+#include "../Texture/ITexture.hpp"
+#include "../Model/IModel.hpp"
+#include "../Random/IRandom.hpp"
 #include "../GUI/IGUI.hpp"
 #include "../Misc.hpp"
 
@@ -143,11 +154,7 @@ namespace
       //  COM初期化
       hr = CoInitialize(nullptr);
       _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
-
-      //  ウィンドウハンドルをアクティブ化
-      ::SetActiveWindow(hWnd_);
     }
-    ~Window() = default;
   };
 
   bool isSetUpWindow = false;
@@ -332,6 +339,24 @@ ISystem::ISystem()
   TIMER_END("System");
 }
 
+void ISystem::Initialize()
+{
+  Engine::Get<IBlendState>()->Initialize(pDevice.Get());
+  Engine::Get<IConstantBuffer>()->Initialize(pDevice.Get());
+  Engine::Get<IDepthStencilState>()->Initialize(pDevice.Get());
+  Engine::Get<IRasterizerState>()->Initialize(pDevice.Get(), pSwapChain.Get());
+  Engine::Get<IRenderTarget>()->Initialize(pDevice.Get(), pImmediateContext.Get(), pSwapChain.Get());
+  Engine::Get<ISamplerState>()->Initialize(pDevice.Get());
+  Engine::Get<IVertexShader>()->Initialize(pDevice.Get());
+  Engine::Get<IPixelShader>()->Initialize(pDevice.Get());
+  Engine::Get<IRenderer2D>()->Initialize(pDevice.Get(), pImmediateContext.Get(), pRenderTargetView.GetAddressOf(), pDepthStencilView.Get());
+  Engine::Get<IRenderer3D>()->Initialize();
+  Engine::Get<IGamepad>()->Initialize(pWindow->hWnd_);
+  Engine::Get<ITexture>()->Initialize(pDevice.Get(), pSwapChain.Get());
+  Engine::Get<IModel>()->Initialize(pDevice.Get());
+  Engine::Get<IGUI>()->Initialize(pDevice.Get(), pImmediateContext.Get(), pWindow->hWnd_);
+}
+
 bool ISystem::Update()
 {
   //  ウィンドウ初期設定
@@ -512,34 +537,4 @@ void ISystem::SetTitle(const char* _Title)
 void ISystem::SetBackColor(const hdx::ColorF& _Color)
 {
   pWindow->BackColor_ = _Color;
-}
-
-ID3D11Device* ISystem::GetDevice()
-{
-  return pDevice.Get();
-}
-
-ID3D11DeviceContext* ISystem::GetImmediateContext()
-{
-  return pImmediateContext.Get();
-}
-
-IDXGISwapChain* ISystem::GetSwapChain()
-{
-  return pSwapChain.Get();
-}
-
-ID3D11RenderTargetView** ISystem::GetRenderTargetView()
-{
-  return pRenderTargetView.GetAddressOf();
-}
-
-ID3D11DepthStencilView* ISystem::GetDepthStencilView()
-{
-  return pDepthStencilView.Get();
-}
-
-const HWND& ISystem::GethWnd()
-{
-  return pWindow->hWnd_;
 }

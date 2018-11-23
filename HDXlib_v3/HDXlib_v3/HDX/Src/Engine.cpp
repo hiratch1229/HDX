@@ -1,22 +1,22 @@
 #include "Engine.hpp"
 
 #include "System/ISystem.hpp"
+#include "BlendState/IBlendState.hpp"
+#include "ConstantBuffer/IConstantBuffer.hpp"
+#include "DepthStencilState/IDepthStencilState.hpp"
+#include "RasterizerState/IRasterizerState.hpp"
+#include "RenderTarget/IRenderTarget.hpp"
+#include "SamplerState/ISamplerState.hpp"
+#include "VertexShader/IVertexShader.hpp"
+#include "PixelShader/IPixelShader.hpp"
 #include "Renderer/Renderer2D/IRenderer2D.hpp"
 #include "Renderer/Renderer3D/IRenderer3D.hpp"
 #include "Input/Keyboard/IKeyboard.hpp"
 #include "Input/Mouse/IMouse.hpp"
 #include "Input/XInput/IXInput.hpp"
 #include "Input/Gamepad/IGamepad.hpp"
-#include "BlendState/IBlendState.hpp"
-#include "SamplerState/ISamplerState.hpp"
-#include "RasterizerState/IRasterizerState.hpp"
-#include "DepthStencilState/IDepthStencilState.hpp"
-#include "ConstantBuffer/IConstantBuffer.hpp"
-#include "VertexShader/IVertexShader.hpp"
-#include "PixelShader/IPixelShader.hpp"
 #include "Texture/ITexture.hpp"
 #include "Model/IModel.hpp"
-#include "RenderTarget/IRenderTarget.hpp"
 #include "Random/IRandom.hpp"
 #include "GUI/IGUI.hpp"
 
@@ -44,41 +44,28 @@ Engine::Engine()
   pEngine = this;
 
   //  ‰Šú‰»
-  {
-    pRenderer2D_->Initialize();
-    pBlendState_->Initialize();
-    pSamplerState_->Initialize();
-    pRasterizerState_->Initialize();
-    pDepthStencilState_->Initialize();
-    pConstantBuffer_->Initialize();
-    pVertexShader_->Initialize();
-    pPixelShader_->Initialize();
-    pTexture_->Initialize();
-    pModel_->Initialize();
-    pRenderTarget_->Initialize();
-    pGUI_->Initialize();
-  }
+  pSystem_->Initialize();
 }
 
 Engine::~Engine()
 {
   pSystem_.Release();
+  pBlendState_.Release();
+  pConstantBuffer_.Release();
+  pDepthStencilState_.Release();
+  pRasterizerState_.Release();
+  pRenderTarget_.Release();
+  pSamplerState_.Release();
+  pVertexShader_.Release();
+  pPixelShader_.Release();
   pRenderer2D_.Release();
   pRenderer3D_.Release();
   pKeyboard_.Release();
   pMouse_.Release();
   pXInput_.Release();
   pGamepad_.Release();
-  pBlendState_.Release();
-  pSamplerState_.Release();
-  pRasterizerState_.Release();
-  pDepthStencilState_.Release();
-  pConstantBuffer_.Release();
-  pVertexShader_.Release();
-  pPixelShader_.Release();
   pTexture_.Release();
   pModel_.Release();
-  pRenderTarget_.Release();
   pRandom_.Release();
   pGUI_.Release();
 

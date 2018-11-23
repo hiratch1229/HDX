@@ -3,17 +3,16 @@
 #include "../../Input/InputState.hpp"
 
 #include "../../Engine.hpp"
-#include "../../System/ISystem.hpp"
 #include "../../Input/XInput/IXInput.hpp"
 #include "../../Misc.hpp"
 
 #include "../../../Include/Math.hpp"
 #include "../../../Include/Macro.hpp"
 
-#include <windows.h>
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 #include <Xinput.h>
+#include <windows.h>
 #include <wbemidl.h>
 #include <wrl.h>
 #include <vector>
@@ -43,6 +42,8 @@ namespace
 
   std::unique_ptr<DirectInputData[]> pDirectInputDatas;
 
+  HWND hWnd;
+
   //  XInput判別用リスト
   std::vector<LONG> XInputList;
 
@@ -65,7 +66,7 @@ namespace
     _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     hr = pDirectInputData.pJoyStick->SetDataFormat(&c_dfDIJoystick);
     _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
-    hr = pDirectInputData.pJoyStick->SetCooperativeLevel(::GetActiveWindow(), DISCL_NONEXCLUSIVE | DISCL_BACKGROUND);
+    hr = pDirectInputData.pJoyStick->SetCooperativeLevel(hWnd, DISCL_NONEXCLUSIVE | DISCL_BACKGROUND);
     _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
     // 軸の値の範囲を設定
@@ -135,7 +136,7 @@ BOOL CALLBACK EnumJoysticksCallback(const DIDEVICEINSTANCE* pdidInstance, void*)
     for (int i = 0, size = XInputList.size(); i < size; ++i)
     {
       //  XInputである
-      if (XInputList[i] == GuidProductFromDirectInput.Data1)
+      if (static_cast<unsigned long>(XInputList[i]) == GuidProductFromDirectInput.Data1)
       {
         return true;
       }
@@ -280,11 +281,11 @@ IGamepad::IGamepad()
                   // This information can not be found from DirectInput
                   if (wcsstr(var.bstrVal, L"IG_"))
                   {
-                    DWORD dwPid, dwVid;
+                    DWORD dwVid, dwPid;
                     WCHAR *strVid, *strPid;
 
                     // If it does, then get the VID/PID from var.bstrVal
-                    dwVid = dwVid = 0;
+                    dwVid = dwPid = 0;
                     strVid = wcsstr(var.bstrVal, L"VID_");
                     strPid = wcsstr(var.bstrVal, L"PID_");
                     if (strVid && swscanf_s(strVid, L"VID_%4X", &dwVid) != 1) dwVid = 0;
@@ -316,38 +317,45 @@ IGamepad::IGamepad()
           }
         }
       }
-
-      //  DirectInputを作成
-      hr = DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)pDirectInput.GetAddressOf(), NULL);
-      _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
-
-      //  Joystickを作成
-      hr = pDirectInput->EnumDevices(DI8DEVCLASS_GAMECTRL, EnumJoysticksCallback, nullptr, DIEDFL_ATTACHEDONLY);
-      _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
-
-      //  ボタンの数を保存
-      {
-        for (int i = 0; i < XInputNum; ++i)
-        {
-          Status_[i].ButtonNum = IXInput::kButtonNum;
-          Status_[i].InputStatus = new InputState[IXInput::kButtonNum];
-        }
-
-        JOYCAPS JoyCaps;
-        for (int i = XInputNum; i < ControllerNum; ++i)
-        {
-          joyGetDevCaps(JoyIDList[i - XInputNum], &JoyCaps, sizeof(JoyCaps));
-
-          const int ButtonNum = JoyCaps.wNumButtons + kPovDirectionNum;
-
-          Status_[i].ButtonNum = ButtonNum;
-          Status_[i].InputStatus = new InputState[ButtonNum];
-        }
-      }
     }
   }
 
   TIMER_END("Gamepad");
+}
+
+void IGamepad::Initialize(const HWND& _hWnd)
+{
+  hWnd = _hWnd;
+
+  HRESULT hr = S_OK;
+
+  //  DirectInputを作成
+  hr = DirectInput8Create(GetModuleHandle(NULL), DIRECTINPUT_VERSION, IID_IDirectInput8, (VOID**)pDirectInput.GetAddressOf(), NULL);
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
+
+  //  Joystickを作成
+  hr = pDirectInput->EnumDevices(DI8DEVCLASS_GAMECTRL, EnumJoysticksCallback, nullptr, DIEDFL_ATTACHEDONLY);
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
+
+  //  ボタンの数を保存
+  {
+    for (int i = 0; i < XInputNum; ++i)
+    {
+      Status_[i].ButtonNum = IXInput::kButtonNum;
+      Status_[i].InputStatus = new InputState[IXInput::kButtonNum];
+    }
+
+    JOYCAPS JoyCaps;
+    for (int i = XInputNum; i < ControllerNum; ++i)
+    {
+      joyGetDevCaps(JoyIDList[i - XInputNum], &JoyCaps, sizeof(JoyCaps));
+
+      const int ButtonNum = JoyCaps.wNumButtons + kPovDirectionNum;
+
+      Status_[i].ButtonNum = ButtonNum;
+      Status_[i].InputStatus = new InputState[ButtonNum];
+    }
+  }
 }
 
 //  状態の更新

@@ -1,6 +1,7 @@
 #pragma once
 #include "../../Include/Types.hpp"
 
+struct ID3D11Device;
 struct ID3D11Buffer;
 
 class IConstantBuffer
@@ -10,7 +11,5 @@ private:
 public:
   ID3D11Buffer* GetConstantBuffer(UINT _Size);
 public:
-  IConstantBuffer() = default;
-public:
-  void Initialize();
+  void Initialize(ID3D11Device* _pDevice);
 };

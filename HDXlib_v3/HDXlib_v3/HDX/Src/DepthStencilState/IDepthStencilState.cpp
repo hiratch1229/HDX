@@ -1,11 +1,9 @@
 #include "IDepthStencilState.hpp"
 
-#include "../Engine.hpp"
-#include "../System/ISystem.hpp"
+#include "../NumberMap.hpp"
 #include "../Misc.hpp"
 
 #include "../../Include/DepthStencilState.hpp"
-#include "../NumberMap.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>
@@ -25,9 +23,9 @@ namespace
   ID3D11Device* pDevice = nullptr;
 }
 
-void IDepthStencilState::Initialize()
+void IDepthStencilState::Initialize(ID3D11Device* _pDevice)
 {
-  pDevice = Engine::Get<ISystem>()->GetDevice();
+  pDevice = _pDevice;
 }
 
 inline int IDepthStencilState::Create(const hdx::DepthStencilState& _DepthStencilState)
@@ -52,7 +50,10 @@ inline int IDepthStencilState::Create(const hdx::DepthStencilState& _DepthStenci
 
   Microsoft::WRL::ComPtr<ID3D11DepthStencilState> pDepthStencilState;
 
-  HRESULT hr = pDevice->CreateDepthStencilState(&DepthStencilDesc, pDepthStencilState.GetAddressOf());
+  //  エラーチェック用
+  HRESULT hr = S_OK;
+
+  hr = pDevice->CreateDepthStencilState(&DepthStencilDesc, pDepthStencilState.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   //  マップへ追加

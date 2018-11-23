@@ -44,6 +44,7 @@ namespace hdx
   public:
     using DataType = uint16;
   public:
+#pragma warning(disable:4201)
     union
     {
       struct
@@ -55,6 +56,7 @@ namespace hdx
       };
       DataType DataType_;
     };
+#pragma warning(default:4201)
   public:
     constexpr DepthStencilOpDesc(StencilOp _FailOp,
       StencilOp _DepthFailOp,
@@ -103,6 +105,7 @@ namespace hdx
   public:
     using DataType = uint64;
   public:
+#pragma warning(disable:4201)
     union
     {
       struct
@@ -116,6 +119,7 @@ namespace hdx
       };
       DataType DataType_;
     };
+#pragma warning(default:4201)
   public:
     constexpr DepthStencilState(bool _DepthEnable = true,
       DepthWriteMask _DepthWriteMask = DepthWriteMask::All,

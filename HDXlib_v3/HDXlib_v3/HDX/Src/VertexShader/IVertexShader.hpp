@@ -2,6 +2,7 @@
 #include "../../Include/VertexShader.hpp"
 #include "../../Include/Types.hpp"
 
+struct ID3D11Device;
 struct ID3D11InputLayout;
 struct ID3D11VertexShader;
 
@@ -22,7 +23,5 @@ public:
   ID3D11InputLayout* GetInputLayout(const hdx::VertexShader& _VertexShader);
   ID3D11VertexShader* GetVertexShader(const hdx::VertexShader& _VertexShader);
 public:
-  IVertexShader() = default;
-public:
-  void Initialize();
+  void Initialize(ID3D11Device* _pDevice);
 };

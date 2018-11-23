@@ -1,7 +1,8 @@
 #pragma once
 #include "../../../Include/Types.hpp"
-
 #include "../IRenderer.hpp"
+
+struct ID3D11Device;
 
 namespace hdx
 {
@@ -39,5 +40,5 @@ public:
 public:
   IRenderer2D();
 public:
-  void Initialize();
+  void Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView);
 };

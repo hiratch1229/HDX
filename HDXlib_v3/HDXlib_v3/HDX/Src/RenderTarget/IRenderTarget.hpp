@@ -1,5 +1,8 @@
 #pragma once
 
+struct ID3D11Device;
+struct ID3D11DeviceContext;
+struct IDXGISwapChain;
 struct ID3D11ShaderResourceView;
 struct ID3D11RenderTargetView;
 struct ID3D11DepthStencilView;
@@ -20,7 +23,5 @@ public:
   ID3D11RenderTargetView** GetRenderTargetView(const hdx::RenderTarget& _RenderTarget)const;
   ID3D11DepthStencilView* GetDepthStencilView(const hdx::RenderTarget& _RenderTarget)const;
 public:
-  IRenderTarget() = default;
-public:
-  void Initialize();
+  void Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, IDXGISwapChain* _pSwapChain);
 };

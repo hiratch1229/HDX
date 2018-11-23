@@ -9,8 +9,8 @@ void Main()
   hdx::Texture A{ "DATA/exp.png" };
 
   hdx::Model Models[] = {
-    //{ hdx::Cube{} },
-    { "DATA/000_cube.fbx" },
+    { hdx::Cube{} },
+    //{ "DATA/000_cube.fbx" },
     //{ "DATA/001_cube.fbx" },
   //{"DATA/005_cube.fbx"}
   };
@@ -94,44 +94,45 @@ void Main()
 
   hdx::Camera Camera;
 
+  int Num = 1;
+  hdx::float3 Rotation;
   while (hdx::System::Update())
   {
-    //ImGui::Begin("DeltaTime");
-    //ImGui::Text("DeltaTime %f", hdx::System::GetDeltaTime());
-    //ImGui::Text("");
-    //ImGui::End();
-    //
+    ImGui::Begin("DeltaTime");
+    ImGui::Text("DeltaTime %f", hdx::System::GetDeltaTime());
+    ImGui::SliderInt("‘Ì", &Num, 1, 100);
+    ImGui::End();
+
+    //hdx::Renderer3D::SetCamera(Camera);
+
+    //if (hdx::Input::Keyboard::KeyUp)
+    //{
+    //  Camera.Pos.Y += 0.1f;
+    //}
     //if (hdx::Input::Keyboard::KeyDown)
     //{
-    //  Camera.Pos.Z += 0.01f;
+    //  Camera.Pos.Y -= 0.1f;
     //}
+    //if (hdx::Input::Keyboard::KeyLeft)
+    //{
+    //  Camera.Pos.X -= 0.1f;
+    //}
+    //if (hdx::Input::Keyboard::KeyRight)
+    //{
+    //  Camera.Pos.X += 0.1f;
+    //}
+    //
+    //hdx::Renderer3D::SetCamera(Camera);
 
-    if (hdx::Input::Keyboard::KeyUp)
-    {
-      Camera.Pos.Y += 0.1f;
-    }
-    if (hdx::Input::Keyboard::KeyDown)
-    {
-      Camera.Pos.Y -= 0.1f;
-    }
-    if (hdx::Input::Keyboard::KeyLeft)
-    {
-      Camera.Pos.X -= 0.1f;
-    }
-    if (hdx::Input::Keyboard::KeyRight)
-    {
-      Camera.Pos.X += 0.1f;
-    }
-
-    hdx::Renderer3D::SetCamera(Camera);
-
-    static hdx::float3 Rotation;
     Rotation.X += hdx::System::GetDeltaTime()*1.0f;
     Rotation.Y += hdx::System::GetDeltaTime()*0.5f;
 
-    Models[0].Draw(DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f)
+    auto WorldMatrix = DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f)
       *DirectX::XMMatrixRotationRollPitchYaw(Rotation.X, Rotation.Y, 0.0f)
-      *DirectX::XMMatrixTranslation(0.0f, 0.0f, -5.0f));
+      *DirectX::XMMatrixTranslation(0.0f, 0.0f, -5.0f);
+
+    for (int i = 0; i < Num; ++i)
+      Models[0].Draw(WorldMatrix);
 
     //Models[0].Draw(
     //  DirectX::XMMatrixScaling(1.0f, 1.0f, 1.0f)

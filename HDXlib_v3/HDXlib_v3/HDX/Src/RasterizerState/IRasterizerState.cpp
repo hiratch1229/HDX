@@ -1,7 +1,6 @@
 #include "IRasterizerState.hpp"
 
 #include "../Engine.hpp"
-#include "../System/ISystem.hpp"
 #include "../NumberMap.hpp"
 #include "../Misc.hpp"
 
@@ -26,10 +25,10 @@ namespace
   IDXGISwapChain* pSwapChain = nullptr;
 }
 
-void IRasterizerState::Initialize()
+void IRasterizerState::Initialize(ID3D11Device* _pDevice, IDXGISwapChain* _pSwapChain)
 {
-  pDevice = Engine::Get<ISystem>()->GetDevice();
-  pSwapChain = Engine::Get<ISystem>()->GetSwapChain();
+  pDevice = _pDevice;
+  pSwapChain = _pSwapChain;
 }
 
 inline int IRasterizerState::Create(const hdx::RasterizerState& _RasterizerState)
@@ -52,7 +51,11 @@ inline int IRasterizerState::Create(const hdx::RasterizerState& _RasterizerState
   }
 
   Microsoft::WRL::ComPtr<ID3D11RasterizerState> pRasterizerState;
-  HRESULT hr = pDevice->CreateRasterizerState(&RasterizerDesc, pRasterizerState.GetAddressOf());
+
+  //  エラーチェック用
+  HRESULT hr = S_OK;
+  
+  hr = pDevice->CreateRasterizerState(&RasterizerDesc, pRasterizerState.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
   return RasterizerStateMap.insert(_RasterizerState, pRasterizerState);
