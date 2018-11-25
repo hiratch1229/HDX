@@ -109,7 +109,7 @@ namespace
       _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     }
 
-    char FileName[hdx::MaxCharLimit];
+    char FileName[hdx::Constants::CharMaxNum];
     sprintf_s(FileName, "CreateTextureNumber%d", CreateTextureNum++);
 
     //  ƒ}ƒbƒv‚Ö’Ç‰Á
@@ -153,8 +153,8 @@ int ITexture::Load(const char* _FilePath)
   Microsoft::WRL::ComPtr<IWICBitmapDecoder> Decoder;
 
   //  charŒ^¨wchar_tŒ^‚É•ÏŠ·
-  wchar_t wFilePath[hdx::MaxCharLimit];
-  mbstowcs_s(nullptr, wFilePath, _FilePath, hdx::MaxCharLimit);
+  wchar_t wFilePath[hdx::Constants::CharMaxNum];
+  mbstowcs_s(nullptr, wFilePath, _FilePath, hdx::Constants::CharMaxNum);
 
   hr = pFactory->CreateDecoderFromFilename(wFilePath, 0, GENERIC_READ, WICDecodeMetadataCacheOnDemand, Decoder.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
@@ -253,6 +253,5 @@ void ITexture::SetShaderResouceView(const hdx::RenderTarget& _RenderTarget, ID3D
 {
   const int ID = _RenderTarget.GetID();
 
-  //pImpl_->TextureMap_[ID].pShaderResourceView.Reset();
-  //pImpl_->TextureMap_[ID].pShaderResourceView = _pShaderResouceView;
+  TextureMap[ID].pShaderResourceView=_pShaderResouceView;
 }

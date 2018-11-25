@@ -17,6 +17,7 @@ namespace
   {
     Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pRenderTargetView;
     Microsoft::WRL::ComPtr<ID3D11DepthStencilView>  pDepthStencilView;
+    Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pShaderResouceView;
   };
 
   NumberMap<ID, State> StateMap;
@@ -102,21 +103,22 @@ ID3D11ShaderResourceView* IRenderTarget::GetShaderResourceView(const hdx::Render
   Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture2D;
   hr = pResource.Get()->QueryInterface<ID3D11Texture2D>(pTexture2D.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
+
   D3D11_TEXTURE2D_DESC Texture2dDesc;
   pTexture2D->GetDesc(&Texture2dDesc);
 
   D3D11_SHADER_RESOURCE_VIEW_DESC ShaderResourceViewDesc{};
   ShaderResourceViewDesc.Format = Texture2dDesc.Format;
+
   DXGI_SWAP_CHAIN_DESC SwapChainDesc;
   pSwapChain->GetDesc(&SwapChainDesc);
   ShaderResourceViewDesc.ViewDimension = (SwapChainDesc.SampleDesc.Count != 1) ? D3D11_SRV_DIMENSION_TEXTURE2DMS : D3D11_SRV_DIMENSION_TEXTURE2D;
   ShaderResourceViewDesc.Texture2D.MipLevels = Texture2dDesc.MipLevels;
 
-  Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> ShaderResourceView;
-  hr = pDevice->CreateShaderResourceView(pTexture2D.Get(), &ShaderResourceViewDesc, ShaderResourceView.GetAddressOf());
+  hr = pDevice->CreateShaderResourceView(pTexture2D.Get(), &ShaderResourceViewDesc, State.pShaderResouceView.ReleaseAndGetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
 
-  return ShaderResourceView.Get();
+  return State.pShaderResouceView.Get();
 }
 
 void IRenderTarget::ClearRenderTarget(const hdx::RenderTarget& _RenderTarget, const hdx::ColorF& _Color)

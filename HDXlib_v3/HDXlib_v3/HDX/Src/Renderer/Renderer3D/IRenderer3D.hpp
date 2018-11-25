@@ -3,6 +3,8 @@
 
 #include "../IRenderer.hpp"
 
+#include "../../../Include/ConstantBuffer.hpp"
+
 namespace hdx
 {
   class VertexShader;
@@ -35,6 +37,7 @@ public:
   void RestoreRenderTarget();
   void SetRenderTarget(const hdx::RenderTarget& _RenderTarger);
   void SetCamera(const hdx::Camera& _Camera);
+  void SetConstantBuffer(hdx::ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot);
   void SetLightDirection(const hdx::float3& _LightDirection);
 public:
   void Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::ColorF& _Color);

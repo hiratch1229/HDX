@@ -24,8 +24,8 @@ struct Vertex
   hdx::float3 Position;
   hdx::float3 Normal;
   hdx::float2 Texcoord;
-  float BoneWeights[hdx::kMaxBoneInfluences] = { 1.0f };
-  int BoneIndices[hdx::kMaxBoneInfluences] = {};
+  float BoneWeights[hdx::Constants::MaxBoneInfluences] = { 1.0f };
+  int BoneIndices[hdx::Constants::MaxBoneInfluences] = {};
 };
 
 struct Material

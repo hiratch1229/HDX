@@ -30,7 +30,7 @@ namespace
     hdx::ColorF MaterialColor;                //  材質色
     DirectX::XMFLOAT4 LightDirection;         //  ライト進行方向
 
-    DirectX::XMFLOAT4X4 BoneTransforms[hdx::kMaxBoneInfluences];
+    DirectX::XMFLOAT4X4 BoneTransforms[hdx::Constants::MaxBoneInfluences];
   };
 
   fbxsdk::FbxManager* pManager;
@@ -269,12 +269,12 @@ int IModel::Load(const char* _FilePath)
   //
   //  while (fin)
   //  {
-  //    char command[hdx::MaxCharLimit];
+  //    char command[hdx::Constants::CharMaxNum];
   //    fin >> command;
   //
   //    if (strcmp(command, "mtllib") == 0)
   //    {
-  //      char mtl[hdx::MaxCharLimit];
+  //      char mtl[hdx::Constants::CharMaxNum];
   //      fin >> mtl;
   //
   //      MtlFileNames.push_back(mtl);
@@ -302,7 +302,7 @@ int IModel::Load(const char* _FilePath)
   //    }
   //    else if (strcmp(command, "usemtl") == 0)
   //    {
-  //      char usemtl[hdx::MaxCharLimit];
+  //      char usemtl[hdx::Constants::CharMaxNum];
   //
   //      fin >> usemtl;
   //      Subset Subset;
@@ -348,7 +348,7 @@ int IModel::Load(const char* _FilePath)
   //  fin.close();
   //
   //  //  objファイルが存在するフォルダ
-  //  char Directory[hdx::MaxCharLimit]{};
+  //  char Directory[hdx::Constants::CharMaxNum]{};
   //
   //  for (char Delimiter : kDelimiters)
   //  {
@@ -369,7 +369,7 @@ int IModel::Load(const char* _FilePath)
   //    int CurrentMaterialIndex = -1;
   //
   //    //  Mtlファイルのファイルパスを作成
-  //    char MtlFilePath[hdx::MaxCharLimit]{};
+  //    char MtlFilePath[hdx::Constants::CharMaxNum]{};
   //    strcpy_s(MtlFilePath, Directory);
   //    strcat_s(MtlFilePath, MtlFileNames.front().c_str());
   //
@@ -381,12 +381,12 @@ int IModel::Load(const char* _FilePath)
   //
   //    while (fin)
   //    {
-  //      wchar_t command[MaxCharLimit];
+  //      wchar_t command[Constants::CharMaxNum];
   //      fin >> command;
   //
   //      if (wcscmp(command, L"newmtl") == 0)
   //      {
-  //        wchar_t NewMtl[MaxCharLimit];
+  //        wchar_t NewMtl[Constants::CharMaxNum];
   //        fin >> NewMtl;
   //
   //        Material.NewMtl = NewMtl;
@@ -424,11 +424,11 @@ int IModel::Load(const char* _FilePath)
   //      }
   //      else if (wcscmp(command, L"map_Kd") == 0)
   //      {
-  //        wchar_t TextureFileName[MaxCharLimit]{};
+  //        wchar_t TextureFileName[Constants::CharMaxNum]{};
   //        fin >> TextureFileName;
   //
   //        //  テクスチャのファイルパスを作成
-  //        wchar_t TextureFilePath[MaxCharLimit]{};
+  //        wchar_t TextureFilePath[Constants::CharMaxNum]{};
   //        wcscpy_s(TextureFilePath, Directory);
   //        wcscat_s(TextureFilePath, TextureFileName);
   //
@@ -467,7 +467,7 @@ int IModel::Load(const char* _FilePath)
 
     //  Convert mesh,NURBS and patch into triangle mesh
     fbxsdk::FbxGeometryConverter GeometryConverter(pManager);
-    GeometryConverter.Triangulate(pScene, true/*replace*/);
+    GeometryConverter.Triangulate(pScene, true);
 
     //  Fetch node attributes and materials under this node recursively.
     //  Currently only mesh.
@@ -494,9 +494,9 @@ int IModel::Load(const char* _FilePath)
     };
     Traverse(pScene->GetRootNode());
 
-    const int NumberOfMeshes = FetchedMeshed.size();
-
     ModelData ModelData;
+
+    const int NumberOfMeshes = FetchedMeshed.size();
     ModelData.Meshes.resize(NumberOfMeshes);
 
     for (int i = 0; i < NumberOfMeshes; ++i)
@@ -642,7 +642,7 @@ int IModel::Load(const char* _FilePath)
             if (pFileTexture)
             {
               //  fbxファイルが存在するフォルダ
-              char Directory[hdx::MaxCharLimit]{};
+              char Directory[hdx::Constants::CharMaxNum]{};
 
               for (char Delimiter : kDelimiters)
               {
@@ -657,7 +657,7 @@ int IModel::Load(const char* _FilePath)
                 }
               }
 
-              char TextureFilePath[hdx::MaxCharLimit];
+              char TextureFilePath[hdx::Constants::CharMaxNum];
 
               if (strstr(str, ".fbx") != nullptr)
               {
@@ -712,7 +712,7 @@ int IModel::Load(const hdx::Rectangle& _Rectangle)
 {
   const int TextureID = _Rectangle.Texture.GetID();
 
-  char ModelName[hdx::MaxCharLimit];
+  char ModelName[hdx::Constants::CharMaxNum];
   sprintf_s(ModelName, "Rectangle:%d", TextureID);
 
   //  既に作成されているか確認
@@ -770,7 +770,7 @@ int IModel::Load(const hdx::Cube& _Cube)
 {
   const int TextureID = _Cube.Texture.GetID();
 
-  char ModelName[hdx::MaxCharLimit];
+  char ModelName[hdx::Constants::CharMaxNum];
   sprintf_s(ModelName, "Cube:%d", TextureID);
 
   //  既に作成されているか確認
@@ -941,7 +941,7 @@ int IModel::Load(const hdx::Cylinder& _Cylinder)
 {
   const int TextureID = _Cylinder.Texture.GetID();
   const UINT Slices = _Cylinder.Slices;
-  char ModelName[hdx::MaxCharLimit];
+  char ModelName[hdx::Constants::CharMaxNum];
   sprintf_s(ModelName, "Cylinder:%d,%d", TextureID, Slices);
 
   //  既に作成されているか確認

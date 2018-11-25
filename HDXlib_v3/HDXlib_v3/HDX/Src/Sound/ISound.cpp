@@ -38,8 +38,8 @@ int ISound::Load(const char* _FilePath)
     }
   }
 
-  wchar_t wFilePath[hdx::MaxCharLimit]{};
-  mbstowcs_s(nullptr, wFilePath, _FilePath, hdx::MaxCharLimit);
+  wchar_t wFilePath[hdx::Constants::CharMaxNum]{};
+  mbstowcs_s(nullptr, wFilePath, _FilePath, hdx::Constants::CharMaxNum);
 
   Data Data;
 

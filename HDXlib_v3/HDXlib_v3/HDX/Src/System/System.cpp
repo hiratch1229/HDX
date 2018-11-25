@@ -126,8 +126,8 @@ namespace hdx
   //  o—Í‚É•¶š‚ğ•`‰æ
   void System::OutputDebug(const char* _Str)
   {
-    wchar_t Str[MaxCharLimit];
-    mbstowcs_s(nullptr, Str, _Str, MaxCharLimit);
+    wchar_t Str[Constants::CharMaxNum];
+    mbstowcs_s(nullptr, Str, _Str, Constants::CharMaxNum);
     OutputDebugString(Str);
   }
 

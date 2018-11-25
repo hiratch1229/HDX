@@ -40,8 +40,8 @@ namespace
   hdx::DepthStencilState CurrentDepthStencilState = hdx::DepthStencilState::Default2D;
   hdx::RenderTarget CurrentRenderTarget;
 
-  hdx::SamplerState CurrentSamplerStatus[hdx::SamplerStateMaxNum];
-  hdx::Texture CurrentTextures[hdx::TextureMaxNum];
+  hdx::SamplerState CurrentSamplerStatus[hdx::Constants::SamplerStateMaxNum];
+  hdx::Texture CurrentTextures[hdx::Constants::TextureMaxNum];
 
   Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
   Microsoft::WRL::ComPtr<ID3D11Buffer> pInstanceBuffer;
@@ -108,11 +108,11 @@ void IRenderer2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImme
 
   //  インスタンスバッファを作成
   {
-    Instances = new Instance[hdx::kSpriteBatchMaxNum];
+    Instances = new Instance[hdx::Constants::SpriteBatchMaxNum];
 
     D3D11_BUFFER_DESC BufferDesc{};
     {
-      BufferDesc.ByteWidth = sizeof(Instance) * hdx::kSpriteBatchMaxNum;
+      BufferDesc.ByteWidth = sizeof(Instance) * hdx::Constants::SpriteBatchMaxNum;
       BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
       BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
       BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
@@ -183,7 +183,7 @@ void IRenderer2D::Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeft
 
   Instance.Color = _Color;
 
-  if (++Count >= hdx::kSpriteBatchMaxNum)
+  if (++Count >= hdx::Constants::SpriteBatchMaxNum)
   {
     End();
     Begin(_Texture);
@@ -201,20 +201,20 @@ void IRenderer2D::Begin(const hdx::Texture& _Texture)
   IRenderer::SetInputLayout(Engine::Get<IVertexShader>()->GetInputLayout(CurrentVertexShader));
   IRenderer::SetPixelShader(Engine::Get<IPixelShader>()->GetPixeShader(CurrentPixelShader));
   IRenderer::SetBlendState(Engine::Get<IBlendState>()->GetBlendState(CurrentBlendState));
-  for (int i = 0; i < hdx::SamplerStateMaxNum; ++i)
+  for (int i = 0; i < hdx::Constants::SamplerStateMaxNum; ++i)
   {
     IRenderer::SetSamplersState(Engine::Get<ISamplerState>()->GetSamplerState(CurrentSamplerStatus[i]), i);
   }
   IRenderer::SetRasterizerState(Engine::Get<IRasterizerState>()->GetRasterizerState(CurrentRasterizerState));
   IRenderer::SetDepthStencilState(Engine::Get<IDepthStencilState>()->GetDepthStencilState(CurrentDepthStencilState));
-  for (int i = 0; i < hdx::TextureMaxNum; ++i)
+  IRenderer::SetRenderTarget(Engine::Get<IRenderTarget>()->GetRenderTargetView(CurrentRenderTarget), Engine::Get<IRenderTarget>()->GetDepthStencilView(CurrentRenderTarget));
+  for (int i = 0; i < hdx::Constants::TextureMaxNum; ++i)
   {
     const int ID = CurrentTextures[i].GetID();
     if (ID < 0)continue;
 
     IRenderer::SetShaderResouceView(Engine::Get<ITexture>()->GetShaderResourceView(CurrentTextures[i].GetID()), i);
   }
-  IRenderer::SetRenderTarget(Engine::Get<IRenderTarget>()->GetRenderTargetView(CurrentRenderTarget), Engine::Get<IRenderTarget>()->GetDepthStencilView(CurrentRenderTarget));
   IRenderer::SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
   //  頂点バッファオブジェクトを書き換え

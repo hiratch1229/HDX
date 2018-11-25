@@ -48,7 +48,7 @@ namespace hdx
 
     void SetSamplerState(const SamplerState& _SamplerState, UINT _Slot)
     {
-      assert(_Slot >= 0 && _Slot <= hdx::SamplerStateMaxNum);
+      assert(_Slot >= 0 && _Slot <= hdx::Constants::SamplerStateMaxNum);
 
       Engine::Get<IRenderer2D>()->SetSamplerState(_SamplerState, _Slot);
     }
@@ -60,7 +60,7 @@ namespace hdx
 
     void SetTexture(const Texture& _Texture, UINT _Slot)
     {
-      assert(_Slot >= 1 && _Slot <= hdx::TextureMaxNum);
+      assert(_Slot >= 1 && _Slot <= hdx::Constants::TextureMaxNum);
 
       Engine::Get<IRenderer2D>()->SetTexture(_Texture, _Slot);
     }

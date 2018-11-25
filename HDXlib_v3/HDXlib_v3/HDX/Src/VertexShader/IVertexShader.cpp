@@ -87,12 +87,12 @@ hdx::VertexShader IVertexShader::CreateDefault2D()
   {
     hdx::InputElementDesc::Position,
     hdx::InputElementDesc::Texcoord,
-    { "NDC_TRANSFORM", 0, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
-    { "NDC_TRANSFORM", 1, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
-    { "NDC_TRANSFORM", 2, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
-    { "NDC_TRANSFORM", 3, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
-    { "TEXCOORD_TRANSFORM", 0, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
-    { "COLOR", 0, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
+    { "NDC_TRANSFORM", 0, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::Constants::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
+    { "NDC_TRANSFORM", 1, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::Constants::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
+    { "NDC_TRANSFORM", 2, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::Constants::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
+    { "NDC_TRANSFORM", 3, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::Constants::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
+    { "TEXCOORD_TRANSFORM", 0, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::Constants::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
+    { "COLOR", 0, hdx::Format::R32G32B32A32_FLOAT, 1, hdx::Constants::AppendAlignedElement, hdx::InputClassification::PER_INSTANCE_DATA, 1 },
   };
 
   return hdx::VertexShader(kDefault2DFilePath, InputElementDescs, ARRAYSIZE(InputElementDescs));
@@ -102,11 +102,11 @@ hdx::VertexShader IVertexShader::CreateDefault3D()
 {
   static const hdx::InputElementDesc InputElementDescs[] =
   {
-    { "POSITION", 0, hdx::Format::R32G32B32_FLOAT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
-    { "NORMAL", 0, hdx::Format::R32G32B32_FLOAT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
-    { "TEXCOORD", 0, hdx::Format::R32G32_FLOAT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
-    { "WEIGHTS", 0, hdx::Format::R32G32B32A32_FLOAT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
-    { "BONES", 0, hdx::Format::R32G32B32A32_UINT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+    { "POSITION", 0, hdx::Format::R32G32B32_FLOAT, 0, hdx::Constants::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+    { "NORMAL", 0, hdx::Format::R32G32B32_FLOAT, 0, hdx::Constants::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+    { "TEXCOORD", 0, hdx::Format::R32G32_FLOAT, 0, hdx::Constants::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+    { "WEIGHTS", 0, hdx::Format::R32G32B32A32_FLOAT, 0, hdx::Constants::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
+    { "BONES", 0, hdx::Format::R32G32B32A32_UINT, 0, hdx::Constants::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
   };
 
   return hdx::VertexShader(kDefault3DFilePath, InputElementDescs, ARRAYSIZE(InputElementDescs));

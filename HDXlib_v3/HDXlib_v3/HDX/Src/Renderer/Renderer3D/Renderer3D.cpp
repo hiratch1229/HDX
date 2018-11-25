@@ -48,7 +48,7 @@ namespace hdx
 
     void SetSamplerState(const SamplerState& _SamplerState, UINT _Slot)
     {
-      assert(_Slot >= 0 && _Slot <= hdx::SamplerStateMaxNum);
+      assert(_Slot >= 0 && _Slot <= hdx::Constants::SamplerStateMaxNum);
 
       Engine::Get<IRenderer3D>()->SetSamplerState(_SamplerState, _Slot);
     }
@@ -60,7 +60,7 @@ namespace hdx
 
     void SetTexture(const Texture& _Texture, UINT _Slot)
     {
-      assert(_Slot >= 1 && _Slot <= hdx::TextureMaxNum);
+      assert(_Slot >= 1 && _Slot <= hdx::Constants::TextureMaxNum);
 
       Engine::Get<IRenderer3D>()->SetTexture(_Texture, _Slot);
     }
@@ -73,6 +73,13 @@ namespace hdx
     void SetRenderTarget(const RenderTarget& _RenderTarget)
     {
       Engine::Get<IRenderer3D>()->SetRenderTarget(_RenderTarget);
+    }
+
+    void SetConstantBuffer(ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot)
+    {
+      assert(_Slot >= 1 && _Slot <= hdx::Constants::ConstantBufferMaxNum);
+
+      Engine::Get<IRenderer3D>()->SetConstantBuffer(_Stage, _Size, _pData, _Slot);
     }
 
     void SetCamera(const Camera& _Camera)

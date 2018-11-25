@@ -22,7 +22,7 @@ private:
   };
   static constexpr int kPovDirectionNum = static_cast<int>(PovDirection::Num);
   static constexpr int kButtonNum = 32 + kPovDirectionNum;
-  static constexpr int kControllerNum = hdx::ControllerMaxNum;
+  static constexpr int kControllerNum = hdx::Constants::ControllerMaxNum;
 private:
   struct Status
   {

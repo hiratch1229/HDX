@@ -26,7 +26,7 @@ class IXInput
 {
 public:
   static constexpr int kButtonNum = sizeof(kXInputButtonsCode) / sizeof(kXInputButtonsCode[0]);
-  static constexpr int kControllerNum = (hdx::ControllerMaxNum <= 4) ? hdx::ControllerMaxNum : 4;
+  static constexpr int kControllerNum = (hdx::Constants::ControllerMaxNum <= 4) ? hdx::Constants::ControllerMaxNum : 4;
 private:
   struct Status
   {

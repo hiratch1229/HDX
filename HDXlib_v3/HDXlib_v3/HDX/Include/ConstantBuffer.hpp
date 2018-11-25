@@ -1,40 +1,29 @@
 #pragma once
-//#include <SimpleMath.h>
-//#include "Color.hpp"
-//
-//namespace hdx
-//{
-//  struct ConstantBuffer
-//  {
-//    DirectX::XMFLOAT4X4 WorldViewProjection;  //  ワールド・ビュー・プロジェクション合成行列
-//    DirectX::XMFLOAT4X4 World;                //  ワールド変換行列
-//    ColorF MaterialColor;                     //  材質色
-//    DirectX::XMFLOAT4 LightDirection;         //  ライト進行方向
-//  };
-//}
 #include "Types.hpp"
-#include "Color.hpp"
-#include "Constants.hpp"
-
-#include <DirectXMath.h>
 
 namespace hdx
 {
-  struct Data
+  enum class ShaderStage
   {
-    DirectX::XMFLOAT4X4 WorldViewProjection;  //  ワールド・ビュー・プロジェクション合成行列
-    DirectX::XMFLOAT4X4 World;                //  ワールド変換行列
-    ColorF MaterialColor;                     //  材質色
-    DirectX::XMFLOAT4 LightDirection;         //  ライト進行方向
-    DirectX::XMFLOAT4X4 BoneTransforms[kMaxBoneInfluences];
+    Vertex,
+    Pixel
   };
 
+  template<class T>
   struct ConstantBuffer
   {
-    static constexpr UINT Size = sizeof(Data);
+    static constexpr UINT Size = sizeof(T);
+  private:
+    T Data_;
   public:
-    Data Data_;
+    T& Get() { return Data_; }
+    const void* GetPtr()const { return static_cast<const void*>(&Data_); }
   public:
     ConstantBuffer() = default;
+    ConstantBuffer(const T _Data)
+      : Data_(_Data)
+    {
+
+    }
   };
 }

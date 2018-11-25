@@ -20,7 +20,7 @@ void IRenderer::Initialize(ID3D11DeviceContext* _pImmediateContext, ID3D11Render
 
 void IRenderer::SetShaderResouceView(ID3D11ShaderResourceView** _ppShaderResourceView, UINT _Slot)
 {
-  static ID3D11ShaderResourceView*const* ppShaderResourceViews[hdx::TextureMaxNum]{};
+  static ID3D11ShaderResourceView*const* ppShaderResourceViews[hdx::Constants::TextureMaxNum]{};
 
   ID3D11ShaderResourceView*const*& ppShaderResourceView = ppShaderResourceViews[_Slot];
   if (ppShaderResourceView == _ppShaderResourceView)return;
@@ -94,7 +94,7 @@ void IRenderer::SetIndexBuffer(ID3D11Buffer* _pIndexBuffer)
 
 void IRenderer::SetSamplersState(ID3D11SamplerState*const* _ppSamplerState, UINT _Slot)
 {
-  static ID3D11SamplerState*const* ppSamplerStatus[hdx::SamplerStateMaxNum]{};
+  static ID3D11SamplerState*const* ppSamplerStatus[hdx::Constants::SamplerStateMaxNum]{};
 
   ID3D11SamplerState*const*& ppSamplerState = ppSamplerStatus[_Slot];
   if (ppSamplerState == _ppSamplerState)return;
@@ -153,9 +153,9 @@ void IRenderer::SetRenderTarget(ID3D11RenderTargetView** _ppRenderTargetView, ID
   pImmediateContext->OMSetRenderTargets(1, CurrentState.ppRenderTargetView, CurrentState.pDepthStencilView);
 }
 
-void IRenderer::SetConstatBuffer(ID3D11Buffer*const* _ppConstantBuffer, UINT _Slot)
+void IRenderer::SetConstatBufferVS(ID3D11Buffer*const* _ppConstantBuffer, UINT _Slot)
 {
-  static ID3D11Buffer*const* pConstantBuffers[hdx::ConstantBufferMaxNum]{};
+  static ID3D11Buffer*const* pConstantBuffers[hdx::Constants::ConstantBufferMaxNum]{};
 
   ID3D11Buffer*const*& pConstantBuffer = pConstantBuffers[_Slot];
   if (pConstantBuffer == _ppConstantBuffer)return;
@@ -163,6 +163,18 @@ void IRenderer::SetConstatBuffer(ID3D11Buffer*const* _ppConstantBuffer, UINT _Sl
   pConstantBuffer = _ppConstantBuffer;
   //  Ý’è‚ð”½‰f
   pImmediateContext->VSSetConstantBuffers(_Slot, 1, pConstantBuffer);
+}
+
+void IRenderer::SetConstatBufferPS(ID3D11Buffer*const* _ppConstantBuffer, UINT _Slot)
+{
+  static ID3D11Buffer*const* pConstantBuffers[hdx::Constants::ConstantBufferMaxNum]{};
+
+  ID3D11Buffer*const*& pConstantBuffer = pConstantBuffers[_Slot];
+  if (pConstantBuffer == _ppConstantBuffer)return;
+
+  pConstantBuffer = _ppConstantBuffer;
+  //  Ý’è‚ð”½‰f
+  pImmediateContext->PSSetConstantBuffers(_Slot, 1, pConstantBuffer);
 }
 
 void IRenderer::SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY _Topology)
@@ -173,6 +185,19 @@ void IRenderer::SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY _Topology)
   Topology = _Topology;
   //  Ý’è‚ð”½‰f
   pImmediateContext->IASetPrimitiveTopology(Topology);
+}
+
+void IRenderer::SetViewPort(const hdx::int2& _Size)
+{
+  UINT ViewPortNum = 1;
+
+  D3D11_VIEWPORT ViewPort;
+  pImmediateContext->RSGetViewports(&ViewPortNum, &ViewPort);
+
+  ViewPort.Width = static_cast<float>(_Size.X);
+  ViewPort.Height = static_cast<float>(_Size.Y);
+
+  pImmediateContext->RSSetViewports(1, &ViewPort);
 }
 
 void IRenderer::UpdateSubresource(ID3D11Buffer* _pConstantBuffer, const void* _pSrcData)

@@ -125,8 +125,8 @@ namespace
 
       //  ウィンドウタイトル設定
       {
-        wchar_t wWindowTitle[hdx::MaxCharLimit];
-        mbstowcs_s(nullptr, wWindowTitle, Title_, hdx::MaxCharLimit);
+        wchar_t wWindowTitle[hdx::Constants::CharMaxNum];
+        mbstowcs_s(nullptr, wWindowTitle, Title_, hdx::Constants::CharMaxNum);
 
         SetWindowText(hWnd_, wWindowTitle);
       }
@@ -347,7 +347,6 @@ void ISystem::Initialize()
   Engine::Get<ISamplerState>()->Initialize(pDevice.Get());
   Engine::Get<IVertexShader>()->Initialize(pDevice.Get());
   Engine::Get<IPixelShader>()->Initialize(pDevice.Get());
-  Engine::Get<IRenderer2D>()->Initialize(pDevice.Get(), pImmediateContext.Get(), pRenderTargetView.GetAddressOf(), pDepthStencilView.Get());
   Engine::Get<IRenderer3D>()->Initialize();
   Engine::Get<IGamepad>()->Initialize(pWindow->hWnd_);
   Engine::Get<ITexture>()->Initialize(pDevice.Get(), pSwapChain.Get());
@@ -365,6 +364,8 @@ bool ISystem::Update()
     pWindow->SetUpWindow();
     ResizeSwapChain();
     CreateRenderTargetViewAndDepthStencilView();
+
+    Engine::Get<IRenderer2D>()->Initialize(pDevice.Get(), pImmediateContext.Get(), pRenderTargetView.GetAddressOf(), pDepthStencilView.Get());
 
     Engine::Get<IRenderer3D>()->CalcProjection();
   }
@@ -426,8 +427,8 @@ void ISystem::ChangeWindowMode()
 
 void ISystem::RenameTitle(const char* _Title)
 {
-  wchar_t wWindowTitle[hdx::MaxCharLimit];
-  mbstowcs_s(nullptr, wWindowTitle, pWindow->Title_ = const_cast<char*>(_Title), hdx::MaxCharLimit);
+  wchar_t wWindowTitle[hdx::Constants::CharMaxNum];
+  mbstowcs_s(nullptr, wWindowTitle, pWindow->Title_ = const_cast<char*>(_Title), hdx::Constants::CharMaxNum);
 
   SetWindowText(pWindow->hWnd_, wWindowTitle);
 }
@@ -453,7 +454,7 @@ void ISystem::ScreenShot()
     //  スクリーンショット用フォルダ作成
     _mkdir("SCREENSHOT");
 
-    wchar_t wstr[hdx::MaxCharLimit];
+    wchar_t wstr[hdx::Constants::CharMaxNum];
     swprintf_s(wstr, L"SCREENSHOT/%04d%02d%02d%02d%02d%02d.png", TM.tm_year + 1900, TM.tm_mon + 1, TM.tm_mday, TM.tm_hour, TM.tm_min, TM.tm_sec);
 
     DirectX::SaveWICTextureToFile(pImmediateContext.Get(), BackBuffer.Get(), GUID_ContainerFormatPng, wstr);

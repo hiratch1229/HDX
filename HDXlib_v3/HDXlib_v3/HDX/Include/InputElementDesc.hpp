@@ -157,12 +157,12 @@ namespace hdx
     {
       static constexpr InputElementDesc PreDefineds[static_cast<UINT>(PreDefined::Num)] =
       {
-        { "POSITION", 0, Format::R32G32B32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
-        { "TEXCOORD", 0, Format::R32G32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
-        { "COLOR", 0, Format::R32G32B32A32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
-        { "NORMAL", 0, Format::R32G32B32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
-        { "WEIGHTS", 0, Format::R32G32B32A32_FLOAT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
-        { "BONES", 0, Format::R32G32B32A32_UINT, 0, AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+        { "POSITION", 0, Format::R32G32B32_FLOAT, 0, Constants::AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, Format::R32G32_FLOAT, 0, Constants::AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+        { "COLOR", 0, Format::R32G32B32A32_FLOAT, 0, Constants::AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+        { "NORMAL", 0, Format::R32G32B32_FLOAT, 0, Constants::AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+        { "WEIGHTS", 0, Format::R32G32B32A32_FLOAT, 0, Constants::AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
+        { "BONES", 0, Format::R32G32B32A32_UINT, 0, Constants::AppendAlignedElement, InputClassification::PER_VERTEX_DATA, 0 },
       };
 
       *this = PreDefineds[static_cast<UINT>(_PreDefined)];

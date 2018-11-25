@@ -1,4 +1,5 @@
 #pragma once
+#include "../../Include/Type2.hpp"
 #include "../../Include/Types.hpp"
 
 #include <d3d11.h>
@@ -17,8 +18,10 @@ protected:
   void SetRasterizerState(ID3D11RasterizerState* _pRasterizerState);
   void SetDepthStencilState(ID3D11DepthStencilState* _pDepthStencilState);
   void SetRenderTarget(ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView);
-  void SetConstatBuffer(ID3D11Buffer*const* _ppConstantBuffer, UINT _Slot);
+  void SetConstatBufferVS(ID3D11Buffer*const* _ppConstantBuffer, UINT _Slot);
+  void SetConstatBufferPS(ID3D11Buffer*const* _ppConstantBuffer, UINT _Slot);
   void SetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY _Topology);
+  void SetViewPort(const hdx::int2& _Size);
   void UpdateSubresource(ID3D11Buffer* _pConstantBuffer, const void* _pSrcData);
 protected:
   void Map(ID3D11Buffer* _pVertexBuffer, D3D11_MAPPED_SUBRESOURCE* _pMappedSubresorce);
