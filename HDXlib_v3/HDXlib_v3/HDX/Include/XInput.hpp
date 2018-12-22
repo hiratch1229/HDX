@@ -105,6 +105,12 @@ namespace hdx
       //  右トリガーの入力状態を取得
       //  0-1の範囲で表現されます
       float GetRightTrigger(float _DeadZone = 0.0f)const;
+      //  何かのボタンが押されていればtrueを返す
+      bool AnyButtonPress()const;
+      //  何かのボタンが押されたならtrueを返す
+      bool AnyButtonPressed()const;
+      //  何かのボタンが離されたならtrueを返す
+      bool AnyButtonReleased()const;
       //  接続されているか確認
       //  接続中はtrue
       bool isConnect()const;

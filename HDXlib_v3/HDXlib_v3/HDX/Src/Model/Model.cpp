@@ -34,8 +34,36 @@ namespace hdx
 
   }
 
+  void Model::Update(float _DeltaTime, MotionData* _pMotionData)const
+  {
+    Engine::Get<IModel>()->ModelUpdate(ID_, _DeltaTime, _pMotionData);
+  }
+
+  //  ï`âÊ
   void Model::Draw(const Matrix& _WorldMatrix, const ColorF& _Color)const
   {
-    Engine::Get<IRenderer3D>()->Draw((*this), _WorldMatrix, _Color);
+    Engine::Get<IRenderer3D>()->Draw((*this), _WorldMatrix, { 0.0f, 0 }, _Color);
+  }
+
+  //  ÉÇÅ[ÉVÉáÉìóLÇËï`âÊ
+  void Model::Draw(const Matrix& _WorldMatrix, const MotionData& _MotionData, const ColorF& _Color)const
+  {
+    Engine::Get<IRenderer3D>()->Draw((*this), _WorldMatrix, _MotionData, _Color);
+  }
+
+
+  const std::vector<hdx::float3>& Model::GetVertices()const
+  {
+    return Engine::Get<IModel>()->GetVertices(ID_);
+  }
+
+  const std::vector<UINT>& Model::GetIndices()const
+  {
+    return Engine::Get<IModel>()->GetIndices(ID_);
+  }
+
+  const hdx::float3& Model::GetScale()const
+  {
+    return Engine::Get<IModel>()->GetScale(ID_);
   }
 }

@@ -38,7 +38,7 @@ namespace
     DirectX::XMFLOAT4X4 World;                //  ワールド変換行列
     hdx::ColorF MaterialColor;                     //  材質色
     DirectX::XMFLOAT4 LightDirection;         //  ライト進行方向
-    DirectX::XMFLOAT4X4 BoneTransforms[hdx::Constants::MaxBoneInfluences];
+    DirectX::XMFLOAT4X4 BoneTransforms[hdx::Constants::MaxBoneNum];
   };
 
   struct ConstantBufferData
@@ -98,7 +98,7 @@ void IRenderer3D::Initialize()
   CalcView();
 }
 
-void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::ColorF& _Color)
+void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::MotionData& _MotionData, const hdx::ColorF& _Color)
 {
   Engine::Get<IRenderer2D>()->End();
 
@@ -151,6 +151,28 @@ void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix
 
     DirectX::XMStoreFloat4x4(&ConstantBuffer.Get().WorldViewProjection, GlobalTransform * _WorldMatrix*ViewMatrix*ProjectionMatrix);
     DirectX::XMStoreFloat4x4(&ConstantBuffer.Get().World, GlobalTransform * _WorldMatrix);
+
+    const int SkeletalAnimationNum = (Mesh.SkeletalAnimations.size() > 0) ? Mesh.SkeletalAnimations[_MotionData.Number].size() : 0;
+
+    if (SkeletalAnimationNum > 0)
+    {
+      const Skeletal& Skeletal = Mesh.SkeletalAnimations[_MotionData.Number].at(static_cast<size_t>(_MotionData.Frame / Mesh.SamplingTime));
+
+      const int NumberOfBones = Skeletal.size();
+      _ASSERT_EXPR(NumberOfBones < hdx::Constants::MaxBoneNum, L"'the NumberOfBones' exceeds hdx::Constants::MaxBoneNum");
+
+      for (int i = 0; i < NumberOfBones; ++i)
+      {
+        DirectX::XMStoreFloat4x4(&ConstantBuffer.Get().BoneTransforms[i], DirectX::XMLoadFloat4x4(&Skeletal.at(i).Transform));
+      }
+    }
+    else
+    {
+      for (int i = 0; i < hdx::Constants::MaxBoneNum; ++i)
+      {
+        DirectX::XMStoreFloat4x4(&ConstantBuffer.Get().BoneTransforms[i], DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+      }
+    }
 
     for (auto& Subset : Mesh.Subsets)
     {
@@ -298,4 +320,14 @@ void IRenderer3D::SetLightDirection(const hdx::float3& _LightDirection)
 void IRenderer3D::FreeCamera()
 {
 
+}
+
+const hdx::Matrix& IRenderer3D::GetProjectionMatrix()const
+{
+	return ProjectionMatrix;
+}
+
+const hdx::Matrix& IRenderer3D::GetViewMatrix()const
+{
+	return ViewMatrix;
 }

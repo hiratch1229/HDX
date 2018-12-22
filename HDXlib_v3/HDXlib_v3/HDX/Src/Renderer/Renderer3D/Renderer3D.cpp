@@ -11,6 +11,7 @@
 #include "../../../Include/SamplerState.hpp"
 #include "../../../Include/Texture.hpp"
 #include "../../../Include/RasterizerState.hpp"
+#include "../../../Include/DepthStencilState.hpp"
 
 #include "../../../Include/Constants.hpp"
 
@@ -58,6 +59,11 @@ namespace hdx
       Engine::Get<IRenderer3D>()->SetRasterizerState(_RasterizerState);
     }
 
+	void SetDepthStencilState(const DepthStencilState& _DepthStencilState)
+	{
+	  Engine::Get<IRenderer3D>()->SetDepthStencilState(_DepthStencilState);
+	}
+
     void SetTexture(const Texture& _Texture, UINT _Slot)
     {
       assert(_Slot >= 1 && _Slot <= hdx::Constants::TextureMaxNum);
@@ -86,5 +92,19 @@ namespace hdx
     {
       Engine::Get<IRenderer3D>()->SetCamera(_Camera);
     }
+
+    void SetLightDirection(const float3& _LightDirection)
+    {
+      Engine::Get<IRenderer3D>()->SetLightDirection(_LightDirection);
+    }
+
+	const Matrix& GetProjectionMatrix()
+	{
+		return Engine::Get<IRenderer3D>()->GetProjectionMatrix();
+	}
+	const Matrix& GetViewMatrix()
+	{
+		return Engine::Get<IRenderer3D>()->GetViewMatrix();
+	}
   }
 }

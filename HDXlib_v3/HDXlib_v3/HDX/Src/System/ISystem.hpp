@@ -33,6 +33,7 @@ public:
   void Exit();
 public:
   ISystem();
+  ~ISystem();
 public:
   void Initialize();
   bool Update();

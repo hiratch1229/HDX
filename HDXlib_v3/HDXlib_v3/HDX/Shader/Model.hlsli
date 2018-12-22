@@ -14,7 +14,7 @@ struct VS_OUT
   float2 texcoord : TEXCOORD;
 };
 
-#define MAX_BONES 4
+#define MAX_BONES 32
 cbuffer CONSTANT_BUFFER : register(b0)
 {
   row_major float4x4 world_view_projection;

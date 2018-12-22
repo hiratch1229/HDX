@@ -30,7 +30,7 @@ namespace
     hdx::ColorF MaterialColor;                //  材質色
     DirectX::XMFLOAT4 LightDirection;         //  ライト進行方向
 
-    DirectX::XMFLOAT4X4 BoneTransforms[hdx::Constants::MaxBoneInfluences];
+    DirectX::XMFLOAT4X4 BoneTransforms[32];
   };
 
   fbxsdk::FbxManager* pManager;
@@ -85,16 +85,17 @@ namespace
     const int NumberOfControlPoints = _pFbxMesh->GetControlPointsCount();
     _pInfluences->resize(NumberOfControlPoints);
 
-    const int NumberOfDeformers = _pFbxMesh->GetDeformerCount(FbxDeformer::eSkin);
+    const int NumberOfDeformers = _pFbxMesh->GetDeformerCount(fbxsdk::FbxDeformer::eSkin);
 
     for (int IndexOfDeformer = 0; IndexOfDeformer < NumberOfDeformers; ++IndexOfDeformer)
     {
-      FbxSkin *pSkin = static_cast<FbxSkin*>(_pFbxMesh->GetDeformer(IndexOfDeformer, FbxDeformer::eSkin));
-      const int NumberOfClusters = pSkin->GetClusterCount();
+      fbxsdk::FbxSkin *pSkin = static_cast<fbxsdk::FbxSkin*>(_pFbxMesh->GetDeformer(IndexOfDeformer, fbxsdk::FbxDeformer::eSkin));
 
+      const int NumberOfClusters = pSkin->GetClusterCount();
       for (int IndexOfClusters = 0; IndexOfClusters < NumberOfClusters; ++IndexOfClusters)
       {
-        FbxCluster* pCluster = pSkin->GetCluster(IndexOfClusters);
+        fbxsdk::FbxCluster* pCluster = pSkin->GetCluster(IndexOfClusters);
+
         const int NumberOfControlPointIndices = pCluster->GetControlPointIndicesCount();
         const int* ArrayOfControlPointIndices = pCluster->GetControlPointIndices();
         const double* ArrayOfControlPointWeights = pCluster->GetControlPointWeights();
@@ -117,7 +118,7 @@ namespace
 
     for (int IndexOfDeformer = 0; IndexOfDeformer < NumberOfDeformers; ++IndexOfDeformer)
     {
-      fbxsdk::FbxSkin* pSkin = static_cast<FbxSkin*>(_pFbxMesh->GetDeformer(IndexOfDeformer, fbxsdk::FbxDeformer::eSkin));
+      fbxsdk::FbxSkin* pSkin = static_cast<fbxsdk::FbxSkin*>(_pFbxMesh->GetDeformer(IndexOfDeformer, fbxsdk::FbxDeformer::eSkin));
 
       const int NumberOfClusters = pSkin->GetClusterCount();
       _Skeletal.resize(NumberOfClusters);
@@ -159,7 +160,7 @@ namespace
     }
   }
 
-  inline void FetchAnimations(const fbxsdk::FbxMesh* _pFbxMesh, SkeletalAnimation& SkeletalAnimation, UINT _SamplingRate = 0)
+  inline void FetchAnimations(const fbxsdk::FbxMesh* _pFbxMesh, std::vector<SkeletalAnimation>* _pSkeletalAnimation, float* _pSamplingTime)
   {
     // Get the list of all the animation stack.
     fbxsdk::FbxArray<FbxString*> ArrayOfAnimationStackNames;
@@ -167,21 +168,19 @@ namespace
 
     // Get the number of animations.
     const int NumberOfAnimations = ArrayOfAnimationStackNames.Size();
+    (*_pSkeletalAnimation).resize(NumberOfAnimations);
 
-    if (NumberOfAnimations > 0)
+    for (int IndexOfAnimation = 0; IndexOfAnimation < NumberOfAnimations; ++IndexOfAnimation)
     {
       // Get the FbxTime per animation's frame.
       const fbxsdk::FbxTime::EMode TimeMode = _pFbxMesh->GetScene()->GetGlobalSettings().GetTimeMode();
       fbxsdk::FbxTime FrameTime;
       FrameTime.SetTime(0, 0, 0, 1, 0, TimeMode);
 
-      _SamplingRate = (_SamplingRate > 0) ? _SamplingRate : static_cast<UINT>(FrameTime.GetFrameRate(TimeMode));
+      UINT SamplingRate = (hdx::Constants::ModelAnimationSamplingRate > 0) ? hdx::Constants::ModelAnimationSamplingRate : static_cast<UINT>(FrameTime.GetFrameRate(TimeMode));
+      (*_pSamplingTime) = 1.0f / SamplingRate;
 
-      float SamplingTime = 1.0f / _SamplingRate;
-      SkeletalAnimation.SamplingTime = SamplingTime;
-      SkeletalAnimation.AnimationTick = 0.0f;
-
-      fbxsdk::FbxString* AnimationStackName = ArrayOfAnimationStackNames.GetAt(0);
+      fbxsdk::FbxString* AnimationStackName = ArrayOfAnimationStackNames.GetAt(IndexOfAnimation);
       fbxsdk::FbxAnimStack* CurrentAnimationStack = _pFbxMesh->GetScene()->FindMember<fbxsdk::FbxAnimStack>(AnimationStackName->Buffer());
       _pFbxMesh->GetScene()->SetCurrentAnimationStack(CurrentAnimationStack);
 
@@ -191,18 +190,16 @@ namespace
 
       fbxsdk::FbxTime SamplingStep;
       SamplingStep.SetTime(0, 0, 1, 0, 0, TimeMode);
-      SamplingStep = static_cast<fbxsdk::FbxLongLong>(SamplingStep.Get() * SamplingTime);
+      SamplingStep = static_cast<fbxsdk::FbxLongLong>(SamplingStep.Get() * (*_pSamplingTime));
 
       for (fbxsdk::FbxTime CurrentTime = StartTime; CurrentTime < EndTime; CurrentTime += SamplingStep)
       {
         Skeletal Skeletal;
         FetchBoneMatrices(_pFbxMesh, Skeletal, CurrentTime);
-        SkeletalAnimation.push_back(Skeletal);
+        (*_pSkeletalAnimation)[IndexOfAnimation].push_back(Skeletal);
       }
-    }
-    for (int i = 0; i < NumberOfAnimations; ++i)
-    {
-      delete ArrayOfAnimationStackNames[i];
+
+      delete ArrayOfAnimationStackNames[IndexOfAnimation];
     }
   }
 }
@@ -231,6 +228,25 @@ IModel::~IModel()
 void IModel::Initialize(ID3D11Device* _pDevice)
 {
   pDevice = _pDevice;
+}
+
+void IModel::ModelUpdate(int _ID, float _DeltaTime, hdx::MotionData* _pMotionData)
+{
+  assert(_pMotionData->Number < ModelMap[_ID].Meshes[0].SkeletalAnimations.size());
+
+  const auto& Mesh = ModelMap[_ID].Meshes[0];
+
+  const int SkeletalAnimationNum = Mesh.SkeletalAnimations[_pMotionData->Number].size();
+  if (SkeletalAnimationNum <= 0)return;
+
+  _pMotionData->Frame += _DeltaTime;
+
+  int Frame = static_cast<int>(_pMotionData->Frame / Mesh.SamplingTime);
+  while (Frame > SkeletalAnimationNum - 1)
+  {
+    Frame -= SkeletalAnimationNum;
+    _pMotionData->Frame -= Mesh.SamplingTime*SkeletalAnimationNum;
+  }
 }
 
 int IModel::Load(const char* _FilePath)
@@ -514,8 +530,10 @@ int IModel::Load(const char* _FilePath)
         }
       }
 
-      FetchBoneInfluences(pFbxMesh, &ModelData.BoneInfluences);
-      FetchAnimations(pFbxMesh, Mesh.SkeletalAnimation);
+      std::vector<BoneInfluencePerControlPoint> BoneInfluences;
+
+      FetchBoneInfluences(pFbxMesh, &BoneInfluences);
+      FetchAnimations(pFbxMesh, &Mesh.SkeletalAnimations, &Mesh.SamplingTime);
 
       std::vector<Subset>& Subsets = Mesh.Subsets;
 
@@ -529,7 +547,7 @@ int IModel::Load(const char* _FilePath)
       //  1つも無い時は1つ作成
       Subsets.resize((NumberOfMaterials > 0) ? NumberOfMaterials : 1);
 
-        //  Count the faces of each material
+      //  Count the faces of each material
       const int NumberOfPolygons = pFbxMesh->GetPolygonCount();
       Indices.resize(NumberOfPolygons * 3);
 
@@ -576,7 +594,7 @@ int IModel::Load(const char* _FilePath)
           Vertex.Position.Y = static_cast<float>(ArrayOfControlPoints[IndexOfControlPoint][1]);
           Vertex.Position.Z = static_cast<float>(ArrayOfControlPoints[IndexOfControlPoint][2]);
 
-          BoneInfluencePerControlPoint& InfluencesPerControlPoint = ModelData.BoneInfluences.at(IndexOfControlPoint);
+          BoneInfluencePerControlPoint& InfluencesPerControlPoint = BoneInfluences.at(IndexOfControlPoint);
           for (int IndexOfInfluence = 0, Size = InfluencesPerControlPoint.size(); IndexOfInfluence < Size; ++IndexOfInfluence)
           {
             Vertex.BoneWeights[IndexOfInfluence] = InfluencesPerControlPoint.at(IndexOfInfluence).Weight;
@@ -605,7 +623,7 @@ int IModel::Load(const char* _FilePath)
           }
 
           Vertices.push_back(Vertex);
-          Indices.at(IndexOffset + IndexOfVertex) = static_cast<UINT>(VertexCount++);
+          Indices.at(IndexOffset + IndexOfVertex) = VertexCount++;
         }
         Subset.IndexCount += 3;
       }
@@ -687,7 +705,35 @@ int IModel::Load(const char* _FilePath)
 
       //  バッファの作成
       CreateBuffers(Vertices.data(), Vertices.size(), Indices.data(), Indices.size(), Mesh.pVertexBuffer.GetAddressOf(), Mesh.pIndexBuffer.GetAddressOf());
+
+      for (int i = 0, Size = Vertices.size(); i < Size; ++i)
+      {
+        ModelData.Vertices.push_back(Vertices[i].Position);
+      }
+      for (int i = 0, Size = Indices.size(); i < Size; ++i)
+      {
+        ModelData.Indices.push_back(Indices[i]);
+      }
     }
+
+    hdx::float3 Min, Max;
+
+    Min = Max = 0.0f;
+
+    for (int i = 0, Size = ModelData.Vertices.size(); i < Size; ++i)
+    {
+      const hdx::float3 Pos = ModelData.Vertices[i];
+
+      Min.X = (Pos.X < Min.X) ? Pos.X : Min.X;
+      Min.Y = (Pos.Y < Min.Y) ? Pos.Y : Min.Y;
+      Min.Z = (Pos.Z < Min.Z) ? Pos.Z : Min.Z;
+
+      Max.X = (Pos.X > Max.X) ? Pos.X : Max.X;
+      Max.Y = (Pos.Y > Max.Y) ? Pos.Y : Max.Y;
+      Max.Z = (Pos.Z > Max.Z) ? Pos.Z : Max.Z;
+    }
+
+    ModelData.Scale = Max - Min;
 
     return ModelMap.insert(_FilePath, ModelData);
   };
@@ -736,10 +782,10 @@ int IModel::Load(const hdx::Rectangle& _Rectangle)
   //  頂点情報設定
   Vertex Vertices[4];
   {
-    Vertices[0].Position = { -0.5f, +0.5f, -0.5f };
-    Vertices[1].Position = { +0.5f, +0.5f, -0.5f };
-    Vertices[2].Position = { -0.5f, -0.5f, -0.5f };
-    Vertices[3].Position = { +0.5f, -0.5f, -0.5f };
+    Vertices[0].Position = { -0.5f, +0.5f, +0.0f };
+    Vertices[1].Position = { +0.5f, +0.5f, +0.0f };
+    Vertices[2].Position = { -0.5f, -0.5f, +0.0f };
+    Vertices[3].Position = { +0.5f, -0.5f, +0.0f };
     Vertices[0].Normal = { +0.0f, +0.0f, -1.0f };
     Vertices[1].Normal = { +0.0f, +0.0f, -1.0f };
     Vertices[2].Normal = { +0.0f, +0.0f, -1.0f };
@@ -762,6 +808,34 @@ int IModel::Load(const hdx::Rectangle& _Rectangle)
   }
 
   CreateBuffers(Vertices, 4, Indices, 6, Mesh.pVertexBuffer.GetAddressOf(), Mesh.pIndexBuffer.GetAddressOf());
+
+  for (int i = 0; i < 4; ++i)
+  {
+    ModelData.Vertices.push_back(Vertices[i].Position);
+  }
+  for (int i = 0; i < 6; ++i)
+  {
+    ModelData.Indices.push_back(Indices[i]);
+  }
+
+  hdx::float3 Min, Max;
+
+  Min = Max = 0.0f;
+
+  for (int i = 0, Size = ModelData.Vertices.size(); i < Size; ++i)
+  {
+    const hdx::float3 Pos = ModelData.Vertices[i];
+
+    Min.X = (Pos.X < Min.X) ? Pos.X : Min.X;
+    Min.Y = (Pos.Y < Min.Y) ? Pos.Y : Min.Y;
+    Min.Z = (Pos.Z < Min.Z) ? Pos.Z : Min.Z;
+
+    Max.X = (Pos.X > Max.X) ? Pos.X : Max.X;
+    Max.Y = (Pos.Y > Max.Y) ? Pos.Y : Max.Y;
+    Max.Z = (Pos.Z > Max.Z) ? Pos.Z : Max.Z;
+  }
+
+  ModelData.Scale = Max - Min;
 
   return ModelMap.insert(ModelName, ModelData);
 }
@@ -934,6 +1008,34 @@ int IModel::Load(const hdx::Cube& _Cube)
 
   CreateBuffers(Vertices, 24, Indices, 36, Mesh.pVertexBuffer.GetAddressOf(), Mesh.pIndexBuffer.GetAddressOf());
 
+  for (int i = 0; i < 24; ++i)
+  {
+    ModelData.Vertices.push_back(Vertices[i].Position);
+  }
+  for (int i = 0; i < 36; ++i)
+  {
+    ModelData.Indices.push_back(Indices[i]);
+  }
+
+  hdx::float3 Min, Max;
+
+  Min = Max = 0.0f;
+
+  for (int i = 0, Size = ModelData.Vertices.size(); i < Size; ++i)
+  {
+    const hdx::float3 Pos = ModelData.Vertices[i];
+
+    Min.X = (Pos.X < Min.X) ? Pos.X : Min.X;
+    Min.Y = (Pos.Y < Min.Y) ? Pos.Y : Min.Y;
+    Min.Z = (Pos.Z < Min.Z) ? Pos.Z : Min.Z;
+
+    Max.X = (Pos.X > Max.X) ? Pos.X : Max.X;
+    Max.Y = (Pos.Y > Max.Y) ? Pos.Y : Max.Y;
+    Max.Z = (Pos.Z > Max.Z) ? Pos.Z : Max.Z;
+  }
+
+  ModelData.Scale = Max - Min;
+
   return ModelMap.insert(ModelName, ModelData);
 }
 
@@ -1043,10 +1145,53 @@ int IModel::Load(const hdx::Cylinder& _Cylinder)
 
   CreateBuffers(Vertices.get(), VertexNum, Indices.get(), IndexNum, Mesh.pVertexBuffer.GetAddressOf(), Mesh.pIndexBuffer.GetAddressOf());
 
+  for (int i = 0; i < VertexNum; ++i)
+  {
+    ModelData.Vertices.push_back(Vertices[i].Position);
+  }
+  for (int i = 0; i < IndexNum; ++i)
+  {
+    ModelData.Indices.push_back(Indices[i]);
+  }
+
+  hdx::float3 Min, Max;
+
+  Min = Max = 0.0f;
+
+  for (int i = 0, Size = ModelData.Vertices.size(); i < Size; ++i)
+  {
+    const hdx::float3 Pos = ModelData.Vertices[i];
+
+    Min.X = (Pos.X < Min.X) ? Pos.X : Min.X;
+    Min.Y = (Pos.Y < Min.Y) ? Pos.Y : Min.Y;
+    Min.Z = (Pos.Z < Min.Z) ? Pos.Z : Min.Z;
+
+    Max.X = (Pos.X > Max.X) ? Pos.X : Max.X;
+    Max.Y = (Pos.Y > Max.Y) ? Pos.Y : Max.Y;
+    Max.Z = (Pos.Z > Max.Z) ? Pos.Z : Max.Z;
+  }
+
+  ModelData.Scale = Max - Min;
+
   return ModelMap.insert(ModelName, ModelData);
 }
 
 const ModelData& IModel::GetModelData(int _ID)
 {
   return ModelMap[_ID];
+}
+
+const std::vector<hdx::float3>& IModel::GetVertices(int _ID)const
+{
+  return ModelMap[_ID].Vertices;
+}
+
+const std::vector<UINT>& IModel::GetIndices(int _ID)const
+{
+  return ModelMap[_ID].Indices;
+}
+
+const hdx::float3& IModel::GetScale(int _ID)const
+{
+  return ModelMap[_ID].Scale;
 }

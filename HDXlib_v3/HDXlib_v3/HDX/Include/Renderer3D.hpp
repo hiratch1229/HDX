@@ -1,4 +1,5 @@
 #pragma once
+#include "Type3.hpp"
 #include "Types.hpp"
 #include "Texture.hpp"
 #include "VertexShader.hpp"
@@ -7,8 +8,10 @@
 #include "SamplerState.hpp"
 #include "RasterizerState.hpp"
 #include "RenderTarget.hpp"
+#include "DepthStencilState.hpp"
 #include "Camera.hpp"
 #include "ConstantBuffer.hpp"
+#include "Matrix.hpp"
 
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx
@@ -22,10 +25,12 @@ namespace hdx
     void SetBlendState(const BlendState& _BlendState);
     void SetSamplerState(const SamplerState& _SamplerState, UINT _Slot);
     void SetRasterizerState(const RasterizerState& _RasterizerState);
+	void SetDepthStencilState(const DepthStencilState& _DepthStencilState);
     void SetTexture(const Texture& _Texture, UINT _Slot);
     void RestoreRenderTarget();
     void SetRenderTarget(const RenderTarget& _RenderTarget);
     void SetCamera(const Camera& _Camera);
+    void SetLightDirection(const float3& _LightDirection);
     void SetConstantBuffer(ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot);
 
     template<class T>
@@ -33,5 +38,8 @@ namespace hdx
     {
       SetConstantBuffer(_Stage, ConstantBuffer.Size, ConstantBuffer.GetPtr(), _Slot);
     }
+
+	const Matrix& GetProjectionMatrix();
+	const Matrix& GetViewMatrix();
   };
 }

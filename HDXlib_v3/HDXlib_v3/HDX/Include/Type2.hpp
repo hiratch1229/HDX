@@ -1,4 +1,5 @@
 #pragma once
+#include <DirectXMath.h>
 
 //  ライブラリ
 namespace hdx
@@ -26,6 +27,11 @@ namespace hdx
     //  float2を作成
     //  _float2:コピーする色
     constexpr int2(const float2& _float2)noexcept;
+  public:
+    operator DirectX::XMINT2() const
+    {
+      return DirectX::XMINT2(X, Y);
+    }
   public:
     //  そのままの値を取得
     constexpr int2 operator +()const
@@ -251,7 +257,14 @@ namespace hdx
     constexpr float2() : X(0.0f), Y(0.0f) {}
     //  float2を作成
     //  _XY:X,Y
+    constexpr float2(int _XY)noexcept : X(static_cast<float>(_XY)), Y(static_cast<float>(_XY)) {}
+    //  float2を作成
+    //  _XY:X,Y
     constexpr float2(float _XY)noexcept : X(_XY), Y(_XY) {}
+    //  float2を作成
+    //  _X:X
+    //  _Y:Y
+    constexpr float2(int _X, int _Y)noexcept : X(static_cast<float>(_X)), Y(static_cast<float>(_Y)) {}
     //  float2を作成
     //  _X:X
     //  _Y:Y
@@ -262,6 +275,11 @@ namespace hdx
     //  float2を作成
     //  _int2;コピーする値
     constexpr float2(const int2& _int2)noexcept : X(static_cast<float>(_int2.X)), Y(static_cast<float>(_int2.Y)) {}
+  public:
+    operator DirectX::XMFLOAT2() const
+    {
+      return DirectX::XMFLOAT2(X, Y);
+    }
   public:
     //  そのままの値を取得
     constexpr float2 operator +()const

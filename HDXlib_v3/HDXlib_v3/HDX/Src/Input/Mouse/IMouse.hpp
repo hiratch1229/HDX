@@ -16,6 +16,8 @@ private:
   hdx::int2 Delta_;
   //  ホイール移動量
   int Wheel_;
+  //  画面解像度
+  hdx::float2 DpiScale_;
 private:
   bool isWithinRange(int _Number)const
   {
@@ -98,6 +100,7 @@ public:
     return false;
   }
 public:
+  IMouse();
   //  状態の更新
   void Update();
 };

@@ -101,6 +101,16 @@ namespace
       //  更新成功
       return true;
     }
+    void Reset()
+    {
+      //  現在の時間を取得
+      LARGE_INTEGER CurrentTime;
+      QueryPerformanceCounter(&CurrentTime);
+
+      CurrentFPS_ = 1.0f / FrameInterval_;
+      DeltaTime_ = FrameInterval_;
+      LastTime_ = CurrentTime;
+    }
   };
   class Window
   {
@@ -337,6 +347,11 @@ ISystem::ISystem()
   TIMER_END("System");
 }
 
+ISystem::~ISystem()
+{
+  pSwapChain->SetFullscreenState(false, nullptr);
+}
+
 void ISystem::Initialize()
 {
   Engine::Get<IBlendState>()->Initialize(pDevice.Get());
@@ -368,6 +383,8 @@ bool ISystem::Update()
     Engine::Get<IRenderer2D>()->Initialize(pDevice.Get(), pImmediateContext.Get(), pRenderTargetView.GetAddressOf(), pDepthStencilView.Get());
 
     Engine::Get<IRenderer3D>()->CalcProjection();
+
+    pFrameRate->Reset();
   }
 
   //  入力系更新

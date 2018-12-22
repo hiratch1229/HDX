@@ -30,6 +30,21 @@ namespace hdx
     {
       return Engine::Get<IXInput>()->GetRightTrigger(Index_, _DeadZone);
     }
+    //  何かのボタンが押されていればtrueを返す
+    bool XInput::AnyButtonPress()const
+    {
+      return Engine::Get<IXInput>()->AnyButtonPress(Index_);
+    }
+    //  何かのボタンが押されたならtrueを返す
+    bool XInput::AnyButtonPressed()const
+    {
+      return Engine::Get<IXInput>()->AnyButtonPressed(Index_);
+    }
+    //  何かのボタンが離されたならtrueを返す
+    bool XInput::AnyButtonReleased()const
+    {
+      return Engine::Get<IXInput>()->AnyButtonReleased(Index_);
+    }
     //  接続されているか確認
     bool XInput::isConnect()const
     {

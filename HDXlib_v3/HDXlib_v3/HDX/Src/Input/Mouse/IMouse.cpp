@@ -5,6 +5,13 @@
 
 #include <Windows.h>
 
+IMouse::IMouse()
+{
+  HDC hdc = ::GetDC(::GetDesktopWindow());
+  DpiScale_ = { ::GetDeviceCaps(hdc , LOGPIXELSX), ::GetDeviceCaps(hdc , LOGPIXELSY) };
+  DpiScale_ /= 96.0f;
+}
+
 //  更新
 void IMouse::Update()
 {
@@ -22,7 +29,7 @@ void IMouse::Update()
     ::GetCursorPos(&Point);
 
     //  現在のカーソルの位置
-    const hdx::int2 CursorPos = { static_cast<int>(Point.x), static_cast<int>(Point.y) };
+    const hdx::int2 CursorPos = hdx::int2(static_cast<int>(Point.x), static_cast<int>(Point.y)) / DpiScale_;
 
     //  移動量を保存
     Delta_ = CursorPos - Pos_;

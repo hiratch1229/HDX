@@ -22,6 +22,7 @@ namespace hdx
   class Radian;
   struct ColorF;
   class Model;
+  struct MotionData;
 }
 
 class IRenderer3D : public IRenderer
@@ -40,7 +41,10 @@ public:
   void SetConstantBuffer(hdx::ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot);
   void SetLightDirection(const hdx::float3& _LightDirection);
 public:
-  void Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::ColorF& _Color);
+  const hdx::Matrix& GetProjectionMatrix()const;
+  const hdx::Matrix& GetViewMatrix()const;
+public:
+  void Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::MotionData& _MotionData, const hdx::ColorF& _Color);
   void CalcProjection();
   void FreeCamera();
 public:

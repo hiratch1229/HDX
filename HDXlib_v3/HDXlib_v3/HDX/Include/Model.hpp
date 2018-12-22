@@ -5,6 +5,8 @@
 #include "Texture.hpp"
 #include "Matrix.hpp"
 
+#include <vector>
+
 //  ライブラリ
 namespace hdx
 {
@@ -39,12 +41,22 @@ namespace hdx
     UINT Stacks;
   };
 
+  //  モーション情報
+  struct MotionData
+  {
+    float Frame;  //  フレーム数
+    UINT Number;  //  モーション番号
+  };
+
   class Model
   {
     int ID_;
-    float Frame_ = 0.0f;
   public:
     int GetID()const { return ID_; }
+  public:
+    const std::vector<hdx::float3>& GetVertices()const;
+    const std::vector<UINT>& GetIndices()const;
+    const hdx::float3& GetScale()const;
   public:
     bool operator==(const Model& _Model)const
     {
@@ -70,6 +82,10 @@ namespace hdx
     Model(const Capsule& _Capsule);
     ~Model() = default;
   public:
+    void Update(float _DeltaTime, MotionData* _pMotionData)const;
+    //  描画
     void Draw(const Matrix& _WorldMatrix, const ColorF& _Color = hdx::Palette::White)const;
+    //  モーション有り描画
+    void Draw(const Matrix& _WorldMatrix, const MotionData& _MotionData, const ColorF& _Color = hdx::Palette::White)const;
   };
 }

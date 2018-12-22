@@ -1,4 +1,5 @@
 #pragma once
+#include <DirectXMath.h>
 
 //  ライブラリ
 namespace hdx
@@ -28,6 +29,11 @@ namespace hdx
     //  float3を作成
     //  _float3;コピーする値 
     constexpr int3(const float3& _float3)noexcept;
+  public:
+    operator DirectX::XMINT3() const
+    {
+      return DirectX::XMINT3(X, Y, Z);
+    }
   public:
     //  そのままの値を取得
     constexpr int3 operator +()const
@@ -220,6 +226,11 @@ namespace hdx
     //  float3を作成
       //  _int3:コピーする値
     constexpr float3(const int3& _int3)noexcept : X(static_cast<float>(_int3.X)), Y(static_cast<float>(_int3.Y)), Z(static_cast<float>(_int3.Z)) {}
+  public:
+    operator DirectX::XMFLOAT3() const
+    {
+      return DirectX::XMFLOAT3(X, Y, Z);
+    }
   public:
     //  そのままの値を取得
     constexpr float3 operator +()const

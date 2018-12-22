@@ -22,6 +22,10 @@ namespace hdx
 
     constexpr UINT MaxBoneInfluences = 4;
 
+    constexpr UINT MaxBoneNum = 32;
+
+    constexpr UINT ModelAnimationSamplingRate = 24;
+
     constexpr UINT SpriteBatchMaxNum = 10000;
   }
 }

@@ -17,6 +17,7 @@ namespace hdx
   struct Cylinder;
   struct Sphere;
   struct Capsule;
+  struct MotionData;
 }
 
 struct Vertex
@@ -59,12 +60,7 @@ struct BoneInfluence
 
 using BoneInfluencePerControlPoint = std::vector<BoneInfluence>;
 using Skeletal = std::vector<Bone>;
-
-struct SkeletalAnimation : public std::vector<Skeletal>
-{
-  float SamplingTime = 1 / 24.0f;
-  float AnimationTick = 0.0f;
-};
+using SkeletalAnimation = std::vector<Skeletal>;
 
 struct Mesh
 {
@@ -72,13 +68,16 @@ struct Mesh
   Microsoft::WRL::ComPtr<ID3D11Buffer> pIndexBuffer;
   std::vector<Subset> Subsets;
   DirectX::XMFLOAT4X4 GlobalTransform = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
-  SkeletalAnimation SkeletalAnimation;
+  std::vector<SkeletalAnimation> SkeletalAnimations;
+  float SamplingTime = 1 / 24.0f;
 };
 
 struct ModelData
 {
   std::vector<Mesh> Meshes;
-  std::vector<BoneInfluencePerControlPoint> BoneInfluences;
+  std::vector<hdx::float3> Vertices;
+  std::vector<UINT> Indices;
+  hdx::float3 Scale;
 };
 
 class IModel
@@ -95,5 +94,10 @@ public:
   IModel();
   ~IModel();
 public:
+  const std::vector<hdx::float3>& GetVertices(int _ID)const;
+  const std::vector<UINT>& GetIndices(int _ID)const;
+  const hdx::float3& GetScale(int _ID)const;
+public:
   void Initialize(ID3D11Device* _pDevice);
+  void ModelUpdate(int _ID, float _DeltaTime, hdx::MotionData* _pMotionData);
 };
