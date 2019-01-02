@@ -124,6 +124,16 @@ namespace hdx
     {
       return Normalize(Value_ - _Radian);
     }
+    //  Œ¸ŽZ
+    constexpr float operator *(float _Value)const
+    {
+      return Normalize(Value_ * _Value);
+    }
+    //  Œ¸ŽZ
+    constexpr float operator /(float _Value)const
+    {
+      return Normalize(Value_ / _Value);
+    }
     //  ‘ã“ü
     float operator =(float _Radian)
     {

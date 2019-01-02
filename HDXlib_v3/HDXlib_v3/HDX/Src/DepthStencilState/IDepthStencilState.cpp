@@ -1,9 +1,9 @@
-#include "IDepthStencilState.hpp"
+#include "Src/DepthStencilState/IDepthStencilState.hpp"
 
-#include "../NumberMap.hpp"
-#include "../Misc.hpp"
+#include "Src/NumberMap.hpp"
+#include "Src/Misc.hpp"
 
-#include "../../Include/DepthStencilState.hpp"
+#include "Include/DepthStencilState.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>

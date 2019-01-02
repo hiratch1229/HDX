@@ -1,9 +1,9 @@
-#include "ISamplerState.hpp"
+#include "Src/SamplerState/ISamplerState.hpp"
 
-#include "../NumberMap.hpp"
-#include "../Misc.hpp"
+#include "Src/NumberMap.hpp"
+#include "Src/Misc.hpp"
 
-#include "../../Include/SamplerState.hpp"
+#include "Include/SamplerState.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>

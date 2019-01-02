@@ -16,7 +16,7 @@
 #include <windows.h>
 #include <tchar.h>
 
-#include "../../../../HDX.hpp"
+#include "HDX.hpp"
 
 // CHANGELOG
 // (minor and older changes stripped away, please see git history for details)
@@ -138,7 +138,7 @@ static void ImGui_ImplWin32_UpdateMousePos()
   {
     //if (::ScreenToClient(g_hWnd, &pos))
     //  io.MousePos = ImVec2((float)pos.x, (float)pos.y);
-    const hdx::float2 MousePos = hdx::Input::Mouse().GetPos();
+    const hdx::float2 MousePos = hdx::Input::Mouse::GetPos();
     io.MousePos = ImVec2(MousePos.X, MousePos.Y);
   }
 }

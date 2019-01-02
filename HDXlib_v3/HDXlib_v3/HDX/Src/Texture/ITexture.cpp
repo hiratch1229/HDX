@@ -1,13 +1,13 @@
-#include "ITexture.hpp"
+#include "Src/Texture/ITexture.hpp"
 
-#include "../Engine.hpp"
-#include "../System/ISystem.hpp"
-#include "../NumberMap.hpp"
-#include "../Misc.hpp"
+#include "Src/Engine.hpp"
+#include "Src/System/ISystem.hpp"
+#include "Src/NumberMap.hpp"
+#include "Src/Misc.hpp"
 
-#include "../../Include/RenderTarget.hpp"
-#include "../../Include/Type2.hpp"
-#include "../../Include/Constants.hpp"
+#include "Include/RenderTarget.hpp"
+#include "Include/Type2.hpp"
+#include "Include/Constants.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>

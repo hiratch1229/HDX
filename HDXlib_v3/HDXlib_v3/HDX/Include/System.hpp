@@ -21,6 +21,8 @@ namespace hdx
     static const int2& GetWindowSize();
     //  経過時間を取得
     static float GetDeltaTime();
+    //  現在のフレームレートを取得
+    static int GetFPS();
   public:
     //  ウィンドウの設定
     //  _LeftPos:左上座標X

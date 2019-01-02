@@ -33,6 +33,7 @@ void Main()
   {
     ImGui::Begin("DeltaTime");
     ImGui::Text("DeltaTime %f", hdx::System::GetDeltaTime());
+    ImGui::Text("FPS:%d", hdx::System::GetFPS());
     ImGui::SliderInt("‘Ì", &Num, 1, 100);
     ImGui::End();
 

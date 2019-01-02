@@ -1,7 +1,7 @@
-#include "../../../Include/Keyboard.hpp"
+#include "Include/Keyboard.hpp"
 
-#include "../../Engine.hpp"
-#include "../../Input/Keyboard/IKeyboard.hpp"
+#include "Src/Engine.hpp"
+#include "Src/Input/Keyboard/IKeyboard.hpp"
 
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx

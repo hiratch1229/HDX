@@ -1,7 +1,7 @@
-#include "IRandom.hpp"
+#include "Src/Random/IRandom.hpp"
 
-#include "../Engine.hpp"
-#include "../Misc.hpp"
+#include "Src/Engine.hpp"
+#include "Src/Misc.hpp"
 
 #include <random>
 

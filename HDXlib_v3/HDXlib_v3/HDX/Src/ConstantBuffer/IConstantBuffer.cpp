@@ -1,4 +1,4 @@
-#include "IConstantBuffer.hpp"
+#include "Src/ConstantBuffer/IConstantBuffer.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>

@@ -1,7 +1,7 @@
-#include "../../Input/Mouse/IMouse.hpp"
+#include "Src/Input/Mouse/IMouse.hpp"
 
-#include "../../Engine.hpp"
-#include "../../Input/Keyboard/IKeyboard.hpp"
+#include "Src/Engine.hpp"
+#include "Src/Input/Keyboard/IKeyboard.hpp"
 
 #include <Windows.h>
 

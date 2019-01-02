@@ -1,13 +1,11 @@
-#include "IGamepad.hpp"
+#include "Src/Input/Gamepad/IGamepad.hpp"
 
-#include "../../Input/InputState.hpp"
+#include "Src/Engine.hpp"
+#include "Src/Input/XInput/IXInput.hpp"
+#include "Src/Misc.hpp"
 
-#include "../../Engine.hpp"
-#include "../../Input/XInput/IXInput.hpp"
-#include "../../Misc.hpp"
-
-#include "../../../Include/Math.hpp"
-#include "../../../Include/Macro.hpp"
+#include "Include/Math.hpp"
+#include "Include/Macro.hpp"
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>

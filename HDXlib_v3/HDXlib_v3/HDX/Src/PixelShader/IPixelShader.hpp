@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Include/PixelShader.hpp"
+#include "Include/PixelShader.hpp"
 
 struct ID3D11Device;
 struct ID3D11PixelShader;

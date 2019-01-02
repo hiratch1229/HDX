@@ -1,8 +1,8 @@
-#include "IXInput.hpp"
+#include "Src/Input/XInput/IXInput.hpp"
 
-#include "../../Engine.hpp"
+#include "Src/Engine.hpp"
 
-#include "../../../Include/Math.hpp"
+#include "Include/Math.hpp"
 
 #include <Windows.h>
 #include <Xinput.h>

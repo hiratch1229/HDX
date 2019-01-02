@@ -1,30 +1,30 @@
 #include "ISystem.hpp"
 
-#include "../Engine.hpp"
-#include "../BlendState/IBlendState.hpp"
-#include "../ConstantBuffer/IConstantBuffer.hpp"
-#include "../DepthStencilState/IDepthStencilState.hpp"
-#include "../RasterizerState/IRasterizerState.hpp"
-#include "../RenderTarget/IRenderTarget.hpp"
-#include "../SamplerState/ISamplerState.hpp"
-#include "../VertexShader/IVertexShader.hpp"
-#include "../PixelShader/IPixelShader.hpp"
-#include "../Renderer/Renderer2D/IRenderer2D.hpp"
-#include "../Renderer/Renderer3D/IRenderer3D.hpp"
-#include "../Input/Keyboard/IKeyboard.hpp"
-#include "../Input/Mouse/IMouse.hpp"
-#include "../Input/XInput/IXInput.hpp"
-#include "../Input/Gamepad/IGamepad.hpp"
-#include "../Texture/ITexture.hpp"
-#include "../Model/IModel.hpp"
-#include "../Sound/ISound.hpp"
-#include "../Random/IRandom.hpp"
-#include "../GUI/IGUI.hpp"
-#include "../Misc.hpp"
+#include "Src/Engine.hpp"
+#include "Src/BlendState/IBlendState.hpp"
+#include "Src/ConstantBuffer/IConstantBuffer.hpp"
+#include "Src/DepthStencilState/IDepthStencilState.hpp"
+#include "Src/RasterizerState/IRasterizerState.hpp"
+#include "Src/RenderTarget/IRenderTarget.hpp"
+#include "Src/SamplerState/ISamplerState.hpp"
+#include "Src/VertexShader/IVertexShader.hpp"
+#include "Src/PixelShader/IPixelShader.hpp"
+#include "Src/Renderer/Renderer2D/IRenderer2D.hpp"
+#include "Src/Renderer/Renderer3D/IRenderer3D.hpp"
+#include "Src/Input/Keyboard/IKeyboard.hpp"
+#include "Src/Input/Mouse/IMouse.hpp"
+#include "Src/Input/XInput/IXInput.hpp"
+#include "Src/Input/Gamepad/IGamepad.hpp"
+#include "Src/Texture/ITexture.hpp"
+#include "Src/Model/IModel.hpp"
+#include "Src/Sound/ISound.hpp"
+#include "Src/Random/IRandom.hpp"
+#include "Src/GUI/IGUI.hpp"
+#include "Src/Misc.hpp"
 
-#include "../../Include/System.hpp"
-#include "../../Include/Type2.hpp"
-#include "../../Include/Color.hpp"
+#include "Include/System.hpp"
+#include "Include/Type2.hpp"
+#include "Include/Color.hpp"
 
 #include <Windows.h>
 #include <d3d11.h>
@@ -41,6 +41,13 @@
 
 namespace
 {
+  bool isSetUpWindow = false;
+  Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
+  Microsoft::WRL::ComPtr<ID3D11DeviceContext> pImmediateContext;
+  Microsoft::WRL::ComPtr<IDXGISwapChain> pSwapChain;
+  Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pRenderTargetView;
+  Microsoft::WRL::ComPtr<ID3D11DepthStencilView> pDepthStencilView;
+
   class FrameRate
   {
     //  固定フレームレート値
@@ -48,8 +55,6 @@ namespace
     //  フレーム間隔
     const float FrameInterval_;
   private:
-    //  現在のFPS
-    float CurrentFPS_ = 0.0f;
     //  クロック数
     LARGE_INTEGER FreqTime_;
     //  最後の時間
@@ -57,6 +62,8 @@ namespace
   public:
     //  経過時間
     float DeltaTime_ = 0.0f;
+    //  現在のFPS
+    int CurrentFPS_ = 0;
   public:
     FrameRate(int _MaxFrameRate)
       : MaxFrameRate_(_MaxFrameRate), FrameInterval_(1.0f / _MaxFrameRate)
@@ -94,7 +101,18 @@ namespace
       }
 #endif
 
-      CurrentFPS_ = 1.0f / DeltaTime;
+      static float TimeStamp = 0.0f, TimeTlapsed = 0.0f;
+      static int Frames = 0;
+
+      ++Frames;
+      if (((TimeStamp += DeltaTime) - TimeTlapsed) >= 1.0f)
+      {
+        CurrentFPS_ = Frames;
+
+        Frames = 0;
+        TimeTlapsed += 1.0f;
+      }
+
       DeltaTime_ = DeltaTime;
       LastTime_ = CurrentTime;
 
@@ -143,6 +161,9 @@ namespace
 
       //  ウィンドウ設定&表示
       ::SetWindowPos(hWnd_, HWND_TOP, LeftTopPos_.X, LeftTopPos_.Y, Size_.X, Size_.Y, SWP_SHOWWINDOW);
+
+
+      pSwapChain->SetFullscreenState(isFullScreen_, nullptr);
     }
   public:
     Window()
@@ -167,15 +188,8 @@ namespace
       _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     }
   };
-
-  bool isSetUpWindow = false;
   std::unique_ptr<FrameRate> pFrameRate;
   std::unique_ptr<Window> pWindow;
-  Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
-  Microsoft::WRL::ComPtr<ID3D11DeviceContext> pImmediateContext;
-  Microsoft::WRL::ComPtr<IDXGISwapChain> pSwapChain;
-  Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pRenderTargetView;
-  Microsoft::WRL::ComPtr<ID3D11DepthStencilView> pDepthStencilView;
 
   void ResizeSwapChain()
   {
@@ -501,6 +515,11 @@ const hdx::int2& ISystem::GetWindowSize()const
 float ISystem::GetDeltaTime()const
 {
   return pFrameRate->DeltaTime_;
+}
+
+int ISystem::GetFPS()const
+{
+  return pFrameRate->CurrentFPS_;
 }
 
 void ISystem::SetWindowLeftTopPos(int _LeftPos, int _TopPos)

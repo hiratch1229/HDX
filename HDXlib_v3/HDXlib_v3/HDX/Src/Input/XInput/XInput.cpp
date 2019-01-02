@@ -1,7 +1,7 @@
-#include "../../../Include/XInput.hpp"
+#include "Include/XInput.hpp"
 
-#include "../../Engine.hpp"
-#include "../../Input/XInput/IXInput.hpp"
+#include "Src/Engine.hpp"
+#include "Src/Input/XInput/IXInput.hpp"
 
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx

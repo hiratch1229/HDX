@@ -1,10 +1,10 @@
-#include "../../Include/Texture.hpp"
+#include "Include/Texture.hpp"
 
-#include "../Engine.hpp"
-#include "../Texture/ITexture.hpp"
-#include "../Renderer/Renderer2D/IRenderer2D.hpp"
+#include "Src/Engine.hpp"
+#include "Src/Texture/ITexture.hpp"
+#include "Src/Renderer/Renderer2D/IRenderer2D.hpp"
 
-#include "../../Include/System.hpp"
+#include "Include/System.hpp"
 
 namespace hdx
 {

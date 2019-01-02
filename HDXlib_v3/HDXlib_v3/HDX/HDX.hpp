@@ -8,7 +8,7 @@
 //  2018.07.31  作成
 //  TODO:前バージョンからほとんど持ってきたので、色々改善
 //  2018.10.29  エンジンと分割して管理に変更
-#include "HDX/Include/System.hpp"
+#include "Include/System.hpp"
 
 
 //*************************
@@ -19,23 +19,23 @@
 //  2018.08.25  作成
 //  2018.08.26  組み合わせを実装
 //  TODO:組み合わせを3つ以上指定出来るように
-#include "HDX/Include/Button.hpp"
+#include "Include/Button.hpp"
 
 //  キーボード
 //  2018.08.25  作成
-#include "HDX/Include/Keyboard.hpp"
+#include "Include/Keyboard.hpp"
 
 //  マウス
 //  2018.08.26  作成 
-#include "HDX/Include/Mouse.hpp"
+#include "Include/Mouse.hpp"
 
 //  XInputコントローラ
 //  2018.09.20  作成
-#include "HDX/Include/XInput.hpp"
+#include "Include/XInput.hpp"
 
 //  DirectInputコントローラ
 //  2018.09.02  作成 
-#include "HDX/Include/Gamepad.hpp"
+#include "Include/Gamepad.hpp"
 
 
 //*************************
@@ -44,56 +44,56 @@
 
 //  色
 //  2018.08.09  作成
-#include "HDX/Include/Color.hpp"
+#include "Include/Color.hpp"
 
 //  2D画像
 //  2018.08.09  作成
 //  TODO:もっと簡単に描画出来るように
 //  TODO:バッチ処理
 //  2018.11.14  バッチ処理に変更
-#include "HDX/Include/Texture.hpp"
+#include "Include/Texture.hpp"
 
 //  3Dモデル
 //  2018.09.26  作成
 //  TODO:前バージョンからほとんど持ってきたので、色々改善
 //  2018.11.22  GeometricPrimitiveとSkinnedMeshを統合
-#include "HDX/Include/Model.hpp"
+#include "Include/Model.hpp"
 
 //  カメラ
 //  2018.11.21  作成
-#include "HDX/Include/Camera.hpp"
+#include "Include/Camera.hpp"
 
 //  レンダラー2D
 //  2018.10.28  作成
-#include "HDX/Include/Renderer2D.hpp"
+#include "Include/Renderer2D.hpp"
 
 //  レンダラー3D
 //  2018.11.21  作成
-#include "HDX/Include/Renderer3D.hpp"
+#include "Include/Renderer3D.hpp"
 
 //  ブレンドステート
 //  2018.10.29  作成
-#include "HDX/Include/BlendState.hpp"
+#include "Include/BlendState.hpp"
 
 //  サンプラーステート
 //  2018.11.06  作成
-#include "HDX/Include/SamplerState.hpp"
+#include "Include/SamplerState.hpp"
 
 //  ラスタライーザーステート
 //  2018.11.07  作成
-#include "HDX/Include/RasterizerState.hpp"
+#include "Include/RasterizerState.hpp"
 
 //  デプスステンシルステート
 //  2018.11.07  作成
-#include "HDX/Include/DepthStencilState.hpp"
+#include "Include/DepthStencilState.hpp"
 
 //  コンスタントバッファ
 //  2018.11.21  作成
-#include "HDX/Include/ConstantBuffer.hpp"
+#include "Include/ConstantBuffer.hpp"
 
 //  レンダーターゲット
 //  2018.11.07  作成
-#include "HDX/Include/RenderTarget.hpp"
+#include "Include/RenderTarget.hpp"
 
 
 //*************************
@@ -101,19 +101,19 @@
 //*************************
 
 //  コンスタントバッファ
-#include "HDX/Include/ConstantBuffer.hpp"
+#include "Include/ConstantBuffer.hpp"
 
 //  インプットレイアウト
 //  2018.10.04  作成
-#include "HDX/Include/InputElementDesc.hpp"
+#include "Include/InputElementDesc.hpp"
 
 //  頂点シェーダー
 //  2018.09.30  作成
-#include "HDX/Include/VertexShader.hpp"
+#include "Include/VertexShader.hpp"
 
 //  ピクセルシェーダー
 //  2018.09.30  作成
-#include "HDX/Include/PixelShader.hpp"
+#include "Include/PixelShader.hpp"
 
 
 //*************************
@@ -124,7 +124,7 @@
 //  2018.09.02  作成
 //  TODO:前バージョンからほとんど持ってきたので、色々改善
 //  2018.11.24  管理クラス(ISound)作成
-#include "HDX/Include/Sound.hpp"
+#include "Include/Sound.hpp"
 
 
 //*************************
@@ -133,11 +133,11 @@
 
 //  数学定数
 //  2018.08.09  作成
-#include "HDX/Include/MathConstants.hpp"
+#include "Include/MathConstants.hpp"
 
 //  数学
 //  2018.08.09  作成
-#include "HDX/Include/Math.hpp"
+#include "Include/Math.hpp"
 
 
 //*************************
@@ -146,19 +146,19 @@
 
 //  float,int2つの型
 //  2018.08.09  作成
-#include "HDX/Include/Type2.hpp"
+#include "Include/Type2.hpp"
 
 //  float,int3つの型
 //  2018.08.09  作成
-#include "HDX/Include/Type3.hpp"
+#include "Include/Type3.hpp"
 
 //  角度自動正規化クラス
 //  2018.08.09  作成
-#include "HDX/Include/Angle.hpp"
+#include "Include/Angle.hpp"
 
 //  行列クラス
 //  2018.11.19  作成
-#include "HDX/Include/Matrix.hpp"
+#include "Include/Matrix.hpp"
 
 
 //*************************
@@ -167,28 +167,28 @@
 
 //  ランダム(Xorshift)クラス
 //  2018.09.23  作成
-#include "HDX/Include/Random.hpp"
+#include "Include/Random.hpp"
 
 //  コピー禁止クラス
 //  2018.07.31  作成
-#include "HDX/Include/NonCopy.hpp"
+#include "Include/NonCopy.hpp"
 
 //  シングルトン(デザインパターン)
 //  2018.07.31  作成
-#include "HDX/Include/Singleton.hpp"
+#include "Include/Singleton.hpp"
 
 //  イージング
 //  2018.09.02  作成
-#include "HDX/Include/Easing.hpp"
+#include "Include/Easing.hpp"
 
 //  マクロ
 //  2018.09.03  作成
-#include "HDX/Include/Macro.hpp"
+#include "Include/Macro.hpp"
 
 //  GUI
 //  2018.11.18  作成
 //  TODO:サンプルのままなので使い勝手向上
-#include "HDX/Include/GUI.hpp"
+#include "Include/GUI.hpp"
 
 //--------------------------------------------------
 

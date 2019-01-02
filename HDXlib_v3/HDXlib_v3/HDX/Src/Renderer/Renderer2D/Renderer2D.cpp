@@ -1,18 +1,18 @@
-#include "../../../Include/Renderer2D.hpp"
+#include "Include/Renderer2D.hpp"
 
-#include "../../Engine.hpp"
-#include "../../System/ISystem.hpp"
-#include "../../Renderer/Renderer2D/IRenderer2D.hpp"
-#include "../../VertexShader/IVertexShader.hpp"
-#include "../../PixelShader/IPixelShader.hpp"
+#include "Src/Engine.hpp"
+#include "Src/System/ISystem.hpp"
+#include "Src/Renderer/Renderer2D/IRenderer2D.hpp"
+#include "Src/VertexShader/IVertexShader.hpp"
+#include "Src/PixelShader/IPixelShader.hpp"
 
-#include "../../../Include/VertexShader.hpp"
-#include "../../../Include/BlendState.hpp"
-#include "../../../Include/SamplerState.hpp"
-#include "../../../Include/Texture.hpp"
-#include "../../../Include/RasterizerState.hpp"
+#include "Include/VertexShader.hpp"
+#include "Include/BlendState.hpp"
+#include "Include/SamplerState.hpp"
+#include "Include/Texture.hpp"
+#include "Include/RasterizerState.hpp"
 
-#include "../../../Include/Constants.hpp"
+#include "Include/Constants.hpp"
 
 #include <assert.h>
 

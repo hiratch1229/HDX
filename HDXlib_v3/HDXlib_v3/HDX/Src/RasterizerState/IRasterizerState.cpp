@@ -1,10 +1,10 @@
-#include "IRasterizerState.hpp"
+#include "Src/RasterizerState/IRasterizerState.hpp"
 
-#include "../Engine.hpp"
-#include "../NumberMap.hpp"
-#include "../Misc.hpp"
+#include "Src/Engine.hpp"
+#include "Src/NumberMap.hpp"
+#include "Src/Misc.hpp"
 
-#include "../../Include/RasterizerState.hpp"
+#include "Include/RasterizerState.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>

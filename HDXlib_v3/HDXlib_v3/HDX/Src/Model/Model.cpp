@@ -1,8 +1,8 @@
-#include "../../Include/Model.hpp"
+#include "Include/Model.hpp"
 
-#include "../Engine.hpp"
-#include "../Model/IModel.hpp"
-#include "../Renderer/Renderer3D/IRenderer3D.hpp"
+#include "Src/Engine.hpp"
+#include "Src/Model/IModel.hpp"
+#include "Src/Renderer/Renderer3D/IRenderer3D.hpp"
 
 namespace hdx
 {

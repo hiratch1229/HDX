@@ -1,8 +1,8 @@
-#include "IPixelShader.hpp"
+#include "Src/PixelShader/IPixelShader.hpp"
 
-#include "../Engine.hpp"
-#include "../NumberMap.hpp"
-#include "../Misc.hpp"
+#include "Src/Engine.hpp"
+#include "Src/NumberMap.hpp"
+#include "Src/Misc.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>

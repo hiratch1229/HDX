@@ -1,6 +1,6 @@
 #include "IRenderer.hpp"
 
-#include "../../Include/Constants.hpp"
+#include "Include/Constants.hpp"
 
 #include <d3d11.h>
 

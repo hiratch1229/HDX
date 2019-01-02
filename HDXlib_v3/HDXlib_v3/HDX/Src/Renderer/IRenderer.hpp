@@ -1,6 +1,6 @@
 #pragma once
-#include "../../Include/Type2.hpp"
-#include "../../Include/Types.hpp"
+#include "Include/Type2.hpp"
+#include "Include/Types.hpp"
 
 #include <d3d11.h>
 

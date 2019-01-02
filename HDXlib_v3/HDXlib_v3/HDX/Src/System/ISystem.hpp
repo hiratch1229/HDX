@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Include/Types.hpp"
+#include "Include/Types.hpp"
 
 namespace hdx
 {
@@ -15,6 +15,7 @@ public:
   int GetWindowHeight()const;
   const hdx::int2& GetWindowSize()const;
   float GetDeltaTime()const;
+  int GetFPS()const;
 public:
   void SetWindowLeftTopPos(int _LeftPos, int _TopPos);
   void SetWindowLeftTopPos(const hdx::int2& _LeftTopPos);

@@ -1,9 +1,9 @@
 #pragma once
-#include "../../../Include/Matrix.hpp"
+#include "Include/Matrix.hpp"
 
-#include "../IRenderer.hpp"
+#include "Src/Renderer/IRenderer.hpp"
 
-#include "../../../Include/ConstantBuffer.hpp"
+#include "Include/ConstantBuffer.hpp"
 
 namespace hdx
 {

@@ -1,6 +1,6 @@
 #pragma once
-#include "../../../Include/Type2.hpp"
-#include "../InputState.hpp"
+#include "Include/Type2.hpp"
+#include "Src/Input/InputState.hpp"
 
 //  É}ÉEÉX
 class IMouse

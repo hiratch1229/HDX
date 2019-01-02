@@ -1,8 +1,8 @@
-#include "../../Include/VertexShader.hpp"
-#include "../../Include/InputElementDesc.hpp"
+#include "Include/VertexShader.hpp"
+#include "Include/InputElementDesc.hpp"
 
-#include "../Engine.hpp"
-#include "../VertexShader/IVertexShader.hpp"
+#include "Src/Engine.hpp"
+#include "Src/VertexShader/IVertexShader.hpp"
 
 namespace hdx
 {

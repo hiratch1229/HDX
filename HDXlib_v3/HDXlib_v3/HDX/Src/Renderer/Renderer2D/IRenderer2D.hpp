@@ -1,5 +1,5 @@
 #pragma once
-#include "../IRenderer.hpp"
+#include "Src/Renderer/IRenderer.hpp"
 
 namespace hdx
 {

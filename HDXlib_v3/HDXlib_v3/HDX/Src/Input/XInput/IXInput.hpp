@@ -1,9 +1,9 @@
 #pragma once
-#include "../../../Include/Button.hpp"
-#include "../../../Include/Type2.hpp"
-#include "../../../Include/Constants.hpp"
+#include "Include/Button.hpp"
+#include "Include/Type2.hpp"
+#include "Include/Constants.hpp"
 
-#include "../InputState.hpp"
+#include "Src/Input/InputState.hpp"
 
 constexpr int kXInputButtonsCode[] = {
   0x0001, //  XINPUT_GAMEPAD_DPAD_UP

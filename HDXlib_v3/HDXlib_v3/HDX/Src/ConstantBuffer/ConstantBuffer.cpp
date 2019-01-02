@@ -1,7 +1,7 @@
-#include "../../Include/ConstantBuffer.hpp"
+#include "Include/ConstantBuffer.hpp"
 
-#include "../Engine.hpp"
-#include "IConstantBuffer.hpp"
+#include "Src/Engine.hpp"
+#include "Src/ConstantBuffer/IConstantBuffer.hpp"
 
 namespace hdx
 {

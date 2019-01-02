@@ -5,14 +5,13 @@
 namespace hdx
 {
   struct int2;
-
+  
   //  入力系
   namespace Input
   {
     //  マウス
-    class Mouse
+    namespace Mouse
     {
-    public:
       //  使うボタン
       enum Buttons
       {
@@ -22,45 +21,34 @@ namespace hdx
         X1,
         X2
       };
-    public:
-      //  マウスを作成
-      constexpr Mouse()
-        : ButtonLeft(InputDevice::Mouse, Buttons::Left),
-        ButtonCenter(InputDevice::Mouse, Buttons::Middle),
-        ButtonRight(InputDevice::Mouse, Buttons::Right),
-        ButtonX1(InputDevice::Mouse, Buttons::X1),
-        ButtonX2(InputDevice::Mouse, Buttons::X2)
-      {
 
-      }
-    public:
       //  左 ボタン
-      const Button ButtonLeft;
+      constexpr Button ButtonLeft{ InputDevice::Mouse, Buttons::Left };
       //  中(ホイール) ボタン
-      const Button ButtonCenter;
+      constexpr Button ButtonCenter{ InputDevice::Mouse, Buttons::Middle };
       //  右 ボタン
-      const Button ButtonRight;
+      constexpr Button ButtonRight{ InputDevice::Mouse, Buttons::Right };
       //  X1(戻る) ボタン
-      const Button ButtonX1;
+      constexpr Button ButtonX1{ InputDevice::Mouse, Buttons::X1 };
       //  X2(進む) ボタン
-      const Button ButtonX2;
-    public:
+      constexpr Button ButtonX2{ InputDevice::Mouse, Buttons::X2 };
+
       //  座標を取得
-      const int2& GetPos()const;
+      const int2& GetPos();
       //  座標を変更
-      void SetPos(const int2& _Pos)const;
+      void SetPos(const int2& _Pos);
       //  移動量を取得
-      const int2& GetDelta()const;
+      const int2& GetDelta();
       //  ホイール移動量を取得
       //  正の数：奥,負の数：手前
-      int GetWheel()const;
-    public:
+      int GetWheel();
+
       //  何かのボタンが押されていればtrueを返す
-      bool AnyButtonPress()const;
+      bool AnyButtonPress();
       //  何かのボタンが押されたならtrueを返す
-      bool AnyButtonPressed()const;
+      bool AnyButtonPressed();
       //  何かのボタンが離されたならtrueを返す
-      bool AnyButtonReleased()const;
-    };
+      bool AnyButtonReleased();
+    }
   }
 }

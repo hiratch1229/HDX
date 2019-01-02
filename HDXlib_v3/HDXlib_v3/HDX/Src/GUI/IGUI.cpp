@@ -1,33 +1,8 @@
-#include "IGUI.hpp"
+#include "Src/GUI/IGUI.hpp"
 
-#include "ImGui/imgui.h"
-#include "ImGui/imgui_impl_dx11.h"
-#include "ImGui/imgui_impl_win32.h"
-
-//IGUI::IGUI()
-//{
-//  Engine::Start("GUI");
-//
-//  //hdx::InputElementDesc InputElementDescs[] =
-//  //{
-//  //  { "POSITION", 0, hdx::Format::R32G32_FLOAT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
-//  //  { "COLOR", 0, hdx::Format::R32G32B32A32_FLOAT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
-//  //  { "TEXCOORD", 0, hdx::Format::R32G32_FLOAT, 0, hdx::AppendAlignedElement, hdx::InputClassification::PER_VERTEX_DATA, 0 },
-//  //};
-//
-//  //VertexShader = { "GUIVS.cso", InputElementDescs, ARRAY_SIZE(InputElementDescs) };
-//  //PixelShader = { "GUIPS.cso" };
-//
-//  //IMGUI_CHECKVERSION();
-//  //ImGui::CreateContext();
-//  //ImGuiIO& IO = ImGui::GetIO();
-//  //IO.ImeWindowHandle = ::GetActiveWindow();
-//
-//  ////  Setup Style
-//  //ImGui::StyleColorsDark();
-//
-//  Engine::End("GUI");
-//}
+#include "Src/GUI/ImGui/imgui.h"
+#include "Src/GUI/ImGui/imgui_impl_dx11.h"
+#include "Src/GUI/ImGui/imgui_impl_win32.h"
 
 void IGUI::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, const HWND& _hWnd)
 {

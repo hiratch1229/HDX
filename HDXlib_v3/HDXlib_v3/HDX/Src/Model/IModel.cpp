@@ -1,15 +1,15 @@
-#include "IModel.hpp"
+#include "Src/Model/IModel.hpp"
 
-#include "../Engine.hpp"
-#include "../System/ISystem.hpp"
-#include "../Texture/ITexture.hpp"
-#include "../NumberMap.hpp"
-#include "../Misc.hpp"
+#include "Src/Engine.hpp"
+#include "Src/System/ISystem.hpp"
+#include "Src/Texture/ITexture.hpp"
+#include "Src/NumberMap.hpp"
+#include "Src/Misc.hpp"
 
-#include "../../Include/Model.hpp"
-#include "../../Include/Texture.hpp"
-#include "../../Include/Matrix.hpp"
-#include "../../Include/Constants.hpp"
+#include "Include/Model.hpp"
+#include "Include/Texture.hpp"
+#include "Include/Matrix.hpp"
+#include "Include/Constants.hpp"
 
 #include <fbxsdk.h>
 #include <assert.h>

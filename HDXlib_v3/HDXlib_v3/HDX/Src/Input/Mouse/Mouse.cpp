@@ -1,7 +1,7 @@
-#include "../../../Include/Mouse.hpp"
+#include "Include/Mouse.hpp"
 
-#include "../../Engine.hpp"
-#include "../../Input/Mouse/IMouse.hpp"
+#include "Src/Engine.hpp"
+#include "Src/Input/Mouse/IMouse.hpp"
 
 //  ライブラリ
 namespace hdx
@@ -9,46 +9,50 @@ namespace hdx
   //  入力系
   namespace Input
   {
-    //  座標を取得
-    const int2& Mouse::GetPos()const
+    //  マウス
+    namespace Mouse
     {
-      return Engine::Get<IMouse>()->GetPos();
-    }
+      //  座標を取得
+      const int2& GetPos()
+      {
+        return Engine::Get<IMouse>()->GetPos();
+      }
 
-    //  座標を変更
-    void Mouse::SetPos(const int2& _Pos)const
-    {
-      Engine::Get<IMouse>()->SetPos(_Pos);
-    }
+      //  座標を変更
+      void SetPos(const int2& _Pos)
+      {
+        Engine::Get<IMouse>()->SetPos(_Pos);
+      }
 
-    //  移動量を取得
-    const int2& Mouse::GetDelta()const
-    {
-      return Engine::Get<IMouse>()->GetDelta();
-    }
+      //  移動量を取得
+      const int2& GetDelta()
+      {
+        return Engine::Get<IMouse>()->GetDelta();
+      }
 
-    //  ホイール移動量を取得
-    int Mouse::GetWheel()const
-    {
-      return Engine::Get<IMouse>()->GetWheel();
-    }
+      //  ホイール移動量を取得
+      int GetWheel()
+      {
+        return Engine::Get<IMouse>()->GetWheel();
+      }
 
-    //  何かのボタンが押されていればtrueを返す
-    bool Mouse::AnyButtonPress()const
-    {
-      return Engine::Get<IMouse>()->AnyButtonPress();
-    }
+      //  何かのボタンが押されていればtrueを返す
+      bool AnyButtonPress()
+      {
+        return Engine::Get<IMouse>()->AnyButtonPress();
+      }
 
-    //  何かのボタンが押されたならtrueを返す
-    bool Mouse::AnyButtonPressed()const
-    {
-      return Engine::Get<IMouse>()->AnyButtonPressed();
-    }
+      //  何かのボタンが押されたならtrueを返す
+      bool AnyButtonPressed()
+      {
+        return Engine::Get<IMouse>()->AnyButtonPressed();
+      }
 
-    //  何かのボタンが離されたならtrueを返す
-    bool Mouse::AnyButtonReleased()const
-    {
-      return Engine::Get<IMouse>()->AnyButtonReleased();
+      //  何かのボタンが離されたならtrueを返す
+      bool AnyButtonReleased()
+      {
+        return Engine::Get<IMouse>()->AnyButtonReleased();
+      }
     }
   }
 }

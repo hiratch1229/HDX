@@ -1,9 +1,9 @@
-#include "ISound.hpp"
+#include "Src/Sound/ISound.hpp"
 
-#include "../NumberMap.hpp"
-#include "../Misc.hpp"
+#include "Src/NumberMap.hpp"
+#include "Src/Misc.hpp"
 
-#include "../../Include/Constants.hpp"
+#include "Include/Constants.hpp"
 
 #include <d3d11.h>
 #include <Mfplay.h>

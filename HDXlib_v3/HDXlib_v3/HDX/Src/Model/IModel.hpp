@@ -1,9 +1,9 @@
 #pragma once
-#include "../../Include/Type2.hpp"
-#include "../../Include/Type3.hpp"
-#include "../../Include/Types.hpp"
-#include "../../Include/Color.hpp"
-#include "../../Include/Constants.hpp"
+#include "Include/Type2.hpp"
+#include "Include/Type3.hpp"
+#include "Include/Types.hpp"
+#include "Include/Color.hpp"
+#include "Include/Constants.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>

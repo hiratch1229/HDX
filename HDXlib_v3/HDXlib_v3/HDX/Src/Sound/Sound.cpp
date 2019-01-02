@@ -1,9 +1,9 @@
-#include "../../Include/Sound.hpp"
+#include "Include/Sound.hpp"
 
-#include "../Engine.hpp"
-#include "../Sound/ISound.hpp"
+#include "Src/Engine.hpp"
+#include "Src/Sound/ISound.hpp"
 
-#include "../../Include/Constants.hpp"
+#include "Include/Constants.hpp"
 
 namespace hdx
 {

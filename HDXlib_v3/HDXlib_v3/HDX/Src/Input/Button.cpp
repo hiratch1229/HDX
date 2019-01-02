@@ -1,10 +1,10 @@
-#include "../../Include/Button.hpp"
+#include "Include/Button.hpp"
 
-#include "../Engine.hpp"
-#include "../Input/Keyboard/IKeyboard.hpp"
-#include "../Input/Mouse/IMouse.hpp"
-#include "../Input/XInput/IXInput.hpp"
-#include "../Input/Gamepad/IGamepad.hpp"
+#include "Src/Engine.hpp"
+#include "Src/Input/Keyboard/IKeyboard.hpp"
+#include "Src/Input/Mouse/IMouse.hpp"
+#include "Src/Input/XInput/IXInput.hpp"
+#include "Src/Input/Gamepad/IGamepad.hpp"
 
 namespace hdx
 {

@@ -1,4 +1,4 @@
-#include "IKeyboard.hpp"
+#include "Src/Input/Keyboard/IKeyboard.hpp"
 
 #include <Windows.h>
 

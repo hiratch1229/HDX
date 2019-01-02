@@ -103,16 +103,25 @@ namespace hdx
     }
 
     //  _Num0と_Num1を_Epsilonの誤差を考慮した比較
-    bool isEqual(float _Num0, float _Num1, float _Epsilon = 1.192092896e-07F);
-
-    //  絶対値を返します
-    float GetAbsoluteValue(float _Num);
-    //  絶対値を返します
-    inline int GetAbsoluteValue(int _Num)
+    inline constexpr bool isEqual(float _V0, float _V1, float _Epsilon = 1.192092896e-07F)
     {
-      return static_cast<int>(GetAbsoluteValue(static_cast<float>(_Num)));
+      return ((_V1 - _Epsilon) < _V0) && (_V0 < (_V1 + _Epsilon));
     }
 
+    //  絶対値を返します
+    template <class T>
+    inline constexpr T GetAbsoluteValue(T _Num)
+    {
+      return (_Num < static_cast<T>(0)) ? -_Num : _Num;
+    }
+
+    //  値を範囲内に収めます
+    template <class T>
+    inline constexpr const T& Clamp(const T& _V, const T& _Low, const T& _High)
+    {
+      return (_Low <= _V && _V <= _High) ? _V : (_V < _Low) ? _Low : _High;
+    }
+    
     //  二次関数(上に凸)
     //  _Maxから_Minの範囲で動きます
     float UpQuadraticFunction(float _Time, float _TotalTime, float _Max = 1.0f, float _Min = 0.0f);

@@ -1,10 +1,10 @@
-#include "../../Include/System.hpp"
+#include "Include/System.hpp"
 
-#include "../Engine.hpp"
-#include "../System/ISystem.hpp"
+#include "Src/Engine.hpp"
+#include "Src/System/ISystem.hpp"
 
-#include "../../Include/Type2.hpp"
-#include "../../Include/Constants.hpp"
+#include "Include/Type2.hpp"
+#include "Include/Constants.hpp"
 
 #include <Windows.h>
 
@@ -40,9 +40,16 @@ namespace hdx
     return Engine::Get<ISystem>()->GetWindowSize();
   }
 
+  //  経過時間を取得
   float System::GetDeltaTime()
   {
     return Engine::Get<ISystem>()->GetDeltaTime();
+  }
+
+  //  現在のフレームレートを取得
+  int System::GetFPS()
+  {
+    return Engine::Get<ISystem>()->GetFPS();
   }
 
   //  ウィンドウの設定

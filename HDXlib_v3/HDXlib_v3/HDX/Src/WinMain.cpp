@@ -1,4 +1,4 @@
-#include "Engine.hpp"
+#include "Src/Engine.hpp"
 
 #include <Windows.h>
 #include <crtdbg.h>
@@ -6,7 +6,7 @@
 #include <time.h>
 #include <locale>
 
-#include "Resource.hpp"
+#include "Src/Resource.hpp"
 
 //  メッセージプロシージャのプロトタイプ宣言
 LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

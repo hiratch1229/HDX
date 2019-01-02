@@ -1,6 +1,6 @@
-#include "../../Include/Easing.hpp"
+#include "Include/Easing.hpp"
 
-#include "../../Include/MathConstants.hpp"
+#include "Include/MathConstants.hpp"
 
 #include <cmath>
 

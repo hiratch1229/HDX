@@ -1,6 +1,6 @@
-#include "../../Include/Math.hpp"
+#include "Include/Math.hpp"
 
-#include "../../Include/Angle.hpp"
+#include "Include/Angle.hpp"
 
 #include <math.h>
 
@@ -31,18 +31,6 @@ namespace hdx
       const float2 Vector{ _Target.X - _Center.X, _Target.Y - _Center.Y };
 
       return float2{ Vector.X*cosf(_Radian.GetValue()) - Vector.Y*sinf(_Radian.GetValue()),Vector.Y*cosf(_Radian.GetValue()) + Vector.X*sinf(_Radian.GetValue()) } +_Center;
-    }
-
-    //  ê‚ëŒílÇï‘ÇµÇ‹Ç∑
-    float GetAbsoluteValue(float _Num)
-    {
-      return (_Num < 0.0f) ? -_Num : _Num;
-    }
-
-    //  _Num0Ç∆_Num1Ç_EpsilonÇÃåÎç∑Ççló∂ÇµÇΩî‰är
-    bool isEqual(float _Num0, float _Num1, float _Epsilon)
-    {
-      return (((_Num1 - _Epsilon) < _Num0) && (_Num0 < (_Num1 + _Epsilon)));
     }
 
     //  ìÒéüä÷êî(è„Ç…ì )

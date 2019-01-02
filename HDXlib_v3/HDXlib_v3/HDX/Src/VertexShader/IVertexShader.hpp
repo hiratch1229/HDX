@@ -1,6 +1,6 @@
 #pragma once
-#include "../../Include/VertexShader.hpp"
-#include "../../Include/Types.hpp"
+#include "Include/VertexShader.hpp"
+#include "Include/Types.hpp"
 
 struct ID3D11Device;
 struct ID3D11InputLayout;

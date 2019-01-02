@@ -1,9 +1,9 @@
-#include "../../../Include/Gamepad.hpp"
+#include "Include/Gamepad.hpp"
 
-#include "../../Engine.hpp"
-#include "../../Input/Gamepad/IGamepad.hpp"
+#include "Src/Engine.hpp"
+#include "Src/Input/Gamepad/IGamepad.hpp"
 
-#include "../../../Include/Constants.hpp"
+#include "Include/Constants.hpp"
 
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx

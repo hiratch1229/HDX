@@ -1,5 +1,5 @@
 #pragma once
-#include "../InputState.hpp"
+#include "Src/Input/InputState.hpp"
 
 //  キーボード
 class IKeyboard

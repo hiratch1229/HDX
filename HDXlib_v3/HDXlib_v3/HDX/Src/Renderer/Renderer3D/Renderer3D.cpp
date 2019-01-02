@@ -1,19 +1,19 @@
-#include "../../../Include/Renderer3D.hpp"
+#include "Include/Renderer3D.hpp"
 
-#include "../../Engine.hpp"
-#include "../../System/ISystem.hpp"
-#include "../../Renderer/Renderer3D/IRenderer3D.hpp"
-#include "../../VertexShader/IVertexShader.hpp"
-#include "../../PixelShader/IPixelShader.hpp"
+#include "Src/Engine.hpp"
+#include "Src/System/ISystem.hpp"
+#include "Src/Renderer/Renderer3D/IRenderer3D.hpp"
+#include "Src/VertexShader/IVertexShader.hpp"
+#include "Src/PixelShader/IPixelShader.hpp"
 
-#include "../../../Include/VertexShader.hpp"
-#include "../../../Include/BlendState.hpp"
-#include "../../../Include/SamplerState.hpp"
-#include "../../../Include/Texture.hpp"
-#include "../../../Include/RasterizerState.hpp"
-#include "../../../Include/DepthStencilState.hpp"
+#include "Include/VertexShader.hpp"
+#include "Include/BlendState.hpp"
+#include "Include/SamplerState.hpp"
+#include "Include/Texture.hpp"
+#include "Include/RasterizerState.hpp"
+#include "Include/DepthStencilState.hpp"
 
-#include "../../../Include/Constants.hpp"
+#include "Include/Constants.hpp"
 
 #include <assert.h>
 

@@ -1,9 +1,9 @@
 #include "IVertexShader.hpp"
 
-#include "../NumberMap.hpp"
-#include "../Misc.hpp"
+#include "Src/NumberMap.hpp"
+#include "Src/Misc.hpp"
 
-#include "../../Include/InputElementDesc.hpp"
+#include "Include/InputElementDesc.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>

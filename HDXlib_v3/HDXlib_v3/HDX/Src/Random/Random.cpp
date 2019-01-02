@@ -1,7 +1,7 @@
-#include "../../Include/Random.hpp"
+#include "Include/Random.hpp"
 
-#include "../Engine.hpp"
-#include "../Random/IRandom.hpp"
+#include "Src/Engine.hpp"
+#include "Src/Random/IRandom.hpp"
 
 #include <climits>
 
