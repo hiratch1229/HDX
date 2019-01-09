@@ -9,6 +9,7 @@
 #include "Src/VertexShader/IVertexShader.hpp"
 #include "Src/PixelShader/IPixelShader.hpp"
 #include "Src/RenderTarget/IRenderTarget.hpp"
+#include "Src/Renderer/Renderer3D/IRenderer3D.hpp"
 #include "Src/Misc.hpp"
 
 #include "Include/System.hpp"
@@ -144,6 +145,7 @@ void IRenderer2D::Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeft
 {
   if (!Instances || CurrentTextures[0] != _Texture)
   {
+    Engine::Get<IRenderer3D>()->End();
     End();
     Begin(_Texture);
   }
@@ -219,7 +221,7 @@ void IRenderer2D::Begin(const hdx::Texture& _Texture)
 
   //  頂点バッファオブジェクトを書き換え
   D3D11_MAPPED_SUBRESOURCE MappedSubresorce;
-  Map(pInstanceBuffer.Get(), &MappedSubresorce);
+  IRenderer::Map(pInstanceBuffer.Get(), &MappedSubresorce);
   Instances = static_cast<Instance*>(MappedSubresorce.pData);
 }
 
@@ -227,8 +229,8 @@ void IRenderer2D::End()
 {
   if (!Instances)return;
 
-  Unmap(pInstanceBuffer.Get());
-  DrawInstanced(4, Count, 0, 0);
+  IRenderer::Unmap(pInstanceBuffer.Get());
+  IRenderer::DrawInstanced(4, Count, 0, 0);
 
   CurrentTextures[0] = hdx::Texture();
   Count = 0;

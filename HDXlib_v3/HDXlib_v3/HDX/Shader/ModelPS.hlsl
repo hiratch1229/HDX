@@ -1,9 +1,9 @@
 #include "Model.hlsli"
 
-Texture2D diffuse_map : register(t0);
-SamplerState diffuse_map_sampler_state : register(s0);
+Texture2D DiffuseMap : register(t0);
+SamplerState DiffuseMapSamplerState : register(s0);
 
-float4 main(VS_OUT pin) : SV_TARGET
+float4 main(VS_OUT In) : SV_TARGET
 {
-  return diffuse_map.Sample(diffuse_map_sampler_state, pin.texcoord) * pin.color;
+    return DiffuseMap.Sample(DiffuseMapSamplerState, In.Texcoord) * In.Color;
 }

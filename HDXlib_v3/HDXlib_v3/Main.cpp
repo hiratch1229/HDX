@@ -6,8 +6,6 @@ void Main()
   hdx::System::ShowCursor(true);
   hdx::System::SetTitle("HDXlib");
 
-  hdx::Texture A{ "DATA/exp.png" };
-
   hdx::Model Models[] = {
     //{ hdx::Cube{} },
     //{ "DATA/Mr.Incredible/Mr.Incredible.obj" },
@@ -17,43 +15,39 @@ void Main()
     { "DATA/danbo_fbx/danbo_atk.fbx" },
   };
 
-  constexpr hdx::Input::Gamepad Gampads[3] = { 0, 1, 2 };
-  constexpr float Scale = 1.0f;
+  constexpr float Scale = 0.01f;
 
   hdx::Camera Camera;
-  hdx::RenderTarget RenderTarget(hdx::System::GetWindowSize() * 5);
-  hdx::ConstantBuffer<hdx::Camera> C;
 
-  hdx::Renderer3D::SetConstantBuffer(C, 1);
-
+  int MaxNum = 100;
   int Num = 1;
   hdx::float3 Rotation;
+  hdx::Matrix WorldMatrix;
+  hdx::MotionData MotionData;
+
+  const hdx::Matrix S = DirectX::XMMatrixScaling(Scale, Scale, Scale);
 
   while (hdx::System::Update())
   {
     ImGui::Begin("DeltaTime");
     ImGui::Text("DeltaTime %f", hdx::System::GetDeltaTime());
     ImGui::Text("FPS:%d", hdx::System::GetFPS());
-    ImGui::SliderInt("ëÃ", &Num, 1, 100);
+
+    ImGui::InputInt("ç≈ëÂêî", &MaxNum);
+    ImGui::SliderInt("ëÃ", &Num, 1, MaxNum);
     ImGui::End();
 
-    RenderTarget.Clear();
-    hdx::Renderer3D::SetRenderTarget(RenderTarget);
+    //Rotation.X += hdx::System::GetDeltaTime()*1.0f;
+    //Rotation.Y += hdx::System::GetDeltaTime()*0.5f;
 
-    Rotation.X += hdx::System::GetDeltaTime()*1.0f;
-    Rotation.Y += hdx::System::GetDeltaTime()*0.5f;
-
-    auto WorldMatrix = DirectX::XMMatrixScaling(Scale, Scale, Scale)
+    WorldMatrix = S
       *DirectX::XMMatrixRotationRollPitchYaw(Rotation.X, Rotation.Y, 0.0f)
       *DirectX::XMMatrixTranslation(0.0f, 0.0f, -5.0f);
 
     for (int i = 0; i < Num; ++i)
-      Models[0].Draw(WorldMatrix);
-
-    hdx::Renderer3D::RestoreRenderTarget();
-
-    RenderTarget.Draw();
-
-    A.Draw();
+    {
+      Models[0].Update(hdx::System::GetDeltaTime(), &MotionData);
+      Models[0].Draw(WorldMatrix, MotionData);
+    }
   }
 }

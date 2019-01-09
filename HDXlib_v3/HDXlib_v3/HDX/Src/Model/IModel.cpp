@@ -23,16 +23,6 @@ namespace
   //  区切り文字
   constexpr char kDelimiters[] = { '\\', '/' };
 
-  struct ConstantBuffer
-  {
-    DirectX::XMFLOAT4X4 WorldViewProjection;  //  ワールド・ビュー・プロジェクション合成行列
-    DirectX::XMFLOAT4X4 World;                //  ワールド変換行列
-    hdx::ColorF MaterialColor;                //  材質色
-    DirectX::XMFLOAT4 LightDirection;         //  ライト進行方向
-
-    DirectX::XMFLOAT4X4 BoneTransforms[32];
-  };
-
   fbxsdk::FbxManager* pManager;
   fbxsdk::FbxImporter* pImporter;
   ID3D11Device* pDevice;

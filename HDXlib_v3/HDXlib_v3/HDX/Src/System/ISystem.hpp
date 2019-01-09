@@ -1,12 +1,7 @@
 #pragma once
 #include "Include/Types.hpp"
-
-namespace hdx
-{
-  class BlendState;
-  struct int2;
-  struct ColorF;
-}
+#include "Include/Type2.hpp"
+#include "Include/Color.hpp"
 
 class ISystem
 {

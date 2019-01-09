@@ -1,4 +1,4 @@
-#include "ISystem.hpp"
+#include "Src/System/ISystem.hpp"
 
 #include "Src/Engine.hpp"
 #include "Src/BlendState/IBlendState.hpp"
@@ -21,10 +21,6 @@
 #include "Src/Random/IRandom.hpp"
 #include "Src/GUI/IGUI.hpp"
 #include "Src/Misc.hpp"
-
-#include "Include/System.hpp"
-#include "Include/Type2.hpp"
-#include "Include/Color.hpp"
 
 #include <Windows.h>
 #include <d3d11.h>
@@ -83,13 +79,6 @@ namespace
       //  現在のフレーム経過時間を取得
       const float DeltaTime = (CurrentTime.QuadPart - LastTime_.QuadPart) / static_cast<float>(FreqTime_.QuadPart);
 
-#if 1
-      //  経過時間が短いなら失敗
-      if (DeltaTime < FrameInterval_)
-      {
-        return false;
-      }
-#else
       //  経過時間が短いならスリープ
       if (DeltaTime < FrameInterval_)
       {
@@ -98,8 +87,7 @@ namespace
         Sleep(SleepTime);
         timeEndPeriod(1);
         return false;
-      }
-#endif
+    }
 
       static float TimeStamp = 0.0f, TimeTlapsed = 0.0f;
       static int Frames = 0;
@@ -118,18 +106,18 @@ namespace
 
       //  更新成功
       return true;
-    }
+  }
     void Reset()
     {
       //  現在の時間を取得
       LARGE_INTEGER CurrentTime;
       QueryPerformanceCounter(&CurrentTime);
 
-      CurrentFPS_ = 1.0f / FrameInterval_;
+      CurrentFPS_ = 60;
       DeltaTime_ = FrameInterval_;
       LastTime_ = CurrentTime;
     }
-  };
+};
   class Window
   {
   public:
@@ -376,7 +364,7 @@ void ISystem::Initialize()
   Engine::Get<ISamplerState>()->Initialize(pDevice.Get());
   Engine::Get<IVertexShader>()->Initialize(pDevice.Get());
   Engine::Get<IPixelShader>()->Initialize(pDevice.Get());
-  Engine::Get<IRenderer3D>()->Initialize();
+  Engine::Get<IRenderer3D>()->Initialize(pDevice.Get());
   Engine::Get<IGamepad>()->Initialize(pWindow->hWnd_);
   Engine::Get<ITexture>()->Initialize(pDevice.Get(), pSwapChain.Get());
   Engine::Get<ISound>()->Initialize(pWindow->hWnd_);
@@ -411,6 +399,9 @@ bool ISystem::Update()
 
   //  残っているスプライトの描画
   Engine::Get<IRenderer2D>()->End();
+
+  //  残っているモデルの描画
+  Engine::Get<IRenderer3D>()->End();
 
   //  GUIの更新と描画
   Engine::Get<IGUI>()->Update();

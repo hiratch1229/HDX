@@ -29,6 +29,7 @@ protected:
 protected:
   void DrawIndexed(UINT _IndexCount, UINT _StartIndexLocation, UINT _BaseVertexLocation);
   void DrawInstanced(UINT _VertexCountPerInstance, UINT _InstanceCount, UINT _StartVertexLocation, UINT _StartInstanceLocation);
+  void DrawIndexedInstanced(UINT _IndexCountPerInstance, UINT _InstanceCount, UINT _StartIndexLocation, INT _BaseVertexLocation, UINT _StartInstanceLocation);
 protected:
   void Initialize(ID3D11DeviceContext* _pImmediateContext, ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView);
 };

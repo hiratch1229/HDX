@@ -224,3 +224,8 @@ void IRenderer::DrawInstanced(UINT _VertexCountPerInstance, UINT _InstanceCount,
 {
   pImmediateContext->DrawInstanced(_VertexCountPerInstance, _InstanceCount, _StartVertexLocation, _StartInstanceLocation);
 }
+
+void IRenderer::DrawIndexedInstanced(UINT _IndexCountPerInstance, UINT _InstanceCount, UINT _StartIndexLocation, INT _BaseVertexLocation, UINT _StartInstanceLocation)
+{
+  pImmediateContext->DrawIndexedInstanced(_IndexCountPerInstance, _InstanceCount, _StartIndexLocation, _BaseVertexLocation, _StartInstanceLocation);
+}

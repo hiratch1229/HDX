@@ -27,5 +27,7 @@ namespace hdx
     constexpr UINT ModelAnimationSamplingRate = 24;
 
     constexpr UINT SpriteBatchMaxNum = 10000;
+
+    constexpr UINT ModelBatchMaxNum = 10000;
   }
 }

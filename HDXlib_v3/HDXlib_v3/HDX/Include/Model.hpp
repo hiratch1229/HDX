@@ -46,6 +46,8 @@ namespace hdx
   {
     float Frame;  //  フレーム数
     UINT Number;  //  モーション番号
+  public:
+    MotionData(float _Frame = 0.0f, UINT _Number = 0) :Frame(_Frame), Number(_Number) {}
   };
 
   class Model

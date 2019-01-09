@@ -34,10 +34,8 @@ namespace
 {
   struct CommonConstantBuffer
   {
-    DirectX::XMFLOAT4X4 WorldViewProjection;  //  ワールド・ビュー・プロジェクション合成行列
-    DirectX::XMFLOAT4X4 World;                //  ワールド変換行列
-    hdx::ColorF MaterialColor;                     //  材質色
-    DirectX::XMFLOAT4 LightDirection;         //  ライト進行方向
+    DirectX::XMFLOAT4X4 ViewProjectionMatrix;
+    DirectX::XMFLOAT4 LightDirection;     //  ライト進行方向
     DirectX::XMFLOAT4X4 BoneTransforms[hdx::Constants::MaxBoneNum];
   };
 
@@ -52,6 +50,17 @@ namespace
     {
 
     }
+  };
+
+  struct Instance
+  {
+    DirectX::XMFLOAT4X4 World;                //  ワールド変換行列
+    hdx::ColorF MaterialColor;                //  材質色
+  };
+
+  struct InstanceData
+  {
+    hdx::ColorF Color;
   };
 
   hdx::VertexShader CurrentVertexShader;
@@ -72,6 +81,13 @@ namespace
   ConstantBufferData VertexStageConstantBuffers[hdx::Constants::ConstantBufferMaxNum - 1];
   ConstantBufferData PixelStageConstantBuffers[hdx::Constants::ConstantBufferMaxNum - 1];
 
+  Microsoft::WRL::ComPtr<ID3D11Buffer> pInstanceBuffer;
+
+  Instance* Instances = nullptr;
+  std::vector<InstanceData> InstanceDatas;
+  hdx::Model CurrentModel;
+  hdx::MotionData MotionData;
+
   inline void CalcView()
   {
     ViewMatrix = DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(Camera.Pos.X, Camera.Pos.Y, Camera.Pos.Z, 1.0f),
@@ -90,108 +106,181 @@ IRenderer3D::IRenderer3D()
   TIMER_END("Renderer3D");
 }
 
-void IRenderer3D::Initialize()
+void IRenderer3D::Initialize(ID3D11Device* _pDevice)
 {
   CurrentVertexShader = Engine::Get<IVertexShader>()->CreateDefault3D();
   CurrentPixelShader = Engine::Get<IPixelShader>()->CreateDefault3D();
+
+  InstanceDatas.clear();
+
+  //  エラーチェック用
+  HRESULT hr = S_OK;
+
+  //  インスタンスバッファを作成
+  {
+    Instances = new Instance[hdx::Constants::ModelBatchMaxNum];
+
+    D3D11_BUFFER_DESC BufferDesc{};
+    {
+      BufferDesc.ByteWidth = sizeof(Instance) * hdx::Constants::SpriteBatchMaxNum;
+      BufferDesc.Usage = D3D11_USAGE_DYNAMIC;
+      BufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+      BufferDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+      BufferDesc.MiscFlags = 0;
+      BufferDesc.StructureByteStride = 0;
+    }
+
+    D3D11_SUBRESOURCE_DATA InitialData{};
+    {
+      InitialData.pSysMem = Instances;
+      InitialData.SysMemPitch = 0;
+      InitialData.SysMemSlicePitch = 0;
+    }
+
+    hr = _pDevice->CreateBuffer(&BufferDesc, &InitialData, pInstanceBuffer.GetAddressOf());
+    _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
+
+    delete[] Instances;
+    Instances = nullptr;
+  }
 
   CalcView();
 }
 
 void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::MotionData& _MotionData, const hdx::ColorF& _Color)
 {
-  Engine::Get<IRenderer2D>()->End();
-
-  const ModelData& ModelData = Engine::Get<IModel>()->GetModelData(_Model.GetID());
-
-  IRenderer::SetVertexShader(Engine::Get<IVertexShader>()->GetVertexShader(CurrentVertexShader));
-  IRenderer::SetInputLayout(Engine::Get<IVertexShader>()->GetInputLayout(CurrentVertexShader));
-  IRenderer::SetPixelShader(Engine::Get<IPixelShader>()->GetPixeShader(CurrentPixelShader));
-  IRenderer::SetBlendState(Engine::Get<IBlendState>()->GetBlendState(CurrentBlendState));
-  for (int i = 0; i < hdx::Constants::SamplerStateMaxNum; ++i)
+  if (!Instances || CurrentModel != _Model)
   {
-    IRenderer::SetSamplersState(Engine::Get<ISamplerState>()->GetSamplerState(CurrentSamplerStatus[i]), i);
+    MotionData = _MotionData;
+
+    Engine::Get<IRenderer2D>()->End();
+    End();
+    Begin(_Model);
   }
-  IRenderer::SetRasterizerState(Engine::Get<IRasterizerState>()->GetRasterizerState(CurrentRasterizerState));
-  IRenderer::SetDepthStencilState(Engine::Get<IDepthStencilState>()->GetDepthStencilState(CurrentDepthStencilState));
-  for (int i = 1; i < hdx::Constants::TextureMaxNum; ++i)
+
+  Instance& Instance = Instances[InstanceDatas.size()];
+  DirectX::XMStoreFloat4x4(&Instance.World, _WorldMatrix);
+  InstanceDatas.push_back({ _Color });
+
+  if (InstanceDatas.size() >= hdx::Constants::ModelBatchMaxNum || _MotionData.Number != 0 || _MotionData.Frame != 0.0f)
   {
-    IRenderer::SetShaderResouceView(Engine::Get<ITexture>()->GetShaderResourceView(CurrentTextures[i - 1].GetID()), i);
+    End();
+    Begin(_Model);
   }
-  IRenderer::SetRenderTarget(Engine::Get<IRenderTarget>()->GetRenderTargetView(CurrentRenderTarget), Engine::Get<IRenderTarget>()->GetDepthStencilView(CurrentRenderTarget));
-  IRenderer::SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-  for (int i = 1; i < hdx::Constants::ConstantBufferMaxNum; ++i)
+}
+
+void IRenderer3D::Begin(const hdx::Model& _Model)
+{
+  CurrentModel = _Model;
+
+  //  GPUにセット
   {
-    ConstantBufferData& ConstantBuffer = PixelStageConstantBuffers[i - 1];
+    DirectX::XMStoreFloat4x4(&ConstantBuffer.Get().ViewProjectionMatrix, ViewMatrix*ProjectionMatrix);
 
-    if (ConstantBuffer.Size == 0)continue;
+    IRenderer::SetVertexBuffer(pInstanceBuffer.GetAddressOf(), sizeof(Instance), 1);
 
-    ID3D11Buffer* pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size);
-    IRenderer::UpdateSubresource(pConstantBuffer, ConstantBuffer.pData);
-    IRenderer::SetConstatBufferVS(&pConstantBuffer, i);
+    IRenderer::SetVertexShader(Engine::Get<IVertexShader>()->GetVertexShader(CurrentVertexShader));
+    IRenderer::SetInputLayout(Engine::Get<IVertexShader>()->GetInputLayout(CurrentVertexShader));
+    IRenderer::SetPixelShader(Engine::Get<IPixelShader>()->GetPixeShader(CurrentPixelShader));
+    IRenderer::SetBlendState(Engine::Get<IBlendState>()->GetBlendState(CurrentBlendState));
+    for (int i = 0; i < hdx::Constants::SamplerStateMaxNum; ++i)
+    {
+      IRenderer::SetSamplersState(Engine::Get<ISamplerState>()->GetSamplerState(CurrentSamplerStatus[i]), i);
+    }
+    IRenderer::SetRasterizerState(Engine::Get<IRasterizerState>()->GetRasterizerState(CurrentRasterizerState));
+    IRenderer::SetDepthStencilState(Engine::Get<IDepthStencilState>()->GetDepthStencilState(CurrentDepthStencilState));
+    for (int i = 1; i < hdx::Constants::TextureMaxNum; ++i)
+    {
+      IRenderer::SetShaderResouceView(Engine::Get<ITexture>()->GetShaderResourceView(CurrentTextures[i - 1].GetID()), i);
+    }
+    IRenderer::SetRenderTarget(Engine::Get<IRenderTarget>()->GetRenderTargetView(CurrentRenderTarget), Engine::Get<IRenderTarget>()->GetDepthStencilView(CurrentRenderTarget));
+    IRenderer::SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    for (int i = 1; i < hdx::Constants::ConstantBufferMaxNum; ++i)
+    {
+      ConstantBufferData& ConstantBuffer = PixelStageConstantBuffers[i - 1];
+
+      if (ConstantBuffer.Size == 0)continue;
+
+      ID3D11Buffer* pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size);
+      IRenderer::UpdateSubresource(pConstantBuffer, ConstantBuffer.pData);
+      IRenderer::SetConstatBufferVS(&pConstantBuffer, i);
+    }
+    for (int i = 1; i < hdx::Constants::ConstantBufferMaxNum; ++i)
+    {
+      ConstantBufferData& ConstantBuffer = PixelStageConstantBuffers[i - 1];
+
+      if (ConstantBuffer.Size == 0)continue;
+
+      ID3D11Buffer* pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size);
+      IRenderer::UpdateSubresource(pConstantBuffer, ConstantBuffer.pData);
+      IRenderer::SetConstatBufferPS(&pConstantBuffer, i);
+    }
   }
-  for (int i = 1; i < hdx::Constants::ConstantBufferMaxNum; ++i)
-  {
-    ConstantBufferData& ConstantBuffer = PixelStageConstantBuffers[i - 1];
 
-    if (ConstantBuffer.Size == 0)continue;
+  //  頂点バッファオブジェクトを書き換え
+  D3D11_MAPPED_SUBRESOURCE MappedSubresorce;
+  IRenderer::Map(pInstanceBuffer.Get(), &MappedSubresorce);
+  Instances = static_cast<Instance*>(MappedSubresorce.pData);
+}
 
-    ID3D11Buffer* pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size);
-    IRenderer::UpdateSubresource(pConstantBuffer, ConstantBuffer.pData);
-    IRenderer::SetConstatBufferPS(&pConstantBuffer, i);
-  }
+void IRenderer3D::End()
+{
+  if (!Instances)return;
+
+  IRenderer::Unmap(pInstanceBuffer.Get());
+
+  const ModelData& ModelData = Engine::Get<IModel>()->GetModelData(CurrentModel.GetID());
+  ID3D11Buffer* pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size);
 
   UINT Strides = sizeof(Vertex);
   for (auto& Mesh : ModelData.Meshes)
   {
-    IRenderer::SetVertexBuffer(Mesh.pVertexBuffer.GetAddressOf(), Strides);
+    IRenderer::SetVertexBuffer(Mesh.pVertexBuffer.GetAddressOf(), Strides, 0);
     IRenderer::SetIndexBuffer(Mesh.pIndexBuffer.Get());
-
-    const hdx::Matrix GlobalTransform = DirectX::XMLoadFloat4x4(&Mesh.GlobalTransform);
-
-    DirectX::XMStoreFloat4x4(&ConstantBuffer.Get().WorldViewProjection, GlobalTransform * _WorldMatrix*ViewMatrix*ProjectionMatrix);
-    DirectX::XMStoreFloat4x4(&ConstantBuffer.Get().World, GlobalTransform * _WorldMatrix);
-
-    const int SkeletalAnimationNum = (Mesh.SkeletalAnimations.size() > 0) ? Mesh.SkeletalAnimations[_MotionData.Number].size() : 0;
-
-    if (SkeletalAnimationNum > 0)
-    {
-      const Skeletal& Skeletal = Mesh.SkeletalAnimations[_MotionData.Number].at(static_cast<size_t>(_MotionData.Frame / Mesh.SamplingTime));
-
-      const int NumberOfBones = Skeletal.size();
-      _ASSERT_EXPR(NumberOfBones < hdx::Constants::MaxBoneNum, L"'the NumberOfBones' exceeds hdx::Constants::MaxBoneNum");
-
-      for (int i = 0; i < NumberOfBones; ++i)
-      {
-        DirectX::XMStoreFloat4x4(&ConstantBuffer.Get().BoneTransforms[i], DirectX::XMLoadFloat4x4(&Skeletal.at(i).Transform));
-      }
-    }
-    else
-    {
-      for (int i = 0; i < hdx::Constants::MaxBoneNum; ++i)
-      {
-        DirectX::XMStoreFloat4x4(&ConstantBuffer.Get().BoneTransforms[i], DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
-      }
-    }
 
     for (auto& Subset : Mesh.Subsets)
     {
-      ConstantBuffer.Get().MaterialColor = {
-        Subset.Diffuse.Color.R*_Color.R,
-        Subset.Diffuse.Color.G*_Color.G,
-        Subset.Diffuse.Color.B*_Color.B,
-        Subset.Diffuse.Color.A*_Color.A };
+      const int InstaceNum = InstanceDatas.size();
+      for (int i = 0; i < InstaceNum; ++i)
+      {
+        Instance& Instance = Instances[i];
+        InstanceData& InstanceData = InstanceDatas[i];
 
-      ID3D11Buffer* pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size);
+        Instance.MaterialColor = hdx::ColorF(InstanceData.Color.R*Subset.Diffuse.Color.R,
+          InstanceData.Color.G*Subset.Diffuse.Color.G,
+          InstanceData.Color.B*Subset.Diffuse.Color.B,
+          InstanceData.Color.A*Subset.Diffuse.Color.A);
+      }
+
+      const int SkeletalAnimationNum = (Mesh.SkeletalAnimations.size() > 0) ? Mesh.SkeletalAnimations[MotionData.Number].size() : 0;
+
+      if (SkeletalAnimationNum > 0)
+      {
+        const Skeletal& Skeletal = Mesh.SkeletalAnimations[MotionData.Number].at(static_cast<size_t>(MotionData.Frame / Mesh.SamplingTime));
+
+        const int NumberOfBones = Skeletal.size();
+        _ASSERT_EXPR(NumberOfBones < hdx::Constants::MaxBoneNum, L"'the NumberOfBones' exceeds hdx::Constants::MaxBoneNum");
+
+        for (int i = 0; i < NumberOfBones; ++i)
+        {
+          DirectX::XMStoreFloat4x4(&ConstantBuffer.Get().BoneTransforms[i], DirectX::XMLoadFloat4x4(&Skeletal.at(i).Transform));
+        }
+      }
+
       IRenderer::UpdateSubresource(pConstantBuffer, &ConstantBuffer.Get());
       IRenderer::SetConstatBufferVS(&pConstantBuffer, 0);
       IRenderer::SetConstatBufferPS(&pConstantBuffer, 0);
 
       IRenderer::SetShaderResouceView(Engine::Get<ITexture>()->GetShaderResourceView(Subset.Diffuse.TextureID), 0);
 
-      IRenderer::DrawIndexed(Subset.IndexCount, Subset.IndexStart, 0);
+      IRenderer::DrawIndexedInstanced(Subset.IndexCount - Subset.IndexStart, InstanceDatas.size(), Subset.IndexStart, 0, 0);
     }
   }
+
+  CurrentModel = hdx::Model();
+  InstanceDatas.clear();
+
+  Instances = nullptr;
 }
 
 void IRenderer3D::CalcProjection()
@@ -324,10 +413,25 @@ void IRenderer3D::FreeCamera()
 
 const hdx::Matrix& IRenderer3D::GetProjectionMatrix()const
 {
-	return ProjectionMatrix;
+  return ProjectionMatrix;
 }
 
 const hdx::Matrix& IRenderer3D::GetViewMatrix()const
 {
-	return ViewMatrix;
+  return ViewMatrix;
 }
+
+//#include "Src/Renderer/Renderer3D/IRenderer3D.hpp"
+//
+//#include "Src/Renderer/Renderer3D/CRenderer3D_Ver3_1.hpp"
+//
+//#include "Src/Version.hpp"
+//
+//IRenderer3D* IRenderer3D::Create()
+//{
+//#ifdef HDX_VERSION_3_1
+//  return new CRenderer3D_Ver3_1;
+//#else
+//  return new CRenderer3D_Ver3_1;
+//#endif
+//}
