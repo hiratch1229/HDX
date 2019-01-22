@@ -35,7 +35,10 @@ namespace
   struct CommonConstantBuffer
   {
     DirectX::XMFLOAT4X4 ViewProjectionMatrix;
+    DirectX::XMFLOAT4X4 GlobalTransform;
     DirectX::XMFLOAT4 LightDirection;     //  ライト進行方向
+    hdx::ColorF DiffuseColor;
+
     DirectX::XMFLOAT4X4 BoneTransforms[hdx::Constants::MaxBoneNum];
   };
 
@@ -56,11 +59,6 @@ namespace
   {
     DirectX::XMFLOAT4X4 World;                //  ワールド変換行列
     hdx::ColorF MaterialColor;                //  材質色
-  };
-
-  struct InstanceData
-  {
-    hdx::ColorF Color;
   };
 
   hdx::VertexShader CurrentVertexShader;
@@ -84,9 +82,11 @@ namespace
   Microsoft::WRL::ComPtr<ID3D11Buffer> pInstanceBuffer;
 
   Instance* Instances = nullptr;
-  std::vector<InstanceData> InstanceDatas;
+  int Count = 0;
   hdx::Model CurrentModel;
-  hdx::MotionData MotionData;
+  hdx::MotionData CurrentMotionData;
+
+  DirectX::XMFLOAT4X4 BoneNothingMatrix;
 
   inline void CalcView()
   {
@@ -103,6 +103,8 @@ IRenderer3D::IRenderer3D()
   CurrentSamplerStatus[0] = hdx::SamplerState::Default3D;
   ConstantBuffer.Get().LightDirection = { 0.0f, 0.0f, 1.0f, 0.0f };
 
+  DirectX::XMStoreFloat4x4(&BoneNothingMatrix, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+
   TIMER_END("Renderer3D");
 }
 
@@ -110,8 +112,6 @@ void IRenderer3D::Initialize(ID3D11Device* _pDevice)
 {
   CurrentVertexShader = Engine::Get<IVertexShader>()->CreateDefault3D();
   CurrentPixelShader = Engine::Get<IPixelShader>()->CreateDefault3D();
-
-  InstanceDatas.clear();
 
   //  エラーチェック用
   HRESULT hr = S_OK;
@@ -151,18 +151,18 @@ void IRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix
 {
   if (!Instances || CurrentModel != _Model)
   {
-    MotionData = _MotionData;
+    CurrentMotionData = _MotionData;
 
     Engine::Get<IRenderer2D>()->End();
     End();
     Begin(_Model);
   }
 
-  Instance& Instance = Instances[InstanceDatas.size()];
+  Instance& Instance = Instances[Count];
   DirectX::XMStoreFloat4x4(&Instance.World, _WorldMatrix);
-  InstanceDatas.push_back({ _Color });
+  Instance.MaterialColor = _Color;
 
-  if (InstanceDatas.size() >= hdx::Constants::ModelBatchMaxNum || _MotionData.Number != 0 || _MotionData.Frame != 0.0f)
+  if (++Count >= hdx::Constants::ModelBatchMaxNum || _MotionData.Number != 0 || _MotionData.Frame != 0.0f)
   {
     End();
     Begin(_Model);
@@ -197,7 +197,7 @@ void IRenderer3D::Begin(const hdx::Model& _Model)
     IRenderer::SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     for (int i = 1; i < hdx::Constants::ConstantBufferMaxNum; ++i)
     {
-      ConstantBufferData& ConstantBuffer = PixelStageConstantBuffers[i - 1];
+      ConstantBufferData& ConstantBuffer = VertexStageConstantBuffers[i - 1];
 
       if (ConstantBuffer.Size == 0)continue;
 
@@ -238,25 +238,15 @@ void IRenderer3D::End()
     IRenderer::SetVertexBuffer(Mesh.pVertexBuffer.GetAddressOf(), Strides, 0);
     IRenderer::SetIndexBuffer(Mesh.pIndexBuffer.Get());
 
-    for (auto& Subset : Mesh.Subsets)
+    ConstantBuffer.Get().GlobalTransform = Mesh.GlobalTransform;
+
+    //  ボーンアニメーション
     {
-      const int InstaceNum = InstanceDatas.size();
-      for (int i = 0; i < InstaceNum; ++i)
-      {
-        Instance& Instance = Instances[i];
-        InstanceData& InstanceData = InstanceDatas[i];
-
-        Instance.MaterialColor = hdx::ColorF(InstanceData.Color.R*Subset.Diffuse.Color.R,
-          InstanceData.Color.G*Subset.Diffuse.Color.G,
-          InstanceData.Color.B*Subset.Diffuse.Color.B,
-          InstanceData.Color.A*Subset.Diffuse.Color.A);
-      }
-
-      const int SkeletalAnimationNum = (Mesh.SkeletalAnimations.size() > 0) ? Mesh.SkeletalAnimations[MotionData.Number].size() : 0;
+      const int SkeletalAnimationNum = (Mesh.SkeletalAnimations.size() > 0) ? Mesh.SkeletalAnimations[CurrentMotionData.Number].size() : 0;
 
       if (SkeletalAnimationNum > 0)
       {
-        const Skeletal& Skeletal = Mesh.SkeletalAnimations[MotionData.Number].at(static_cast<size_t>(MotionData.Frame / Mesh.SamplingTime));
+        const Skeletal& Skeletal = Mesh.SkeletalAnimations[CurrentMotionData.Number].at(static_cast<size_t>(CurrentMotionData.Frame / Mesh.SamplingTime));
 
         const int NumberOfBones = Skeletal.size();
         _ASSERT_EXPR(NumberOfBones < hdx::Constants::MaxBoneNum, L"'the NumberOfBones' exceeds hdx::Constants::MaxBoneNum");
@@ -266,6 +256,18 @@ void IRenderer3D::End()
           DirectX::XMStoreFloat4x4(&ConstantBuffer.Get().BoneTransforms[i], DirectX::XMLoadFloat4x4(&Skeletal.at(i).Transform));
         }
       }
+      else
+      {
+        for (int i = 0; i < hdx::Constants::MaxBoneNum; ++i)
+        {
+          ConstantBuffer.Get().BoneTransforms[i] = BoneNothingMatrix;
+        }
+      }
+    }
+
+    for (auto& Subset : Mesh.Subsets)
+    {
+      ConstantBuffer.Get().DiffuseColor = Subset.Diffuse.Color;
 
       IRenderer::UpdateSubresource(pConstantBuffer, &ConstantBuffer.Get());
       IRenderer::SetConstatBufferVS(&pConstantBuffer, 0);
@@ -273,12 +275,13 @@ void IRenderer3D::End()
 
       IRenderer::SetShaderResouceView(Engine::Get<ITexture>()->GetShaderResourceView(Subset.Diffuse.TextureID), 0);
 
-      IRenderer::DrawIndexedInstanced(Subset.IndexCount - Subset.IndexStart, InstanceDatas.size(), Subset.IndexStart, 0, 0);
+      IRenderer::DrawIndexedInstanced(Subset.IndexCount - Subset.IndexStart, Count, Subset.IndexStart, 0, 0);
     }
   }
 
   CurrentModel = hdx::Model();
-  InstanceDatas.clear();
+  CurrentMotionData = hdx::MotionData();
+  Count = 0;
 
   Instances = nullptr;
 }
@@ -354,11 +357,17 @@ void IRenderer3D::SetTexture(const hdx::Texture& _Texture, UINT _Slot)
 inline void CreateTextureFromRenderTarget(const hdx::RenderTarget& _RenderTarget)
 {
   Engine::Get<ITexture>()->SetShaderResouceView(_RenderTarget, Engine::Get<IRenderTarget>()->GetShaderResourceView(_RenderTarget));
+  CurrentTextures[0] = _RenderTarget;
 }
 
 void IRenderer3D::RestoreRenderTarget()
 {
   if (CurrentRenderTarget.GetSize() == hdx::int2())return;
+
+  End();
+
+  ID3D11ShaderResourceView* NullObject = nullptr;
+  IRenderer::SetShaderResouceView(&NullObject, 0);
 
   CreateTextureFromRenderTarget(CurrentRenderTarget);
   CurrentRenderTarget = hdx::RenderTarget();
@@ -368,6 +377,10 @@ void IRenderer3D::RestoreRenderTarget()
 void IRenderer3D::SetRenderTarget(const hdx::RenderTarget& _RenderTarger)
 {
   if (CurrentRenderTarget == _RenderTarger)return;
+
+  End();
+  ID3D11ShaderResourceView* NullObject = nullptr;
+  IRenderer::SetShaderResouceView(&NullObject, 0);
 
   if (CurrentRenderTarget.GetSize() != hdx::int2())
   {
@@ -420,18 +433,3 @@ const hdx::Matrix& IRenderer3D::GetViewMatrix()const
 {
   return ViewMatrix;
 }
-
-//#include "Src/Renderer/Renderer3D/IRenderer3D.hpp"
-//
-//#include "Src/Renderer/Renderer3D/CRenderer3D_Ver3_1.hpp"
-//
-//#include "Src/Version.hpp"
-//
-//IRenderer3D* IRenderer3D::Create()
-//{
-//#ifdef HDX_VERSION_3_1
-//  return new CRenderer3D_Ver3_1;
-//#else
-//  return new CRenderer3D_Ver3_1;
-//#endif
-//}

@@ -131,4 +131,3 @@ namespace hdx
     float DownQuadraticFunction(float _Time, float _TotalTime, float _Max = 1.0f, float _Min = 0.0f);
   }
 }
-

@@ -1185,3 +1185,10 @@ const hdx::float3& IModel::GetScale(int _ID)const
 {
   return ModelMap[_ID].Scale;
 }
+
+float IModel::GetFrame(int _ID, int _MotionNumber)const
+{
+  const Mesh& Mesh = ModelMap[_ID].Meshes[0];
+
+  return Mesh.SamplingTime*Mesh.SkeletalAnimations.size();
+}

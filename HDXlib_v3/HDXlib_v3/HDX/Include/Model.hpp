@@ -59,6 +59,7 @@ namespace hdx
     const std::vector<hdx::float3>& GetVertices()const;
     const std::vector<UINT>& GetIndices()const;
     const hdx::float3& GetScale()const;
+    float GetFrame(int _MotionNumber)const;
   public:
     bool operator==(const Model& _Model)const
     {

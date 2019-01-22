@@ -17,15 +17,15 @@ VS_OUT main(VS_IN In)
 
     VS_OUT Out;
        
-    Out.Position = mul(In.Position, mul(In.World, ViewProjectionMatrix));
+    Out.Position = mul(In.Position, mul(GlobalTransform, mul(In.World, ViewProjectionMatrix)));
     Out.Texcoord = In.Texcoord;
 
     In.Normal.w = 0;
     float4 N = normalize(mul(In.Normal, In.World));
     float4 L = normalize(-LightDirection);
 
-    Out.Color = In.MaterialColor * max(0.2f, dot(L, N));
-    Out.Color.a = In.MaterialColor.a;
+    Out.Color = In.MaterialColor * DiffuseColor * max(0.2f, dot(L, N));
+    Out.Color.a = In.MaterialColor.a * DiffuseColor.a;
 
     return Out;
 

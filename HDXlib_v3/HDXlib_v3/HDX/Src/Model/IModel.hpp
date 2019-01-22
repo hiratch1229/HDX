@@ -97,6 +97,7 @@ public:
   const std::vector<hdx::float3>& GetVertices(int _ID)const;
   const std::vector<UINT>& GetIndices(int _ID)const;
   const hdx::float3& GetScale(int _ID)const;
+  float GetFrame(int _ID, int _MotionNumber)const;
 public:
   void Initialize(ID3D11Device* _pDevice);
   void ModelUpdate(int _ID, float _DeltaTime, hdx::MotionData* _pMotionData);

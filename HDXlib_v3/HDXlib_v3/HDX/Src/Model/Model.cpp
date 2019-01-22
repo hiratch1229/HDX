@@ -66,4 +66,9 @@ namespace hdx
   {
     return Engine::Get<IModel>()->GetScale(ID_);
   }
+
+  float Model::GetFrame(int _MotionNumber)const
+  {
+    return Engine::Get<IModel>()->GetFrame(ID_, _MotionNumber);
+  }
 }

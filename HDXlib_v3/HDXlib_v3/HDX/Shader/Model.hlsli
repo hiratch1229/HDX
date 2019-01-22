@@ -21,7 +21,9 @@ struct VS_OUT
 cbuffer CONSTANT_BUFFER : register(b0)
 {
     row_major float4x4 ViewProjectionMatrix;
+    row_major float4x4 GlobalTransform;
     float4 LightDirection;
+    float4 DiffuseColor;
 
     row_major float4x4 BoneTransforms[MAX_BONES];
 };
