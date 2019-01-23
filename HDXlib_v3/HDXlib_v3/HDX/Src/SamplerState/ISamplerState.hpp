@@ -1,18 +1,18 @@
 #pragma once
+#include "Include/SamplerState.hpp"
 
-struct ID3D11Device;
-struct ID3D11SamplerState;
-
-namespace hdx
-{
-  class SamplerState;
-}
+#include <d3d11.h>
 
 class ISamplerState
 {
-  int Create(const hdx::SamplerState& _SamplerState);
 public:
-  ID3D11SamplerState** GetSamplerState(const hdx::SamplerState& _SamplerState);
-public:
-  void Initialize(ID3D11Device* _pDevice);
+  static ISamplerState* Create();
+
+  ISamplerState() = default;
+
+  virtual ~ISamplerState() = default;
+
+  virtual void Initialize(ID3D11Device* _pDevice) = 0;
+
+  virtual ID3D11SamplerState** GetSamplerState(const hdx::SamplerState& _SamplerState) = 0;
 };

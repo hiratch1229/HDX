@@ -1,19 +1,24 @@
 #pragma once
 #include "Include/PixelShader.hpp"
 
-struct ID3D11Device;
-struct ID3D11PixelShader;
+#include <d3d11.h>
 
 class IPixelShader
 {
-  static constexpr char* kDefault2DFilePath = "SpritePS.cso";
-  static constexpr char* kDefault3DFilePath = "ModelPS.cso";
 public:
-  int Create(const char* _FilePath);
-  hdx::PixelShader CreateDefault2D();
-  hdx::PixelShader CreateDefault3D();
-public:
-  ID3D11PixelShader* GetPixeShader(const hdx::PixelShader& _PixelShader);
-public:
-  void Initialize(ID3D11Device* _pDevice);
+  static IPixelShader* Create();
+
+  IPixelShader() = default;
+
+  virtual ~IPixelShader() = default;
+
+  virtual void Initialize(ID3D11Device* _pDevice) = 0;
+
+  virtual int Create(const char* _FilePath) = 0;
+
+  virtual hdx::PixelShader CreateDefault2D() = 0;
+
+  virtual hdx::PixelShader CreateDefault3D() = 0;
+
+  virtual ID3D11PixelShader* GetPixeShader(const hdx::PixelShader& _PixelShader) = 0;
 };

@@ -1,24 +1,9 @@
 #pragma once
-#include "Include/Type2.hpp"
-#include "Include/Type3.hpp"
-#include "Include/Types.hpp"
-#include "Include/Color.hpp"
+#include "Include/Model.hpp"
 #include "Include/Constants.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>
-#include <DirectXMath.h>
-#include <vector>
-
-namespace hdx
-{
-  struct Rectangle;
-  struct Cube;
-  struct Cylinder;
-  struct Sphere;
-  struct Capsule;
-  struct MotionData;
-}
 
 struct Vertex
 {
@@ -28,13 +13,11 @@ struct Vertex
   float BoneWeights[hdx::Constants::MaxBoneInfluences] = { 1.0f };
   int BoneIndices[hdx::Constants::MaxBoneInfluences] = {};
 };
-
 struct Material
 {
   hdx::ColorF Color = { 0.8f,0.8f,0.8f,1.0f };
   int TextureID = -1;
 };
-
 struct Subset
 {
   UINT IndexStart = 0;  //  Start number of index buffer
@@ -46,12 +29,10 @@ struct Subset
     return Diffuse.TextureID < _Subset.Diffuse.TextureID;
   }
 };
-
 struct Bone
 {
   DirectX::XMFLOAT4X4 Transform;
 };
-
 struct BoneInfluence
 {
   int Index;    //  index of bone
@@ -83,22 +64,35 @@ struct ModelData
 class IModel
 {
 public:
-  int Load(const char* _FilePath);
-  int Load(const hdx::Rectangle& _Rectangle);
-  int Load(const hdx::Cube& _Cube);
-  int Load(const hdx::Cylinder& _Cylinder);
-  int Load(const hdx::Sphere& _Sphere);
-  int Load(const hdx::Capsule& _Capsule);
-  const ModelData& GetModelData(int _ID);
-public:
-  IModel();
-  ~IModel();
-public:
-  const std::vector<hdx::float3>& GetVertices(int _ID)const;
-  const std::vector<UINT>& GetIndices(int _ID)const;
-  const hdx::float3& GetScale(int _ID)const;
-  float GetFrame(int _ID, int _MotionNumber)const;
-public:
-  void Initialize(ID3D11Device* _pDevice);
-  void ModelUpdate(int _ID, float _DeltaTime, hdx::MotionData* _pMotionData);
+  static IModel* Create();
+
+  IModel() = default;
+
+  virtual ~IModel() = default;
+
+  virtual void Initialize(ID3D11Device* _pDevice) = 0;
+
+  virtual void ModelUpdate(int _ID, float _DeltaTime, hdx::MotionData* _pMotionData) = 0;
+
+  virtual int Load(const char* _FilePath) = 0;
+
+  virtual int Load(const hdx::Rectangle& _Rectangle) = 0;
+
+  virtual int Load(const hdx::Cube& _Cube) = 0;
+
+  virtual int Load(const hdx::Cylinder& _Cylinder) = 0;
+
+  virtual int Load(const hdx::Sphere& _Sphere) = 0;
+
+  virtual int Load(const hdx::Capsule& _Capsule) = 0;
+
+  virtual const ModelData& GetModelData(int _ID) = 0;
+
+  virtual const std::vector<hdx::float3>& GetVertices(int _ID) = 0;
+
+  virtual const std::vector<UINT>& GetIndices(int _ID) = 0;
+
+  virtual const hdx::float3& GetScale(int _ID) = 0;
+
+  virtual float GetFrame(int _ID, int _MotionNumber) = 0;
 };

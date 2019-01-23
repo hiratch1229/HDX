@@ -1,9 +1,7 @@
 #pragma once
-#include "Include/Button.hpp"
 #include "Include/Type2.hpp"
-#include "Include/Constants.hpp"
 
-#include "Src/Input/InputState.hpp"
+#include "Include/Constants.hpp"
 
 constexpr int kXInputButtonsCode[] = {
   0x0001, //  XINPUT_GAMEPAD_DPAD_UP
@@ -25,126 +23,42 @@ constexpr int kXInputButtonsCode[] = {
 class IXInput
 {
 public:
-  static constexpr int kButtonNum = sizeof(kXInputButtonsCode) / sizeof(kXInputButtonsCode[0]);
   static constexpr int kControllerNum = (hdx::Constants::ControllerMaxNum <= 4) ? hdx::Constants::ControllerMaxNum : 4;
-private:
-  struct Status
-  {
-    //  接続状態
-    bool isConnect;
-    //  入力状態
-    InputState InputStatus[kButtonNum];
-    //  左のアナログスティックの入力状態
-    hdx::float2 LeftStick;
-    //  右のアナログスティックの入力状態
-    hdx::float2 RightStick;
-    //  左のトリガーの入力状態
-    float LeftTrigger;
-    //  右のトリガーの入力状態
-    float RightTrigger;
-  };
-private:
-  Status Status_[kControllerNum];
-private:
-  bool isWithinRange(int _Index)const
-  {
-    return (Status_[_Index].isConnect && 0 <= _Index && _Index < kControllerNum);
-  }
-  bool isWithinRange(int _Number, int _Index)const
-  {
-    return (Status_[_Index].isConnect && 0 <= _Number && _Number < kButtonNum && 0 <= _Index && _Index < kControllerNum);
-  }
+  static constexpr int kButtonNum = sizeof(kXInputButtonsCode) / sizeof(kXInputButtonsCode[0]);
 public:
-  //  押されているならtrueを返す
-  bool Press(int _Number, int _Index)const
-  {
-    return isWithinRange(_Number, _Index) ? Status_[_Index].InputStatus[_Number].Press() : false;
-  }
-  //  押された瞬間ならtrueを返す
-  bool Pressed(int _Number, int _Index)const
-  {
-    return isWithinRange(_Number, _Index) ? Status_[_Index].InputStatus[_Number].Pressed() : false;
-  }
-  //  離された瞬間ならtrueを返す
-  bool Released(int _Number, int _Index)const
-  {
-    return isWithinRange(_Number, _Index) ? Status_[_Index].InputStatus[_Number].Released() : false;
-  }
-  //  押されていないならtrueを返す
-  bool Release(int _Number, int _Index)const
-  {
-    return isWithinRange(_Number, _Index) ? Status_[_Index].InputStatus[_Number].Release() : false;
-  }
-public:
-  //  接続されているか確認
-  bool isConnect(int _Index)const { return Status_[_Index].isConnect; }
-public:
-  //  何かのボタンが押されていればtrueを返す
-  bool AnyButtonPress(int _Index)const
-  {
-    if (!(isWithinRange(_Index))) return false;
+  static IXInput* Create();
 
-    for (int i = 0; i < kButtonNum; ++i)
-    {
-      if (Press(i, _Index))
-      {
-        return true;
-      }
-    }
+  IXInput() = default;
 
-    //  何も押されていない
-    return false;
-  }
-  //  何かのボタンが押されたならtrueを返す
-  bool AnyButtonPressed(int _Index)const
-  {
-    if (!(isWithinRange(_Index))) return false;
+  virtual ~IXInput() = default;
 
-    for (int i = 0; i < kButtonNum; ++i)
-    {
-      if (Pressed(i, _Index))
-      {
-        return true;
-      }
-    }
+  virtual void Update() = 0;
 
-    //  何も押されていない
-    return false;
-  }
-  //  何かのボタンが離されたならtrueを返す
-  bool AnyButtonReleased(int _Index)const
-  {
-    if (!(isWithinRange(_Index))) return false;
+  virtual bool Press(int _Number, int _Index)const = 0;
 
-    for (int i = 0; i < kButtonNum; ++i)
-    {
-      if (Released(i, _Index))
-      {
-        return true;
-      }
-    }
+  virtual bool Pressed(int _Number, int _Index)const = 0;
 
-    //  何も離されていない
-    return false;
-  }
-public:
-  //  左スティックの入力状態を取得
-  hdx::float2 GetLeftStick(int _Index, float _DeadZone)const;
-  //  右スティックの入力状態を取得
-  hdx::float2 GetRightStick(int _Index, float _DeadZone)const;
-public:
-  //  左トリガーの入力状態を取得
-  float GetLeftTrigger(int _Index, float _DeadZone)const;
-  //  右トリガーの入力状態を取得
-  float GetRightTrigger(int _Index, float _DeadZone)const;
-public:
-  //  コントローラを振動させます
-  void SetVibration(int _Index, float _Speed)const;
-  //  コントローラの振動を止めます
-  void StopVibration(int _Index)const;
-public:
-  //  状態の更新
-  void Update();
-  //  解放
-  ~IXInput();
+  virtual bool Released(int _Number, int _Index)const = 0;
+
+  virtual bool Release(int _Number, int _Index)const = 0;
+
+  virtual bool isConnect(int _Index)const = 0;
+
+  virtual bool AnyButtonPress(int _Index)const = 0;
+
+  virtual bool AnyButtonPressed(int _Index)const = 0;
+
+  virtual bool AnyButtonReleased(int _Index)const = 0;
+
+  virtual hdx::float2 GetLeftStick(int _Index, float _DeadZone)const = 0;
+
+  virtual hdx::float2 GetRightStick(int _Index, float _DeadZone)const = 0;
+
+  virtual float GetLeftTrigger(int _Index, float _DeadZone)const = 0;
+
+  virtual float GetRightTrigger(int _Index, float _DeadZone)const = 0;
+
+  virtual void SetVibration(int _Index, float _Speed)const = 0;
+
+  virtual void StopVibration(int _Index)const = 0;
 };

@@ -42,7 +42,7 @@ public:
   }
 public:
   Component()
-    : pInterface_(new Interface)
+    : pInterface_(Interface::Create())
   {
 
   }

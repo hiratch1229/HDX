@@ -1,6 +1,8 @@
 #pragma once
 #include "Types.hpp"
 
+#include <iostream>
+
 namespace hdx
 {
   enum class FillMode : uint8
@@ -97,3 +99,12 @@ namespace hdx
     static constexpr PreDefined Default3D = PreDefined::SolidCullBack;
   };
 }
+
+template<>
+struct std::hash<hdx::RasterizerState>
+{
+  size_t operator()(const hdx::RasterizerState& _KeyVal) const
+  {
+    return std::hash<hdx::RasterizerState::DataType>()(_KeyVal.DataType_);
+  }
+};

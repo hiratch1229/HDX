@@ -2,6 +2,8 @@
 #include "Types.hpp"
 #include "Color.hpp"
 
+#include <iostream>
+
 namespace hdx
 {
   enum class Filter : uint8
@@ -111,3 +113,12 @@ namespace hdx
     static constexpr PreDefined Default3D = PreDefined::WrapAnisotropic;
   };
 }
+
+template<>
+struct std::hash<hdx::SamplerState>
+{
+  size_t operator()(const hdx::SamplerState& _KeyVal)const
+  {
+    return std::hash<hdx::SamplerState::DataType>()(_KeyVal.DataType_);
+  }
+};

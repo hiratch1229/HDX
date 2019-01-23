@@ -1,18 +1,18 @@
 #pragma once
+#include "Include/DepthStencilState.hpp"
 
-struct ID3D11Device;
-struct ID3D11DepthStencilState;
-
-namespace hdx
-{
-  class DepthStencilState;
-}
+#include <d3d11.h>
 
 class IDepthStencilState
 {
-  int Create(const hdx::DepthStencilState& _DepthStencilState);
 public:
-  ID3D11DepthStencilState* GetDepthStencilState(const hdx::DepthStencilState& _DepthStencilState);
-public:
-  void Initialize(ID3D11Device* _pDevice);
+  static IDepthStencilState* Create();
+  
+  IDepthStencilState() = default;
+  
+  virtual ~IDepthStencilState() = default;
+  
+  virtual void Initialize(ID3D11Device* _pDevice) = 0;
+
+  virtual ID3D11DepthStencilState* GetDepthStencilState(const hdx::DepthStencilState& _DepthStencilState) = 0;
 };

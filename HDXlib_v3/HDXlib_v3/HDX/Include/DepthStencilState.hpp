@@ -1,6 +1,8 @@
 #pragma once
 #include "Types.hpp"
 
+#include <iostream>
+
 namespace hdx
 {
   enum class ComparisonFunc : uint8
@@ -161,3 +163,12 @@ namespace hdx
     static constexpr PreDefined Default3D = PreDefined::Default3D;
   };
 }
+
+template<>
+struct std::hash<hdx::DepthStencilState>
+{
+  size_t operator()(const hdx::DepthStencilState& _KeyVal)const
+  {
+    return std::hash<hdx::DepthStencilState::DataType>()(_KeyVal.DataType_);
+  }
+};

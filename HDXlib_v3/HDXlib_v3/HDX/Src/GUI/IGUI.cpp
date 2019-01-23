@@ -1,34 +1,8 @@
-#include "Src/GUI/IGUI.hpp"
+#include "IGUI.hpp"
 
-#include "Src/GUI/ImGui/imgui.h"
-#include "Src/GUI/ImGui/imgui_impl_dx11.h"
-#include "Src/GUI/ImGui/imgui_impl_win32.h"
+#include "CGUI.hpp"
 
-void IGUI::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, const HWND& _hWnd)
+IGUI* IGUI::Create()
 {
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
-
-  ImGui_ImplWin32_Init(_hWnd);
-  ImGui_ImplDX11_Init(_pDevice, _pImmediateContext);
-
-  ImGui_ImplDX11_NewFrame();
-  ImGui_ImplWin32_NewFrame();
-  ImGui::NewFrame();
-}
-
-void IGUI::Update()
-{
-  ImGui::Render();
-  ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
-
-  ImGui_ImplWin32_NewFrame();
-  ImGui::NewFrame();
-}
-
-IGUI::~IGUI()
-{
-  ImGui_ImplDX11_Shutdown();
-  ImGui_ImplWin32_Shutdown();
-  ImGui::DestroyContext();
+  return new CGUI;
 }

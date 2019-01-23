@@ -1,6 +1,8 @@
 #pragma once
 #include "Types.hpp"
 
+#include <iostream>
+
 namespace hdx
 {
   enum class Blend : UINT
@@ -48,7 +50,7 @@ namespace hdx
 
       Num
     };
-  private:
+  public:
     using DataType = uint32;
   public:
 #pragma warning(disable:4201)
@@ -122,3 +124,12 @@ namespace hdx
     static constexpr PreDefined Screen = PreDefined::Screen;
   };
 }
+
+template<>
+struct std::hash<hdx::BlendState>
+{
+  size_t operator()(const hdx::BlendState& _KeyVal)const
+  {
+    return std::hash<hdx::BlendState::DataType>()(_KeyVal.DataType_);
+  }
+};

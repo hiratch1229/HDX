@@ -1,18 +1,18 @@
 #pragma once
+#include "Include/BlendState.hpp"
 
-struct ID3D11Device;
-struct ID3D11BlendState;
-
-namespace hdx
-{
-  class BlendState;
-}
+#include <d3d11.h>
 
 class IBlendState
 {
-  int Create(const hdx::BlendState& _BlendState);
 public:
-  ID3D11BlendState* GetBlendState(const hdx::BlendState& _BlendState);
-public:
-  void Initialize(ID3D11Device* _pDevice);
+  static IBlendState* Create();
+
+  IBlendState() = default;
+
+  virtual ~IBlendState() = default;
+
+  virtual void Initialize(ID3D11Device* _pDevice) = 0;
+
+  virtual ID3D11BlendState* GetBlendState(const hdx::BlendState& _BlendState) = 0;
 };

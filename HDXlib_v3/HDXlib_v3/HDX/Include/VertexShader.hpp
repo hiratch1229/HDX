@@ -1,11 +1,10 @@
 #pragma once
 #include "Types.hpp"
+#include "InputElementDesc.hpp"
 
 //  ライブラリ
 namespace hdx
 {
-  class InputElementDesc;
-
   //  頂点シェーダー
   class VertexShader
   {
