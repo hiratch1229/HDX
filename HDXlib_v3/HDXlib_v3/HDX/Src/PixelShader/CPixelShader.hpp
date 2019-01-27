@@ -7,8 +7,8 @@
 
 class CPixelShader : public IPixelShader
 {
-  static constexpr char* kDefault2DFilePath = "SpritePS.cso";
-  static constexpr char* kDefault3DFilePath = "ModelPS.cso";
+  static constexpr char* kDefault2DFilePath = "DATA/Shader/SpritePS.cso";
+  static constexpr char* kDefault3DFilePath = "DATA/Shader/ModelPS.cso";
 private:
   NumberMap<std::string, Microsoft::WRL::ComPtr<ID3D11PixelShader>> PixelShaderMap_;
   ID3D11Device* pDevice_ = nullptr;

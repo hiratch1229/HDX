@@ -8,8 +8,8 @@
 
 class CVertexShader : public IVertexShader
 {
-  static constexpr char* kDefault2DFilePath = "SpriteVS.cso";
-  static constexpr char* kDefault3DFilePath = "ModelVS.cso";
+  static constexpr char* kDefault2DFilePath = "DATA/Shader/SpriteVS.cso";
+  static constexpr char* kDefault3DFilePath = "DATA/Shader/ModelVS.cso";
 private:
   struct State
   {
