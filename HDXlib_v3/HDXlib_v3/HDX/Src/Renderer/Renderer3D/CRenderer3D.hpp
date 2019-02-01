@@ -1,6 +1,5 @@
 #pragma once
 #include "IRenderer3D.hpp"
-#include "Src/Renderer/Renderer/IRenderer.hpp"
 #include "Src/Constants.hpp"
 
 #include <wrl.h>
@@ -34,7 +33,9 @@ class CRenderer3D : public IRenderer3D
     hdx::ColorF MaterialColor;                //  çﬁéøêF
   };
 private:
-  IRenderer* pRenderer_;
+  ID3D11DeviceContext* pImmediateContext_ = nullptr;
+  ID3D11RenderTargetView** ppRenderTargetView_ = nullptr;
+  ID3D11DepthStencilView* pDepthStencilView_ = nullptr;
 private:
   Microsoft::WRL::ComPtr<ID3D11Buffer> pInstanceBuffer_;
   Instance* Instances_ = nullptr;
@@ -61,8 +62,9 @@ private:
   void Begin();
   void CalcView();
   void CreateTextureFromRenderTarget(const hdx::RenderTarget& _RenderTarget);
+  void SetViewPort(const hdx::float2& _Size);
 public:
-  void Initialize(ID3D11Device* _pDevice)override;
+  void Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView)override;
 
   void Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::MotionData& _MotionData, const hdx::ColorF& _Color)override;
 

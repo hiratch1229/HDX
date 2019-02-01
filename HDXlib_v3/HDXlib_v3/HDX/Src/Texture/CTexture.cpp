@@ -225,9 +225,9 @@ const hdx::int2& CTexture::GetSize(int _ID)
   return TextureMap_[_ID].Size;
 }
 
-ID3D11ShaderResourceView** CTexture::GetShaderResourceView(int _ID)
+ID3D11ShaderResourceView* CTexture::GetShaderResourceView(int _ID)
 {
-  return TextureMap_[_ID].pShaderResourceView.GetAddressOf();
+  return TextureMap_[_ID].pShaderResourceView.Get();
 }
 
 void CTexture::SetShaderResouceView(const hdx::RenderTarget& _RenderTarget, ID3D11ShaderResourceView* _pShaderResouceView)

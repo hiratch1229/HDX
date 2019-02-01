@@ -24,7 +24,7 @@ public:
 
   virtual const hdx::int2& GetSize(int _ID) = 0;
 
-  virtual ID3D11ShaderResourceView** GetShaderResourceView(int _ID) = 0;
+  virtual ID3D11ShaderResourceView* GetShaderResourceView(int _ID) = 0;
 
   virtual void SetShaderResouceView(const hdx::RenderTarget& _RenderTarget, ID3D11ShaderResourceView* _pShaderResouceView) = 0;
 };

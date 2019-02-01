@@ -15,9 +15,11 @@
 #include "Src/PixelShader/IPixelShader.hpp"
 #include "Src/Misc.hpp"
 
-void CRenderer3D::Initialize(ID3D11Device* _pDevice)
+void CRenderer3D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView)
 {
-  pRenderer_ = IRenderer::Get();
+  pImmediateContext_ = _pImmediateContext;
+  ppRenderTargetView_ = _ppRenderTargetView;
+  pDepthStencilView_ = _pDepthStencilView;
 
   ConstantBuffer_.Get().LightDirection = { 0.0f, 0.0f, 1.0f, 0.0f };
 
@@ -87,53 +89,109 @@ void CRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix
 
 void CRenderer3D::Begin()
 {
-  //  GPUにセット
+  DirectX::XMStoreFloat4x4(&ConstantBuffer_.Get().ViewProjectionMatrix, DirectX::XMLoadFloat4x4(&ViewMatrix_)*DirectX::XMLoadFloat4x4(&ProjectionMatrix_));
+
+  pImmediateContext_->OMSetBlendState(Engine::Get<IBlendState>()->GetBlendState(BlendState_), nullptr, 0xFFFFFFFF);
+  pImmediateContext_->OMSetDepthStencilState(Engine::Get<IDepthStencilState>()->GetDepthStencilState(DepthStencilState_), 1);
+  pImmediateContext_->RSSetState(Engine::Get<IRasterizerState>()->GetRasterizerState(RasterizerState_));
+  pImmediateContext_->VSSetShader(Engine::Get<IVertexShader>()->GetVertexShader(VertexShader_), nullptr, 0);
+  pImmediateContext_->PSSetShader(Engine::Get<IPixelShader>()->GetPixeShader(PixelShader_), nullptr, 0);
+  pImmediateContext_->IASetInputLayout(Engine::Get<IVertexShader>()->GetInputLayout(VertexShader_));
+  pImmediateContext_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+  //  IASetVertexBuffers
   {
-    DirectX::XMStoreFloat4x4(&ConstantBuffer_.Get().ViewProjectionMatrix, DirectX::XMLoadFloat4x4(&ViewMatrix_)*DirectX::XMLoadFloat4x4(&ProjectionMatrix_));
+    UINT Stride = sizeof(Instance);
+    UINT Offset = 0;
 
-    pRenderer_->SetVertexBuffer(pInstanceBuffer_.GetAddressOf(), sizeof(Instance), 1);
+    pImmediateContext_->IASetVertexBuffers(1, 1, pInstanceBuffer_.GetAddressOf(), &Stride, &Offset);
+  }
 
-    pRenderer_->SetVertexShader(Engine::Get<IVertexShader>()->GetVertexShader(VertexShader_));
-    pRenderer_->SetInputLayout(Engine::Get<IVertexShader>()->GetInputLayout(VertexShader_));
-    pRenderer_->SetPixelShader(Engine::Get<IPixelShader>()->GetPixeShader(PixelShader_));
-    pRenderer_->SetBlendState(Engine::Get<IBlendState>()->GetBlendState(BlendState_));
+  //  VSSetConstantBuffers
+  {
+    ID3D11Buffer* pConstantBuffers[kConstantBufferMaxNum - 1];
+
+    ID3D11Buffer* NullObject = nullptr;
+    for (int i = 0; i < kConstantBufferMaxNum - 1; ++i)
+    {
+      ConstantBufferData& ConstantBuffer = VertexStageConstantBuffers_[i];
+      if (ConstantBuffer.Size == 0)
+      {
+        pConstantBuffers[i] = NullObject;
+      }
+      else
+      {
+        pImmediateContext_->UpdateSubresource(pConstantBuffers[i] = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size), 0, 0, ConstantBuffer.pData, 0, 0);
+      }
+    }
+
+    pImmediateContext_->VSSetConstantBuffers(1, kConstantBufferMaxNum - 1, pConstantBuffers);
+  }
+
+  //  PSSetConstantBuffers
+  {
+    ID3D11Buffer* pConstantBuffers[kConstantBufferMaxNum - 1];
+
+    ID3D11Buffer* NullObject = nullptr;
+    for (int i = 0; i < kConstantBufferMaxNum - 1; ++i)
+    {
+      ConstantBufferData& ConstantBuffer = PixelStageConstantBuffers_[i];
+
+      if (ConstantBuffer.Size == 0)
+      {
+        pConstantBuffers[i] = NullObject;
+      }
+      else
+      {
+        pImmediateContext_->UpdateSubresource(pConstantBuffers[i] = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size), 0, 0, ConstantBuffer.pData, 0, 0);
+      }
+    }
+
+    pImmediateContext_->PSSetConstantBuffers(1, kConstantBufferMaxNum - 1, pConstantBuffers);
+  }
+
+  //  PSSetSamplers
+  {
+    ID3D11SamplerState* pSamplerStatus[kSamplerStateMaxNum];
+
     for (int i = 0; i < kSamplerStateMaxNum; ++i)
     {
-      pRenderer_->SetSamplersState(Engine::Get<ISamplerState>()->GetSamplerState(SamplerStatus_[i]), i);
+      pSamplerStatus[i] = Engine::Get<ISamplerState>()->GetSamplerState(SamplerStatus_[i]);
     }
-    pRenderer_->SetRasterizerState(Engine::Get<IRasterizerState>()->GetRasterizerState(RasterizerState_));
-    pRenderer_->SetDepthStencilState(Engine::Get<IDepthStencilState>()->GetDepthStencilState(DepthStencilState_));
-    for (int i = 1; i < kTextureMaxNum; ++i)
+
+    pImmediateContext_->PSSetSamplers(0, kSamplerStateMaxNum, pSamplerStatus);
+  }
+
+  //  PSSetShaderResources
+  {
+    ID3D11ShaderResourceView* pShaderResourceViews[kTextureMaxNum - 1];
+
+    for (int i = 0; i < kTextureMaxNum - 1; ++i)
     {
-      pRenderer_->SetShaderResouceView(Engine::Get<ITexture>()->GetShaderResourceView(Textures_[i - 1].GetID()), i);
+      pShaderResourceViews[i] = Engine::Get<ITexture>()->GetShaderResourceView(Textures_[i].GetID());
     }
-    pRenderer_->SetRenderTarget(Engine::Get<IRenderTarget>()->GetRenderTargetView(RenderTarget_), Engine::Get<IRenderTarget>()->GetDepthStencilView(RenderTarget_));
-    pRenderer_->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    for (int i = 1; i < kConstantBufferMaxNum; ++i)
+
+    pImmediateContext_->PSSetShaderResources(1, kTextureMaxNum - 1, pShaderResourceViews);
+  }
+
+  //  OMSetRenderTargets
+  {
+    ID3D11RenderTargetView** ppRenderTargetView = Engine::Get<IRenderTarget>()->GetRenderTargetView(RenderTarget_);
+    ID3D11DepthStencilView* pDepthStencilView = Engine::Get<IRenderTarget>()->GetDepthStencilView(RenderTarget_);
+
+    if (ppRenderTargetView == nullptr && pDepthStencilView == nullptr)
     {
-      ConstantBufferData& ConstantBuffer = VertexStageConstantBuffers_[i - 1];
-
-      if (ConstantBuffer.Size == 0)continue;
-
-      ID3D11Buffer* pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size);
-      pRenderer_->UpdateSubresource(pConstantBuffer, ConstantBuffer.pData);
-      pRenderer_->SetConstatBufferVS(&pConstantBuffer, i);
+      pImmediateContext_->OMSetRenderTargets(1, ppRenderTargetView_, pDepthStencilView_);
     }
-    for (int i = 1; i < kConstantBufferMaxNum; ++i)
+    else
     {
-      ConstantBufferData& ConstantBuffer = PixelStageConstantBuffers_[i - 1];
-
-      if (ConstantBuffer.Size == 0)continue;
-
-      ID3D11Buffer* pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size);
-      pRenderer_->UpdateSubresource(pConstantBuffer, ConstantBuffer.pData);
-      pRenderer_->SetConstatBufferPS(&pConstantBuffer, i);
+      pImmediateContext_->OMSetRenderTargets(1, ppRenderTargetView, pDepthStencilView);
     }
   }
 
   //  頂点バッファオブジェクトを書き換え
   D3D11_MAPPED_SUBRESOURCE MappedSubresorce;
-  pRenderer_->Map(pInstanceBuffer_.Get(), &MappedSubresorce);
+  pImmediateContext_->Map(pInstanceBuffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &MappedSubresorce);
   Instances_ = static_cast<Instance*>(MappedSubresorce.pData);
 }
 
@@ -141,16 +199,17 @@ void CRenderer3D::Flush()
 {
   if (!Instances_)return;
 
-  pRenderer_->Unmap(pInstanceBuffer_.Get());
+  pImmediateContext_->Unmap(pInstanceBuffer_.Get(), 0);
 
   const ModelData& ModelData = Engine::Get<IModel>()->GetModelData(Model_.GetID());
   ID3D11Buffer* pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer_.Size);
 
-  UINT Strides = sizeof(Vertex);
+  UINT Stride = sizeof(Vertex);
+  UINT Offset = 0;
   for (auto& Mesh : ModelData.Meshes)
   {
-    pRenderer_->SetVertexBuffer(Mesh.pVertexBuffer.GetAddressOf(), Strides, 0);
-    pRenderer_->SetIndexBuffer(Mesh.pIndexBuffer.Get());
+    pImmediateContext_->IASetVertexBuffers(0, 1, Mesh.pVertexBuffer.GetAddressOf(), &Stride, &Offset);
+    pImmediateContext_->IASetIndexBuffer(Mesh.pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
     ConstantBuffer_.Get().GlobalTransform = Mesh.GlobalTransform;
 
@@ -183,13 +242,14 @@ void CRenderer3D::Flush()
     {
       ConstantBuffer_.Get().DiffuseColor = Subset.Diffuse.Color;
 
-      pRenderer_->UpdateSubresource(pConstantBuffer, &ConstantBuffer_.Get());
-      pRenderer_->SetConstatBufferVS(&pConstantBuffer, 0);
-      pRenderer_->SetConstatBufferPS(&pConstantBuffer, 0);
+      pImmediateContext_->UpdateSubresource(pConstantBuffer, 0, 0, ConstantBuffer_.GetPtr(), 0, 0);
+      pImmediateContext_->VSSetConstantBuffers(0, 1, &pConstantBuffer);
+      pImmediateContext_->PSSetConstantBuffers(0, 1, &pConstantBuffer);
 
-      pRenderer_->SetShaderResouceView(Engine::Get<ITexture>()->GetShaderResourceView(Subset.Diffuse.TextureID), 0);
+      ID3D11ShaderResourceView* pShaderResourceView = Engine::Get<ITexture>()->GetShaderResourceView(Subset.Diffuse.TextureID);
+      pImmediateContext_->PSSetShaderResources(0, 1, &pShaderResourceView);
 
-      pRenderer_->DrawIndexedInstanced(Subset.IndexCount - Subset.IndexStart, Count_, Subset.IndexStart, 0, 0);
+      pImmediateContext_->DrawIndexedInstanced(Subset.IndexCount - Subset.IndexStart, Count_, Subset.IndexStart, 0, 0);
     }
   }
 
@@ -281,11 +341,11 @@ void CRenderer3D::RestoreRenderTarget()
   Flush();
 
   ID3D11ShaderResourceView* NullObject = nullptr;
-  pRenderer_->SetShaderResouceView(&NullObject, 0);
+  pImmediateContext_->PSSetShaderResources(0, 1, &NullObject);
 
   CreateTextureFromRenderTarget(RenderTarget_);
   RenderTarget_ = hdx::RenderTarget();
-  pRenderer_->SetViewPort(Engine::Get<ISystem>()->GetWindowSize());
+  SetViewPort(Engine::Get<ISystem>()->GetWindowSize());
 }
 
 void CRenderer3D::SetRenderTarget(const hdx::RenderTarget& _RenderTarger)
@@ -293,13 +353,14 @@ void CRenderer3D::SetRenderTarget(const hdx::RenderTarget& _RenderTarger)
   if (RenderTarget_ == _RenderTarger)return;
 
   Flush();
+
   ID3D11ShaderResourceView* NullObject = nullptr;
-  pRenderer_->SetShaderResouceView(&NullObject, 0);
+  pImmediateContext_->PSSetShaderResources(0, 1, &NullObject);
 
   if (RenderTarget_.GetSize() != hdx::int2())
   {
     CreateTextureFromRenderTarget(RenderTarget_);
-    pRenderer_->SetViewPort(RenderTarget_.GetSize());
+    SetViewPort(RenderTarget_.GetSize());
   }
   RenderTarget_ = _RenderTarger;
 }
@@ -353,4 +414,19 @@ hdx::Matrix CRenderer3D::GetProjectionMatrix()const
 hdx::Matrix CRenderer3D::GetViewMatrix()const
 {
   return DirectX::XMLoadFloat4x4(&ViewMatrix_);
+}
+
+void CRenderer3D::SetViewPort(const hdx::float2& _Size)
+{
+  D3D11_VIEWPORT ViewPort;
+  UINT ViewPortNum = 1;
+
+  //  現在のデータを取得
+  pImmediateContext_->RSGetViewports(&ViewPortNum, &ViewPort);
+
+  ViewPort.Width = _Size.X;
+  ViewPort.Height = _Size.Y;
+
+  //  設定を反映
+  pImmediateContext_->RSSetViewports(1, &ViewPort);
 }

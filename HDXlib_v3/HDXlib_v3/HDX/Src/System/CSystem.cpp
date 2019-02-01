@@ -68,14 +68,14 @@ bool CSystem::FrameRate::Update()
   //  åªç›ÇÃÉtÉåÅ[ÉÄåoâﬂéûä‘ÇéÊìæ
   const float DeltaTime = (CurrentTime.QuadPart - LastTime_.QuadPart) / static_cast<float>(FreqTime_.QuadPart);
 
-  if (DeltaTime < FrameInterval_)
-  {
-    //const DWORD SleepTime = static_cast<DWORD>((FrameInterval_ - DeltaTime) * 1000);
-    //timeBeginPeriod(1);
-    //Sleep(SleepTime);
-    //timeEndPeriod(1);
-    return false;
-  }
+  //if (DeltaTime < FrameInterval_)
+  //{
+  //  //const DWORD SleepTime = static_cast<DWORD>((FrameInterval_ - DeltaTime) * 1000);
+  //  //timeBeginPeriod(1);
+  //  //Sleep(SleepTime);
+  //  //timeEndPeriod(1);
+  //  return false;
+  //}
 
   static float TimeStamp = 0.0f, TimeTlapsed = 0.0f;
   static int Frames = 0;
@@ -207,7 +207,7 @@ void CSystem::Initialize()
   Engine::Get<IVertexShader>()->Initialize(pDevice_.Get());
   Engine::Get<IPixelShader>()->Initialize(pDevice_.Get());
   Engine::Get<IRenderer2D>()->Initialize(pDevice_.Get(), pImmediateContext_.Get(), pRenderTargetView_.GetAddressOf(), pDepthStencilView_.Get());
-  Engine::Get<IRenderer3D>()->Initialize(pDevice_.Get());
+  Engine::Get<IRenderer3D>()->Initialize(pDevice_.Get(), pImmediateContext_.Get(), pRenderTargetView_.GetAddressOf(), pDepthStencilView_.Get());
   Engine::Get<IGamepad>()->Initialize(pWindow_->hWnd_);
   Engine::Get<ITexture>()->Initialize(pDevice_.Get(), pSwapChain_.Get());
   Engine::Get<ISound>()->Initialize(pWindow_->hWnd_);

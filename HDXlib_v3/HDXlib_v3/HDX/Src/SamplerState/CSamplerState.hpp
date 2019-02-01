@@ -14,5 +14,5 @@ private:
 public:
  void Initialize(ID3D11Device* _pDevice)override;
 
- ID3D11SamplerState** GetSamplerState(const hdx::SamplerState& _SamplerState)override;
+ ID3D11SamplerState* GetSamplerState(const hdx::SamplerState& _SamplerState)override;
 };

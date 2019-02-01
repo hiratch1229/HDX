@@ -1,6 +1,5 @@
 #pragma once
 #include "IRenderer2D.hpp"
-#include "Src/Renderer/Renderer/IRenderer.hpp"
 #include "Src/Constants.hpp"
 
 #include "Include/Type3.hpp"
@@ -33,7 +32,9 @@ class CRenderer2D : public IRenderer2D
     }
   };
 private:
-  IRenderer* pRenderer_;
+  ID3D11DeviceContext* pImmediateContext_ = nullptr;
+  ID3D11RenderTargetView** ppRenderTargetView_ = nullptr;
+  ID3D11DepthStencilView* pDepthStencilView_ = nullptr;
 private:
   Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer_;
   Microsoft::WRL::ComPtr<ID3D11Buffer> pInstanceBuffer_;
@@ -53,6 +54,7 @@ private:
 private:
   void Begin();
   void CreateTextureFromRenderTarget(const hdx::RenderTarget& _RenderTarget);
+  void SetViewPort(const hdx::float2& _Size);
 public:
   void Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView)override;
 

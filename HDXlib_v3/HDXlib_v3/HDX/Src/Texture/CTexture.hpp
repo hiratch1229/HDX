@@ -33,7 +33,7 @@ public:
 
   const hdx::int2& GetSize(int _ID)override;
 
-  ID3D11ShaderResourceView** GetShaderResourceView(int _ID)override;
+  ID3D11ShaderResourceView* GetShaderResourceView(int _ID)override;
 
   void SetShaderResouceView(const hdx::RenderTarget& _RenderTarget, ID3D11ShaderResourceView* _pShaderResouceView)override;
 };

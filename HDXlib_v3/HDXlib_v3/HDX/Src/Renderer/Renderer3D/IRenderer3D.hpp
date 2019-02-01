@@ -22,7 +22,7 @@ public:
 
   virtual ~IRenderer3D() = default;
 
-  virtual void Initialize(ID3D11Device* _pDevice) = 0;
+  virtual void Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView) = 0;
 
   virtual void Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::MotionData& _MotionData, const hdx::ColorF& _Color) = 0;
 

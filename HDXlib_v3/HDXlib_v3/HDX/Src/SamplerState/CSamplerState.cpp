@@ -37,17 +37,17 @@ int CSamplerState::Create(const hdx::SamplerState& _SamplerState)
   return SamplerStateMap_.insert(_SamplerState, pSamplerState);
 }
 
-ID3D11SamplerState** CSamplerState::GetSamplerState(const hdx::SamplerState& _SamplerState)
+ID3D11SamplerState* CSamplerState::GetSamplerState(const hdx::SamplerState& _SamplerState)
 {
   //  Šù‚Éì¬‚³‚ê‚Ä‚¢‚é‚©Šm”F
   {
     const int ID = SamplerStateMap_.find(_SamplerState);
     if (ID >= 0)
     {
-      return SamplerStateMap_[ID].GetAddressOf();
+      return SamplerStateMap_[ID].Get();
     }
   }
 
   //  ì¬‚µ‚Ä•Ô‚·
-  return SamplerStateMap_[Create(_SamplerState)].GetAddressOf();
+  return SamplerStateMap_[Create(_SamplerState)].Get();
 }
