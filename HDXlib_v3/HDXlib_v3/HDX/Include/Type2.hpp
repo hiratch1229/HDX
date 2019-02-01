@@ -4,6 +4,59 @@
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx
 {
+  //template <class Type>
+  //struct Type2
+  //{
+  //  Type x, y;
+  //public:
+  //  constexpr Type2()
+  //    : x(static_cast<Type>(0))
+  //    , y(static_cast<Type>(0)) {}
+  //
+  //  constexpr Type2(Type _x, Type _y)
+  //    : x(_x)
+  //    , y(_y) {}
+  //
+  //  template <class X, class Y>
+  //  constexpr Type2(X _x, Y _y)
+  //    : x(static_cast<Type>(_x))
+  //    , y(static_cast<Type>(_y)) {}
+  //
+  //  template <class T>
+  //  constexpr Type2(const Type2<T>& _v)
+  //    : x(static_cast<Type>(_v.x))
+  //    , y(static_cast<Type>(_v.y)) {}
+  //public:
+  //  constexpr bool operator==(const Type2& _v)const { return x == _v.x && y == _v.y; }
+  //
+  //  constexpr bool operator!=(const Type2& _v)const { return !(*this == _v); }
+  //
+  //  constexpr Type2 operator+()const { return *this; }
+  //
+  //  constexpr Type2 operator-()const { return{ -x, -y }; }
+  //
+  //  constexpr Type2 operator+(const Type2& _v)const { return{ x + _v.x, y + _v.y }; }
+  //
+  //  constexpr Type2 operator-(const Type2& _v)const { return{ x - _v.x, y - _v.y }; }
+  //
+  //  constexpr Type2 operator*(Type _s)const { return{ x*_s, y*_s }; }
+  //
+  //  constexpr Type2 operator*(const Type2& _v)const { return{ x*_v.x, y*_v.y }; }
+  //
+  //  constexpr Type2 operator/(Type _s)const { return{ x / _s, y / _s }; }
+  //
+  //  Type2 operator+=(const Type2& _v) { x += _v.x; y += _v.y; return *this; }
+  //
+  //  Type2 operator-=(const Type2& _v) { x -= _v.x; y -= _v.y; return *this; }
+  //
+  //  Type2 operator*=(Type _s) { x *= _s; y *= _s; return *this; }
+  //
+  //  Type2 operator/=(Type _s) { x /= _s; y /= _s; return *this; }
+  //};
+  //
+  //using int2 = Type2<int>;
+  //using float2 = Type2<float>;
+
   struct float2;
 
   //  int‚ð2‚Â•Û—L

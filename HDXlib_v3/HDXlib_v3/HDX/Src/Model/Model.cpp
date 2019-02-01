@@ -50,8 +50,7 @@ namespace hdx
   {
     Engine::Get<IRenderer3D>()->Draw((*this), _WorldMatrix, _MotionData, _Color);
   }
-
-
+  
   const std::vector<hdx::float3>& Model::GetVertices()const
   {
     return Engine::Get<IModel>()->GetVertices(ID_);

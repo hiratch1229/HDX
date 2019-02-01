@@ -68,13 +68,12 @@ bool CSystem::FrameRate::Update()
   //  現在のフレーム経過時間を取得
   const float DeltaTime = (CurrentTime.QuadPart - LastTime_.QuadPart) / static_cast<float>(FreqTime_.QuadPart);
 
-  //  経過時間が短いならスリープ
   if (DeltaTime < FrameInterval_)
   {
-    DWORD SleepTime = static_cast<DWORD>((FrameInterval_ - DeltaTime) * 1000);
-    timeBeginPeriod(1);
-    Sleep(SleepTime);
-    timeEndPeriod(1);
+    //const DWORD SleepTime = static_cast<DWORD>((FrameInterval_ - DeltaTime) * 1000);
+    //timeBeginPeriod(1);
+    //Sleep(SleepTime);
+    //timeEndPeriod(1);
     return false;
   }
 
@@ -393,10 +392,10 @@ bool CSystem::Update()
   }
 
   //  残っているスプライトの描画
-  Engine::Get<IRenderer2D>()->End();
+  Engine::Get<IRenderer2D>()->Flush();
 
   //  残っているモデルの描画
-  Engine::Get<IRenderer3D>()->End();
+  Engine::Get<IRenderer3D>()->Flush();
 
   //  GUIの更新と描画
   Engine::Get<IGUI>()->Update();

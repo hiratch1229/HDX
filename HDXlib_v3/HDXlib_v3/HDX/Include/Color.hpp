@@ -10,10 +10,10 @@ namespace hdx
   //  R,G,B,A それぞれ0~255で色を表現します
   struct Color
   {
-    uint8 R : 8; //  赤
-    uint8 G : 8; //  緑
-    uint8 B : 8; //  赤
-    uint8 A : 8; //  不透明度
+    uint32 R : 8; //  赤
+    uint32 G : 8; //  緑
+    uint32 B : 8; //  赤
+    uint32 A : 8; //  不透明度
   public:
     //  不透明度最大(255)の白(255,255,255)で初期化
     constexpr Color() : R(255), G(255), B(255), A(255) {}
@@ -28,15 +28,15 @@ namespace hdx
     //  _G:緑
     //  _B:青
     //  _A:不透明度
-    constexpr Color(uint8 _R, uint8 _G, uint8 _B, uint8 _A = 255)noexcept : R(_R), G(_G), B(_B), A(_A) {}
+    constexpr Color(uint32 _R, uint32 _G, uint32 _B, uint32 _A = 255u)noexcept : R(_R), G(_G), B(_B), A(_A) {}
     //  色を作成
     //  _RGB:赤,緑,青
     //  _A:不透明度
-    constexpr Color(uint8 _RGB, uint8 _A = 255)noexcept : R(_RGB), G(_RGB), B(_RGB), A(_A) {}
+    constexpr Color(uint32 _RGB, uint32 _A = 255u)noexcept : R(_RGB), G(_RGB), B(_RGB), A(_A) {}
     //  色を作成
     //  _RGB:赤,緑,青
     //  _A:不透明度
-    constexpr Color(const Color& _RGB, uint8 _A)noexcept : R(_RGB.R), G(_RGB.G), B(_RGB.B), A(_A) {}
+    constexpr Color(const Color& _RGB, uint32 _A)noexcept : R(_RGB.R), G(_RGB.G), B(_RGB.B), A(_A) {}
   public:
     //  色を代入
     //  _Color:代入する色

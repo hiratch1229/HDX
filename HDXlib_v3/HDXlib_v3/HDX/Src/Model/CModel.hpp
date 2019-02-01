@@ -33,9 +33,11 @@ public:
 
   int Load(const hdx::Cylinder& _Cylinder)override;
 
-  int Load(const hdx::Sphere& _Sphere)override;
+  //  TODO
+  int Load(const hdx::Sphere& _Sphere)override { assert(false); return -1; }
 
-  int Load(const hdx::Capsule& _Capsule)override;
+  //  TODO
+  int Load(const hdx::Capsule& _Capsule)override { assert(false); return -1; }
 
   const ModelData& GetModelData(int _ID)override;
 

@@ -46,7 +46,7 @@ void Main()
 
     for (int i = 0; i < Num; ++i)
     {
-      Models[0].Update(hdx::System::GetDeltaTime(), &MotionData);
+      //Models[0].Update(hdx::System::GetDeltaTime(), &MotionData);
       Models[0].Draw(WorldMatrix, MotionData);
     }
   }

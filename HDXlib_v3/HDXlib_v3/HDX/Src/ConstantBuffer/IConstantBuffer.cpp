@@ -1,8 +1,8 @@
 #include "IConstantBuffer.hpp"
 
-#include "CConstatBuffer.hpp"
+#include "CConstantBuffer.hpp"
 
 IConstantBuffer* IConstantBuffer::Create()
 {
-  return new CConstatBuffer;
+  return new CConstantBuffer;
 }

@@ -1,11 +1,11 @@
-#include "CConstatBuffer.hpp"
+#include "CConstantBuffer.hpp"
 
-void CConstatBuffer::Initialize(ID3D11Device* _pDevice)
+void CConstantBuffer::Initialize(ID3D11Device* _pDevice)
 {
   pDevice_ = _pDevice;
 }
 
-inline void CConstatBuffer::Create(UINT _Size)
+inline void CConstantBuffer::Create(UINT _Size)
 {
   //  Šù‚Éì¬‚³‚ê‚Ä‚¢‚½‚çI—¹
   if (BufferMap_.find(_Size) != BufferMap_.end())
@@ -33,7 +33,7 @@ inline void CConstatBuffer::Create(UINT _Size)
   BufferMap_.insert(std::make_pair(_Size, pConstantBuffer));
 }
 
-ID3D11Buffer* CConstatBuffer::GetConstantBuffer(UINT _Size)
+ID3D11Buffer* CConstantBuffer::GetConstantBuffer(UINT _Size)
 {
   //  ì¬‚³‚ê‚Ä‹‚È‚¯‚ê‚Îì¬
   if (BufferMap_.find(_Size) == BufferMap_.end())

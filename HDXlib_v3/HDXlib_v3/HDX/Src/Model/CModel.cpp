@@ -5,6 +5,8 @@
 #include "Src/Texture/ITexture.hpp"
 #include "Src/Misc.hpp"
 
+#include "Src/Constants.hpp"
+
 #include <memory>
 #include <algorithm>
 #include <functional>
@@ -108,7 +110,7 @@ namespace
       fbxsdk::FbxTime FrameTime;
       FrameTime.SetTime(0, 0, 0, 1, 0, TimeMode);
 
-      UINT SamplingRate = (hdx::Constants::ModelAnimationSamplingRate > 0) ? hdx::Constants::ModelAnimationSamplingRate : static_cast<UINT>(FrameTime.GetFrameRate(TimeMode));
+      UINT SamplingRate = kModelAnimationSamplingRate;
       (*_pSamplingTime) = 1.0f / SamplingRate;
 
       fbxsdk::FbxString* AnimationStackName = ArrayOfAnimationStackNames.GetAt(IndexOfAnimation);

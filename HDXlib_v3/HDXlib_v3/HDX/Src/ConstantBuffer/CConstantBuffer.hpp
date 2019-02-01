@@ -4,7 +4,7 @@
 #include <wrl.h>
 #include <unordered_map>
 
-class CConstatBuffer : public IConstantBuffer
+class CConstantBuffer : public IConstantBuffer
 {
   std::unordered_map<UINT, Microsoft::WRL::ComPtr<ID3D11Buffer>> BufferMap_;
   ID3D11Device* pDevice_;

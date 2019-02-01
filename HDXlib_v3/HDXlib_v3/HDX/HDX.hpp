@@ -6,7 +6,6 @@
 
 //  システム
 //  2018.07.31  作成
-//  TODO:前バージョンからほとんど持ってきたので、色々改善
 //  2018.10.29  エンジンと分割して管理に変更
 #include "Include/System.hpp"
 
@@ -49,13 +48,11 @@
 //  2D画像
 //  2018.08.09  作成
 //  TODO:もっと簡単に描画出来るように
-//  TODO:バッチ処理
 //  2018.11.14  バッチ処理に変更
 #include "Include/Texture.hpp"
 
 //  3Dモデル
 //  2018.09.26  作成
-//  TODO:前バージョンからほとんど持ってきたので、色々改善
 //  2018.11.22  GeometricPrimitiveとSkinnedMeshを統合
 #include "Include/Model.hpp"
 
@@ -122,7 +119,6 @@
 
 //  サウンド
 //  2018.09.02  作成
-//  TODO:前バージョンからほとんど持ってきたので、色々改善
 //  2018.11.24  管理クラス(ISound)作成
 #include "Include/Sound.hpp"
 
