@@ -5,30 +5,23 @@
 
 #include <wrl.h>
 #include <string>
+#include <memory>
 
 class CVertexShader : public IVertexShader
 {
-  static constexpr char* kDefault2DFilePath = "DATA/Shader/SpriteVS.cso";
-  static constexpr char* kDefault3DFilePath = "DATA/Shader/ModelVS.cso";
-private:
-  struct State
-  {
-    Microsoft::WRL::ComPtr<ID3D11VertexShader> pVertexShader;
-    Microsoft::WRL::ComPtr<ID3D11InputLayout> pInputLayout;
-  };
-private:
   ID3D11Device* pDevice_ = nullptr;
-  NumberMap<std::string, State> StateMap_;
+  NumberMap<std::string, Microsoft::WRL::ComPtr<ID3D11VertexShader>> VertexShaderMap_;
+private:
+  int CreateVertexShader(const char* _FilePath, std::unique_ptr<unsigned char[]>* _pData, size_t* _pSize);
+  void CreateInputLayout(const char* _FilePath, const D3D11_INPUT_ELEMENT_DESC _InputElementDescs[], UINT _NumElements, ID3D11InputLayout** _ppInputLayout);
 public:
   void Initialize(ID3D11Device* _pDevice)override;
 
-  int Create(const char* _FilePath, const hdx::InputElementDesc _InputElementDescs[], UINT _NumElements)override;
-  
-  hdx::VertexShader CreateDefault2D()override;
-  
-  hdx::VertexShader CreateDefault3D()override;
+  int Create(const char* _FilePath)override;
+
+  hdx::VertexShader CreateDefault2D(ID3D11InputLayout** _ppInputLayout)override;
+
+  hdx::VertexShader CreateDefault3D(ID3D11InputLayout** _ppInputLayout)override;
 
   ID3D11VertexShader* GetVertexShader(const hdx::VertexShader& _VertexShader)override;
-
-  ID3D11InputLayout* GetInputLayout(const hdx::VertexShader& _VertexShader)override;
 };

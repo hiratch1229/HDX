@@ -25,7 +25,7 @@ void CRenderer3D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImme
 
   DirectX::XMStoreFloat4x4(&BoneNothingMatrix_, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
 
-  VertexShader_ = Engine::Get<IVertexShader>()->CreateDefault3D();
+  VertexShader_ = Engine::Get<IVertexShader>()->CreateDefault3D(pInputLayout_.GetAddressOf());
   PixelShader_ = Engine::Get<IPixelShader>()->CreateDefault3D();
 
   //  エラーチェック用
@@ -96,7 +96,7 @@ void CRenderer3D::Begin()
   pImmediateContext_->RSSetState(Engine::Get<IRasterizerState>()->GetRasterizerState(RasterizerState_));
   pImmediateContext_->VSSetShader(Engine::Get<IVertexShader>()->GetVertexShader(VertexShader_), nullptr, 0);
   pImmediateContext_->PSSetShader(Engine::Get<IPixelShader>()->GetPixeShader(PixelShader_), nullptr, 0);
-  pImmediateContext_->IASetInputLayout(Engine::Get<IVertexShader>()->GetInputLayout(VertexShader_));
+  pImmediateContext_->IASetInputLayout(pInputLayout_.Get());
   pImmediateContext_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
   //  IASetVertexBuffers

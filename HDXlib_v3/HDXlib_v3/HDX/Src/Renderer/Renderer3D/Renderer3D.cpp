@@ -3,8 +3,7 @@
 #include "Src/Engine.hpp"
 #include "Src/System/ISystem.hpp"
 #include "Src/Renderer/Renderer3D/IRenderer3D.hpp"
-#include "Src/VertexShader/IVertexShader.hpp"
-#include "Src/PixelShader/IPixelShader.hpp"
+#include "Src/Constants.hpp"
 
 #include "Include/VertexShader.hpp"
 #include "Include/BlendState.hpp"
@@ -29,7 +28,7 @@ namespace hdx
 
     void RestoreVertexShader()
     {
-      Engine::Get<IRenderer3D>()->SetVertexShader(Engine::Get<IVertexShader>()->CreateDefault3D());
+      Engine::Get<IRenderer3D>()->SetVertexShader(hdx::VertexShader(kDefault3DVertexShaderFilePath));
     }
 
     void SetPixelShader(const PixelShader& _PixelShader)
@@ -39,7 +38,7 @@ namespace hdx
 
     void RestorePixelShader()
     {
-      Engine::Get<IRenderer3D>()->SetPixelShader(Engine::Get<IPixelShader>()->CreateDefault3D());
+      Engine::Get<IRenderer3D>()->SetPixelShader(hdx::PixelShader(kDefault3DPixelShaderFilePath));
     }
 
     void SetBlendState(const BlendState& _BlendState)

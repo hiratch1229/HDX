@@ -1,6 +1,7 @@
 #include "CPixelShader.hpp"
 
 #include "Src/Misc.hpp"
+#include "Src/Constants.hpp"
 
 #include <memory>
 #include <assert.h>
@@ -47,12 +48,12 @@ int CPixelShader::Create(const char* _FilePath)
 
 hdx::PixelShader CPixelShader::CreateDefault2D()
 {
-  return hdx::PixelShader(kDefault2DFilePath);
+  return hdx::PixelShader(kDefault2DPixelShaderFilePath);
 }
 
 hdx::PixelShader CPixelShader::CreateDefault3D()
 {
-  return hdx::PixelShader(kDefault3DFilePath);
+  return hdx::PixelShader(kDefault3DPixelShaderFilePath);
 }
 
 ID3D11PixelShader* CPixelShader::GetPixeShader(const hdx::PixelShader& _PixelShader)

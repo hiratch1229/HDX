@@ -2,8 +2,6 @@
 
 #include <Windows.h>
 #include <crtdbg.h>
-
-#include <time.h>
 #include <locale>
 
 #include "Src/Resource.hpp"
@@ -21,9 +19,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 #if defined(DEBUG) | defined(_DEBUG)
   _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-
-  //  ŠÔ‚Åƒ‰ƒ“ƒ_ƒ€
-  srand(static_cast<UINT>(time(nullptr)));
 
   //  “ú–{Œê‚Éİ’è
   setlocale(LC_CTYPE, "jpn");

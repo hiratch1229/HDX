@@ -20,7 +20,7 @@ void CRenderer2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImme
   ppRenderTargetView_ = _ppRenderTargetView;
   pDepthStencilView_ = _pDepthStencilView;
 
-  VertexShader_ = Engine::Get<IVertexShader>()->CreateDefault2D();
+  VertexShader_ = Engine::Get<IVertexShader>()->CreateDefault2D(pInputLayout_.GetAddressOf());
   PixelShader_ = Engine::Get<IPixelShader>()->CreateDefault2D();
 
   //  エラーチェック用
@@ -92,7 +92,7 @@ void CRenderer2D::Begin()
   pImmediateContext_->RSSetState(Engine::Get<IRasterizerState>()->GetRasterizerState(RasterizerState_));
   pImmediateContext_->VSSetShader(Engine::Get<IVertexShader>()->GetVertexShader(VertexShader_), nullptr, 0);
   pImmediateContext_->PSSetShader(Engine::Get<IPixelShader>()->GetPixeShader(PixelShader_), nullptr, 0);
-  pImmediateContext_->IASetInputLayout(Engine::Get<IVertexShader>()->GetInputLayout(VertexShader_));
+  pImmediateContext_->IASetInputLayout(pInputLayout_.Get());
   pImmediateContext_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
   //  IASetVertexBuffers

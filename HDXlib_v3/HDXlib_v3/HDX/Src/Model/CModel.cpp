@@ -680,13 +680,13 @@ int CModel::Load(const char* _FilePath)
       //  バッファの作成
       CreateBuffers(Vertices.data(), Vertices.size(), Indices.data(), Indices.size(), Mesh.pVertexBuffer.GetAddressOf(), Mesh.pIndexBuffer.GetAddressOf());
 
-      for (int i = 0, Size = Vertices.size(); i < Size; ++i)
+      for (int j = 0, Size = Vertices.size(); j < Size; ++j)
       {
-        ModelData.Vertices.push_back(Vertices[i].Position);
+        ModelData.Vertices.push_back(Vertices[j].Position);
       }
-      for (int i = 0, Size = Indices.size(); i < Size; ++i)
+      for (int j = 0, Size = Indices.size(); j < Size; ++j)
       {
-        ModelData.Indices.push_back(Indices[i]);
+        ModelData.Indices.push_back(Indices[j]);
       }
     }
 
@@ -1174,5 +1174,5 @@ float CModel::GetFrame(int _ID, int _MotionNumber)
 {
   const Mesh& Mesh = ModelMap_[_ID].Meshes[0];
 
-  return Mesh.SamplingTime*Mesh.SkeletalAnimations.size();
+  return Mesh.SamplingTime*Mesh.SkeletalAnimations[_MotionNumber].size();
 }

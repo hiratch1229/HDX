@@ -38,6 +38,7 @@ private:
   ID3D11DepthStencilView* pDepthStencilView_ = nullptr;
 private:
   Microsoft::WRL::ComPtr<ID3D11Buffer> pInstanceBuffer_;
+  Microsoft::WRL::ComPtr<ID3D11InputLayout> pInputLayout_;
   Instance* Instances_ = nullptr;
   int Count_ = 0;
   hdx::Model Model_;

@@ -14,7 +14,7 @@ void Main()
     //{ "DATA/005_cube.fbx" },
     { "DATA/danbo_fbx/danbo_atk.fbx" },
   };
-  
+
   constexpr float Scale = 0.01f;
 
   hdx::Camera Camera;
@@ -24,7 +24,7 @@ void Main()
   hdx::float3 Rotation;
   hdx::Matrix WorldMatrix;
   hdx::MotionData MotionData;
-  
+
   const hdx::Matrix S = DirectX::XMMatrixScaling(Scale, Scale, Scale);
 
   while (hdx::System::Update())

@@ -100,10 +100,6 @@
 //  コンスタントバッファ
 #include "Include/ConstantBuffer.hpp"
 
-//  インプットレイアウト
-//  2018.10.04  作成
-#include "Include/InputElementDesc.hpp"
-
 //  頂点シェーダー
 //  2018.09.30  作成
 #include "Include/VertexShader.hpp"

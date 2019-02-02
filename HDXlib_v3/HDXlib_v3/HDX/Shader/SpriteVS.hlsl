@@ -1,11 +1,11 @@
 #include <Sprite.hlsli>
 
-VS_OUT main(float4 position : POSITION, float2 texcoord : TEXCOORD, column_major float4x4 ndc_transform : NDC_TRANSFORM, float4 texcoord_transform : TEXCOORD_TRANSFORM, float4 color : COLOR)
+VS_OUT main(VS_IN In)
 {
   VS_OUT vout;
-  vout.pos = mul(position, ndc_transform);
-  vout.texcoord = texcoord * texcoord_transform.zw + texcoord_transform.xy;
-  vout.color = color;
+  vout.pos = mul(In.position, In.ndc_transform);
+  vout.texcoord = In.texcoord * In.texcoord_transform.zw + In.texcoord_transform.xy;
+  vout.color = In.color;
 
   return vout;
 }

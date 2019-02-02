@@ -1,10 +1,36 @@
 #pragma once
 
-//	ポインタ解放
-#define SAFE_DELETE(Obj)  if( Obj ){ delete Obj; Obj = nullptr; }	
-//	ポインタ配列解放
-#define SAFE_DELETE_ARRAY(Obj)  if( Obj ){ delete[] Obj; Obj = nullptr; }	
-//	メモリ解放
-#define SAFE_FREE(Obj)  if( Obj ){ free( Obj ); Obj = nullptr; }	
-//  配列の要素数を求める
-#define ARRAY_SIZE(Array) sizeof(Array) / sizeof(Array[0])
+namespace hdx
+{
+  namespace Macro
+  {
+    //  ポインタ解放
+    template<class T>
+    inline void SafeDelete(T*& _p)
+    {
+      if (_p)
+      {
+        delete _p;
+        _p = nullptr;
+      }
+    }
+
+    //	ポインタ配列解放
+    template<class T>
+    inline void SafeDeleteArray(T*& _p)
+    {
+      if (_p)
+      {
+        delete[] _p;
+        _p = nullptr;
+      }
+    }
+
+    //  配列サイズを取得
+    template<class T, std::size_t Size>
+    inline constexpr size_t ArraySize(const T(&)[Size])
+    {
+      return Size;
+    }
+  }
+}
