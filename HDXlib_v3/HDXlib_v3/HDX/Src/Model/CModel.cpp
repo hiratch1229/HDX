@@ -564,9 +564,9 @@ int CModel::Load(const char* _FilePath)
         {
           Vertex Vertex;
           const int IndexOfControlPoint = pFbxMesh->GetPolygonVertex(IndexOfPolygon, IndexOfVertex);
-          Vertex.Position.X = static_cast<float>(ArrayOfControlPoints[IndexOfControlPoint][0]);
-          Vertex.Position.Y = static_cast<float>(ArrayOfControlPoints[IndexOfControlPoint][1]);
-          Vertex.Position.Z = static_cast<float>(ArrayOfControlPoints[IndexOfControlPoint][2]);
+          Vertex.Position.x = static_cast<float>(ArrayOfControlPoints[IndexOfControlPoint][0]);
+          Vertex.Position.y = static_cast<float>(ArrayOfControlPoints[IndexOfControlPoint][1]);
+          Vertex.Position.z = static_cast<float>(ArrayOfControlPoints[IndexOfControlPoint][2]);
 
           BoneInfluencePerControlPoint& InfluencesPerControlPoint = BoneInfluences.at(IndexOfControlPoint);
           for (int IndexOfInfluence = 0, Size = InfluencesPerControlPoint.size(); IndexOfInfluence < Size; ++IndexOfInfluence)
@@ -579,9 +579,9 @@ int CModel::Load(const char* _FilePath)
           {
             fbxsdk::FbxVector4 Normal;
             pFbxMesh->GetPolygonVertexNormal(IndexOfPolygon, IndexOfVertex, Normal);
-            Vertex.Normal.X = static_cast<float>(Normal[0]);
-            Vertex.Normal.Y = static_cast<float>(Normal[1]);
-            Vertex.Normal.Z = static_cast<float>(Normal[2]);
+            Vertex.Normal.x = static_cast<float>(Normal[0]);
+            Vertex.Normal.y = static_cast<float>(Normal[1]);
+            Vertex.Normal.z = static_cast<float>(Normal[2]);
           }
 
           if (pFbxMesh->GetElementUVCount())
@@ -592,8 +592,8 @@ int CModel::Load(const char* _FilePath)
             fbxsdk::FbxVector2 UV;
             bool UnMappedUV = false;
             pFbxMesh->GetPolygonVertexUV(IndexOfPolygon, IndexOfVertex, UVNames[0], UV, UnMappedUV);
-            Vertex.Texcoord.X = static_cast<float>(UV[0]);
-            Vertex.Texcoord.Y = 1.0f - static_cast<float>(UV[1]);
+            Vertex.Texcoord.x = static_cast<float>(UV[0]);
+            Vertex.Texcoord.y = 1.0f - static_cast<float>(UV[1]);
           }
 
           Vertices.push_back(Vertex);
@@ -634,7 +634,7 @@ int CModel::Load(const char* _FilePath)
             if (pFileTexture)
             {
               //  fbxファイルが存在するフォルダ
-              char Directory[hdx::Constants::CharMaxNum]{};
+              char Directory[kCharMaxNum]{};
 
               for (char Delimiter : kDelimiters)
               {
@@ -649,7 +649,7 @@ int CModel::Load(const char* _FilePath)
                 }
               }
 
-              char TextureFilePath[hdx::Constants::CharMaxNum];
+              char TextureFilePath[kCharMaxNum];
 
               if (strstr(str, ".fbx") != nullptr)
               {
@@ -698,13 +698,13 @@ int CModel::Load(const char* _FilePath)
     {
       const hdx::float3 Pos = ModelData.Vertices[i];
 
-      Min.X = (Pos.X < Min.X) ? Pos.X : Min.X;
-      Min.Y = (Pos.Y < Min.Y) ? Pos.Y : Min.Y;
-      Min.Z = (Pos.Z < Min.Z) ? Pos.Z : Min.Z;
+      Min.x = (Pos.x < Min.x) ? Pos.x : Min.x;
+      Min.y = (Pos.y < Min.y) ? Pos.y : Min.y;
+      Min.z = (Pos.z < Min.z) ? Pos.z : Min.z;
 
-      Max.X = (Pos.X > Max.X) ? Pos.X : Max.X;
-      Max.Y = (Pos.Y > Max.Y) ? Pos.Y : Max.Y;
-      Max.Z = (Pos.Z > Max.Z) ? Pos.Z : Max.Z;
+      Max.x = (Pos.x > Max.x) ? Pos.x : Max.x;
+      Max.y = (Pos.y > Max.y) ? Pos.y : Max.y;
+      Max.z = (Pos.z > Max.z) ? Pos.z : Max.z;
     }
 
     ModelData.Scale = Max - Min;
@@ -732,7 +732,7 @@ int CModel::Load(const hdx::Rectangle& _Rectangle)
 {
   const int TextureID = _Rectangle.Texture.GetID();
 
-  char ModelName[hdx::Constants::CharMaxNum];
+  char ModelName[kCharMaxNum];
   sprintf_s(ModelName, "Rectangle:%d", TextureID);
 
   //  既に作成されているか確認
@@ -800,13 +800,13 @@ int CModel::Load(const hdx::Rectangle& _Rectangle)
   {
     const hdx::float3 Pos = ModelData.Vertices[i];
 
-    Min.X = (Pos.X < Min.X) ? Pos.X : Min.X;
-    Min.Y = (Pos.Y < Min.Y) ? Pos.Y : Min.Y;
-    Min.Z = (Pos.Z < Min.Z) ? Pos.Z : Min.Z;
+    Min.x = (Pos.x < Min.x) ? Pos.x : Min.x;
+    Min.y = (Pos.y < Min.y) ? Pos.y : Min.y;
+    Min.z = (Pos.z < Min.z) ? Pos.z : Min.z;
 
-    Max.X = (Pos.X > Max.X) ? Pos.X : Max.X;
-    Max.Y = (Pos.Y > Max.Y) ? Pos.Y : Max.Y;
-    Max.Z = (Pos.Z > Max.Z) ? Pos.Z : Max.Z;
+    Max.x = (Pos.x > Max.x) ? Pos.x : Max.x;
+    Max.y = (Pos.y > Max.y) ? Pos.y : Max.y;
+    Max.z = (Pos.z > Max.z) ? Pos.z : Max.z;
   }
 
   ModelData.Scale = Max - Min;
@@ -818,7 +818,7 @@ int CModel::Load(const hdx::Cube& _Cube)
 {
   const int TextureID = _Cube.Texture.GetID();
 
-  char ModelName[hdx::Constants::CharMaxNum];
+  char ModelName[kCharMaxNum];
   sprintf_s(ModelName, "Cube:%d", TextureID);
 
   //  既に作成されているか確認
@@ -999,13 +999,13 @@ int CModel::Load(const hdx::Cube& _Cube)
   {
     const hdx::float3 Pos = ModelData.Vertices[i];
 
-    Min.X = (Pos.X < Min.X) ? Pos.X : Min.X;
-    Min.Y = (Pos.Y < Min.Y) ? Pos.Y : Min.Y;
-    Min.Z = (Pos.Z < Min.Z) ? Pos.Z : Min.Z;
+    Min.x = (Pos.x < Min.x) ? Pos.x : Min.x;
+    Min.y = (Pos.y < Min.y) ? Pos.y : Min.y;
+    Min.z = (Pos.z < Min.z) ? Pos.z : Min.z;
 
-    Max.X = (Pos.X > Max.X) ? Pos.X : Max.X;
-    Max.Y = (Pos.Y > Max.Y) ? Pos.Y : Max.Y;
-    Max.Z = (Pos.Z > Max.Z) ? Pos.Z : Max.Z;
+    Max.x = (Pos.x > Max.x) ? Pos.x : Max.x;
+    Max.y = (Pos.y > Max.y) ? Pos.y : Max.y;
+    Max.z = (Pos.z > Max.z) ? Pos.z : Max.z;
   }
 
   ModelData.Scale = Max - Min;
@@ -1017,7 +1017,7 @@ int CModel::Load(const hdx::Cylinder& _Cylinder)
 {
   const int TextureID = _Cylinder.Texture.GetID();
   const UINT Slices = _Cylinder.Slices;
-  char ModelName[hdx::Constants::CharMaxNum];
+  char ModelName[kCharMaxNum];
   sprintf_s(ModelName, "Cylinder:%d,%d", TextureID, Slices);
 
   //  既に作成されているか確認
@@ -1060,7 +1060,7 @@ int CModel::Load(const hdx::Cylinder& _Cylinder)
     for (UINT i = 0; i <= Slices; ++i)
     {
       Vertices[(Slices + 1) + i] = Vertices[i];
-      Vertices[(Slices + 1) + i].Position.Y = -Vertices[i].Position.Y;
+      Vertices[(Slices + 1) + i].Position.y = -Vertices[i].Position.y;
     }
     //  上底の法線設定
     for (UINT i = 0; i <= Slices; ++i)
@@ -1136,13 +1136,13 @@ int CModel::Load(const hdx::Cylinder& _Cylinder)
   {
     const hdx::float3 Pos = ModelData.Vertices[i];
 
-    Min.X = (Pos.X < Min.X) ? Pos.X : Min.X;
-    Min.Y = (Pos.Y < Min.Y) ? Pos.Y : Min.Y;
-    Min.Z = (Pos.Z < Min.Z) ? Pos.Z : Min.Z;
+    Min.x = (Pos.x < Min.x) ? Pos.x : Min.x;
+    Min.y = (Pos.y < Min.y) ? Pos.y : Min.y;
+    Min.z = (Pos.z < Min.z) ? Pos.z : Min.z;
 
-    Max.X = (Pos.X > Max.X) ? Pos.X : Max.X;
-    Max.Y = (Pos.Y > Max.Y) ? Pos.Y : Max.Y;
-    Max.Z = (Pos.Z > Max.Z) ? Pos.Z : Max.Z;
+    Max.x = (Pos.x > Max.x) ? Pos.x : Max.x;
+    Max.y = (Pos.y > Max.y) ? Pos.y : Max.y;
+    Max.z = (Pos.z > Max.z) ? Pos.z : Max.z;
   }
 
   ModelData.Scale = Max - Min;

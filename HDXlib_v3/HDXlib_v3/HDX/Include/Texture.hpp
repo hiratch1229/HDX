@@ -59,8 +59,8 @@ namespace hdx
   public:
     int GetID()const { return ID_; }
     int2 GetSize()const { return Size_; }
-    int GetWidth()const { return Size_.X; }
-    int GetHeight()const { return Size_.Y; }
+    int GetWidth()const { return Size_.x; }
+    int GetHeight()const { return Size_.y; }
   public:
     bool operator==(const Texture& _Texture)const
     {

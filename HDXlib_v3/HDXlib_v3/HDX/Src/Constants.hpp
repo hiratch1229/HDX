@@ -1,17 +1,25 @@
 #pragma once
 #include "Include/Constants.hpp"
 
-constexpr UINT kConstantBufferMaxNum = hdx::Constants::ConstantBufferMaxNum;
+constexpr UINT kCharMaxNum = hdx::Constants::kCharMaxNum;
 
-constexpr UINT kSamplerStateMaxNum = hdx::Constants::SamplerStateMaxNum;
+constexpr UINT kConstantBufferMaxNum = hdx::Constants::kConstantBufferMaxNum;
 
-constexpr UINT kTextureMaxNum = hdx::Constants::TextureMaxNum;
+constexpr UINT kSamplerStateMaxNum = hdx::Constants::kSamplerStateMaxNum;
+
+constexpr UINT kTextureMaxNum = hdx::Constants::kTextureMaxNum;
+
+constexpr UINT kControllerMaxNum = hdx::Constants::kControllerMaxNum;
 
 constexpr UINT kSpriteBatchMaxNum = 10000;
 
 constexpr UINT kModelBatchMaxNum = 10000;
 
 constexpr UINT kModelAnimationSamplingRate = 24;
+
+constexpr UINT kModelBoneMaxNum = hdx::Constants::kModelBoneMaxNum;
+
+constexpr UINT kModelBoneInfluencesMaxNum = 4;
 
 constexpr char* kDefault2DVertexShaderFilePath = "DATA/Shader/SpriteVS.cso";
 

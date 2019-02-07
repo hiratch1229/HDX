@@ -2,11 +2,11 @@
 
 #include "Src/Engine.hpp"
 #include "Src/Misc.hpp"
-
-#include "Include/Constants.hpp"
+#include "Src/Constants.hpp"
 
 #include <memory>
 #include <string>
+#include <assert.h>
 
 namespace
 {
@@ -18,12 +18,12 @@ namespace
   private:
     std::vector<unsigned char> Buffer_;
   public:
-    int Stride()const { return Size_.X*kPixelBytes; }
+    int Stride()const { return Size_.x*kPixelBytes; }
     unsigned char* Buffer() { return &Buffer_[0]; }
     size_t BufferSize()const { return Buffer_.size(); }
   public:
     Image(const hdx::int2& _Size)
-      : Size_(_Size), Buffer_(_Size.X*_Size.Y*kPixelBytes)
+      : Size_(_Size), Buffer_(_Size.x*_Size.y*kPixelBytes)
     {
 
     }
@@ -58,8 +58,8 @@ int CTexture::CreateDummyTexture(const hdx::int2& _Size)
   //  シェーダーリソースビュー設定で作成
   D3D11_TEXTURE2D_DESC Texture2dDesc{};
   {
-    Texture2dDesc.Width = _Size.X;
-    Texture2dDesc.Height = _Size.Y;
+    Texture2dDesc.Width = _Size.x;
+    Texture2dDesc.Height = _Size.y;
     Texture2dDesc.MipLevels = 1;
     Texture2dDesc.ArraySize = 1;
     Texture2dDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -72,7 +72,7 @@ int CTexture::CreateDummyTexture(const hdx::int2& _Size)
   }
 
 
-  const UINT SysMemSize = _Size.X*_Size.Y;
+  const UINT SysMemSize = _Size.x*_Size.y;
   std::unique_ptr<UINT[]> pSysmem = std::make_unique<UINT[]>(SysMemSize);
 
   //  白色設定で作成
@@ -83,7 +83,7 @@ int CTexture::CreateDummyTexture(const hdx::int2& _Size)
       pSysmem[i] = 0xFFFFFFFF;
     }
     SubresourceData.pSysMem = pSysmem.get();
-    SubresourceData.SysMemPitch = sizeof(UINT)*_Size.X;
+    SubresourceData.SysMemPitch = sizeof(UINT)*_Size.x;
     SubresourceData.SysMemSlicePitch = 0;
   }
 
@@ -111,7 +111,7 @@ int CTexture::CreateDummyTexture(const hdx::int2& _Size)
     _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
   }
 
-  char FileName[hdx::Constants::CharMaxNum];
+  char FileName[kCharMaxNum];
   sprintf_s(FileName, "CreateTextureNumber%d", CreateTextureNum_++);
 
   //  マップへ追加
@@ -134,8 +134,8 @@ int CTexture::Load(const char* _FilePath)
   Microsoft::WRL::ComPtr<IWICBitmapDecoder> Decoder;
 
   //  char型→wchar_t型に変換
-  wchar_t wFilePath[hdx::Constants::CharMaxNum];
-  mbstowcs_s(nullptr, wFilePath, _FilePath, hdx::Constants::CharMaxNum);
+  wchar_t wFilePath[kCharMaxNum];
+  mbstowcs_s(nullptr, wFilePath, _FilePath, kCharMaxNum);
 
   hr = pFactory_->CreateDecoderFromFilename(wFilePath, 0, GENERIC_READ, WICDecodeMetadataCacheOnDemand, Decoder.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
@@ -150,7 +150,7 @@ int CTexture::Load(const char* _FilePath)
     hr = Frame->GetSize(&Width, &Height);
     _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
     Size = { static_cast<int>(Width), static_cast<int>(Height) };
-    assert(Size.X > 0 && Size.Y > 0);
+    assert(Size.x > 0 && Size.y > 0);
   }
 
   WICPixelFormatGUID PixelFormat;
@@ -179,8 +179,8 @@ int CTexture::Load(const char* _FilePath)
   }
 
   D3D11_TEXTURE2D_DESC Texture2dDesc;
-  Texture2dDesc.Width = Image.Size_.X;
-  Texture2dDesc.Height = Image.Size_.Y;
+  Texture2dDesc.Width = Image.Size_.x;
+  Texture2dDesc.Height = Image.Size_.y;
   Texture2dDesc.MipLevels = 1;
   Texture2dDesc.ArraySize = 1;
   Texture2dDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;

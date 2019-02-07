@@ -29,7 +29,7 @@ void CMouse::Update()
     ::GetCursorPos(&Point);
 
     //  現在のカーソルの位置
-    const hdx::int2 CursorPos = hdx::int2(static_cast<int>(Point.x), static_cast<int>(Point.y)) / DpiScale_;
+    const hdx::int2 CursorPos = hdx::int2(Point.x / DpiScale_.x, Point.y / DpiScale_.y);
 
     //  移動量を保存
     Delta_ = CursorPos - Pos_;
@@ -47,5 +47,5 @@ void CMouse::SetPos(const hdx::int2& _Pos)
   Pos_ = _Pos;
 
   //  ウィンドウの中心にカーソルをセット
-  ::SetCursorPos(Pos_.X, Pos_.Y);
+  ::SetCursorPos(Pos_.x, Pos_.y);
 }

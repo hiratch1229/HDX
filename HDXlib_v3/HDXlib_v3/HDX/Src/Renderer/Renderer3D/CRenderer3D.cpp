@@ -222,7 +222,7 @@ void CRenderer3D::Flush()
         const Skeletal& Skeletal = Mesh.SkeletalAnimations[MotionData_.Number].at(static_cast<size_t>(MotionData_.Frame / Mesh.SamplingTime));
 
         const int NumberOfBones = Skeletal.size();
-        _ASSERT_EXPR(NumberOfBones < hdx::Constants::MaxBoneNum, L"'the NumberOfBones' exceeds hdx::Constants::MaxBoneNum");
+        _ASSERT_EXPR_A(NumberOfBones < kModelBoneMaxNum, "'the NumberOfBones' exceeds kModelBoneMaxNum");
 
         for (int i = 0; i < NumberOfBones; ++i)
         {
@@ -231,7 +231,7 @@ void CRenderer3D::Flush()
       }
       else
       {
-        for (int i = 0; i < hdx::Constants::MaxBoneNum; ++i)
+        for (int i = 0; i < kModelBoneMaxNum; ++i)
         {
           ConstantBuffer_.Get().BoneTransforms[i] = BoneNothingMatrix_;
         }
@@ -389,9 +389,9 @@ void CRenderer3D::SetConstantBuffer(hdx::ShaderStage _Stage, UINT _Size, const v
 
 void CRenderer3D::SetLightDirection(const hdx::float3& _LightDirection)
 {
-  ConstantBuffer_.Get().LightDirection.x = _LightDirection.X;
-  ConstantBuffer_.Get().LightDirection.y = _LightDirection.Y;
-  ConstantBuffer_.Get().LightDirection.z = _LightDirection.Z;
+  ConstantBuffer_.Get().LightDirection.x = _LightDirection.x;
+  ConstantBuffer_.Get().LightDirection.y = _LightDirection.y;
+  ConstantBuffer_.Get().LightDirection.z = _LightDirection.z;
 }
 
 void CRenderer3D::FreeCamera()
@@ -401,9 +401,9 @@ void CRenderer3D::FreeCamera()
 
 void CRenderer3D::CalcView()
 {
-  DirectX::XMStoreFloat4x4(&ViewMatrix_, DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(Camera_.Pos.X, Camera_.Pos.Y, Camera_.Pos.Z, 1.0f),
-    DirectX::XMVectorSet(Camera_.Target.X, Camera_.Target.Y, Camera_.Target.Z, 1.0f),
-    DirectX::XMVectorSet(Camera_.Up.X, Camera_.Up.Y, Camera_.Up.Z, 0.0f)));
+  DirectX::XMStoreFloat4x4(&ViewMatrix_, DirectX::XMMatrixLookAtLH(DirectX::XMVectorSet(Camera_.Pos.x, Camera_.Pos.y, Camera_.Pos.z, 1.0f),
+    DirectX::XMVectorSet(Camera_.Target.x, Camera_.Target.y, Camera_.Target.z, 1.0f),
+    DirectX::XMVectorSet(Camera_.Up.x, Camera_.Up.y, Camera_.Up.z, 0.0f)));
 }
 
 hdx::Matrix CRenderer3D::GetProjectionMatrix()const
@@ -424,8 +424,8 @@ void CRenderer3D::SetViewPort(const hdx::float2& _Size)
   //  Œ»Ý‚Ìƒf[ƒ^‚ðŽæ“¾
   pImmediateContext_->RSGetViewports(&ViewPortNum, &ViewPort);
 
-  ViewPort.Width = _Size.X;
-  ViewPort.Height = _Size.Y;
+  ViewPort.Width = _Size.x;
+  ViewPort.Height = _Size.y;
 
   //  Ý’è‚ð”½‰f
   pImmediateContext_->RSSetViewports(1, &ViewPort);

@@ -1,11 +1,10 @@
 #pragma once
 #include "Button.hpp"
+#include "Type2.hpp"
 
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx
 {
-  struct int2;
-  
   //  “ü—ÍŒn
   namespace Input
   {

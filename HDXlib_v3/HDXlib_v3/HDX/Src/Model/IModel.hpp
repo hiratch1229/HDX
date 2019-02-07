@@ -1,6 +1,7 @@
 #pragma once
 #include "Include/Model.hpp"
-#include "Include/Constants.hpp"
+
+#include "Src/Constants.hpp"
 
 #include <d3d11.h>
 #include <wrl.h>
@@ -10,8 +11,8 @@ struct Vertex
   hdx::float3 Position;
   hdx::float3 Normal;
   hdx::float2 Texcoord;
-  float BoneWeights[hdx::Constants::MaxBoneInfluences] = { 1.0f };
-  int BoneIndices[hdx::Constants::MaxBoneInfluences] = {};
+  float BoneWeights[kModelBoneInfluencesMaxNum] = { 1.0f };
+  int BoneIndices[kModelBoneInfluencesMaxNum] = {};
 };
 struct Material
 {

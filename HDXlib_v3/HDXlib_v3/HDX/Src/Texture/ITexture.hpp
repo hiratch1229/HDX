@@ -8,7 +8,7 @@ class ITexture
 {
 public:
   static constexpr int kDummyTextureID = 0;
-  static constexpr int kDummyTextureSize = 1;
+  static constexpr hdx::int2 kDummyTextureSize = hdx::int2(1, 1);
 public:
   static ITexture* Create();
 

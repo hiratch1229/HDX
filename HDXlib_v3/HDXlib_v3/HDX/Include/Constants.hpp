@@ -8,20 +8,19 @@ namespace hdx
   namespace Constants
   {
     //  ç≈ëÂï∂éöêî
-    constexpr UINT CharMaxNum = 256;
+    constexpr UINT kCharMaxNum = 256;
 
-    constexpr UINT AppendAlignedElement = 0xffffffff;
+    constexpr UINT kControllerMaxNum = 4;
 
-    constexpr UINT SamplerStateMaxNum = 16;
+    constexpr UINT kModelBoneMaxNum = 32;
 
-    constexpr UINT TextureMaxNum = 128;
+    //  D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT
+    constexpr UINT kSamplerStateMaxNum = 16;
 
-    constexpr UINT ConstantBufferMaxNum = 14;
+    //  D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT
+    constexpr UINT kTextureMaxNum = 128;
 
-    constexpr UINT ControllerMaxNum = 4;
-
-    constexpr UINT MaxBoneInfluences = 4;
-
-    constexpr UINT MaxBoneNum = 32;
+    //  D3D11_COMMONSHADER_CONSTANT_BUFFER_API_SLOT_COUNT
+    constexpr UINT kConstantBufferMaxNum = 14;
   }
 }

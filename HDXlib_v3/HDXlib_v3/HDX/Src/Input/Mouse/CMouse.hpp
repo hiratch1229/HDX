@@ -9,13 +9,13 @@ private:
   //  入力状態
   InputState InputStatus_[kButtonNum];
   //  座標
-  hdx::int2 Pos_;
+  hdx::int2 Pos_ = hdx::int2(0, 0);
   //  移動量
-  hdx::int2 Delta_;
+  hdx::int2 Delta_ = hdx::int2(0, 0);
   //  ホイール移動量
-  int Wheel_;
+  int Wheel_ = 0;
   //  画面解像度
-  hdx::float2 DpiScale_;
+  hdx::float2 DpiScale_ = hdx::float2(0.0f, 0.0f);
 private:
   bool isWithinRange(int _Number)const
   {
@@ -58,14 +58,14 @@ public:
 
   int GetWheel()const override
   {
-    return Wheel_; 
+    return Wheel_;
   }
 
   void SetPos(const hdx::int2& _Pos)override;
 
   void SetWheel(int _Wheel)override
   {
-    Wheel_ = _Wheel; 
+    Wheel_ = _Wheel;
   }
 
   bool AnyButtonPress()const override

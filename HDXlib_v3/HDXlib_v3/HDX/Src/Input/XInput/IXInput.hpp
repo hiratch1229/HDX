@@ -1,7 +1,7 @@
 #pragma once
 #include "Include/Type2.hpp"
 
-#include "Include/Constants.hpp"
+#include "Src/Constants.hpp"
 
 constexpr int kXInputButtonsCode[] = {
   0x0001, //  XINPUT_GAMEPAD_DPAD_UP
@@ -23,7 +23,7 @@ constexpr int kXInputButtonsCode[] = {
 class IXInput
 {
 public:
-  static constexpr int kControllerNum = (hdx::Constants::ControllerMaxNum <= 4) ? hdx::Constants::ControllerMaxNum : 4;
+  static constexpr int kControllerNum = (kControllerMaxNum <= 4) ? kControllerMaxNum : 4;
   static constexpr int kButtonNum = sizeof(kXInputButtonsCode) / sizeof(kXInputButtonsCode[0]);
 public:
   static IXInput* Create();

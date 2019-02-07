@@ -213,29 +213,29 @@ void CRenderer2D::Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeft
   const float Width = 2.0f / Engine::Get<ISystem>()->GetWindowWidth();
   const float Height = -2.0f / Engine::Get<ISystem>()->GetWindowHeight();
 
-  Instance.NDCTransform._11 = Width*_DstSize.X*cos;
-  Instance.NDCTransform._21 = Height*_DstSize.X*sin;
+  Instance.NDCTransform._11 = Width*_DstSize.x*cos;
+  Instance.NDCTransform._21 = Height*_DstSize.x*sin;
   Instance.NDCTransform._31 = 0.0f;
   Instance.NDCTransform._41 = 0.0f;
-  Instance.NDCTransform._12 = Width*_DstSize.Y*-sin;
-  Instance.NDCTransform._22 = Height*_DstSize.Y*cos;
+  Instance.NDCTransform._12 = Width*_DstSize.y*-sin;
+  Instance.NDCTransform._22 = Height*_DstSize.y*cos;
   Instance.NDCTransform._32 = 0.0f;
   Instance.NDCTransform._42 = 0.0f;
   Instance.NDCTransform._13 = 0.0f;
   Instance.NDCTransform._23 = 0.0f;
   Instance.NDCTransform._33 = 1.0f;
   Instance.NDCTransform._43 = 0.0f;
-  Instance.NDCTransform._14 = Width*(-Center.X*cos + -Center.Y*-sin + Center.X + _DstLeftTop.X) - 1.0f;
-  Instance.NDCTransform._24 = Height*(-Center.X*sin + -Center.Y*cos + Center.Y + _DstLeftTop.Y) + 1.0f;
+  Instance.NDCTransform._14 = Width*(-Center.x*cos + -Center.y*-sin + Center.x + _DstLeftTop.x) - 1.0f;
+  Instance.NDCTransform._24 = Height*(-Center.x*sin + -Center.y*cos + Center.y + _DstLeftTop.y) + 1.0f;
   Instance.NDCTransform._34 = 0.0f;
   Instance.NDCTransform._44 = 1.0f;
 
   const hdx::int2 Size = _Texture.GetSize();
 
-  Instance.TexcoordTransfrom.x = ((!_HorizontalFlip) ? _SrcLeftPos.X : _SrcSize.X) / Size.X;
-  Instance.TexcoordTransfrom.y = ((!_VerticalFlip) ? _SrcLeftPos.Y : _SrcSize.Y) / Size.Y;
-  Instance.TexcoordTransfrom.z = ((!_HorizontalFlip) ? _SrcSize.X : _SrcLeftPos.X) / Size.X;
-  Instance.TexcoordTransfrom.w = ((!_VerticalFlip) ? _SrcSize.Y : _SrcLeftPos.Y) / Size.Y;
+  Instance.TexcoordTransfrom.x = ((!_HorizontalFlip) ? _SrcLeftPos.x : _SrcSize.x) / Size.x;
+  Instance.TexcoordTransfrom.y = ((!_VerticalFlip) ? _SrcLeftPos.y : _SrcSize.y) / Size.y;
+  Instance.TexcoordTransfrom.z = ((!_HorizontalFlip) ? _SrcSize.x : _SrcLeftPos.x) / Size.x;
+  Instance.TexcoordTransfrom.w = ((!_VerticalFlip) ? _SrcSize.y : _SrcLeftPos.y) / Size.y;
 
   Instance.Color = _Color;
 
@@ -367,8 +367,8 @@ void CRenderer2D::SetViewPort(const hdx::float2& _Size)
   //  Œ»Ý‚Ìƒf[ƒ^‚ðŽæ“¾
   pImmediateContext_->RSGetViewports(&ViewPortNum, &ViewPort);
 
-  ViewPort.Width = _Size.X;
-  ViewPort.Height = _Size.Y;
+  ViewPort.Width = _Size.x;
+  ViewPort.Height = _Size.y;
 
   //  Ý’è‚ð”½‰f
   pImmediateContext_->RSSetViewports(1, &ViewPort);

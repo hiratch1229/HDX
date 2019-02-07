@@ -3,6 +3,7 @@
 #include "Src/Engine.hpp"
 #include "Src/System/ISystem.hpp"
 #include "Src/Renderer/Renderer3D/IRenderer3D.hpp"
+#include "Src/Misc.hpp"
 #include "Src/Constants.hpp"
 
 #include "Include/VertexShader.hpp"
@@ -14,7 +15,7 @@
 
 #include "Include/Constants.hpp"
 
-#include <assert.h>
+#include <string>
 
 //  ライブラリ
 namespace hdx
@@ -48,7 +49,7 @@ namespace hdx
 
     void SetSamplerState(const SamplerState& _SamplerState, UINT _Slot)
     {
-      assert(_Slot >= 0 && _Slot <= hdx::Constants::SamplerStateMaxNum);
+      _ASSERT_EXPR_A(_Slot >= 0 && _Slot < hdx::Constants::kSamplerStateMaxNum, ("0から" + std::to_string(hdx::Constants::kSamplerStateMaxNum - 1) + "の範囲を指定してください。").c_str());
 
       Engine::Get<IRenderer3D>()->SetSamplerState(_SamplerState, _Slot);
     }
@@ -58,14 +59,14 @@ namespace hdx
       Engine::Get<IRenderer3D>()->SetRasterizerState(_RasterizerState);
     }
 
-	void SetDepthStencilState(const DepthStencilState& _DepthStencilState)
-	{
-	  Engine::Get<IRenderer3D>()->SetDepthStencilState(_DepthStencilState);
-	}
+    void SetDepthStencilState(const DepthStencilState& _DepthStencilState)
+    {
+      Engine::Get<IRenderer3D>()->SetDepthStencilState(_DepthStencilState);
+    }
 
     void SetTexture(const Texture& _Texture, UINT _Slot)
     {
-      assert(_Slot >= 1 && _Slot <= hdx::Constants::TextureMaxNum);
+      _ASSERT_EXPR_A(_Slot >= 1 && _Slot < hdx::Constants::kTextureMaxNum, ("1から" + std::to_string(hdx::Constants::kTextureMaxNum - 1) + "の範囲を指定してください。").c_str());
 
       Engine::Get<IRenderer3D>()->SetTexture(_Texture, _Slot);
     }
@@ -82,7 +83,7 @@ namespace hdx
 
     void SetConstantBuffer(ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot)
     {
-      assert(_Slot >= 1 && _Slot <= hdx::Constants::ConstantBufferMaxNum);
+      _ASSERT_EXPR_A(_Slot >= 1 && _Slot < hdx::Constants::kConstantBufferMaxNum, ("1から" + std::to_string(hdx::Constants::kConstantBufferMaxNum - 1) + "の範囲を指定してください。").c_str());
 
       Engine::Get<IRenderer3D>()->SetConstantBuffer(_Stage, _Size, _pData, _Slot);
     }
@@ -97,13 +98,13 @@ namespace hdx
       Engine::Get<IRenderer3D>()->SetLightDirection(_LightDirection);
     }
 
-	const Matrix& GetProjectionMatrix()
-	{
-		return Engine::Get<IRenderer3D>()->GetProjectionMatrix();
-	}
-	const Matrix& GetViewMatrix()
-	{
-		return Engine::Get<IRenderer3D>()->GetViewMatrix();
-	}
+    const Matrix& GetProjectionMatrix()
+    {
+      return Engine::Get<IRenderer3D>()->GetProjectionMatrix();
+    }
+    const Matrix& GetViewMatrix()
+    {
+      return Engine::Get<IRenderer3D>()->GetViewMatrix();
+    }
   }
 }

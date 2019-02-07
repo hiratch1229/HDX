@@ -3,8 +3,9 @@
 
 #include "Include/Type2.hpp"
 #include "Include/Types.hpp"
-#include "Include/Constants.hpp"
+
 #include "Src/Input/InputState.hpp"
+#include "Src/Constants.hpp"
 
 #define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
@@ -26,9 +27,9 @@ class CGamepad : public IGamepad
 private:
   static constexpr UINT kPovDirectionNum = static_cast<UINT>(PovDirection::Num);
   static constexpr UINT kButtonNum = 32 + kPovDirectionNum;
-  static constexpr UINT kControllerNum = (hdx::Constants::ControllerMaxNum < 4) ? hdx::Constants::ControllerMaxNum : 4;
-  static constexpr int kStickMaxValue = 10000;
-  static constexpr int kTriggerMaxValue = 65535;
+  static constexpr UINT kControllerNum = (kControllerMaxNum < 4) ? kControllerMaxNum : 4;
+  static constexpr LONG kStickMaxValue = 10000;
+  static constexpr LONG kTriggerMaxValue = 65535;
 private:
   struct Status
   {

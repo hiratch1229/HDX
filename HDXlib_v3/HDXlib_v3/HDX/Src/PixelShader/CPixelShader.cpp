@@ -28,7 +28,7 @@ int CPixelShader::Create(const char* _FilePath)
 
   FILE* fp;
   fopen_s(&fp, _FilePath, "rb");
-  assert(fp);
+  _ASSERT_EXPR_A(fp, (std::string(_FilePath) + "Ç™ë∂ç›ÇµÇ‹ÇπÇÒÅB").c_str());
 
   fseek(fp, 0, SEEK_END);
   long Size = ftell(fp);

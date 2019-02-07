@@ -338,8 +338,8 @@ void CGamepad::Update()
 
     Status.isConnect = true;
 
-    Status.LeftStick = hdx::float2(static_cast<float>(State.lX), static_cast<float>(State.lY)) / kStickMaxValue;
-    Status.RightStick = hdx::float2(static_cast<float>(State.lZ), static_cast<float>(State.lRz)) / kStickMaxValue;
+    Status.LeftStick = hdx::float2(State.lX, State.lY) / kStickMaxValue;
+    Status.RightStick = hdx::float2(State.lZ, State.lRz) / kStickMaxValue;
     Status.LeftTrigger = State.lRx / static_cast<float>(kTriggerMaxValue);
     Status.RightTrigger = State.lRy / static_cast<float>(kTriggerMaxValue);
 
@@ -426,8 +426,8 @@ CGamepad::~CGamepad()
 
 inline hdx::float2 GetStick(hdx::float2 _Value, float _DeadZone)
 {
-  if (hdx::Math::GetAbsoluteValue(_Value.X) < _DeadZone) _Value.X = 0.0f;
-  if (hdx::Math::GetAbsoluteValue(_Value.Y) < _DeadZone) _Value.Y = 0.0f;
+  if (hdx::Math::GetAbsoluteValue(_Value.x) < _DeadZone) _Value.x = 0.0f;
+  if (hdx::Math::GetAbsoluteValue(_Value.y) < _DeadZone) _Value.y = 0.0f;
 
   return _Value;
 }
@@ -435,7 +435,7 @@ inline hdx::float2 GetStick(hdx::float2 _Value, float _DeadZone)
 //  左スティックの入力状態を取得
 hdx::float2 CGamepad::GetLeftStick(int _Index, float _DeadZone)const
 {
-  if (!(isWithinRange(_Index))) return 0.0f;
+  if (!(isWithinRange(_Index))) return hdx::float2(0.0f, 0.0f);
 
   return GetStick(Status_[_Index].LeftStick, _DeadZone);
 }
@@ -443,7 +443,7 @@ hdx::float2 CGamepad::GetLeftStick(int _Index, float _DeadZone)const
 //  右スティックの入力状態を取得
 hdx::float2 CGamepad::GetRightStick(int _Index, float _DeadZone)const
 {
-  if (!(isWithinRange(_Index))) return 0.0f;
+  if (!(isWithinRange(_Index))) return hdx::float2(0.0f, 0.0f);
 
   return GetStick(Status_[_Index].RightStick, _DeadZone);
 }

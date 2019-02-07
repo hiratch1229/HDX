@@ -3,6 +3,7 @@
 #include "Src/Engine.hpp"
 #include "Src/System/ISystem.hpp"
 #include "Src/Renderer/Renderer2D/IRenderer2D.hpp"
+#include "Src/Misc.hpp"
 #include "Src/Constants.hpp"
 
 #include "Include/VertexShader.hpp"
@@ -13,7 +14,7 @@
 
 #include "Include/Constants.hpp"
 
-#include <assert.h>
+#include <string>
 
 //  ライブラリ
 namespace hdx
@@ -47,7 +48,7 @@ namespace hdx
 
     void SetSamplerState(const SamplerState& _SamplerState, UINT _Slot)
     {
-      assert(_Slot >= 0 && _Slot <= hdx::Constants::SamplerStateMaxNum);
+      _ASSERT_EXPR_A(_Slot >= 0 && _Slot < hdx::Constants::kSamplerStateMaxNum, ("0から" + std::to_string(hdx::Constants::kSamplerStateMaxNum - 1) + "の範囲を指定してください。").c_str());
 
       Engine::Get<IRenderer2D>()->SetSamplerState(_SamplerState, _Slot);
     }
@@ -59,7 +60,7 @@ namespace hdx
 
     void SetTexture(const Texture& _Texture, UINT _Slot)
     {
-      assert(_Slot >= 1 && _Slot <= hdx::Constants::TextureMaxNum);
+      _ASSERT_EXPR_A(_Slot >= 1 && _Slot < hdx::Constants::kSamplerStateMaxNum, ("0から" + std::to_string(hdx::Constants::kTextureMaxNum - 1) + "の範囲を指定してください。").c_str());
 
       Engine::Get<IRenderer2D>()->SetTexture(_Texture, _Slot);
     }

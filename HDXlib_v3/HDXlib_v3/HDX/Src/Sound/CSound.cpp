@@ -1,8 +1,7 @@
 #include "CSound.hpp"
 
 #include "Src/Misc.hpp"
-
-#include "Include/Constants.hpp"
+#include "Src/Constants.hpp"
 
 void CSound::Initialize(const HWND& _hWnd)
 {
@@ -20,8 +19,8 @@ int CSound::Load(const char* _FilePath)
     }
   }
 
-  wchar_t wFilePath[hdx::Constants::CharMaxNum]{};
-  mbstowcs_s(nullptr, wFilePath, _FilePath, hdx::Constants::CharMaxNum);
+  wchar_t wFilePath[kCharMaxNum]{};
+  mbstowcs_s(nullptr, wFilePath, _FilePath, kCharMaxNum);
 
   Data Data;
 

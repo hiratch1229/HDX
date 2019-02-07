@@ -139,7 +139,7 @@ static void ImGui_ImplWin32_UpdateMousePos()
     //if (::ScreenToClient(g_hWnd, &pos))
     //  io.MousePos = ImVec2((float)pos.x, (float)pos.y);
     const hdx::float2 MousePos = hdx::Input::Mouse::GetPos();
-    io.MousePos = ImVec2(MousePos.X, MousePos.Y);
+    io.MousePos = ImVec2(MousePos.x, MousePos.y);
   }
 }
 

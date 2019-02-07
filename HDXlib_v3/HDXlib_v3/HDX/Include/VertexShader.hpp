@@ -1,6 +1,5 @@
 #pragma once
 #include "Types.hpp"
-#include "InputElementDesc.hpp"
 
 //  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx

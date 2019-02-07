@@ -17,7 +17,7 @@ VS_OUT main(VS_IN In)
   In.Normal = float4(n, 0.0f);
 
   VS_OUT Out;
-       
+
   Out.Position = mul(In.Position, mul(GlobalTransform, mul(In.World, ViewProjectionMatrix)));
   Out.Texcoord = In.Texcoord;
 

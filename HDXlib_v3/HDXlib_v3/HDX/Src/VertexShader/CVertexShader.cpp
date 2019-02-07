@@ -80,7 +80,7 @@ int CVertexShader::CreateVertexShader(const char* _FilePath, std::unique_ptr<uns
 
   FILE* fp;
   fopen_s(&fp, _FilePath, "rb");
-  assert(fp);
+  _ASSERT_EXPR_A(fp, (std::string(_FilePath) + "‚ª‘¶Ý‚µ‚Ü‚¹‚ñB").c_str());
 
   fseek(fp, 0, SEEK_END);
   long Size = ftell(fp);

@@ -2,8 +2,11 @@
 #include "IRenderer2D.hpp"
 #include "Src/Constants.hpp"
 
+#include "Include/Type2.hpp"
 #include "Include/Type3.hpp"
+#include "Include/Type4.hpp"
 
+#include <DirectXMath.h>
 #include <wrl.h>
 
 class CRenderer2D : public IRenderer2D
@@ -16,7 +19,7 @@ class CRenderer2D : public IRenderer2D
   struct Instance
   {
     DirectX::XMFLOAT4X4 NDCTransform;
-    DirectX::XMFLOAT4 TexcoordTransfrom;
+    hdx::float4 TexcoordTransfrom;
     hdx::ColorF Color;
   };
   struct ConstantBufferData

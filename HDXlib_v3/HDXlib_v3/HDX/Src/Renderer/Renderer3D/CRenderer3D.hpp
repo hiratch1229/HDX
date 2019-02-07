@@ -13,7 +13,7 @@ class CRenderer3D : public IRenderer3D
     DirectX::XMFLOAT4 LightDirection;     //  ライト進行方向
     hdx::ColorF DiffuseColor;
 
-    DirectX::XMFLOAT4X4 BoneTransforms[hdx::Constants::MaxBoneNum];
+    DirectX::XMFLOAT4X4 BoneTransforms[kModelBoneMaxNum];
   };
   struct ConstantBufferData
   {

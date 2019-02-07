@@ -179,8 +179,18 @@
 
 //  GUI
 //  2018.11.18  作成
-//  TODO:サンプルのままなので使い勝手向上
+//  TODO:使い勝手向上
 #include "Include/GUI.hpp"
+
+
+//*************************
+//  便利系
+//*************************
+
+//  定数
+//  2019.02.02
+#include "Include/Constants.hpp"
+
 
 //--------------------------------------------------
 
@@ -188,10 +198,3 @@
 #if defined(DEBUG) | defined(_DEBUG)
 #define new new(_NORMAL_BLOCK, __FILE__, __LINE__)
 #endif
-
-
-//--------------------------------------------------
-
-//  文字列系の警告を無効化
-#define _CRT_SECURE_NO_WARNINGS
-#define	_CRT_SECURE_NO_DEPRECATE

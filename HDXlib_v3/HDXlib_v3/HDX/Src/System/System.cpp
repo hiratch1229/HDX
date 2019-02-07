@@ -2,9 +2,9 @@
 
 #include "Src/Engine.hpp"
 #include "Src/System/ISystem.hpp"
+#include "Src/Constants.hpp"
 
 #include "Include/Type2.hpp"
-#include "Include/Constants.hpp"
 
 #include <Windows.h>
 
@@ -133,8 +133,8 @@ namespace hdx
   //  èoóÕÇ…ï∂éöÇï`âÊ
   void System::OutputDebug(const char* _Str)
   {
-    wchar_t Str[Constants::CharMaxNum];
-    mbstowcs_s(nullptr, Str, _Str, Constants::CharMaxNum);
+    wchar_t Str[kCharMaxNum];
+    mbstowcs_s(nullptr, Str, _Str, kCharMaxNum);
     OutputDebugString(Str);
   }
 

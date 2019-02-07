@@ -6,6 +6,9 @@
 
 class CXInput : public IXInput
 {
+  static constexpr int kAnalogStickMaxValue = 65535;
+  static constexpr float kTriggerMaxValue = 255.0f;
+private:
   struct Status
   {
     //  Ú‘±ó‘Ô

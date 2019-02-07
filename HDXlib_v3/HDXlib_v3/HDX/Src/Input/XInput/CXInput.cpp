@@ -45,17 +45,14 @@ void CXInput::Update()
     //  状態を保存
     {
       //  アナログスティック
-      static constexpr int kAnalogStickMaxValue = 65535;
-
-      hdx::float2 LeftValue = hdx::float2(static_cast<float>(Gamepad.sThumbLX), static_cast<float>(Gamepad.sThumbLY)) - SHRT_MIN;
-      hdx::float2 RightValue = hdx::float2(static_cast<float>(Gamepad.sThumbRX), static_cast<float>(Gamepad.sThumbRY)) - SHRT_MIN;
+      hdx::float2 LeftValue = (hdx::float2(Gamepad.sThumbLX + SHRT_MIN, Gamepad.sThumbLY + SHRT_MIN)*2.0f / kAnalogStickMaxValue);
+      hdx::float2 RightValue = (hdx::float2(Gamepad.sThumbRX + SHRT_MIN, Gamepad.sThumbRY + SHRT_MIN)*2.0f / kAnalogStickMaxValue);
       {
-        Status.LeftStick = ((LeftValue*2.0f) / kAnalogStickMaxValue) - 1.0f;
-        Status.RightStick = ((RightValue*2.0f) / kAnalogStickMaxValue) - 1.0f;
+        Status.LeftStick = hdx::float2(LeftValue.x - 1.0f, LeftValue.y - 1.0f);
+        Status.RightStick = hdx::float2(RightValue.x - 1.0f, RightValue.y - 1.0f);
       }
 
       //  トリガー
-      static constexpr float kTriggerMaxValue = 255.0f;
       {
         Status.LeftTrigger = Gamepad.bLeftTrigger / kTriggerMaxValue;
         Status.RightTrigger = Gamepad.bRightTrigger / kTriggerMaxValue;
@@ -69,8 +66,8 @@ hdx::float2 CXInput::GetLeftStick(int _Index, float _DeadZone)const
 {
   hdx::float2 Value = Status_[_Index].LeftStick;
 
-  if (hdx::Math::GetAbsoluteValue(Value.X) < _DeadZone) Value.X = 0.0f;
-  if (hdx::Math::GetAbsoluteValue(Value.Y) < _DeadZone) Value.Y = 0.0f;
+  if (hdx::Math::GetAbsoluteValue(Value.x) < _DeadZone) Value.x = 0.0f;
+  if (hdx::Math::GetAbsoluteValue(Value.y) < _DeadZone) Value.y = 0.0f;
 
   return Value;
 }
@@ -80,8 +77,8 @@ hdx::float2 CXInput::GetRightStick(int _Index, float _DeadZone)const
 {
   hdx::float2 Value = Status_[_Index].RightStick;
 
-  if (hdx::Math::GetAbsoluteValue(Value.X) < _DeadZone) Value.X = 0.0f;
-  if (hdx::Math::GetAbsoluteValue(Value.Y) < _DeadZone) Value.Y = 0.0f;
+  if (hdx::Math::GetAbsoluteValue(Value.x) < _DeadZone) Value.x = 0.0f;
+  if (hdx::Math::GetAbsoluteValue(Value.y) < _DeadZone) Value.y = 0.0f;
 
   return Value;
 }

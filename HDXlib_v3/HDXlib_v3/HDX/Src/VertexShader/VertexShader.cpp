@@ -1,5 +1,4 @@
 #include "Include/VertexShader.hpp"
-#include "Include/InputElementDesc.hpp"
 
 #include "Src/Engine.hpp"
 #include "Src/VertexShader/IVertexShader.hpp"

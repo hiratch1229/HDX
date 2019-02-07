@@ -1,11 +1,10 @@
 #pragma once
+#include "Type2.hpp"
+#include "Color.hpp"
 
 //  ライブラリ
 namespace hdx
 {
-  struct int2;
-  struct ColorF;
-
   //  システム
   class System
   {

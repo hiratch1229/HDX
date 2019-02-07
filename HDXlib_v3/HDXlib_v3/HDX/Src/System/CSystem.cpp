@@ -2,6 +2,7 @@
 
 #include "Src/Engine.hpp"
 #include "Src/Misc.hpp"
+#include "Src/Constants.hpp"
 
 #include "Src/BlendState/IBlendState.hpp"
 #include "Src/ConstantBuffer/IConstantBuffer.hpp"
@@ -130,10 +131,10 @@ CSystem::Window::Window()
   : hWnd_(CreateWindow(L"HDXlib",
     L"HDXlib",
     WS_OVERLAPPEDWINDOW ^ WS_MAXIMIZEBOX ^ WS_THICKFRAME,
-    LeftTopPos_.X,
-    LeftTopPos_.Y,
-    Size_.X,
-    Size_.Y,
+    LeftTopPos_.x,
+    LeftTopPos_.y,
+    Size_.x,
+    Size_.y,
     GetDesktopWindow(),
     nullptr,
     GetModuleHandle(NULL),
@@ -158,14 +159,14 @@ void CSystem::Window::SetUpWindow()
 
   //  ウィンドウタイトル設定
   {
-    wchar_t wWindowTitle[hdx::Constants::CharMaxNum];
-    mbstowcs_s(nullptr, wWindowTitle, Title_, hdx::Constants::CharMaxNum);
+    wchar_t wWindowTitle[kCharMaxNum];
+    mbstowcs_s(nullptr, wWindowTitle, Title_, kCharMaxNum);
 
     SetWindowText(hWnd_, wWindowTitle);
   }
 
   //  ウィンドウ設定&表示
-  ::SetWindowPos(hWnd_, HWND_TOP, LeftTopPos_.X, LeftTopPos_.Y, Size_.X, Size_.Y, SWP_SHOWWINDOW);
+  ::SetWindowPos(hWnd_, HWND_TOP, LeftTopPos_.x, LeftTopPos_.y, Size_.x, Size_.y, SWP_SHOWWINDOW);
   
   //pSwapChain_->SetFullscreenState(isFullScreen_, nullptr);
 }
@@ -219,13 +220,13 @@ void CSystem::ResizeSwapChain()
 {
   DXGI_SWAP_CHAIN_DESC SwapChainDesc{};
   pSwapChain_->GetDesc(&SwapChainDesc);
-  pSwapChain_->ResizeBuffers(SwapChainDesc.BufferCount, pWindow_->Size_.X, pWindow_->Size_.Y, SwapChainDesc.BufferDesc.Format, SwapChainDesc.Flags);
+  pSwapChain_->ResizeBuffers(SwapChainDesc.BufferCount, pWindow_->Size_.x, pWindow_->Size_.y, SwapChainDesc.BufferDesc.Format, SwapChainDesc.Flags);
 
   D3D11_VIEWPORT ViewPort{};
   ViewPort.TopLeftX = 0.0f;
   ViewPort.TopLeftY = 0.0f;
-  ViewPort.Width = static_cast<float>(pWindow_->Size_.X);
-  ViewPort.Height = static_cast<float>(pWindow_->Size_.Y);
+  ViewPort.Width = static_cast<float>(pWindow_->Size_.x);
+  ViewPort.Height = static_cast<float>(pWindow_->Size_.y);
   ViewPort.MinDepth = 0.0f;
   ViewPort.MaxDepth = 1.0f;
 
@@ -285,8 +286,8 @@ void CSystem::CreateSwapChain()
   HRESULT hr = S_OK;
 
   DXGI_SWAP_CHAIN_DESC SwapChainDesc{};
-  SwapChainDesc.BufferDesc.Width = pWindow_->Size_.X;
-  SwapChainDesc.BufferDesc.Height = pWindow_->Size_.Y;
+  SwapChainDesc.BufferDesc.Width = pWindow_->Size_.x;
+  SwapChainDesc.BufferDesc.Height = pWindow_->Size_.y;
   SwapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
   SwapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
   SwapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -443,8 +444,8 @@ void CSystem::ChangeWindowMode()
 
 void CSystem::RenameTitle(const char* _Title)
 {
-  wchar_t wWindowTitle[hdx::Constants::CharMaxNum];
-  mbstowcs_s(nullptr, wWindowTitle, pWindow_->Title_ = const_cast<char*>(_Title), hdx::Constants::CharMaxNum);
+  wchar_t wWindowTitle[kCharMaxNum];
+  mbstowcs_s(nullptr, wWindowTitle, pWindow_->Title_ = const_cast<char*>(_Title), kCharMaxNum);
 
   SetWindowText(pWindow_->hWnd_, wWindowTitle);
 }
@@ -470,7 +471,7 @@ void CSystem::ScreenShot()
     //  スクリーンショット用フォルダ作成
     _mkdir("SCREENSHOT");
 
-    wchar_t wstr[hdx::Constants::CharMaxNum];
+    wchar_t wstr[kCharMaxNum];
     swprintf_s(wstr, L"SCREENSHOT/%04d%02d%02d%02d%02d%02d.png", TM.tm_year + 1900, TM.tm_mon + 1, TM.tm_mday, TM.tm_hour, TM.tm_min, TM.tm_sec);
 
     DirectX::SaveWICTextureToFile(pImmediateContext_.Get(), BackBuffer.Get(), GUID_ContainerFormatPng, wstr);
@@ -484,12 +485,12 @@ void CSystem::Exit()
 
 int CSystem::GetWindowWidth()const
 {
-  return pWindow_->Size_.X;
+  return pWindow_->Size_.x;
 }
 
 int CSystem::GetWindowHeight()const
 {
-  return pWindow_->Size_.Y;
+  return pWindow_->Size_.y;
 }
 
 const hdx::int2& CSystem::GetWindowSize()const
