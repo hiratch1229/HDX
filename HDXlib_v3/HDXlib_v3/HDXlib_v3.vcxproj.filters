@@ -94,9 +94,6 @@
     <Filter Include="HDX\ソースファイル\GUI">
       <UniqueIdentifier>{329b7eb3-2763-4fa0-8dcc-36277ea52521}</UniqueIdentifier>
     </Filter>
-    <Filter Include="HDX\ソースファイル\GUI\ImGui">
-      <UniqueIdentifier>{98511a25-ebfc-45af-acd7-614bf7bc4a1d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HDX\ソースファイル\Renderer\Renderer3D">
       <UniqueIdentifier>{0a623d5e-e9ca-4523-b3a8-73c90aeb6080}</UniqueIdentifier>
     </Filter>
@@ -105,6 +102,9 @@
     </Filter>
     <Filter Include="HDX\シェーダー\Model">
       <UniqueIdentifier>{9aa018b1-fbc0-4011-8326-f50668bf89de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\シェーダー\GUI">
+      <UniqueIdentifier>{2ba93880-bffc-43ec-a4d4-12881d4613d2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -215,21 +215,6 @@
     </ClCompile>
     <ClCompile Include="HDX\Src\GUI\IGUI.cpp">
       <Filter>HDX\ソースファイル\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\GUI\ImGui\imgui.cpp">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_draw.cpp">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_widgets.cpp">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_impl_dx11.cpp">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_impl_win32.cpp">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="HDX\Src\Model\IModel.cpp">
       <Filter>HDX\ソースファイル\Model</Filter>
@@ -467,30 +452,6 @@
     <ClInclude Include="HDX\Src\GUI\IGUI.hpp">
       <Filter>HDX\ソースファイル\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="HDX\Src\GUI\ImGui\imconfig.h">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\GUI\ImGui\imgui.h">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\GUI\ImGui\imgui_internal.h">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\GUI\ImGui\imstb_rectpack.h">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\GUI\ImGui\imstb_textedit.h">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\GUI\ImGui\imstb_truetype.h">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\GUI\ImGui\imgui_impl_dx11.h">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\GUI\ImGui\imgui_impl_win32.h">
-      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="HDX\Src\Model\IModel.hpp">
       <Filter>HDX\ソースファイル\Model</Filter>
     </ClInclude>
@@ -589,26 +550,34 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="HDX\Shader\Model.hlsli">
+    <None Include="HDX\Shader\Model\Model.hlsli">
       <Filter>HDX\シェーダー\Model</Filter>
     </None>
-    <None Include="HDX\Shader\Sprite.hlsli">
+    <None Include="HDX\Shader\Sprite\Sprite.hlsli">
       <Filter>HDX\シェーダー\Sprite</Filter>
     </None>
-    <None Include="cpp.hint" />
+    <None Include="HDX\Shader\GUI\GUI.hlsli">
+      <Filter>HDX\シェーダー\GUI</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="HDX\Shader\ModelPS.hlsl">
+    <FxCompile Include="HDX\Shader\Model\ModelPS.hlsl">
       <Filter>HDX\シェーダー\Model</Filter>
     </FxCompile>
-    <FxCompile Include="HDX\Shader\ModelVS.hlsl">
+    <FxCompile Include="HDX\Shader\Model\ModelVS.hlsl">
       <Filter>HDX\シェーダー\Model</Filter>
     </FxCompile>
-    <FxCompile Include="HDX\Shader\SpritePS.hlsl">
+    <FxCompile Include="HDX\Shader\Sprite\SpritePS.hlsl">
       <Filter>HDX\シェーダー\Sprite</Filter>
     </FxCompile>
-    <FxCompile Include="HDX\Shader\SpriteVS.hlsl">
+    <FxCompile Include="HDX\Shader\Sprite\SpriteVS.hlsl">
       <Filter>HDX\シェーダー\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="HDX\Shader\GUI\GUIPS.hlsl">
+      <Filter>HDX\シェーダー\GUI</Filter>
+    </FxCompile>
+    <FxCompile Include="HDX\Shader\GUI\GUIVS.hlsl">
+      <Filter>HDX\シェーダー\GUI</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

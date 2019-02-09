@@ -17,6 +17,8 @@ public:
 
   virtual int Create(const char* _FilePath) = 0;
 
+  virtual hdx::VertexShader CreateGUI(ID3D11InputLayout** _ppInputLayout) = 0;
+
   virtual hdx::VertexShader CreateDefault2D(ID3D11InputLayout** _ppInputLayout) = 0;
 
   virtual hdx::VertexShader CreateDefault3D(ID3D11InputLayout** _ppInputLayout) = 0;

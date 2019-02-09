@@ -40,7 +40,7 @@ namespace hdx
       const int2& GetDelta();
       //  ホイール移動量を取得
       //  正の数：奥,負の数：手前
-      int GetWheel();
+      const int2& GetWheel();
 
       //  何かのボタンが押されていればtrueを返す
       bool AnyButtonPress();

@@ -392,12 +392,6 @@ bool CSystem::Update()
     Engine::Get<IGamepad>()->Update();
   }
 
-  //  残っているスプライトの描画
-  Engine::Get<IRenderer2D>()->Flush();
-
-  //  残っているモデルの描画
-  Engine::Get<IRenderer3D>()->Flush();
-
   //  GUIの更新と描画
   Engine::Get<IGUI>()->Update();
 

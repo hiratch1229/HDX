@@ -20,8 +20,10 @@ namespace hdx
     //  ê≥ãKâª(-ÉŒ~ÉŒÇ…Ç∑ÇÈ)
     static constexpr float Normalize(float _Value)
     {
-      return (-Math::PI <= _Value && _Value < Math::PI) ? _Value :
-        (_Value - static_cast<int>((_Value + ((_Value < 0.0f) ? -Math::PI : Math::PI)) / Math::TwoPI)*Math::TwoPI);
+      while (_Value > Math::PI) _Value -= Math::PI;
+      while (_Value < Math::PI) _Value += Math::PI;
+
+      return _Value;
     }
   public:
     //  0Ç≈èâä˙âª
@@ -208,8 +210,10 @@ namespace hdx
     //  ê≥ãKâª(-180~180ìxÇ…Ç∑ÇÈ)
     static constexpr float Normalize(float _Value)
     {
-      return (-180.0f <= _Value && _Value < 180.0f) ? _Value :
-        (_Value - static_cast<int>((_Value + ((_Value < 0.0f) ? -180.0f : 180.0f)) / 360.0f)*360.0f);
+      while (_Value > 180.0f) _Value -= 180.0f;
+      while (_Value < 180.0f) _Value += 180.0f;
+
+      return _Value;
     }
   public:
     //  0Ç≈èâä˙âª

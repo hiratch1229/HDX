@@ -46,6 +46,11 @@ int CPixelShader::Create(const char* _FilePath)
   return PixelShaderMap_.insert(_FilePath, pPixelShader);
 }
 
+hdx::PixelShader CPixelShader::CreateGUI()
+{
+  return hdx::PixelShader(kGUIPixelShaderFilePath);
+}
+
 hdx::PixelShader CPixelShader::CreateDefault2D()
 {
   return hdx::PixelShader(kDefault2DPixelShaderFilePath);

@@ -10,13 +10,15 @@ class CPixelShader : public IPixelShader
   NumberMap<std::string, Microsoft::WRL::ComPtr<ID3D11PixelShader>> PixelShaderMap_;
   ID3D11Device* pDevice_ = nullptr;
 public:
-  virtual void Initialize(ID3D11Device* _pDevice);
+  void Initialize(ID3D11Device* _pDevice)override;
 
-  virtual int Create(const char* _FilePath);
+  int Create(const char* _FilePath)override;
 
-  virtual hdx::PixelShader CreateDefault2D();
+  hdx::PixelShader CreateGUI()override;
 
-  virtual hdx::PixelShader CreateDefault3D();
+  hdx::PixelShader CreateDefault2D()override;
 
-  virtual ID3D11PixelShader* GetPixeShader(const hdx::PixelShader& _PixelShader);
+  hdx::PixelShader CreateDefault3D()override;
+
+  ID3D11PixelShader* GetPixeShader(const hdx::PixelShader& _PixelShader)override;
 };

@@ -16,6 +16,8 @@ public:
 
   virtual int Create(const char* _FilePath) = 0;
 
+  virtual hdx::PixelShader CreateGUI() = 0;
+
   virtual hdx::PixelShader CreateDefault2D() = 0;
 
   virtual hdx::PixelShader CreateDefault3D() = 0;

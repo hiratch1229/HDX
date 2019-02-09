@@ -19,6 +19,8 @@ public:
 
   int Create(const char* _FilePath)override;
 
+  hdx::VertexShader CreateGUI(ID3D11InputLayout** _ppInputLayout)override;
+
   hdx::VertexShader CreateDefault2D(ID3D11InputLayout** _ppInputLayout)override;
 
   hdx::VertexShader CreateDefault3D(ID3D11InputLayout** _ppInputLayout)override;

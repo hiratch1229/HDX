@@ -74,13 +74,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\include;..\HDXlib_v3\HDX;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\HDXlib_v3\HDX;C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\include;C:\HDXlib\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>d3d11.lib;DirectXTKd.lib;winmm.lib;mfplay.lib;XInput9_1_0.lib;dinput8.lib;libfbxsdk-md.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\lib\debug</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;DirectXTKd.lib;winmm.lib;mfplay.lib;XInput9_1_0.lib;dinput8.lib;libfbxsdk-md.lib;d3dcompiler.lib;ImGuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\lib\debug;C:\HDXlib\ImGui</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ObjectFileOutput>%(Filename).cso</ObjectFileOutput>
@@ -100,14 +100,14 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\include;..\HDXlib_v3\HDX;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\HDXlib_v3\HDX;C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\include;C:\HDXlib\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>d3d11.lib;DirectXTK.lib;winmm.lib;mfplay.lib;XInput9_1_0.lib;dinput8.lib;dxguid.lib;libfbxsdk-md.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\lib\release</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;DirectXTK.lib;winmm.lib;mfplay.lib;XInput9_1_0.lib;dinput8.lib;dxguid.lib;libfbxsdk-md.lib;d3dcompiler.lib;ImGui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\lib\release;C:\HDXlib\ImGui</AdditionalLibraryDirectories>
     </Link>
     <FxCompile>
       <ObjectFileOutput>%(Filename).cso</ObjectFileOutput>
@@ -137,11 +137,6 @@
     <ClCompile Include="HDX\Src\Engine.cpp" />
     <ClCompile Include="HDX\Src\GUI\CGUI.cpp" />
     <ClCompile Include="HDX\Src\GUI\IGUI.cpp" />
-    <ClCompile Include="HDX\Src\GUI\ImGui\imgui.cpp" />
-    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_draw.cpp" />
-    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_impl_win32.cpp" />
-    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="HDX\Src\Input\Button.cpp" />
     <ClCompile Include="HDX\Src\Input\Gamepad\CGamepad.cpp" />
     <ClCompile Include="HDX\Src\Input\Gamepad\Gamepad.cpp" />
@@ -244,14 +239,6 @@
     <ClInclude Include="HDX\Src\Engine.hpp" />
     <ClInclude Include="HDX\Src\GUI\CGUI.hpp" />
     <ClInclude Include="HDX\Src\GUI\IGUI.hpp" />
-    <ClInclude Include="HDX\Src\GUI\ImGui\imconfig.h" />
-    <ClInclude Include="HDX\Src\GUI\ImGui\imgui.h" />
-    <ClInclude Include="HDX\Src\GUI\ImGui\imgui_impl_dx11.h" />
-    <ClInclude Include="HDX\Src\GUI\ImGui\imgui_impl_win32.h" />
-    <ClInclude Include="HDX\Src\GUI\ImGui\imgui_internal.h" />
-    <ClInclude Include="HDX\Src\GUI\ImGui\imstb_rectpack.h" />
-    <ClInclude Include="HDX\Src\GUI\ImGui\imstb_textedit.h" />
-    <ClInclude Include="HDX\Src\GUI\ImGui\imstb_truetype.h" />
     <ClInclude Include="HDX\Src\Input\Gamepad\CGamepad.hpp" />
     <ClInclude Include="HDX\Src\Input\Keyboard\CKeyboard.hpp" />
     <ClInclude Include="HDX\Src\Input\Mouse\CMouse.hpp" />
@@ -290,37 +277,57 @@
     <ClInclude Include="HDX\Src\VertexShader\IVertexShader.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
-    <None Include="HDX\Shader\Model.hlsli" />
-    <None Include="HDX\Shader\Sprite.hlsli" />
+    <None Include="HDX\Shader\GUI\GUI.hlsli" />
+    <None Include="HDX\Shader\Model\Model.hlsli" />
+    <None Include="HDX\Shader\Sprite\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="HDX\Shader\ModelPS.hlsl">
+    <FxCompile Include="HDX\Shader\GUI\GUIPS.hlsl">
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="HDX\Shader\ModelVS.hlsl">
+    <FxCompile Include="HDX\Shader\GUI\GUIVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="HDX\Shader\SpritePS.hlsl">
+    <FxCompile Include="HDX\Shader\Model\ModelPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="HDX\Shader\SpriteVS.hlsl">
+    <FxCompile Include="HDX\Shader\Model\ModelVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="HDX\Shader\Sprite\SpritePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="HDX\Shader\Sprite\SpriteVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
   </ItemGroup>

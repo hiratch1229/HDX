@@ -26,6 +26,20 @@ int CVertexShader::Create(const char* _FilePath)
   return CreateVertexShader(_FilePath, nullptr, nullptr);
 }
 
+hdx::VertexShader CVertexShader::CreateGUI(ID3D11InputLayout** _ppInputLayout)
+{
+  D3D11_INPUT_ELEMENT_DESC InputElementDescs[] =
+  {
+      { "POSITION", 0, DXGI_FORMAT_R32G32_FLOAT,   0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+      { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,   0, D3D11_APPEND_ALIGNED_ELEMENT,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+      { "COLOR",    0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+  };
+
+  CreateInputLayout(kGUIVertexShaderFilePath, InputElementDescs, hdx::Macro::ArraySize(InputElementDescs), _ppInputLayout);
+
+  return hdx::VertexShader(kGUIVertexShaderFilePath);
+}
+
 hdx::VertexShader CVertexShader::CreateDefault2D(ID3D11InputLayout** _ppInputLayout)
 {
   D3D11_INPUT_ELEMENT_DESC InputElementDescs[] =

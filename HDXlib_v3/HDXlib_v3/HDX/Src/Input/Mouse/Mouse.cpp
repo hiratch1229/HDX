@@ -31,7 +31,7 @@ namespace hdx
       }
 
       //  ƒzƒC[ƒ‹ˆÚ“®—Ê‚ğæ“¾
-      int GetWheel()
+      const int2& GetWheel()
       {
         return Engine::Get<IMouse>()->GetWheel();
       }

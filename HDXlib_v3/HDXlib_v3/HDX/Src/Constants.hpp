@@ -28,3 +28,7 @@ constexpr char* kDefault3DVertexShaderFilePath = "DATA/Shader/ModelVS.cso";
 constexpr char* kDefault2DPixelShaderFilePath = "DATA/Shader/SpritePS.cso";
 
 constexpr char* kDefault3DPixelShaderFilePath = "DATA/Shader/ModelPS.cso";
+
+constexpr char* kGUIVertexShaderFilePath = "DATA/Shader/GUIVS.cso";
+
+constexpr char* kGUIPixelShaderFilePath = "DATA/Shader/GUIPS.cso";

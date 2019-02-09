@@ -13,7 +13,7 @@ private:
   //  移動量
   hdx::int2 Delta_ = hdx::int2(0, 0);
   //  ホイール移動量
-  int Wheel_ = 0;
+  hdx::int2 Wheel_ = 0;
   //  画面解像度
   hdx::float2 DpiScale_ = hdx::float2(0.0f, 0.0f);
 private:
@@ -56,16 +56,16 @@ public:
     return Delta_;
   }
 
-  int GetWheel()const override
+  const hdx::int2& GetWheel()const override
   {
     return Wheel_;
   }
 
   void SetPos(const hdx::int2& _Pos)override;
 
-  void SetWheel(int _Wheel)override
+  void SetWheel(const hdx::int2& _Wheel)override
   {
-    Wheel_ = _Wheel;
+    Wheel_ += _Wheel;
   }
 
   bool AnyButtonPress()const override
