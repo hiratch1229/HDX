@@ -1,6 +1,35 @@
 #pragma once
 
-//  ƒ‰ƒCƒuƒ‰ƒŠ
+#define ARITHMETIC_OPERATOR(Operator)\
+template<class T>\
+constexpr auto operator##Operator(const Type2<T>& _v)const->Type2<decltype(x Operator _v.x)>\
+{\
+  return{ x Operator _v.x, y Operator _v.y };\
+}\
+template<class T>\
+constexpr auto operator##Operator(T _s)const->Type2<decltype(x Operator _s)>\
+{\
+  return{ x Operator _s, y Operator _s };\
+}\
+
+#define ASSIGNMENT_OPERATOR(Operator)\
+template<class T>\
+const Type2& operator##Operator(const Type2<T>& _v)\
+{\
+  x Operator static_cast<Type>(_v.x);\
+  y Operator static_cast<Type>(_v.y);\
+  \
+  return *this;\
+}\
+template<class T>\
+const Type2& operator##Operator(T _s)\
+{\
+  x Operator static_cast<Type>(_s);\
+  y Operator static_cast<Type>(_s);\
+  \
+  return *this;\
+}\
+
 namespace hdx
 {
   template<class Type>
@@ -36,55 +65,40 @@ namespace hdx
 
     constexpr Type2 operator-()const { return{ -x, -y }; }
 
-    constexpr Type2 operator+(const Type2& _v)const { return{ x + _v.x, y + _v.y }; }
+    ARITHMETIC_OPERATOR(+);
 
-    constexpr Type2 operator-(const Type2& _v)const { return{ x - _v.x, y - _v.y }; }
+    ARITHMETIC_OPERATOR(-);
 
-    constexpr Type2 operator*(const Type2& _v)const { return{ x * _v.x, y * _v.y }; }
+    ARITHMETIC_OPERATOR(*);
 
-    constexpr Type2 operator/(const Type2& _v)const { return{ x / _v.x, y / _v.y }; }
+    ARITHMETIC_OPERATOR(/ );
 
-    const Type2& operator=(const Type2& _v)
-    {
-      x = _v.x;
-      y = _v.y;
+    ASSIGNMENT_OPERATOR(= );
 
-      return *this;
-    }
+    ASSIGNMENT_OPERATOR(+= );
 
-    const Type2& operator+=(const Type2& _v)
-    {
-      x += _v.x;
-      y += _v.y;
+    ASSIGNMENT_OPERATOR(-= );
 
-      return *this;
-    }
+    ASSIGNMENT_OPERATOR(*= );
 
-    const Type2& operator-=(const Type2& _v)
-    {
-      x -= _v.x;
-      y -= _v.y;
-
-      return *this;
-    }
-
-    const Type2& operator*=(const Type2& _v)
-    {
-      x *= _v.x;
-      y *= _v.y;
-
-      return *this;
-    }
-
-    const Type2& operator/=(const Type2& _v)
-    {
-      x /= _v.x;
-      y /= _v.y;
-
-      return *this;
-    }
+    ASSIGNMENT_OPERATOR(/= );
   };
+
+  template<class T, class Type>
+  inline constexpr auto operator+(T _s, const Type2<Type>& _v) { return _v + _s; }
+
+  template<class T, class Type>
+  inline constexpr auto operator-(T _s, const Type2<Type>& _v) { return _v - _s; }
+
+  template<class T, class Type>
+  inline constexpr auto operator*(T _s, const Type2<Type>& _v) { return _v * _s; }
+
+  template<class T, class Type>
+  inline constexpr auto operator/(T _s, const Type2<Type>& _v) { return _v / _s; }
 
   using int2 = Type2<int>;
   using float2 = Type2<float>;
 }
+
+#undef ARITHMETIC_OPERATOR
+#undef ASSIGNMENT_OPERATOR

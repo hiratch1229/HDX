@@ -1,0 +1,624 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="HDX">
+      <UniqueIdentifier>{11b428fa-261e-4b40-8cb2-ad2fe52c5da2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\シェーダー">
+      <UniqueIdentifier>{845c01b4-8861-4d53-a109-53be5da61d50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\シェーダー\Sprite">
+      <UniqueIdentifier>{2a92dd89-da5e-47f4-a091-999c8ba090a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル">
+      <UniqueIdentifier>{c9ee7124-000a-4be0-ac5c-8be759605ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ヘッダーファイル">
+      <UniqueIdentifier>{90e40c78-054a-4ffc-bccc-73cc6f048403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\BlendState">
+      <UniqueIdentifier>{c5c91120-3e03-479d-b36e-1ba9fb1a5683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\DepthStencilState">
+      <UniqueIdentifier>{66de0d88-c228-4b55-baee-d3a11f01e8ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Easing">
+      <UniqueIdentifier>{f9216e74-f395-48c9-9e4c-b57fcd17855d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Input">
+      <UniqueIdentifier>{9751ed5f-9521-464b-bd1c-b2903373e228}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Input\Gamepad">
+      <UniqueIdentifier>{789f23b4-1c74-4e15-9802-b819f476e8fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Input\Keyboard">
+      <UniqueIdentifier>{bf322f21-a05d-4af1-b9d8-6340a8a2c09e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Input\Mouse">
+      <UniqueIdentifier>{4f4565b4-cdbf-4733-bd5a-2eb1c622574c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Input\XInput">
+      <UniqueIdentifier>{49e8be27-54ba-487b-86d7-716eeac911df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Math">
+      <UniqueIdentifier>{d2f90039-7139-4901-8940-370b05900204}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Model">
+      <UniqueIdentifier>{fd8da6af-f886-400b-819a-1dc5761a26f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\PixelShader">
+      <UniqueIdentifier>{2b214afd-921d-4cf1-8210-d9cfa4f3ec13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Random">
+      <UniqueIdentifier>{c9b0c607-3e16-4c73-a092-d1dce49df28f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\RasterizerState">
+      <UniqueIdentifier>{8a76e4d7-d46d-49cd-91e4-c00d534e9cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Renderer">
+      <UniqueIdentifier>{5ee1ee33-4299-4aac-b955-cdfb594a3b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Renderer\Renderer2D">
+      <UniqueIdentifier>{a7e9f80d-cfb2-4ece-946e-146462f0538a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\RenderTarget">
+      <UniqueIdentifier>{66728804-7013-461a-bc61-afe76e88daf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\SamplerState">
+      <UniqueIdentifier>{d4c4cb0f-aa5e-4c14-90e8-7081cc7a8ccc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Sound">
+      <UniqueIdentifier>{64ce24cf-dbba-4960-a4fb-f15d0fed96c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\System">
+      <UniqueIdentifier>{9488fb1f-cddf-449f-b25d-20028a1568be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Texture">
+      <UniqueIdentifier>{81712e97-c579-4cdb-b62c-e3dd8c46bb1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\VertexShader">
+      <UniqueIdentifier>{1ba6b57f-4bb1-4687-83e1-7988e8e7f7f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\GUI">
+      <UniqueIdentifier>{329b7eb3-2763-4fa0-8dcc-36277ea52521}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\GUI\ImGui">
+      <UniqueIdentifier>{98511a25-ebfc-45af-acd7-614bf7bc4a1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Renderer\Renderer3D">
+      <UniqueIdentifier>{0a623d5e-e9ca-4523-b3a8-73c90aeb6080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\ConstantBuffer">
+      <UniqueIdentifier>{122aef0e-b5e9-4fe4-b69a-72176d6c0ff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\シェーダー\Model">
+      <UniqueIdentifier>{9aa018b1-fbc0-4011-8326-f50668bf89de}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\MsgProc.cpp">
+      <Filter>HDX\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\WinMain.cpp">
+      <Filter>HDX\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\BlendState\IBlendState.cpp">
+      <Filter>HDX\ソースファイル\BlendState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\DepthStencilState\IDepthStencilState.cpp">
+      <Filter>HDX\ソースファイル\DepthStencilState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Easing\Easing.cpp">
+      <Filter>HDX\ソースファイル\Easing</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\Gamepad\Gamepad.cpp">
+      <Filter>HDX\ソースファイル\Input\Gamepad</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\Gamepad\IGamepad.cpp">
+      <Filter>HDX\ソースファイル\Input\Gamepad</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\Keyboard\IKeyboard.cpp">
+      <Filter>HDX\ソースファイル\Input\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\Keyboard\Keyboard.cpp">
+      <Filter>HDX\ソースファイル\Input\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\Mouse\IMouse.cpp">
+      <Filter>HDX\ソースファイル\Input\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\Mouse\Mouse.cpp">
+      <Filter>HDX\ソースファイル\Input\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\XInput\IXInput.cpp">
+      <Filter>HDX\ソースファイル\Input\XInput</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\XInput\XInput.cpp">
+      <Filter>HDX\ソースファイル\Input\XInput</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\Button.cpp">
+      <Filter>HDX\ソースファイル\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Math\Math.cpp">
+      <Filter>HDX\ソースファイル\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Model\Model.cpp">
+      <Filter>HDX\ソースファイル\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\RasterizerState\IRasterizerState.cpp">
+      <Filter>HDX\ソースファイル\RasterizerState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Random\IRandom.cpp">
+      <Filter>HDX\ソースファイル\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Random\Random.cpp">
+      <Filter>HDX\ソースファイル\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\PixelShader\IPixelShader.cpp">
+      <Filter>HDX\ソースファイル\PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\PixelShader\PixelShader.cpp">
+      <Filter>HDX\ソースファイル\PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Renderer\Renderer2D\IRenderer2D.cpp">
+      <Filter>HDX\ソースファイル\Renderer\Renderer2D</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Renderer\Renderer2D\Renderer2D.cpp">
+      <Filter>HDX\ソースファイル\Renderer\Renderer2D</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\RenderTarget\IRenderTarget.cpp">
+      <Filter>HDX\ソースファイル\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\RenderTarget\RenderTarget.cpp">
+      <Filter>HDX\ソースファイル\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\SamplerState\ISamplerState.cpp">
+      <Filter>HDX\ソースファイル\SamplerState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Sound\Sound.cpp">
+      <Filter>HDX\ソースファイル\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\System\ISystem.cpp">
+      <Filter>HDX\ソースファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\System\System.cpp">
+      <Filter>HDX\ソースファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Texture\ITexture.cpp">
+      <Filter>HDX\ソースファイル\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Texture\Texture.cpp">
+      <Filter>HDX\ソースファイル\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\VertexShader\IVertexShader.cpp">
+      <Filter>HDX\ソースファイル\VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\VertexShader\VertexShader.cpp">
+      <Filter>HDX\ソースファイル\VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Engine.cpp">
+      <Filter>HDX\ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\GUI\IGUI.cpp">
+      <Filter>HDX\ソースファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\GUI\ImGui\imgui.cpp">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_draw.cpp">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_widgets.cpp">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_impl_dx11.cpp">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_impl_win32.cpp">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Model\IModel.cpp">
+      <Filter>HDX\ソースファイル\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Renderer\Renderer3D\IRenderer3D.cpp">
+      <Filter>HDX\ソースファイル\Renderer\Renderer3D</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Renderer\Renderer3D\Renderer3D.cpp">
+      <Filter>HDX\ソースファイル\Renderer\Renderer3D</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\ConstantBuffer\IConstantBuffer.cpp">
+      <Filter>HDX\ソースファイル\ConstantBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Sound\ISound.cpp">
+      <Filter>HDX\ソースファイル\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\BlendState\CBlendState.cpp">
+      <Filter>HDX\ソースファイル\BlendState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\DepthStencilState\CDepthStencilState.cpp">
+      <Filter>HDX\ソースファイル\DepthStencilState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\GUI\CGUI.cpp">
+      <Filter>HDX\ソースファイル\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\Gamepad\CGamepad.cpp">
+      <Filter>HDX\ソースファイル\Input\Gamepad</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\Keyboard\CKeyboard.cpp">
+      <Filter>HDX\ソースファイル\Input\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\Mouse\CMouse.cpp">
+      <Filter>HDX\ソースファイル\Input\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Input\XInput\CXInput.cpp">
+      <Filter>HDX\ソースファイル\Input\XInput</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Model\CModel.cpp">
+      <Filter>HDX\ソースファイル\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\PixelShader\CPixelShader.cpp">
+      <Filter>HDX\ソースファイル\PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Random\CRandom.cpp">
+      <Filter>HDX\ソースファイル\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\RasterizerState\CRasterizerState.cpp">
+      <Filter>HDX\ソースファイル\RasterizerState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Renderer\Renderer2D\CRenderer2D.cpp">
+      <Filter>HDX\ソースファイル\Renderer\Renderer2D</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Renderer\Renderer3D\CRenderer3D.cpp">
+      <Filter>HDX\ソースファイル\Renderer\Renderer3D</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\RenderTarget\CRenderTarget.cpp">
+      <Filter>HDX\ソースファイル\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\SamplerState\CSamplerState.cpp">
+      <Filter>HDX\ソースファイル\SamplerState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Sound\CSound.cpp">
+      <Filter>HDX\ソースファイル\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\System\CSystem.cpp">
+      <Filter>HDX\ソースファイル\System</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Texture\CTexture.cpp">
+      <Filter>HDX\ソースファイル\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\VertexShader\CVertexShader.cpp">
+      <Filter>HDX\ソースファイル\VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\ConstantBuffer\CConstantBuffer.cpp">
+      <Filter>HDX\ソースファイル\ConstantBuffer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HDX\Include\Angle.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\BlendState.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Button.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Color.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\ConstantBuffer.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Constants.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\DepthStencilState.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Easing.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Gamepad.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Keyboard.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Macro.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Math.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\MathConstants.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Model.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Mouse.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\NonCopy.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\PixelShader.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Random.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\RasterizerState.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Renderer2D.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\RenderTarget.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\SamplerState.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Singleton.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Sound.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\System.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Texture.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Type2.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Type3.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Types.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\VertexShader.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\XInput.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Resource.hpp">
+      <Filter>HDX\ソースファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\BlendState\IBlendState.hpp">
+      <Filter>HDX\ソースファイル\BlendState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\DepthStencilState\IDepthStencilState.hpp">
+      <Filter>HDX\ソースファイル\DepthStencilState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\NumberMap.hpp">
+      <Filter>HDX\ソースファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Input\Gamepad\IGamepad.hpp">
+      <Filter>HDX\ソースファイル\Input\Gamepad</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Input\Keyboard\IKeyboard.hpp">
+      <Filter>HDX\ソースファイル\Input\Keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Input\Mouse\IMouse.hpp">
+      <Filter>HDX\ソースファイル\Input\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Input\XInput\IXInput.hpp">
+      <Filter>HDX\ソースファイル\Input\XInput</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Input\InputState.hpp">
+      <Filter>HDX\ソースファイル\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\RasterizerState\IRasterizerState.hpp">
+      <Filter>HDX\ソースファイル\RasterizerState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Random\IRandom.hpp">
+      <Filter>HDX\ソースファイル\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\PixelShader\IPixelShader.hpp">
+      <Filter>HDX\ソースファイル\PixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Renderer\Renderer2D\IRenderer2D.hpp">
+      <Filter>HDX\ソースファイル\Renderer\Renderer2D</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\RenderTarget\IRenderTarget.hpp">
+      <Filter>HDX\ソースファイル\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\SamplerState\ISamplerState.hpp">
+      <Filter>HDX\ソースファイル\SamplerState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\System\ISystem.hpp">
+      <Filter>HDX\ソースファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Texture\ITexture.hpp">
+      <Filter>HDX\ソースファイル\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\VertexShader\IVertexShader.hpp">
+      <Filter>HDX\ソースファイル\VertexShader</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Engine.hpp">
+      <Filter>HDX\ソースファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Benchmark.hpp">
+      <Filter>HDX\ソースファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Misc.hpp">
+      <Filter>HDX\ソースファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\GUI\IGUI.hpp">
+      <Filter>HDX\ソースファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\GUI\ImGui\imconfig.h">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\GUI\ImGui\imgui.h">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\GUI\ImGui\imgui_internal.h">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\GUI\ImGui\imstb_rectpack.h">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\GUI\ImGui\imstb_textedit.h">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\GUI\ImGui\imstb_truetype.h">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\GUI\ImGui\imgui_impl_dx11.h">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\GUI\ImGui\imgui_impl_win32.h">
+      <Filter>HDX\ソースファイル\GUI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Model\IModel.hpp">
+      <Filter>HDX\ソースファイル\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Matrix.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Renderer\Renderer3D\IRenderer3D.hpp">
+      <Filter>HDX\ソースファイル\Renderer\Renderer3D</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Camera.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Renderer3D.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\ConstantBuffer\IConstantBuffer.hpp">
+      <Filter>HDX\ソースファイル\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Sound\ISound.hpp">
+      <Filter>HDX\ソースファイル\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\GUI.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\HDX.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\BlendState\CBlendState.hpp">
+      <Filter>HDX\ソースファイル\BlendState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\DepthStencilState\CDepthStencilState.hpp">
+      <Filter>HDX\ソースファイル\DepthStencilState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\GUI\CGUI.hpp">
+      <Filter>HDX\ソースファイル\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Input\Gamepad\CGamepad.hpp">
+      <Filter>HDX\ソースファイル\Input\Gamepad</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Input\Keyboard\CKeyboard.hpp">
+      <Filter>HDX\ソースファイル\Input\Keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Input\Mouse\CMouse.hpp">
+      <Filter>HDX\ソースファイル\Input\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Input\XInput\CXInput.hpp">
+      <Filter>HDX\ソースファイル\Input\XInput</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Model\CModel.hpp">
+      <Filter>HDX\ソースファイル\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\PixelShader\CPixelShader.hpp">
+      <Filter>HDX\ソースファイル\PixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Random\CRandom.hpp">
+      <Filter>HDX\ソースファイル\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\RasterizerState\CRasterizerState.hpp">
+      <Filter>HDX\ソースファイル\RasterizerState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Renderer\Renderer2D\CRenderer2D.hpp">
+      <Filter>HDX\ソースファイル\Renderer\Renderer2D</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Renderer\Renderer3D\CRenderer3D.hpp">
+      <Filter>HDX\ソースファイル\Renderer\Renderer3D</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\RenderTarget\CRenderTarget.hpp">
+      <Filter>HDX\ソースファイル\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\SamplerState\CSamplerState.hpp">
+      <Filter>HDX\ソースファイル\SamplerState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Sound\CSound.hpp">
+      <Filter>HDX\ソースファイル\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\System\CSystem.hpp">
+      <Filter>HDX\ソースファイル\System</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Texture\CTexture.hpp">
+      <Filter>HDX\ソースファイル\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\VertexShader\CVertexShader.hpp">
+      <Filter>HDX\ソースファイル\VertexShader</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Constants.hpp">
+      <Filter>HDX\ソースファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\ConstantBuffer\CConstantBuffer.hpp">
+      <Filter>HDX\ソースファイル\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Format.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Include\Type4.hpp">
+      <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="HDX\Shader\Model.hlsli">
+      <Filter>HDX\シェーダー\Model</Filter>
+    </None>
+    <None Include="HDX\Shader\Sprite.hlsli">
+      <Filter>HDX\シェーダー\Sprite</Filter>
+    </None>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="HDX\Shader\ModelPS.hlsl">
+      <Filter>HDX\シェーダー\Model</Filter>
+    </FxCompile>
+    <FxCompile Include="HDX\Shader\ModelVS.hlsl">
+      <Filter>HDX\シェーダー\Model</Filter>
+    </FxCompile>
+    <FxCompile Include="HDX\Shader\SpritePS.hlsl">
+      <Filter>HDX\シェーダー\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="HDX\Shader\SpriteVS.hlsl">
+      <Filter>HDX\シェーダー\Sprite</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HDXlib_v3.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resource\icon.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

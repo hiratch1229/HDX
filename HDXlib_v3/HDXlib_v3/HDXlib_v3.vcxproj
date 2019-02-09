@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{04F8298E-4AC3-4507-B928-E37365D597E3}</ProjectGuid>
+    <RootNamespace>HDXlib_v3</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\include;..\HDXlib_v3\HDX;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>d3d11.lib;DirectXTKd.lib;winmm.lib;mfplay.lib;XInput9_1_0.lib;dinput8.lib;libfbxsdk-md.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\lib\debug</AdditionalLibraryDirectories>
+    </Link>
+    <FxCompile>
+      <ObjectFileOutput>%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\include;..\HDXlib_v3\HDX;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>d3d11.lib;DirectXTK.lib;winmm.lib;mfplay.lib;XInput9_1_0.lib;dinput8.lib;dxguid.lib;libfbxsdk-md.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\lib\release</AdditionalLibraryDirectories>
+    </Link>
+    <FxCompile>
+      <ObjectFileOutput>%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="HDX\Src\BlendState\CBlendState.cpp" />
+    <ClCompile Include="HDX\Src\BlendState\IBlendState.cpp" />
+    <ClCompile Include="HDX\Src\ConstantBuffer\CConstantBuffer.cpp" />
+    <ClCompile Include="HDX\Src\ConstantBuffer\IConstantBuffer.cpp" />
+    <ClCompile Include="HDX\Src\DepthStencilState\CDepthStencilState.cpp" />
+    <ClCompile Include="HDX\Src\DepthStencilState\IDepthStencilState.cpp" />
+    <ClCompile Include="HDX\Src\Easing\Easing.cpp" />
+    <ClCompile Include="HDX\Src\Engine.cpp" />
+    <ClCompile Include="HDX\Src\GUI\CGUI.cpp" />
+    <ClCompile Include="HDX\Src\GUI\IGUI.cpp" />
+    <ClCompile Include="HDX\Src\GUI\ImGui\imgui.cpp" />
+    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="HDX\Src\GUI\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="HDX\Src\Input\Button.cpp" />
+    <ClCompile Include="HDX\Src\Input\Gamepad\CGamepad.cpp" />
+    <ClCompile Include="HDX\Src\Input\Gamepad\Gamepad.cpp" />
+    <ClCompile Include="HDX\Src\Input\Gamepad\IGamepad.cpp" />
+    <ClCompile Include="HDX\Src\Input\Keyboard\CKeyboard.cpp" />
+    <ClCompile Include="HDX\Src\Input\Keyboard\IKeyboard.cpp" />
+    <ClCompile Include="HDX\Src\Input\Keyboard\Keyboard.cpp" />
+    <ClCompile Include="HDX\Src\Input\Mouse\CMouse.cpp" />
+    <ClCompile Include="HDX\Src\Input\Mouse\IMouse.cpp" />
+    <ClCompile Include="HDX\Src\Input\Mouse\Mouse.cpp" />
+    <ClCompile Include="HDX\Src\Input\XInput\CXInput.cpp" />
+    <ClCompile Include="HDX\Src\Input\XInput\IXInput.cpp" />
+    <ClCompile Include="HDX\Src\Input\XInput\XInput.cpp" />
+    <ClCompile Include="HDX\Src\Math\Math.cpp" />
+    <ClCompile Include="HDX\Src\Model\CModel.cpp" />
+    <ClCompile Include="HDX\Src\Model\IModel.cpp" />
+    <ClCompile Include="HDX\Src\Model\Model.cpp" />
+    <ClCompile Include="HDX\Src\MsgProc.cpp" />
+    <ClCompile Include="HDX\Src\PixelShader\CPixelShader.cpp" />
+    <ClCompile Include="HDX\Src\PixelShader\IPixelShader.cpp" />
+    <ClCompile Include="HDX\Src\PixelShader\PixelShader.cpp" />
+    <ClCompile Include="HDX\Src\Random\CRandom.cpp" />
+    <ClCompile Include="HDX\Src\Random\IRandom.cpp" />
+    <ClCompile Include="HDX\Src\Random\Random.cpp" />
+    <ClCompile Include="HDX\Src\RasterizerState\CRasterizerState.cpp" />
+    <ClCompile Include="HDX\Src\RasterizerState\IRasterizerState.cpp" />
+    <ClCompile Include="HDX\Src\Renderer\Renderer2D\CRenderer2D.cpp" />
+    <ClCompile Include="HDX\Src\Renderer\Renderer2D\IRenderer2D.cpp" />
+    <ClCompile Include="HDX\Src\Renderer\Renderer2D\Renderer2D.cpp" />
+    <ClCompile Include="HDX\Src\Renderer\Renderer3D\CRenderer3D.cpp" />
+    <ClCompile Include="HDX\Src\Renderer\Renderer3D\IRenderer3D.cpp" />
+    <ClCompile Include="HDX\Src\Renderer\Renderer3D\Renderer3D.cpp" />
+    <ClCompile Include="HDX\Src\RenderTarget\CRenderTarget.cpp" />
+    <ClCompile Include="HDX\Src\RenderTarget\IRenderTarget.cpp" />
+    <ClCompile Include="HDX\Src\RenderTarget\RenderTarget.cpp" />
+    <ClCompile Include="HDX\Src\SamplerState\CSamplerState.cpp" />
+    <ClCompile Include="HDX\Src\SamplerState\ISamplerState.cpp" />
+    <ClCompile Include="HDX\Src\Sound\CSound.cpp" />
+    <ClCompile Include="HDX\Src\Sound\ISound.cpp" />
+    <ClCompile Include="HDX\Src\Sound\Sound.cpp" />
+    <ClCompile Include="HDX\Src\System\CSystem.cpp" />
+    <ClCompile Include="HDX\Src\System\ISystem.cpp" />
+    <ClCompile Include="HDX\Src\System\System.cpp" />
+    <ClCompile Include="HDX\Src\Texture\CTexture.cpp" />
+    <ClCompile Include="HDX\Src\Texture\ITexture.cpp" />
+    <ClCompile Include="HDX\Src\Texture\Texture.cpp" />
+    <ClCompile Include="HDX\Src\VertexShader\CVertexShader.cpp" />
+    <ClCompile Include="HDX\Src\VertexShader\IVertexShader.cpp" />
+    <ClCompile Include="HDX\Src\VertexShader\VertexShader.cpp" />
+    <ClCompile Include="HDX\Src\WinMain.cpp" />
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HDX\HDX.hpp" />
+    <ClInclude Include="HDX\Include\Angle.hpp" />
+    <ClInclude Include="HDX\Include\BlendState.hpp" />
+    <ClInclude Include="HDX\Include\Button.hpp" />
+    <ClInclude Include="HDX\Include\Color.hpp" />
+    <ClInclude Include="HDX\Include\ConstantBuffer.hpp" />
+    <ClInclude Include="HDX\Include\Constants.hpp" />
+    <ClInclude Include="HDX\Include\DepthStencilState.hpp" />
+    <ClInclude Include="HDX\Include\Easing.hpp" />
+    <ClInclude Include="HDX\Include\Format.hpp" />
+    <ClInclude Include="HDX\Include\Gamepad.hpp" />
+    <ClInclude Include="HDX\Include\GUI.hpp" />
+    <ClInclude Include="HDX\Include\Keyboard.hpp" />
+    <ClInclude Include="HDX\Include\Macro.hpp" />
+    <ClInclude Include="HDX\Include\Math.hpp" />
+    <ClInclude Include="HDX\Include\MathConstants.hpp" />
+    <ClInclude Include="HDX\Include\Matrix.hpp" />
+    <ClInclude Include="HDX\Include\Model.hpp" />
+    <ClInclude Include="HDX\Include\Mouse.hpp" />
+    <ClInclude Include="HDX\Include\NonCopy.hpp" />
+    <ClInclude Include="HDX\Include\PixelShader.hpp" />
+    <ClInclude Include="HDX\Include\Random.hpp" />
+    <ClInclude Include="HDX\Include\RasterizerState.hpp" />
+    <ClInclude Include="HDX\Include\Renderer2D.hpp" />
+    <ClInclude Include="HDX\Include\Renderer3D.hpp" />
+    <ClInclude Include="HDX\Include\RenderTarget.hpp" />
+    <ClInclude Include="HDX\Include\SamplerState.hpp" />
+    <ClInclude Include="HDX\Include\Singleton.hpp" />
+    <ClInclude Include="HDX\Include\Sound.hpp" />
+    <ClInclude Include="HDX\Include\System.hpp" />
+    <ClInclude Include="HDX\Include\Texture.hpp" />
+    <ClInclude Include="HDX\Include\Type2.hpp" />
+    <ClInclude Include="HDX\Include\Type3.hpp" />
+    <ClInclude Include="HDX\Include\Type4.hpp" />
+    <ClInclude Include="HDX\Include\Types.hpp" />
+    <ClInclude Include="HDX\Include\VertexShader.hpp" />
+    <ClInclude Include="HDX\Include\Camera.hpp" />
+    <ClInclude Include="HDX\Include\XInput.hpp" />
+    <ClInclude Include="HDX\Src\Benchmark.hpp" />
+    <ClInclude Include="HDX\Src\BlendState\CBlendState.hpp" />
+    <ClInclude Include="HDX\Src\BlendState\IBlendState.hpp" />
+    <ClInclude Include="HDX\Src\ConstantBuffer\CConstantBuffer.hpp" />
+    <ClInclude Include="HDX\Src\ConstantBuffer\IConstantBuffer.hpp" />
+    <ClInclude Include="HDX\Src\Constants.hpp" />
+    <ClInclude Include="HDX\Src\DepthStencilState\CDepthStencilState.hpp" />
+    <ClInclude Include="HDX\Src\DepthStencilState\IDepthStencilState.hpp" />
+    <ClInclude Include="HDX\Src\Engine.hpp" />
+    <ClInclude Include="HDX\Src\GUI\CGUI.hpp" />
+    <ClInclude Include="HDX\Src\GUI\IGUI.hpp" />
+    <ClInclude Include="HDX\Src\GUI\ImGui\imconfig.h" />
+    <ClInclude Include="HDX\Src\GUI\ImGui\imgui.h" />
+    <ClInclude Include="HDX\Src\GUI\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="HDX\Src\GUI\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="HDX\Src\GUI\ImGui\imgui_internal.h" />
+    <ClInclude Include="HDX\Src\GUI\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="HDX\Src\GUI\ImGui\imstb_textedit.h" />
+    <ClInclude Include="HDX\Src\GUI\ImGui\imstb_truetype.h" />
+    <ClInclude Include="HDX\Src\Input\Gamepad\CGamepad.hpp" />
+    <ClInclude Include="HDX\Src\Input\Keyboard\CKeyboard.hpp" />
+    <ClInclude Include="HDX\Src\Input\Mouse\CMouse.hpp" />
+    <ClInclude Include="HDX\Src\Input\XInput\CXInput.hpp" />
+    <ClInclude Include="HDX\Src\Misc.hpp" />
+    <ClInclude Include="HDX\Src\Input\Gamepad\IGamepad.hpp" />
+    <ClInclude Include="HDX\Src\Input\InputState.hpp" />
+    <ClInclude Include="HDX\Src\Input\Keyboard\IKeyboard.hpp" />
+    <ClInclude Include="HDX\Src\Input\Mouse\IMouse.hpp" />
+    <ClInclude Include="HDX\Src\Input\XInput\IXInput.hpp" />
+    <ClInclude Include="HDX\Src\Model\CModel.hpp" />
+    <ClInclude Include="HDX\Src\Model\IModel.hpp" />
+    <ClInclude Include="HDX\Src\NumberMap.hpp" />
+    <ClInclude Include="HDX\Src\PixelShader\CPixelShader.hpp" />
+    <ClInclude Include="HDX\Src\PixelShader\IPixelShader.hpp" />
+    <ClInclude Include="HDX\Src\Random\CRandom.hpp" />
+    <ClInclude Include="HDX\Src\Random\IRandom.hpp" />
+    <ClInclude Include="HDX\Src\RasterizerState\CRasterizerState.hpp" />
+    <ClInclude Include="HDX\Src\RasterizerState\IRasterizerState.hpp" />
+    <ClInclude Include="HDX\Src\Renderer\Renderer2D\CRenderer2D.hpp" />
+    <ClInclude Include="HDX\Src\Renderer\Renderer2D\IRenderer2D.hpp" />
+    <ClInclude Include="HDX\Src\Renderer\Renderer3D\CRenderer3D.hpp" />
+    <ClInclude Include="HDX\Src\Renderer\Renderer3D\IRenderer3D.hpp" />
+    <ClInclude Include="HDX\Src\RenderTarget\CRenderTarget.hpp" />
+    <ClInclude Include="HDX\Src\RenderTarget\IRenderTarget.hpp" />
+    <ClInclude Include="HDX\Src\Resource.hpp" />
+    <ClInclude Include="HDX\Src\SamplerState\CSamplerState.hpp" />
+    <ClInclude Include="HDX\Src\SamplerState\ISamplerState.hpp" />
+    <ClInclude Include="HDX\Src\Sound\CSound.hpp" />
+    <ClInclude Include="HDX\Src\Sound\ISound.hpp" />
+    <ClInclude Include="HDX\Src\System\CSystem.hpp" />
+    <ClInclude Include="HDX\Src\System\ISystem.hpp" />
+    <ClInclude Include="HDX\Src\Texture\CTexture.hpp" />
+    <ClInclude Include="HDX\Src\Texture\ITexture.hpp" />
+    <ClInclude Include="HDX\Src\VertexShader\CVertexShader.hpp" />
+    <ClInclude Include="HDX\Src\VertexShader\IVertexShader.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+    <None Include="HDX\Shader\Model.hlsli" />
+    <None Include="HDX\Shader\Sprite.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="HDX\Shader\ModelPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="HDX\Shader\ModelVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="HDX\Shader\SpritePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="HDX\Shader\SpriteVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HDXlib_v3.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resource\icon.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

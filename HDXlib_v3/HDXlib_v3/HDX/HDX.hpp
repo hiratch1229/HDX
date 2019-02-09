@@ -138,11 +138,17 @@
 
 //  float,int2つの型
 //  2018.08.09  作成
+//  2019.02.07  templateクラス化
 #include "Include/Type2.hpp"
 
 //  float,int3つの型
 //  2018.08.09  作成
+//  2019.02.07  templateクラス化
 #include "Include/Type3.hpp"
+
+//  float,int4つの型
+//  2019.02.07  作成
+#include "Include/Type4.hpp"
 
 //  角度自動正規化クラス
 //  2018.08.09  作成
