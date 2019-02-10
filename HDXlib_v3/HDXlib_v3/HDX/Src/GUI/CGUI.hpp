@@ -24,14 +24,13 @@ class CGUI : public IGUI
     static constexpr int kVertexBufferExtraSize = 5000;
     static constexpr int kIndexBufferExtraSize = 10000;
   private:
-    struct VERTEX_CONSTANT_BUFFER
+    struct VertexConstantBuffer
     {
       float   mvp[4][4];
     };
   private:
     ID3D11Device* pDevice_;
     ID3D11DeviceContext* pImmediateContext_;
-    Microsoft::WRL::ComPtr<IDXGIFactory> pFactory_;
     Microsoft::WRL::ComPtr<ID3D11InputLayout> pInputLayout_;
     Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexConstantBuffer_;
     Microsoft::WRL::ComPtr<ID3D11BlendState> pBlendState_;
@@ -41,9 +40,8 @@ class CGUI : public IGUI
     Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pFont_;
     Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer_;
     Microsoft::WRL::ComPtr<ID3D11Buffer> pIndexBuffer_;
-  private:
-    hdx::VertexShader VertexShader_;
-    hdx::PixelShader PixelShader_;
+    ID3D11VertexShader* pVertexShader_;
+    ID3D11PixelShader* pPixelShader_;
   private:
     int VertexBufferSize_ = kVertexBufferExtraSize;
     int IndexBufferSize_ = kIndexBufferExtraSize;
@@ -52,7 +50,7 @@ class CGUI : public IGUI
 
     ~DX11() = default;
 
-    void Render(ImDrawData* draw_data);
+    void Render(ImDrawData* _pDrawData);
   };
 private:
   std::unique_ptr<Win32> pWin32_;

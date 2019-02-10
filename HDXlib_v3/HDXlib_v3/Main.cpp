@@ -8,25 +8,21 @@ void Main()
 
   hdx::Model Models[] = {
     //{ hdx::Cube{} },
-    //{ "DATA/motion.fbx" },
-    //{ "DATA/Mr.Incredible/Mr.Incredible.obj" },
-    //{ "DATA/000_cube.fbx" },
-    //{ "DATA/001_cube.fbx" },
-    //{ "DATA/005_cube.fbx" },
-    { "DATA/danbo_fbx/danbo_atk.fbx" },
+    //{ "DATA/Model/motion.fbx" },
+    //{ "DATA/Model/Mr.Incredible/Mr.Incredible.obj" },
+    { "DATA/Model/danbo_fbx/danbo_atk.fbx" },
   };
 
-  constexpr float Scale = 0.01f;
+  constexpr float Scale = 0.1f;
 
   hdx::Camera Camera;
 
   int MaxNum = 100;
   int Num = 1;
 
-  hdx::float3 Rotation{ hdx::Math::ToRadian(90.0f), 0.0f, 0.0f };
+  hdx::float3 Rotation{ hdx::Math::ToRadian(180.0f), 0.0f, 0.0f };
   hdx::Matrix WorldMatrix;
   hdx::MotionData MotionData;
-  Rotation.x = hdx::Math::ToRadian(90.0f);
   const hdx::Matrix S = DirectX::XMMatrixScaling(Scale, Scale, Scale);
 
   while (hdx::System::Update())
@@ -44,7 +40,7 @@ void Main()
 
     WorldMatrix = S
       * DirectX::XMMatrixRotationRollPitchYaw(Rotation.x, Rotation.y, Rotation.z)
-      *DirectX::XMMatrixTranslation(0.0f, 0.0f, -5.0f);
+      * DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
     for (int i = 0; i < Num; ++i)
     {
