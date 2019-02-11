@@ -7,8 +7,43 @@
 
 class CSystem : public ISystem
 {
-  class FrameRate;
-  class Window;
+  class FrameRate
+  {
+    //  固定フレームレート値
+    const int MaxFrameRate_;
+    //  フレーム間隔
+    const float FrameInterval_;
+  private:
+    //  クロック数
+    LARGE_INTEGER FreqTime_;
+    //  最後の時間
+    LARGE_INTEGER LastTime_;
+  public:
+    //  経過時間
+    float DeltaTime_ = 0.0f;
+    //  現在のFPS
+    int CurrentFPS_ = 0;
+  public:
+    FrameRate(int _MaxFrameRate);
+    bool Update();
+    void Reset();
+  };
+  class Window
+  {
+  public:
+    const HWND hWnd_;
+  public:
+    hdx::int2 LeftTopPos_ = { 0,0 };
+    hdx::int2 Size_ = { 1280,720 };
+    char* Title_ = "HDXlib";
+    bool isFullScreen_ = false;
+    bool isShowCursor_ = false;
+    hdx::ColorF BackColor_ = hdx::Palette::Black;
+  public:
+    Window();
+    //  ウィンドウを設定
+    void SetUpWindow();
+  };
 private:
   bool isSetUpWindow_ = false;
   Microsoft::WRL::ComPtr<ID3D11Device> pDevice_;
@@ -32,35 +67,36 @@ public:
 
   bool Update()override;
 
-  int GetWindowWidth()const override;
+  const hdx::int2& GetWindowSize()const override { return pWindow_->Size_; }
 
-  int GetWindowHeight()const override;
+  float GetDeltaTime()const override { return pFrameRate_->DeltaTime_; }
 
-  const hdx::int2& GetWindowSize()const override;
+  int GetFPS()const override { return pFrameRate_->CurrentFPS_; }
 
-  float GetDeltaTime()const override;
+  void SetWindowLeftTopPos(const hdx::int2& _LeftTopPos)override { pWindow_->LeftTopPos_ = _LeftTopPos; }
 
-  int GetFPS()const override;
+  void SetWindowSize(const hdx::int2& _Size)override { pWindow_->Size_ = _Size; }
 
-  void SetWindowLeftTopPos(int _LeftPos, int _TopPos)override;
+  void SetWindowMode(bool _isFullScreen)override { pWindow_->isFullScreen_ = _isFullScreen; }
 
-  void SetWindowLeftTopPos(const hdx::int2& _LeftTopPos)override;
+  void SetWindow(const hdx::int2& _LeftTopPos, const hdx::int2& _Size, bool _isFullScreen)override
+  {
+    pWindow_->LeftTopPos_ = _LeftTopPos;
+    pWindow_->Size_ = _Size;
+    pWindow_->isFullScreen_ = _isFullScreen;
+  }
 
-  void SetWindowSize(int _Width, int _Height)override;
+  void SetTitle(const char* _Title)override
+  {
+    pWindow_->Title_ = const_cast<char*>(_Title);
+  }
 
-  void SetWindowSize(const hdx::int2& _Size)override;
-
-  void SetWindowMode(bool _isFullScreen)override;
-
-  void SetWindow(int _LeftPos, int _TopPos, int _Width, int _Height, bool _isFullScreen)override;
-
-  void SetWindow(const hdx::int2& _LeftTopPos, const hdx::int2& _Size, bool _isFullScreen)override;
+  void SetBackColor(const hdx::ColorF& _Color)override
+  {
+    pWindow_->BackColor_ = _Color;
+  }
 
   void ShowCursor(bool _isShowCursor)override;
-
-  void SetTitle(const char* _Title)override;
-
-  void SetBackColor(const hdx::ColorF& _Color)override;
 
   void ChangeWindowMode()override;
 

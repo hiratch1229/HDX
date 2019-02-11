@@ -25,13 +25,13 @@ namespace hdx
   //  ‰æ–Ê•‚ğæ“¾
   int System::GetWindowWidth()
   {
-    return Engine::Get<ISystem>()->GetWindowWidth();
+    return Engine::Get<ISystem>()->GetWindowSize().x;
   }
 
   //  ‰æ–Ê‚‚ğæ“¾
   int System::GetWindowHeight()
   {
-    return Engine::Get<ISystem>()->GetWindowHeight();
+    return Engine::Get<ISystem>()->GetWindowSize().y;
   }
 
   //  ‰æ–ÊƒTƒCƒY‚ğæ“¾

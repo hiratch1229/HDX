@@ -23,32 +23,12 @@
 #include "Src/Model/IModel.hpp"
 #include "Src/GUI/IGUI.hpp"
 
+#include "Include/Macro.hpp"
+
 #include <wincodec.h>
 #include <time.h>
 #include <direct.h>
 #include <ScreenGrab.h>
-
-class CSystem::FrameRate
-{
-  //  固定フレームレート値
-  const int MaxFrameRate_;
-  //  フレーム間隔
-  const float FrameInterval_;
-private:
-  //  クロック数
-  LARGE_INTEGER FreqTime_;
-  //  最後の時間
-  LARGE_INTEGER LastTime_;
-public:
-  //  経過時間
-  float DeltaTime_ = 0.0f;
-  //  現在のFPS
-  int CurrentFPS_ = 0;
-public:
-  FrameRate(int _MaxFrameRate);
-  bool Update();
-  void Reset();
-};
 
 CSystem::FrameRate::FrameRate(int _MaxFrameRate)
   : MaxFrameRate_(_MaxFrameRate), FrameInterval_(1.0f / _MaxFrameRate)
@@ -110,23 +90,6 @@ void CSystem::FrameRate::Reset()
 
 //--------------------------------------------------
 
-class CSystem::Window
-{
-public:
-  const HWND hWnd_;
-public:
-  hdx::int2 LeftTopPos_ = { 0,0 };
-  hdx::int2 Size_ = { 1280,720 };
-  char* Title_ = "HDXlib";
-  bool isFullScreen_ = false;
-  bool isShowCursor_ = false;
-  hdx::ColorF BackColor_ = hdx::Palette::Black;
-public:
-  Window();
-  //  ウィンドウを設定
-  void SetUpWindow();
-};
-
 CSystem::Window::Window()
   : hWnd_(CreateWindow(L"HDXlib",
     L"HDXlib",
@@ -167,7 +130,7 @@ void CSystem::Window::SetUpWindow()
 
   //  ウィンドウ設定&表示
   ::SetWindowPos(hWnd_, HWND_TOP, LeftTopPos_.x, LeftTopPos_.y, Size_.x, Size_.y, SWP_SHOWWINDOW);
-  
+
   //pSwapChain_->SetFullscreenState(isFullScreen_, nullptr);
 }
 
@@ -216,6 +179,124 @@ void CSystem::Initialize()
   Engine::Get<IGUI>()->Initialize(pDevice_.Get(), pImmediateContext_.Get(), pWindow_->hWnd_);
 }
 
+bool CSystem::Update()
+{
+  //  ウィンドウ初期設定
+  if (!isSetUpWindow_)
+  {
+    isSetUpWindow_ = true;
+    pWindow_->SetUpWindow();
+
+    pSwapChain_->SetFullscreenState(pWindow_->isFullScreen_, nullptr);
+
+    ResizeSwapChain();
+    CreateRenderTargetViewAndDepthStencilView();
+
+    Engine::Get<IRenderer3D>()->CalcProjection();
+
+    pFrameRate_->Reset();
+  }
+
+  //  入力系更新
+  {
+    Engine::Get<IKeyboard>()->Update();
+    Engine::Get<IMouse>()->Update();
+    Engine::Get<IXInput>()->Update();
+    Engine::Get<IGamepad>()->Update();
+  }
+
+  //  GUIの更新と描画
+  Engine::Get<IGUI>()->Update();
+
+  //  サウンドのループ処理
+  Engine::Get<ISound>()->Update();
+
+  //  描画裏表反転
+  pSwapChain_->Present(0, 0);
+
+  //  メッセージを全て処理
+  MSG Msg{};
+  while (PeekMessage(&Msg, nullptr, 0, 0, PM_REMOVE))
+  {
+    TranslateMessage(&Msg);
+    DispatchMessage(&Msg);
+  }
+
+  //  スクリーンを初期化
+  {
+    //  クリア色
+    const float ClearColor[4] = {
+      pWindow_->BackColor_.R,
+      pWindow_->BackColor_.G,
+      pWindow_->BackColor_.B,
+      pWindow_->BackColor_.A };
+
+    pImmediateContext_->ClearRenderTargetView(pRenderTargetView_.Get(), ClearColor);
+    pImmediateContext_->ClearDepthStencilView(pDepthStencilView_.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+    pImmediateContext_->OMSetRenderTargets(1, pRenderTargetView_.GetAddressOf(), pDepthStencilView_.Get());
+  }
+
+  //  FPS制御
+  //  時間が来るまで無限ループ(仮)
+  while (!pFrameRate_->Update());
+
+  //  ウィンドウの状態を返す
+  return ::IsWindow(pWindow_->hWnd_) != 0;
+}
+
+void CSystem::ShowCursor(bool _isShowCursor)
+{
+  pWindow_->isShowCursor_ = _isShowCursor;
+
+  ::ShowCursor(_isShowCursor);
+}
+
+void CSystem::ChangeWindowMode()
+{
+  pSwapChain_->SetFullscreenState(pWindow_->isFullScreen_ = !pWindow_->isFullScreen_, nullptr);
+}
+
+void CSystem::RenameTitle(const char* _Title)
+{
+  wchar_t wWindowTitle[kCharMaxNum];
+  mbstowcs_s(nullptr, wWindowTitle, pWindow_->Title_ = const_cast<char*>(_Title), kCharMaxNum);
+
+  SetWindowText(pWindow_->hWnd_, wWindowTitle);
+}
+
+void CSystem::ScreenShot()
+{
+  //  エラーチェック用
+  HRESULT hr = S_OK;
+
+  Microsoft::WRL::ComPtr<ID3D11Texture2D> BackBuffer;
+
+  hr = pSwapChain_->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(BackBuffer.GetAddressOf()));
+
+  //  成功時
+  if (SUCCEEDED(hr))
+  {
+    //  現在の時刻を取得
+    time_t CurrentTime = time(nullptr);
+
+    tm TM;
+    localtime_s(&TM, &CurrentTime);
+
+    //  スクリーンショット用フォルダ作成
+    _mkdir("SCREENSHOT");
+
+    wchar_t wstr[kCharMaxNum];
+    swprintf_s(wstr, L"SCREENSHOT/%04d%02d%02d%02d%02d%02d.png", TM.tm_year + 1900, TM.tm_mon + 1, TM.tm_mday, TM.tm_hour, TM.tm_min, TM.tm_sec);
+
+    DirectX::SaveWICTextureToFile(pImmediateContext_.Get(), BackBuffer.Get(), GUID_ContainerFormatPng, wstr);
+  }
+}
+
+void CSystem::Exit()
+{
+  PostMessage(pWindow_->hWnd_, WM_CLOSE, 0, 0);
+}
+
 void CSystem::ResizeSwapChain()
 {
   DXGI_SWAP_CHAIN_DESC SwapChainDesc{};
@@ -254,6 +335,7 @@ void CSystem::CreateDevice()
 
   D3D_FEATURE_LEVEL FeatureLevels[] =
   {
+    D3D_FEATURE_LEVEL_11_1,
     D3D_FEATURE_LEVEL_11_0,
     D3D_FEATURE_LEVEL_10_1,
     D3D_FEATURE_LEVEL_10_0,
@@ -262,13 +344,31 @@ void CSystem::CreateDevice()
     D3D_FEATURE_LEVEL_9_1,
   };
 
-  const UINT FeatureLevelNum = ARRAYSIZE(FeatureLevels);
+  Microsoft::WRL::ComPtr<IDXGIFactory> pFactory;
+  hr = CreateDXGIFactory(__uuidof(IDXGIFactory), reinterpret_cast<void**>(pFactory.GetAddressOf()));
+  _ASSERT_EXPR(SUCCEEDED(hr), hResultTrace(hr));
+
+  IDXGIAdapter* pAdapter;
+  {
+    for (UINT i = 0; ; ++i)
+    {
+      if (pFactory->EnumAdapters(i, &pAdapter) != DXGI_ERROR_NOT_FOUND)
+      {
+        break;
+      }
+    }
+  }
+
+  DXGI_ADAPTER_DESC AdapterDesc;
+  pAdapter->GetDesc(&AdapterDesc);
+
+  const UINT FeatureLevelNum = hdx::Macro::ArraySize(FeatureLevels);
+
+  D3D_FEATURE_LEVEL FeatureLevel;
   for (auto i : DriverTypes)
   {
-    D3D_FEATURE_LEVEL FeatureLevel;
-
     //  デバイスを作成
-    hr = D3D11CreateDevice(nullptr, DriverTypes[i], nullptr, CreateDeviceFlag, FeatureLevels,
+    hr = D3D11CreateDevice(pAdapter, DriverTypes[i], nullptr, CreateDeviceFlag, FeatureLevels,
       FeatureLevelNum, D3D11_SDK_VERSION, pDevice_.GetAddressOf(), &FeatureLevel, pImmediateContext_.GetAddressOf());
 
     //  成功時に終了
@@ -364,196 +464,4 @@ void CSystem::CreateRenderTargetViewAndDepthStencilView()
   }
 
   pImmediateContext_->OMSetRenderTargets(1, pRenderTargetView_.GetAddressOf(), pDepthStencilView_.Get());
-}
-
-bool CSystem::Update()
-{
-  //  ウィンドウ初期設定
-  if (!isSetUpWindow_)
-  {
-    isSetUpWindow_ = true;
-    pWindow_->SetUpWindow();
-
-    pSwapChain_->SetFullscreenState(pWindow_->isFullScreen_, nullptr);
-
-    ResizeSwapChain();
-    CreateRenderTargetViewAndDepthStencilView();
-
-    Engine::Get<IRenderer3D>()->CalcProjection();
-
-    pFrameRate_->Reset();
-  }
-
-  //  入力系更新
-  {
-    Engine::Get<IKeyboard>()->Update();
-    Engine::Get<IMouse>()->Update();
-    Engine::Get<IXInput>()->Update();
-    Engine::Get<IGamepad>()->Update();
-  }
-
-  //  GUIの更新と描画
-  Engine::Get<IGUI>()->Update();
-
-  //  サウンドのループ処理
-  Engine::Get<ISound>()->Update();
-
-  //  描画裏表反転
-  pSwapChain_->Present(0, 0);
-
-  //  メッセージを全て処理
-  MSG Msg{};
-  while (PeekMessage(&Msg, nullptr, 0, 0, PM_REMOVE))
-  {
-    TranslateMessage(&Msg);
-    DispatchMessage(&Msg);
-  }
-
-  //  スクリーンを初期化
-  {
-    //  クリア色
-    const float ClearColor[4] = {
-      pWindow_->BackColor_.R,
-      pWindow_->BackColor_.G,
-      pWindow_->BackColor_.B,
-      pWindow_->BackColor_.A };
-
-    pImmediateContext_->ClearRenderTargetView(pRenderTargetView_.Get(), ClearColor);
-    pImmediateContext_->ClearDepthStencilView(pDepthStencilView_.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    pImmediateContext_->OMSetRenderTargets(1, pRenderTargetView_.GetAddressOf(), pDepthStencilView_.Get());
-  }
-
-  //  FPS制御
-  //  時間が来るまで無限ループ(仮)
-  while (!pFrameRate_->Update());
-
-  //  ウィンドウの状態を返す
-  return ::IsWindow(pWindow_->hWnd_) != 0;
-}
-
-void CSystem::ChangeWindowMode()
-{
-  pSwapChain_->SetFullscreenState(pWindow_->isFullScreen_ = !pWindow_->isFullScreen_, nullptr);
-}
-
-void CSystem::RenameTitle(const char* _Title)
-{
-  wchar_t wWindowTitle[kCharMaxNum];
-  mbstowcs_s(nullptr, wWindowTitle, pWindow_->Title_ = const_cast<char*>(_Title), kCharMaxNum);
-
-  SetWindowText(pWindow_->hWnd_, wWindowTitle);
-}
-
-void CSystem::ScreenShot()
-{
-  //  エラーチェック用
-  HRESULT hr = S_OK;
-
-  Microsoft::WRL::ComPtr<ID3D11Texture2D> BackBuffer;
-
-  hr = pSwapChain_->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(BackBuffer.GetAddressOf()));
-
-  //  成功時
-  if (SUCCEEDED(hr))
-  {
-    //  現在の時刻を取得
-    time_t CurrentTime = time(nullptr);
-
-    tm TM;
-    localtime_s(&TM, &CurrentTime);
-
-    //  スクリーンショット用フォルダ作成
-    _mkdir("SCREENSHOT");
-
-    wchar_t wstr[kCharMaxNum];
-    swprintf_s(wstr, L"SCREENSHOT/%04d%02d%02d%02d%02d%02d.png", TM.tm_year + 1900, TM.tm_mon + 1, TM.tm_mday, TM.tm_hour, TM.tm_min, TM.tm_sec);
-
-    DirectX::SaveWICTextureToFile(pImmediateContext_.Get(), BackBuffer.Get(), GUID_ContainerFormatPng, wstr);
-  }
-}
-
-void CSystem::Exit()
-{
-  PostMessage(pWindow_->hWnd_, WM_CLOSE, 0, 0);
-}
-
-int CSystem::GetWindowWidth()const
-{
-  return pWindow_->Size_.x;
-}
-
-int CSystem::GetWindowHeight()const
-{
-  return pWindow_->Size_.y;
-}
-
-const hdx::int2& CSystem::GetWindowSize()const
-{
-  return pWindow_->Size_;
-}
-
-float CSystem::GetDeltaTime()const
-{
-  return pFrameRate_->DeltaTime_;
-}
-
-int CSystem::GetFPS()const
-{
-  return pFrameRate_->CurrentFPS_;
-}
-
-void CSystem::SetWindowLeftTopPos(int _LeftPos, int _TopPos)
-{
-  pWindow_->LeftTopPos_ = { _LeftPos, _TopPos };
-}
-
-void CSystem::SetWindowLeftTopPos(const hdx::int2& _LeftTopPos)
-{
-  pWindow_->LeftTopPos_ = _LeftTopPos;
-}
-
-void CSystem::SetWindowSize(int _Width, int _Height)
-{
-  pWindow_->Size_ = { _Width, _Height };
-}
-
-void CSystem::SetWindowSize(const hdx::int2& _Size)
-{
-  pWindow_->Size_ = _Size;
-}
-
-void CSystem::SetWindowMode(bool _isFullScreen)
-{
-  pWindow_->isFullScreen_ = _isFullScreen;
-}
-
-void CSystem::SetWindow(int _LeftPos, int _TopPos, int _Width, int _Height, bool _isFullScreen)
-{
-  pWindow_->LeftTopPos_ = { _LeftPos, _TopPos };
-  pWindow_->Size_ = { _Width, _Height };
-  pWindow_->isFullScreen_ = _isFullScreen;
-}
-
-void CSystem::SetWindow(const hdx::int2& _LeftTopPos, const hdx::int2& _Size, bool _isFullScreen)
-{
-  pWindow_->LeftTopPos_ = _LeftTopPos;
-  pWindow_->Size_ = _Size;
-  pWindow_->isFullScreen_ = _isFullScreen;
-}
-
-void CSystem::ShowCursor(bool _isShowCursor)
-{
-  pWindow_->isShowCursor_ = _isShowCursor;
-
-  ::ShowCursor(_isShowCursor);
-}
-
-void CSystem::SetTitle(const char* _Title)
-{
-  pWindow_->Title_ = const_cast<char*>(_Title);
-}
-
-void CSystem::SetBackColor(const hdx::ColorF& _Color)
-{
-  pWindow_->BackColor_ = _Color;
 }
