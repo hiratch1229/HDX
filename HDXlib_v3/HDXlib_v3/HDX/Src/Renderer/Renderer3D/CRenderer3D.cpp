@@ -264,7 +264,9 @@ void CRenderer3D::CalcProjection()
 {
   if (Camera_.isPerspective)
   {
-    const float Aspect = static_cast<float>(Engine::Get<ISystem>()->GetWindowWidth()) / Engine::Get<ISystem>()->GetWindowHeight();
+    const hdx::float2 WindowSize = Engine::Get<ISystem>()->GetWindowSize();
+
+    const float Aspect = WindowSize.x / WindowSize.y;
 
     DirectX::XMStoreFloat4x4(&ProjectionMatrix_, DirectX::XMMatrixPerspectiveFovLH(hdx::Radian(Camera_.Fov).GetValue(), Aspect, Camera_.Near, Camera_.Far));
   }

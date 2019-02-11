@@ -65,7 +65,7 @@ public:
 
   void SetWheel(const hdx::int2& _Wheel)override
   {
-    Wheel_ += _Wheel;
+    Wheel_ = _Wheel;
   }
 
   bool AnyButtonPress()const override

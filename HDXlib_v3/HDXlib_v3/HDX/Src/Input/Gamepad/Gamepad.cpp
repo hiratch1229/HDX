@@ -12,7 +12,7 @@ namespace hdx
   namespace Input
   {
     //  ƒ{ƒ^ƒ“‚ðŽæ“¾
-    Button Gamepad::GetButton(int _Number)const
+    Button Gamepad::GetButton(UINT _Number)const
     {
       return Engine::Get<IGamepad>()->GetButton(Index_, _Number);
     }

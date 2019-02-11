@@ -45,11 +45,9 @@ void CXInput::Update()
     //  状態を保存
     {
       //  アナログスティック
-      hdx::float2 LeftValue = (hdx::float2(Gamepad.sThumbLX + SHRT_MIN, Gamepad.sThumbLY + SHRT_MIN)*2.0f / kAnalogStickMaxValue);
-      hdx::float2 RightValue = (hdx::float2(Gamepad.sThumbRX + SHRT_MIN, Gamepad.sThumbRY + SHRT_MIN)*2.0f / kAnalogStickMaxValue);
       {
-        Status.LeftStick = hdx::float2(LeftValue.x - 1.0f, LeftValue.y - 1.0f);
-        Status.RightStick = hdx::float2(RightValue.x - 1.0f, RightValue.y - 1.0f);
+        Status.LeftStick = ((hdx::float2(Gamepad.sThumbLX, Gamepad.sThumbLY) - SHRT_MIN)*2.0f) / kAnalogStickMaxValue - 1.0f;
+        Status.RightStick = ((hdx::float2(Gamepad.sThumbRX, Gamepad.sThumbRY) - SHRT_MIN)*2.0f) / kAnalogStickMaxValue - 1.0f;
       }
 
       //  トリガー

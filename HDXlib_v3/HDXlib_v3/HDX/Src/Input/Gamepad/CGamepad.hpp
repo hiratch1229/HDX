@@ -65,6 +65,8 @@ private:
   int ControllerNum_ = 0;
   //  現在のジョイスティック数
   int DeviceNum_ = 0;
+  //  作成したデバイス数
+  int CreateDeviceNum_ = 0;
   //  
   Microsoft::WRL::ComPtr<IDirectInput8W> pDirectInput_;
 

@@ -3,10 +3,10 @@
 #include "Src/Engine.hpp"
 #include "Src/Input/XInput/IXInput.hpp"
 
-//  ライブラリ
+#include "Include/Gamepad.hpp"
+
 namespace hdx
 {
-  //  入力系
   namespace Input
   {
     //  左スティックの入力状態を取得

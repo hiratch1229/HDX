@@ -87,8 +87,8 @@ void CGUI::Win32::NewFrame()
 
 
     const hdx::int2& Wheel = pMouse->GetWheel();
-    io.MouseWheel += Wheel.y / WHEEL_DELTA;
-    io.MouseWheelH += Wheel.x / WHEEL_DELTA;
+    io.MouseWheel += Wheel.y;
+    io.MouseWheelH += Wheel.x;
 
     // Set mouse position
     io.MousePos = ImVec2(-FLT_MAX, -FLT_MAX);

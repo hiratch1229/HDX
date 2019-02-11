@@ -34,11 +34,11 @@ LRESULT CALLBACK MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     break;
     //  マウスホイール垂直回転
   case WM_MOUSEWHEEL:
-    Engine::Get<IMouse>()->SetWheel(hdx::int2(0, static_cast<int>(GET_WHEEL_DELTA_WPARAM(wParam))));
+    Engine::Get<IMouse>()->SetWheel(Engine::Get<IMouse>()->GetWheel() + hdx::int2(0, GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA));
     break;
     //  マウスホイール水平回転
   case WM_MOUSEHWHEEL:
-    Engine::Get<IMouse>()->SetWheel(hdx::int2(static_cast<int>(GET_WHEEL_DELTA_WPARAM(wParam)), 0));
+    Engine::Get<IMouse>()->SetWheel(Engine::Get<IMouse>()->GetWheel() + hdx::int2(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA, 0));
     break;
   case WM_CHAR:
     // You can also use ToAscii()+GetKeyboardState() to retrieve characters.

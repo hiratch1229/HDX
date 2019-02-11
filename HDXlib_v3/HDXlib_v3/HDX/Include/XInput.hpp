@@ -10,8 +10,6 @@ namespace hdx
   {
     class XInput
     {
-      const int Index_;
-    public:
       //  使うボタン
       enum Buttons
       {
@@ -20,7 +18,7 @@ namespace hdx
         Left,
         Right,
         Start,
-        Select,
+        Back,
         LeftStick,
         RightStick,
         LeftShoulder,
@@ -30,6 +28,8 @@ namespace hdx
         X,
         Y,
       };
+    private:
+      const int Index_;
     public:
       //  ゲームパッドを作成
       //  _Index:ゲームパッドの番号
@@ -39,7 +39,7 @@ namespace hdx
         ButtonLeft(InputDevice::XInput, Buttons::Left, _Index),
         ButtonRight(InputDevice::XInput, Buttons::Right, _Index),
         ButtonStart(InputDevice::XInput, Buttons::Start, _Index),
-        ButtonSelect(InputDevice::XInput, Buttons::Select, _Index),
+        ButtonSelect(InputDevice::XInput, Buttons::Back, _Index),
         ButtonLeftStick(InputDevice::XInput, Buttons::LeftStick, _Index),
         ButtonRightStick(InputDevice::XInput, Buttons::RightStick, _Index),
         ButtonLB(InputDevice::XInput, Buttons::LeftShoulder, _Index),
@@ -84,14 +84,8 @@ namespace hdx
       //  接続されているならtrueを返す
       operator bool()const { return isConnect(); }
     public:
-      bool operator==(const XInput& _XInput)const
-      {
-        return Index_ == _XInput.Index_;
-      }
-      bool operator!=(const XInput& _XInput)const
-      {
-        return !((*this) == _XInput);
-      }
+      constexpr bool operator==(const XInput& _XInput)const { return Index_ == _XInput.Index_; }
+      constexpr bool operator!=(const XInput& _XInput)const { return !((*this) == _XInput); }
     public:
       //  左スティックの入力状態を取得
       //  -1~1の範囲で表現されてます

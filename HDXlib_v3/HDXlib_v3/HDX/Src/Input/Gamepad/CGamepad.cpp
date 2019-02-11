@@ -50,10 +50,7 @@ CGamepad::CGamepad()
       if (JOYERR_NOERROR == joyGetPosEx(i, &JoyInfoEx))
       {
         ++DirectInputNum_;
-      }
-      else
-      {
-        break;
+        JoyIDList_.push_back(i);
       }
     }
   }
@@ -230,9 +227,7 @@ void CGamepad::CreateDirectInputDevice(const GUID& GuidProductFromDirectInput)
 
   HRESULT hr = S_OK;
 
-  int CreateDeviceNum = JoyIDList_.size();
-
-  DirectInputData& pDirectInputData = pDirectInputDatas_[CreateDeviceNum];
+  DirectInputData& pDirectInputData = pDirectInputDatas_[CreateDeviceNum_++];
 
   //  ジョイスティックを作成
   hr = pDirectInput_->CreateDevice(GuidProductFromDirectInput, &pDirectInputData.pJoyStick, nullptr);
@@ -338,18 +333,14 @@ void CGamepad::Update()
 
     Status.isConnect = true;
 
-    Status.LeftStick = hdx::float2(State.lX, State.lY) / kStickMaxValue;
-    Status.RightStick = hdx::float2(State.lZ, State.lRz) / kStickMaxValue;
+    Status.LeftStick = hdx::float2(State.lX, -State.lY) / kStickMaxValue;
+    Status.RightStick = hdx::float2(State.lZ, -State.lRz) / kStickMaxValue;
     Status.LeftTrigger = State.lRx / static_cast<float>(kTriggerMaxValue);
     Status.RightTrigger = State.lRy / static_cast<float>(kTriggerMaxValue);
 
     const int PovInput = State.rgdwPOV[0] / 4500;
 
-    bool isInput[kPovDirectionNum];
-    for (int j = 0; j < kPovDirectionNum; ++j)
-    {
-      isInput[j] = false;
-    }
+    bool isInput[kPovDirectionNum]{};
 
     switch (PovInput)
     {
