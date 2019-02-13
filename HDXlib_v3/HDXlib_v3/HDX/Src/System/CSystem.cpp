@@ -30,8 +30,7 @@
 #include <direct.h>
 #include <ScreenGrab.h>
 
-CSystem::FrameRate::FrameRate(int _MaxFrameRate)
-  : MaxFrameRate_(_MaxFrameRate), FrameInterval_(1.0f / _MaxFrameRate)
+CSystem::FrameRate::FrameRate(UINT _MaxFrameRate)
 {
   //  周波数を取得
   QueryPerformanceFrequency(&FreqTime_);
@@ -49,25 +48,22 @@ bool CSystem::FrameRate::Update()
   //  現在のフレーム経過時間を取得
   const float DeltaTime = (CurrentTime.QuadPart - LastTime_.QuadPart) / static_cast<float>(FreqTime_.QuadPart);
 
-  //if (DeltaTime < FrameInterval_)
-  //{
-  //  //const DWORD SleepTime = static_cast<DWORD>((FrameInterval_ - DeltaTime) * 1000);
-  //  //timeBeginPeriod(1);
-  //  //Sleep(SleepTime);
-  //  //timeEndPeriod(1);
-  //  return false;
-  //}
-
-  static float TimeStamp = 0.0f, TimeTlapsed = 0.0f;
-  static int Frames = 0;
-
-  ++Frames;
-  if (((TimeStamp += DeltaTime) - TimeTlapsed) >= 1.0f)
+  if (DeltaTime < FrameInterval_)
   {
-    CurrentFPS_ = Frames;
+    //const DWORD SleepTime = static_cast<DWORD>((FrameInterval_ - DeltaTime) * 1000);
+    //timeBeginPeriod(1);
+    //Sleep(SleepTime);
+    //timeEndPeriod(1);
+    return false;
+  }
 
-    Frames = 0;
-    TimeTlapsed += 1.0f;
+  ++Frames_;
+  if (((TimeStamp_ += DeltaTime) - TimeTlapsed_) >= 1.0f)
+  {
+    CurrentFPS_ = Frames_;
+
+    Frames_ = 0;
+    TimeTlapsed_ += 1.0f;
   }
 
   DeltaTime_ = DeltaTime;
@@ -77,14 +73,15 @@ bool CSystem::FrameRate::Update()
   return true;
 }
 
-void CSystem::FrameRate::Reset()
+void CSystem::FrameRate::SetFPS(UINT _MaxFPS)
 {
   //  現在の時間を取得
   LARGE_INTEGER CurrentTime;
   QueryPerformanceCounter(&CurrentTime);
 
-  CurrentFPS_ = 60;
-  DeltaTime_ = FrameInterval_;
+  FrameInterval_ = ((_MaxFPS == 0) ? 0.0f : 1.0f / _MaxFPS);
+  CurrentFPS_ = 0;
+  DeltaTime_ = 0.0f;
   LastTime_ = CurrentTime;
 }
 
@@ -141,7 +138,7 @@ CSystem::CSystem()
   TIMER_START("System");
 
   //  フレームレートの作成
-  pFrameRate_ = std::make_unique<FrameRate>(60);
+  pFrameRate_ = std::make_unique<FrameRate>(MaxFPS_);
 
   //  ウィンドウの作成
   pWindow_ = std::make_unique<Window>();
@@ -194,7 +191,7 @@ bool CSystem::Update()
 
     Engine::Get<IRenderer3D>()->CalcProjection();
 
-    pFrameRate_->Reset();
+    pFrameRate_->SetFPS(MaxFPS_);
   }
 
   //  入力系更新

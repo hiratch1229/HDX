@@ -33,6 +33,8 @@ public:
 
   virtual void SetBackColor(const hdx::ColorF& _Color) = 0;
 
+  virtual void SetFPS(UINT _MaxFPS) = 0;
+
   virtual void ShowCursor(bool _isShowCursor) = 0;
 
   virtual void ChangeWindowMode() = 0;

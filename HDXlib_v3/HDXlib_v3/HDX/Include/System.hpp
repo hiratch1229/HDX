@@ -58,6 +58,9 @@ namespace hdx
     static void SetTitle(const char* _Title);
     //  背景の色変更
     static void SetBackColor(const ColorF& _Color);
+    //  フレームレート制御
+    //  0で無制御
+    static void SetFPS(UINT _MaxFPS);
 
     ////  ウィンドウのサイズを変更
     ////  _Width:ウィンドウ幅

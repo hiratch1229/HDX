@@ -112,6 +112,11 @@ namespace hdx
     Engine::Get<ISystem>()->SetBackColor(_Color);
   }
 
+  void System::SetFPS(UINT _MaxFPS)
+  {
+    Engine::Get<ISystem>()->SetFPS(_MaxFPS);
+  }
+
   //  ウィンドウのモードを変更
   void System::ChangeWindowMode()
   {

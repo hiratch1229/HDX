@@ -85,6 +85,12 @@ namespace hdx
   };
 
   template<class T, class Type>
+  inline constexpr auto operator==(T _s, const Type2<Type>& _v) { return _v == _s; }
+
+  template<class T, class Type>
+  inline constexpr auto operator!=(T _s, const Type2<Type>& _v) { return _v != _s; }
+
+  template<class T, class Type>
   inline constexpr auto operator+(T _s, const Type2<Type>& _v) { return _v + _s; }
 
   template<class T, class Type>
@@ -92,9 +98,6 @@ namespace hdx
 
   template<class T, class Type>
   inline constexpr auto operator*(T _s, const Type2<Type>& _v) { return _v * _s; }
-
-  template<class T, class Type>
-  inline constexpr auto operator/(T _s, const Type2<Type>& _v) { return _v / _s; }
 
   using int2 = Type2<int>;
   using float2 = Type2<float>;

@@ -5,6 +5,7 @@ void Main()
   hdx::System::SetWindowSize(1280, 720);
   hdx::System::ShowCursor(true);
   hdx::System::SetTitle("HDXlib");
+  hdx::System::SetFPS(0);
 
   hdx::Model Models[] = {
     //{ hdx::Cube{} },
@@ -13,14 +14,14 @@ void Main()
     { "DATA/Model/danbo_fbx/danbo_atk.fbx" },
   };
 
-  constexpr float Scale = 0.1f;
+  constexpr float Scale = 0.01f;
 
   hdx::Camera Camera;
 
   int MaxNum = 100;
   int Num = 1;
 
-  hdx::float3 Rotation{ hdx::Math::ToRadian(180.0f), 0.0f, 0.0f };
+  hdx::float3 Rotation{ hdx::Math::ToRadian(0.0f), hdx::Math::ToRadian(180.0f), 0.0f };
   hdx::Matrix WorldMatrix;
   hdx::MotionData MotionData;
   const hdx::Matrix S = DirectX::XMMatrixScaling(Scale, Scale, Scale);

@@ -4,6 +4,7 @@
 #include "Src/Misc.hpp"
 #include "Src/Constants.hpp"
 
+#include <dxgi1_2.h>
 #include <memory>
 #include <string>
 #include <assert.h>

@@ -209,8 +209,8 @@ void CRenderer2D::Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeft
   const hdx::float2 Center = _DstLeftTop + _DstSize / 2.0f;
   const hdx::float2 WindowSize = Engine::Get<ISystem>()->GetWindowSize();
 
-  const float cos = cosf(_Angle.GetValue());
-  const float sin = sinf(_Angle.GetValue());
+  const float cos = cosf(_Angle);
+  const float sin = sinf(_Angle);
   const float Width = 2.0f / WindowSize.x;
   const float Height = -2.0f / WindowSize.y;
 

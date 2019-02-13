@@ -9,24 +9,26 @@ class CSystem : public ISystem
 {
   class FrameRate
   {
-    //  固定フレームレート値
-    const int MaxFrameRate_;
     //  フレーム間隔
-    const float FrameInterval_;
+    float FrameInterval_;
   private:
     //  クロック数
     LARGE_INTEGER FreqTime_;
     //  最後の時間
     LARGE_INTEGER LastTime_;
+  private:
+    float TimeStamp_ = 0.0f;
+    float TimeTlapsed_ = 0.0f;
+    int Frames_ = 0;
   public:
     //  経過時間
     float DeltaTime_ = 0.0f;
     //  現在のFPS
     int CurrentFPS_ = 0;
   public:
-    FrameRate(int _MaxFrameRate);
+    FrameRate(UINT _MaxFrameRate);
     bool Update();
-    void Reset();
+    void SetFPS(UINT _MaxFPS);
   };
   class Window
   {
@@ -44,6 +46,8 @@ class CSystem : public ISystem
     //  ウィンドウを設定
     void SetUpWindow();
   };
+private:
+  UINT MaxFPS_ = 60u;
 private:
   bool isSetUpWindow_ = false;
   Microsoft::WRL::ComPtr<ID3D11Device> pDevice_;
@@ -86,15 +90,11 @@ public:
     pWindow_->isFullScreen_ = _isFullScreen;
   }
 
-  void SetTitle(const char* _Title)override
-  {
-    pWindow_->Title_ = const_cast<char*>(_Title);
-  }
+  void SetTitle(const char* _Title)override { pWindow_->Title_ = const_cast<char*>(_Title); }
 
-  void SetBackColor(const hdx::ColorF& _Color)override
-  {
-    pWindow_->BackColor_ = _Color;
-  }
+  void SetBackColor(const hdx::ColorF& _Color)override { pWindow_->BackColor_ = _Color; }
+
+  void SetFPS(UINT _MaxFPS)override { MaxFPS_ = _MaxFPS; }
 
   void ShowCursor(bool _isShowCursor)override;
 

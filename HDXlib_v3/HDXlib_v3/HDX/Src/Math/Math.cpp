@@ -14,7 +14,7 @@ namespace hdx
     {
       const float2 Vector{ _Target.x - _Center.x, _Target.y - _Center.y };
 
-      return Vector.x*cosf(_Radian.GetValue()) - Vector.y*sinf(_Radian.GetValue()) + _Center.x;
+      return Vector.x*cosf(_Radian) - Vector.y*sinf(_Radian) + _Center.x;
     }
 
     //  Y‰ñ“]
@@ -22,7 +22,7 @@ namespace hdx
     {
       const float2 Vector{ _Target.x - _Center.x, _Target.y - _Center.y };
 
-      return Vector.y*cosf(_Radian.GetValue()) + Vector.x*sinf(_Radian.GetValue()) + _Center.y;
+      return Vector.y*cosf(_Radian) + Vector.x*sinf(_Radian) + _Center.y;
     }
 
     //  XY‰ñ“]
@@ -30,7 +30,7 @@ namespace hdx
     {
       const float2 Vector{ _Target.x - _Center.x, _Target.y - _Center.y };
 
-      return float2{ Vector.x*cosf(_Radian.GetValue()) - Vector.y*sinf(_Radian.GetValue()),Vector.y*cosf(_Radian.GetValue()) + Vector.x*sinf(_Radian.GetValue()) } +_Center;
+      return float2{ Vector.x*cosf(_Radian) - Vector.y*sinf(_Radian),Vector.y*cosf(_Radian) + Vector.x*sinf(_Radian) } +_Center;
     }
 
     //  “ñŸŠÖ”(ã‚É“Ê)
