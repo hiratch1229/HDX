@@ -26,11 +26,16 @@ void Main()
   hdx::MotionData MotionData;
   const hdx::Matrix S = DirectX::XMMatrixScaling(Scale, Scale, Scale);
 
+  int MaxFPS = 0;
   while (hdx::System::Update())
   {
+    const int FPS = hdx::System::GetFPS();
+    MaxFPS = (FPS < MaxFPS) ? MaxFPS : FPS;
+
     ImGui::Begin("DeltaTime");
     ImGui::Text("DeltaTime %f", hdx::System::GetDeltaTime());
-    ImGui::Text("FPS:%d", hdx::System::GetFPS());
+    ImGui::Text("FPS:%d", FPS);
+    ImGui::Text("MaxFPS:%d", MaxFPS);
 
     ImGui::InputInt("Å‘å”", &MaxNum);
     ImGui::SliderInt("‘Ì", &Num, 1, MaxNum);

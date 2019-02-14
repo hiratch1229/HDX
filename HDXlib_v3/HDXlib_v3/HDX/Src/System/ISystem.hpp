@@ -15,6 +15,8 @@ public:
 
   virtual bool Update() = 0;
 
+  virtual bool isFullScreen()const = 0;
+
   virtual const hdx::int2& GetWindowSize()const = 0;
 
   virtual float GetDeltaTime()const = 0;

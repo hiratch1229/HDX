@@ -50,11 +50,30 @@ void CGUI::Win32::NewFrame()
 {
   ImGuiIO& io = ImGui::GetIO();
 
-  //  Setup display size (every frame to accommodate for window resizing)
   const ISystem* pSystem = Engine::Get<ISystem>();
 
+  const hdx::float2& WindowSize = pSystem->GetWindowSize();
+
+  hdx::float2 Scale = 1.0f;
+  hdx::float2 MouseOffset = 0.0f;
+
   //  Setup display size (every frame to accommodate for window resizing)
-  const hdx::float2 WindowSize = pSystem->GetWindowSize();
+  if (pSystem->isFullScreen())
+  {
+    Scale = hdx::int2(::GetSystemMetrics(SM_CXSCREEN), ::GetSystemMetrics(SM_CYSCREEN)) / WindowSize;
+  }
+  else
+  {
+    RECT ClientRect;
+    ::GetClientRect(hWnd_, &ClientRect);
+    Scale = hdx::float2(ClientRect.right - ClientRect.left, ClientRect.bottom - ClientRect.top) / WindowSize;
+
+    RECT WindowRect;
+    ::GetWindowRect(hWnd_, &WindowRect);
+
+    MouseOffset = kWindowFrameSize + hdx::float2(WindowRect.left, WindowRect.top);
+  }
+
   io.DisplaySize = ImVec2(WindowSize.x, WindowSize.y);
 
   //  Setup time step
@@ -91,12 +110,10 @@ void CGUI::Win32::NewFrame()
     io.MouseWheelH += Wheel.x;
 
     // Set mouse position
-    io.MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
-
     if (::GetActiveWindow() == hWnd_)
     {
-      const hdx::float2& MousePos = pMouse->GetPos();
-      io.MousePos = ImVec2(MousePos.x, MousePos.y);
+      const hdx::float2& MousePos = pMouse->GetPos() - MouseOffset;
+      io.MousePos = ImVec2(MousePos.x / Scale.x, MousePos.y / Scale.y);
     }
   }
 

@@ -2,6 +2,7 @@
 #include "IGUI.hpp"
 #include "imgui.h"
 
+#include "Include/Type2.hpp"
 #include "Include/VertexShader.hpp"
 #include "Include/PixelShader.hpp"
 
@@ -12,6 +13,8 @@ class CGUI : public IGUI
 {
   class Win32
   {
+    static constexpr hdx::float2 kWindowFrameSize = hdx::float2(8, 35);
+  private:
     const HWND hWnd_;
     ImGuiMouseCursor LastMouseCursor_ = ImGuiMouseCursor_COUNT;
   public:

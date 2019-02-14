@@ -71,6 +71,8 @@ public:
 
   bool Update()override;
 
+  bool isFullScreen()const override { return pWindow_->isFullScreen_; }
+
   const hdx::int2& GetWindowSize()const override { return pWindow_->Size_; }
 
   float GetDeltaTime()const override { return pFrameRate_->DeltaTime_; }
