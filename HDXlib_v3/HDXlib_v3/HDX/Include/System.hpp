@@ -2,7 +2,6 @@
 #include "Type2.hpp"
 #include "Color.hpp"
 
-//  ライブラリ
 namespace hdx
 {
   //  システム

@@ -15,7 +15,7 @@ void Main()
   };
 
   constexpr float Scale = 0.01f;
-
+  
   hdx::Camera Camera;
 
   int MaxNum = 100;

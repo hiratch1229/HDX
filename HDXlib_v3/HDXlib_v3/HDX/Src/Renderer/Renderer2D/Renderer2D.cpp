@@ -16,63 +16,59 @@
 
 #include <string>
 
-//  ライブラリ
-namespace hdx
+namespace hdx::Renderer2D
 {
-  namespace Renderer2D
+  void SetVertexShader(const VertexShader& _VertexShader)
   {
-    void SetVertexShader(const VertexShader& _VertexShader)
-    {
-      Engine::Get<IRenderer2D>()->SetVertexShader(_VertexShader);
-    }
+    Engine::Get<IRenderer2D>()->SetVertexShader(_VertexShader);
+  }
 
-    void RestoreVertexShader()
-    {
-      Engine::Get<IRenderer2D>()->SetVertexShader(hdx::VertexShader(kDefault2DVertexShaderFilePath));
-    }
+  void RestoreVertexShader()
+  {
+    Engine::Get<IRenderer2D>()->SetVertexShader(hdx::VertexShader(kDefault2DVertexShaderFilePath));
+  }
 
-    void SetPixelShader(const PixelShader& _PixelShader)
-    {
-      Engine::Get<IRenderer2D>()->SetPixelShader(_PixelShader);
-    }
+  void SetPixelShader(const PixelShader& _PixelShader)
+  {
+    Engine::Get<IRenderer2D>()->SetPixelShader(_PixelShader);
+  }
 
-    void RestorePixelShader()
-    {
-      Engine::Get<IRenderer2D>()->SetPixelShader(hdx::PixelShader(kDefault2DPixelShaderFilePath));
-    }
+  void RestorePixelShader()
+  {
+    Engine::Get<IRenderer2D>()->SetPixelShader(hdx::PixelShader(kDefault2DPixelShaderFilePath));
+  }
 
-    void SetBlendState(const BlendState& _BlendState)
-    {
-      Engine::Get<IRenderer2D>()->SetBlendState(_BlendState);
-    }
+  void SetBlendState(const BlendState& _BlendState)
+  {
+    Engine::Get<IRenderer2D>()->SetBlendState(_BlendState);
+  }
 
-    void SetSamplerState(const SamplerState& _SamplerState, UINT _Slot)
-    {
-      _ASSERT_EXPR_A(_Slot >= 0 && _Slot < hdx::Constants::kSamplerStateMaxNum, ("0から" + std::to_string(hdx::Constants::kSamplerStateMaxNum - 1) + "の範囲を指定してください。").c_str());
+  void SetSamplerState(const SamplerState& _SamplerState, UINT _Slot)
+  {
+    _ASSERT_EXPR_A(_Slot >= 0 && _Slot < hdx::Constants::kSamplerStateMaxNum, ("0から" + std::to_string(hdx::Constants::kSamplerStateMaxNum - 1) + "の範囲を指定してください。").c_str());
 
-      Engine::Get<IRenderer2D>()->SetSamplerState(_SamplerState, _Slot);
-    }
+    Engine::Get<IRenderer2D>()->SetSamplerState(_SamplerState, _Slot);
+  }
 
-    void SetRasterizerState(const RasterizerState& _RasterizerState)
-    {
-      Engine::Get<IRenderer2D>()->SetRasterizerState(_RasterizerState);
-    }
+  void SetRasterizerState(const RasterizerState& _RasterizerState)
+  {
+    Engine::Get<IRenderer2D>()->SetRasterizerState(_RasterizerState);
+  }
 
-    void SetTexture(const Texture& _Texture, UINT _Slot)
-    {
-      _ASSERT_EXPR_A(_Slot >= 1 && _Slot < hdx::Constants::kSamplerStateMaxNum, ("0から" + std::to_string(hdx::Constants::kTextureMaxNum - 1) + "の範囲を指定してください。").c_str());
+  void SetTexture(const Texture& _Texture, UINT _Slot)
+  {
+    _ASSERT_EXPR_A(_Slot >= 1 && _Slot < hdx::Constants::kSamplerStateMaxNum, ("0から" + std::to_string(hdx::Constants::kTextureMaxNum - 1) + "の範囲を指定してください。").c_str());
 
-      Engine::Get<IRenderer2D>()->SetTexture(_Texture, _Slot);
-    }
+    Engine::Get<IRenderer2D>()->SetTexture(_Texture, _Slot);
+  }
 
-    void RestoreRenderTarget()
-    {
-      Engine::Get<IRenderer2D>()->RestoreRenderTarget();
-    }
+  void RestoreRenderTarget()
+  {
+    Engine::Get<IRenderer2D>()->RestoreRenderTarget();
+  }
 
-    void SetRenderTarget(const RenderTarget& _RenderTarget)
-    {
-      Engine::Get<IRenderer2D>()->SetRenderTarget(_RenderTarget);
-    }
+  void SetRenderTarget(const RenderTarget& _RenderTarget)
+  {
+    Engine::Get<IRenderer2D>()->SetRenderTarget(_RenderTarget);
   }
 }

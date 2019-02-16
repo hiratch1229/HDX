@@ -1,7 +1,7 @@
 #include "Include/RenderTarget.hpp"
 
 #include "Src/Engine.hpp"
-#include "Src/RenderTarget/IRenderTarget.hpp"
+#include "Src/Graphics/RenderTarget/IRenderTarget.hpp"
 
 namespace hdx
 {

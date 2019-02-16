@@ -1,6 +1,5 @@
 #pragma once
 
-//  ライブラリ
 namespace hdx
 {
   //  コピー禁止クラス

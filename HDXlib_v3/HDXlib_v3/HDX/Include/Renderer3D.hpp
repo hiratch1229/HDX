@@ -13,33 +13,29 @@
 #include "ConstantBuffer.hpp"
 #include "Matrix.hpp"
 
-//  ƒ‰ƒCƒuƒ‰ƒŠ
-namespace hdx
+namespace hdx::Renderer3D
 {
-  namespace Renderer3D
+  void SetVertexShader(const VertexShader& _VertexShader);
+  void RestoreVertexShader();
+  void SetPixelShader(const PixelShader& _PixelShader);
+  void RestorePixelShader();
+  void SetBlendState(const BlendState& _BlendState);
+  void SetSamplerState(const SamplerState& _SamplerState, UINT _Slot);
+  void SetRasterizerState(const RasterizerState& _RasterizerState);
+  void SetDepthStencilState(const DepthStencilState& _DepthStencilState);
+  void SetTexture(const Texture& _Texture, UINT _Slot);
+  void RestoreRenderTarget();
+  void SetRenderTarget(const RenderTarget& _RenderTarget);
+  void SetCamera(const Camera& _Camera);
+  void SetLightDirection(const float3& _LightDirection);
+  void SetConstantBuffer(ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot);
+
+  template<class T>
+  void SetConstantBuffer(const ConstantBuffer<T>& ConstantBuffer, UINT _Slot, ShaderStage _Stage = ShaderStage::Vertex)
   {
-    void SetVertexShader(const VertexShader& _VertexShader);
-    void RestoreVertexShader();
-    void SetPixelShader(const PixelShader& _PixelShader);
-    void RestorePixelShader();
-    void SetBlendState(const BlendState& _BlendState);
-    void SetSamplerState(const SamplerState& _SamplerState, UINT _Slot);
-    void SetRasterizerState(const RasterizerState& _RasterizerState);
-    void SetDepthStencilState(const DepthStencilState& _DepthStencilState);
-    void SetTexture(const Texture& _Texture, UINT _Slot);
-    void RestoreRenderTarget();
-    void SetRenderTarget(const RenderTarget& _RenderTarget);
-    void SetCamera(const Camera& _Camera);
-    void SetLightDirection(const float3& _LightDirection);
-    void SetConstantBuffer(ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot);
+    SetConstantBuffer(_Stage, ConstantBuffer.Size, ConstantBuffer.GetPtr(), _Slot);
+  }
 
-    template<class T>
-    void SetConstantBuffer(const ConstantBuffer<T>& ConstantBuffer, UINT _Slot, ShaderStage _Stage = ShaderStage::Vertex)
-    {
-      SetConstantBuffer(_Stage, ConstantBuffer.Size, ConstantBuffer.GetPtr(), _Slot);
-    }
-
-    const Matrix& GetProjectionMatrix();
-    const Matrix& GetViewMatrix();
-  };
+  const Matrix& GetProjectionMatrix();
+  const Matrix& GetViewMatrix();
 }

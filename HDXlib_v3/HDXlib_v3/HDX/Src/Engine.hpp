@@ -50,7 +50,7 @@ public:
 
 class Engine
 {
-  static Engine* pEngine;
+  inline static Engine* pEngine = nullptr;
 private:
   Component<ISystem> pSystem_;
   Component<IBlendState> pBlendState_;

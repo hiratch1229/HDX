@@ -1,7 +1,7 @@
 #include "Include/PixelShader.hpp"
 
 #include "Src/Engine.hpp"
-#include "Src/PixelShader/IPixelShader.hpp"
+#include "Src/Shaders/PixelShader/IPixelShader.hpp"
 
 namespace hdx
 {

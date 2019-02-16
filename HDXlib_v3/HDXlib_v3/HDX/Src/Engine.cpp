@@ -1,14 +1,14 @@
 #include "Engine.hpp"
 
 #include "System/ISystem.hpp"
-#include "BlendState/IBlendState.hpp"
-#include "ConstantBuffer/IConstantBuffer.hpp"
-#include "DepthStencilState/IDepthStencilState.hpp"
-#include "RasterizerState/IRasterizerState.hpp"
-#include "RenderTarget/IRenderTarget.hpp"
-#include "SamplerState/ISamplerState.hpp"
-#include "VertexShader/IVertexShader.hpp"
-#include "PixelShader/IPixelShader.hpp"
+#include "Graphics/BlendState/IBlendState.hpp"
+#include "Graphics/ConstantBuffer/IConstantBuffer.hpp"
+#include "Graphics/DepthStencilState/IDepthStencilState.hpp"
+#include "Graphics/RasterizerState/IRasterizerState.hpp"
+#include "Graphics/RenderTarget/IRenderTarget.hpp"
+#include "Graphics/SamplerState/ISamplerState.hpp"
+#include "Shaders/VertexShader/IVertexShader.hpp"
+#include "Shaders/PixelShader/IPixelShader.hpp"
 #include "Renderer/Renderer2D/IRenderer2D.hpp"
 #include "Renderer/Renderer3D/IRenderer3D.hpp"
 #include "Input/Keyboard/IKeyboard.hpp"
@@ -33,8 +33,6 @@ namespace
 {
   Benchmark Timer;
 }
-
-Engine* Engine::pEngine = nullptr;
 
 Engine::Engine()
 {

@@ -1,7 +1,6 @@
 #pragma once
 #include "Types.hpp"
 
-//  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx
 {
   struct ColorF;

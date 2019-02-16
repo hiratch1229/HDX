@@ -1,6 +1,5 @@
 #pragma once
 
-//  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx
 {
   class ButtonCombinationAND;

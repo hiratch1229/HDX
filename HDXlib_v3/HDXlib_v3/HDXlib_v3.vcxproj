@@ -77,6 +77,7 @@
       <AdditionalIncludeDirectories>..\HDXlib_v3\HDX;C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\include;C:\HDXlib\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>d3d11.lib;DXGI.lib;DirectXTKd.lib;winmm.lib;mfplay.lib;XInput9_1_0.lib;dinput8.lib;libfbxsdk-md.lib;d3dcompiler.lib;ImGuid.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -102,6 +103,7 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>..\HDXlib_v3\HDX;C:\HDXlib\DirectXTK;C:\HDXlib\FBX SDK\include;C:\HDXlib\ImGui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -127,14 +129,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="HDX\Src\BlendState\CBlendState.cpp" />
-    <ClCompile Include="HDX\Src\BlendState\IBlendState.cpp" />
-    <ClCompile Include="HDX\Src\ConstantBuffer\CConstantBuffer.cpp" />
-    <ClCompile Include="HDX\Src\ConstantBuffer\IConstantBuffer.cpp" />
-    <ClCompile Include="HDX\Src\DepthStencilState\CDepthStencilState.cpp" />
-    <ClCompile Include="HDX\Src\DepthStencilState\IDepthStencilState.cpp" />
     <ClCompile Include="HDX\Src\Easing\Easing.cpp" />
     <ClCompile Include="HDX\Src\Engine.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\BlendState\CBlendState.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\BlendState\IBlendState.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\ConstantBuffer\CConstantBuffer.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\ConstantBuffer\IConstantBuffer.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\DepthStencilState\CDepthStencilState.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\DepthStencilState\IDepthStencilState.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\RasterizerState\CRasterizerState.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\RasterizerState\IRasterizerState.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\RenderTarget\CRenderTarget.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\RenderTarget\IRenderTarget.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\RenderTarget\RenderTarget.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\SamplerState\CSamplerState.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\SamplerState\ISamplerState.cpp" />
     <ClCompile Include="HDX\Src\GUI\CGUI.cpp" />
     <ClCompile Include="HDX\Src\GUI\IGUI.cpp" />
     <ClCompile Include="HDX\Src\Input\Button.cpp" />
@@ -155,25 +164,21 @@
     <ClCompile Include="HDX\Src\Model\IModel.cpp" />
     <ClCompile Include="HDX\Src\Model\Model.cpp" />
     <ClCompile Include="HDX\Src\MsgProc.cpp" />
-    <ClCompile Include="HDX\Src\PixelShader\CPixelShader.cpp" />
-    <ClCompile Include="HDX\Src\PixelShader\IPixelShader.cpp" />
-    <ClCompile Include="HDX\Src\PixelShader\PixelShader.cpp" />
     <ClCompile Include="HDX\Src\Random\CRandom.cpp" />
     <ClCompile Include="HDX\Src\Random\IRandom.cpp" />
     <ClCompile Include="HDX\Src\Random\Random.cpp" />
-    <ClCompile Include="HDX\Src\RasterizerState\CRasterizerState.cpp" />
-    <ClCompile Include="HDX\Src\RasterizerState\IRasterizerState.cpp" />
     <ClCompile Include="HDX\Src\Renderer\Renderer2D\CRenderer2D.cpp" />
     <ClCompile Include="HDX\Src\Renderer\Renderer2D\IRenderer2D.cpp" />
     <ClCompile Include="HDX\Src\Renderer\Renderer2D\Renderer2D.cpp" />
     <ClCompile Include="HDX\Src\Renderer\Renderer3D\CRenderer3D.cpp" />
     <ClCompile Include="HDX\Src\Renderer\Renderer3D\IRenderer3D.cpp" />
     <ClCompile Include="HDX\Src\Renderer\Renderer3D\Renderer3D.cpp" />
-    <ClCompile Include="HDX\Src\RenderTarget\CRenderTarget.cpp" />
-    <ClCompile Include="HDX\Src\RenderTarget\IRenderTarget.cpp" />
-    <ClCompile Include="HDX\Src\RenderTarget\RenderTarget.cpp" />
-    <ClCompile Include="HDX\Src\SamplerState\CSamplerState.cpp" />
-    <ClCompile Include="HDX\Src\SamplerState\ISamplerState.cpp" />
+    <ClCompile Include="HDX\Src\Shaders\PixelShader\CPixelShader.cpp" />
+    <ClCompile Include="HDX\Src\Shaders\PixelShader\IPixelShader.cpp" />
+    <ClCompile Include="HDX\Src\Shaders\PixelShader\PixelShader.cpp" />
+    <ClCompile Include="HDX\Src\Shaders\VertexShader\CVertexShader.cpp" />
+    <ClCompile Include="HDX\Src\Shaders\VertexShader\IVertexShader.cpp" />
+    <ClCompile Include="HDX\Src\Shaders\VertexShader\VertexShader.cpp" />
     <ClCompile Include="HDX\Src\Sound\CSound.cpp" />
     <ClCompile Include="HDX\Src\Sound\ISound.cpp" />
     <ClCompile Include="HDX\Src\Sound\Sound.cpp" />
@@ -183,9 +188,6 @@
     <ClCompile Include="HDX\Src\Texture\CTexture.cpp" />
     <ClCompile Include="HDX\Src\Texture\ITexture.cpp" />
     <ClCompile Include="HDX\Src\Texture\Texture.cpp" />
-    <ClCompile Include="HDX\Src\VertexShader\CVertexShader.cpp" />
-    <ClCompile Include="HDX\Src\VertexShader\IVertexShader.cpp" />
-    <ClCompile Include="HDX\Src\VertexShader\VertexShader.cpp" />
     <ClCompile Include="HDX\Src\WinMain.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -229,14 +231,20 @@
     <ClInclude Include="HDX\Include\Camera.hpp" />
     <ClInclude Include="HDX\Include\XInput.hpp" />
     <ClInclude Include="HDX\Src\Benchmark.hpp" />
-    <ClInclude Include="HDX\Src\BlendState\CBlendState.hpp" />
-    <ClInclude Include="HDX\Src\BlendState\IBlendState.hpp" />
-    <ClInclude Include="HDX\Src\ConstantBuffer\CConstantBuffer.hpp" />
-    <ClInclude Include="HDX\Src\ConstantBuffer\IConstantBuffer.hpp" />
     <ClInclude Include="HDX\Src\Constants.hpp" />
-    <ClInclude Include="HDX\Src\DepthStencilState\CDepthStencilState.hpp" />
-    <ClInclude Include="HDX\Src\DepthStencilState\IDepthStencilState.hpp" />
     <ClInclude Include="HDX\Src\Engine.hpp" />
+    <ClInclude Include="HDX\Src\Graphics\BlendState\CBlendState.hpp" />
+    <ClInclude Include="HDX\Src\Graphics\BlendState\IBlendState.hpp" />
+    <ClInclude Include="HDX\Src\Graphics\ConstantBuffer\CConstantBuffer.hpp" />
+    <ClInclude Include="HDX\Src\Graphics\ConstantBuffer\IConstantBuffer.hpp" />
+    <ClInclude Include="HDX\Src\Graphics\DepthStencilState\CDepthStencilState.hpp" />
+    <ClInclude Include="HDX\Src\Graphics\DepthStencilState\IDepthStencilState.hpp" />
+    <ClInclude Include="HDX\Src\Graphics\RasterizerState\CRasterizerState.hpp" />
+    <ClInclude Include="HDX\Src\Graphics\RasterizerState\IRasterizerState.hpp" />
+    <ClInclude Include="HDX\Src\Graphics\RenderTarget\CRenderTarget.hpp" />
+    <ClInclude Include="HDX\Src\Graphics\RenderTarget\IRenderTarget.hpp" />
+    <ClInclude Include="HDX\Src\Graphics\SamplerState\CSamplerState.hpp" />
+    <ClInclude Include="HDX\Src\Graphics\SamplerState\ISamplerState.hpp" />
     <ClInclude Include="HDX\Src\GUI\CGUI.hpp" />
     <ClInclude Include="HDX\Src\GUI\IGUI.hpp" />
     <ClInclude Include="HDX\Src\Input\Gamepad\CGamepad.hpp" />
@@ -252,29 +260,23 @@
     <ClInclude Include="HDX\Src\Model\CModel.hpp" />
     <ClInclude Include="HDX\Src\Model\IModel.hpp" />
     <ClInclude Include="HDX\Src\NumberMap.hpp" />
-    <ClInclude Include="HDX\Src\PixelShader\CPixelShader.hpp" />
-    <ClInclude Include="HDX\Src\PixelShader\IPixelShader.hpp" />
     <ClInclude Include="HDX\Src\Random\CRandom.hpp" />
     <ClInclude Include="HDX\Src\Random\IRandom.hpp" />
-    <ClInclude Include="HDX\Src\RasterizerState\CRasterizerState.hpp" />
-    <ClInclude Include="HDX\Src\RasterizerState\IRasterizerState.hpp" />
     <ClInclude Include="HDX\Src\Renderer\Renderer2D\CRenderer2D.hpp" />
     <ClInclude Include="HDX\Src\Renderer\Renderer2D\IRenderer2D.hpp" />
     <ClInclude Include="HDX\Src\Renderer\Renderer3D\CRenderer3D.hpp" />
     <ClInclude Include="HDX\Src\Renderer\Renderer3D\IRenderer3D.hpp" />
-    <ClInclude Include="HDX\Src\RenderTarget\CRenderTarget.hpp" />
-    <ClInclude Include="HDX\Src\RenderTarget\IRenderTarget.hpp" />
     <ClInclude Include="HDX\Src\Resource.hpp" />
-    <ClInclude Include="HDX\Src\SamplerState\CSamplerState.hpp" />
-    <ClInclude Include="HDX\Src\SamplerState\ISamplerState.hpp" />
+    <ClInclude Include="HDX\Src\Shaders\PixelShader\CPixelShader.hpp" />
+    <ClInclude Include="HDX\Src\Shaders\PixelShader\IPixelShader.hpp" />
+    <ClInclude Include="HDX\Src\Shaders\VertexShader\CVertexShader.hpp" />
+    <ClInclude Include="HDX\Src\Shaders\VertexShader\IVertexShader.hpp" />
     <ClInclude Include="HDX\Src\Sound\CSound.hpp" />
     <ClInclude Include="HDX\Src\Sound\ISound.hpp" />
     <ClInclude Include="HDX\Src\System\CSystem.hpp" />
     <ClInclude Include="HDX\Src\System\ISystem.hpp" />
     <ClInclude Include="HDX\Src\Texture\CTexture.hpp" />
     <ClInclude Include="HDX\Src\Texture\ITexture.hpp" />
-    <ClInclude Include="HDX\Src\VertexShader\CVertexShader.hpp" />
-    <ClInclude Include="HDX\Src\VertexShader\IVertexShader.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HDX\Shader\GUI\GUI.hlsli" />

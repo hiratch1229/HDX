@@ -1,6 +1,5 @@
 #pragma once
 
-//  ライブラリ
 namespace hdx
 {
   //  サウンド

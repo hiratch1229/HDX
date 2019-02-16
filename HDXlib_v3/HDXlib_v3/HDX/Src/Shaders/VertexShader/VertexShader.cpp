@@ -1,7 +1,7 @@
 #include "Include/VertexShader.hpp"
 
 #include "Src/Engine.hpp"
-#include "Src/VertexShader/IVertexShader.hpp"
+#include "Src/Shaders/VertexShader/IVertexShader.hpp"
 
 namespace hdx
 {

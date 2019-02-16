@@ -28,12 +28,6 @@
     <Filter Include="HDX\ヘッダーファイル">
       <UniqueIdentifier>{90e40c78-054a-4ffc-bccc-73cc6f048403}</UniqueIdentifier>
     </Filter>
-    <Filter Include="HDX\ソースファイル\BlendState">
-      <UniqueIdentifier>{c5c91120-3e03-479d-b36e-1ba9fb1a5683}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="HDX\ソースファイル\DepthStencilState">
-      <UniqueIdentifier>{66de0d88-c228-4b55-baee-d3a11f01e8ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HDX\ソースファイル\Easing">
       <UniqueIdentifier>{f9216e74-f395-48c9-9e4c-b57fcd17855d}</UniqueIdentifier>
     </Filter>
@@ -58,26 +52,14 @@
     <Filter Include="HDX\ソースファイル\Model">
       <UniqueIdentifier>{fd8da6af-f886-400b-819a-1dc5761a26f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="HDX\ソースファイル\PixelShader">
-      <UniqueIdentifier>{2b214afd-921d-4cf1-8210-d9cfa4f3ec13}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HDX\ソースファイル\Random">
       <UniqueIdentifier>{c9b0c607-3e16-4c73-a092-d1dce49df28f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="HDX\ソースファイル\RasterizerState">
-      <UniqueIdentifier>{8a76e4d7-d46d-49cd-91e4-c00d534e9cec}</UniqueIdentifier>
     </Filter>
     <Filter Include="HDX\ソースファイル\Renderer">
       <UniqueIdentifier>{5ee1ee33-4299-4aac-b955-cdfb594a3b93}</UniqueIdentifier>
     </Filter>
     <Filter Include="HDX\ソースファイル\Renderer\Renderer2D">
       <UniqueIdentifier>{a7e9f80d-cfb2-4ece-946e-146462f0538a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="HDX\ソースファイル\RenderTarget">
-      <UniqueIdentifier>{66728804-7013-461a-bc61-afe76e88daf8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="HDX\ソースファイル\SamplerState">
-      <UniqueIdentifier>{d4c4cb0f-aa5e-4c14-90e8-7081cc7a8ccc}</UniqueIdentifier>
     </Filter>
     <Filter Include="HDX\ソースファイル\Sound">
       <UniqueIdentifier>{64ce24cf-dbba-4960-a4fb-f15d0fed96c6}</UniqueIdentifier>
@@ -88,23 +70,47 @@
     <Filter Include="HDX\ソースファイル\Texture">
       <UniqueIdentifier>{81712e97-c579-4cdb-b62c-e3dd8c46bb1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="HDX\ソースファイル\VertexShader">
-      <UniqueIdentifier>{1ba6b57f-4bb1-4687-83e1-7988e8e7f7f3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HDX\ソースファイル\GUI">
       <UniqueIdentifier>{329b7eb3-2763-4fa0-8dcc-36277ea52521}</UniqueIdentifier>
     </Filter>
     <Filter Include="HDX\ソースファイル\Renderer\Renderer3D">
       <UniqueIdentifier>{0a623d5e-e9ca-4523-b3a8-73c90aeb6080}</UniqueIdentifier>
     </Filter>
-    <Filter Include="HDX\ソースファイル\ConstantBuffer">
-      <UniqueIdentifier>{122aef0e-b5e9-4fe4-b69a-72176d6c0ff2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="HDX\シェーダー\Model">
       <UniqueIdentifier>{9aa018b1-fbc0-4011-8326-f50668bf89de}</UniqueIdentifier>
     </Filter>
     <Filter Include="HDX\シェーダー\GUI">
       <UniqueIdentifier>{2ba93880-bffc-43ec-a4d4-12881d4613d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Graphics">
+      <UniqueIdentifier>{bb8eced5-2702-4b02-bf57-4698324b2f0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Graphics\BlendState">
+      <UniqueIdentifier>{c5c91120-3e03-479d-b36e-1ba9fb1a5683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Graphics\ConstantBuffer">
+      <UniqueIdentifier>{122aef0e-b5e9-4fe4-b69a-72176d6c0ff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Graphics\DepthStencilState">
+      <UniqueIdentifier>{66de0d88-c228-4b55-baee-d3a11f01e8ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Graphics\RasterizerState">
+      <UniqueIdentifier>{8a76e4d7-d46d-49cd-91e4-c00d534e9cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Graphics\SamplerState">
+      <UniqueIdentifier>{d4c4cb0f-aa5e-4c14-90e8-7081cc7a8ccc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Shaders">
+      <UniqueIdentifier>{66cec40d-d7e6-410c-958a-50fe63dcb9a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Shaders\VertexShader">
+      <UniqueIdentifier>{1ba6b57f-4bb1-4687-83e1-7988e8e7f7f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Shaders\PixelShader">
+      <UniqueIdentifier>{2b214afd-921d-4cf1-8210-d9cfa4f3ec13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HDX\ソースファイル\Graphics\RenderTarget">
+      <UniqueIdentifier>{66728804-7013-461a-bc61-afe76e88daf8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -116,12 +122,6 @@
     </ClCompile>
     <ClCompile Include="HDX\Src\WinMain.cpp">
       <Filter>HDX\ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\BlendState\IBlendState.cpp">
-      <Filter>HDX\ソースファイル\BlendState</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\DepthStencilState\IDepthStencilState.cpp">
-      <Filter>HDX\ソースファイル\DepthStencilState</Filter>
     </ClCompile>
     <ClCompile Include="HDX\Src\Easing\Easing.cpp">
       <Filter>HDX\ソースファイル\Easing</Filter>
@@ -159,35 +159,17 @@
     <ClCompile Include="HDX\Src\Model\Model.cpp">
       <Filter>HDX\ソースファイル\Model</Filter>
     </ClCompile>
-    <ClCompile Include="HDX\Src\RasterizerState\IRasterizerState.cpp">
-      <Filter>HDX\ソースファイル\RasterizerState</Filter>
-    </ClCompile>
     <ClCompile Include="HDX\Src\Random\IRandom.cpp">
       <Filter>HDX\ソースファイル\Random</Filter>
     </ClCompile>
     <ClCompile Include="HDX\Src\Random\Random.cpp">
       <Filter>HDX\ソースファイル\Random</Filter>
     </ClCompile>
-    <ClCompile Include="HDX\Src\PixelShader\IPixelShader.cpp">
-      <Filter>HDX\ソースファイル\PixelShader</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\PixelShader\PixelShader.cpp">
-      <Filter>HDX\ソースファイル\PixelShader</Filter>
-    </ClCompile>
     <ClCompile Include="HDX\Src\Renderer\Renderer2D\IRenderer2D.cpp">
       <Filter>HDX\ソースファイル\Renderer\Renderer2D</Filter>
     </ClCompile>
     <ClCompile Include="HDX\Src\Renderer\Renderer2D\Renderer2D.cpp">
       <Filter>HDX\ソースファイル\Renderer\Renderer2D</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\RenderTarget\IRenderTarget.cpp">
-      <Filter>HDX\ソースファイル\RenderTarget</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\RenderTarget\RenderTarget.cpp">
-      <Filter>HDX\ソースファイル\RenderTarget</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\SamplerState\ISamplerState.cpp">
-      <Filter>HDX\ソースファイル\SamplerState</Filter>
     </ClCompile>
     <ClCompile Include="HDX\Src\Sound\Sound.cpp">
       <Filter>HDX\ソースファイル\Sound</Filter>
@@ -204,12 +186,6 @@
     <ClCompile Include="HDX\Src\Texture\Texture.cpp">
       <Filter>HDX\ソースファイル\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="HDX\Src\VertexShader\IVertexShader.cpp">
-      <Filter>HDX\ソースファイル\VertexShader</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\VertexShader\VertexShader.cpp">
-      <Filter>HDX\ソースファイル\VertexShader</Filter>
-    </ClCompile>
     <ClCompile Include="HDX\Src\Engine.cpp">
       <Filter>HDX\ソースファイル</Filter>
     </ClCompile>
@@ -225,17 +201,8 @@
     <ClCompile Include="HDX\Src\Renderer\Renderer3D\Renderer3D.cpp">
       <Filter>HDX\ソースファイル\Renderer\Renderer3D</Filter>
     </ClCompile>
-    <ClCompile Include="HDX\Src\ConstantBuffer\IConstantBuffer.cpp">
-      <Filter>HDX\ソースファイル\ConstantBuffer</Filter>
-    </ClCompile>
     <ClCompile Include="HDX\Src\Sound\ISound.cpp">
       <Filter>HDX\ソースファイル\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\BlendState\CBlendState.cpp">
-      <Filter>HDX\ソースファイル\BlendState</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\DepthStencilState\CDepthStencilState.cpp">
-      <Filter>HDX\ソースファイル\DepthStencilState</Filter>
     </ClCompile>
     <ClCompile Include="HDX\Src\GUI\CGUI.cpp">
       <Filter>HDX\ソースファイル\GUI</Filter>
@@ -255,26 +222,14 @@
     <ClCompile Include="HDX\Src\Model\CModel.cpp">
       <Filter>HDX\ソースファイル\Model</Filter>
     </ClCompile>
-    <ClCompile Include="HDX\Src\PixelShader\CPixelShader.cpp">
-      <Filter>HDX\ソースファイル\PixelShader</Filter>
-    </ClCompile>
     <ClCompile Include="HDX\Src\Random\CRandom.cpp">
       <Filter>HDX\ソースファイル\Random</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\RasterizerState\CRasterizerState.cpp">
-      <Filter>HDX\ソースファイル\RasterizerState</Filter>
     </ClCompile>
     <ClCompile Include="HDX\Src\Renderer\Renderer2D\CRenderer2D.cpp">
       <Filter>HDX\ソースファイル\Renderer\Renderer2D</Filter>
     </ClCompile>
     <ClCompile Include="HDX\Src\Renderer\Renderer3D\CRenderer3D.cpp">
       <Filter>HDX\ソースファイル\Renderer\Renderer3D</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\RenderTarget\CRenderTarget.cpp">
-      <Filter>HDX\ソースファイル\RenderTarget</Filter>
-    </ClCompile>
-    <ClCompile Include="HDX\Src\SamplerState\CSamplerState.cpp">
-      <Filter>HDX\ソースファイル\SamplerState</Filter>
     </ClCompile>
     <ClCompile Include="HDX\Src\Sound\CSound.cpp">
       <Filter>HDX\ソースファイル\Sound</Filter>
@@ -285,11 +240,62 @@
     <ClCompile Include="HDX\Src\Texture\CTexture.cpp">
       <Filter>HDX\ソースファイル\Texture</Filter>
     </ClCompile>
-    <ClCompile Include="HDX\Src\VertexShader\CVertexShader.cpp">
-      <Filter>HDX\ソースファイル\VertexShader</Filter>
+    <ClCompile Include="HDX\Src\Graphics\BlendState\CBlendState.cpp">
+      <Filter>HDX\ソースファイル\Graphics\BlendState</Filter>
     </ClCompile>
-    <ClCompile Include="HDX\Src\ConstantBuffer\CConstantBuffer.cpp">
-      <Filter>HDX\ソースファイル\ConstantBuffer</Filter>
+    <ClCompile Include="HDX\Src\Graphics\BlendState\IBlendState.cpp">
+      <Filter>HDX\ソースファイル\Graphics\BlendState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Graphics\ConstantBuffer\CConstantBuffer.cpp">
+      <Filter>HDX\ソースファイル\Graphics\ConstantBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Graphics\ConstantBuffer\IConstantBuffer.cpp">
+      <Filter>HDX\ソースファイル\Graphics\ConstantBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Graphics\DepthStencilState\CDepthStencilState.cpp">
+      <Filter>HDX\ソースファイル\Graphics\DepthStencilState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Graphics\DepthStencilState\IDepthStencilState.cpp">
+      <Filter>HDX\ソースファイル\Graphics\DepthStencilState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Graphics\RasterizerState\CRasterizerState.cpp">
+      <Filter>HDX\ソースファイル\Graphics\RasterizerState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Graphics\RasterizerState\IRasterizerState.cpp">
+      <Filter>HDX\ソースファイル\Graphics\RasterizerState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Graphics\SamplerState\CSamplerState.cpp">
+      <Filter>HDX\ソースファイル\Graphics\SamplerState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Graphics\SamplerState\ISamplerState.cpp">
+      <Filter>HDX\ソースファイル\Graphics\SamplerState</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Shaders\PixelShader\CPixelShader.cpp">
+      <Filter>HDX\ソースファイル\Shaders\PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Shaders\PixelShader\IPixelShader.cpp">
+      <Filter>HDX\ソースファイル\Shaders\PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Shaders\PixelShader\PixelShader.cpp">
+      <Filter>HDX\ソースファイル\Shaders\PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Shaders\VertexShader\CVertexShader.cpp">
+      <Filter>HDX\ソースファイル\Shaders\VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Shaders\VertexShader\IVertexShader.cpp">
+      <Filter>HDX\ソースファイル\Shaders\VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Shaders\VertexShader\VertexShader.cpp">
+      <Filter>HDX\ソースファイル\Shaders\VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Graphics\RenderTarget\CRenderTarget.cpp">
+      <Filter>HDX\ソースファイル\Graphics\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Graphics\RenderTarget\IRenderTarget.cpp">
+      <Filter>HDX\ソースファイル\Graphics\RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="HDX\Src\Graphics\RenderTarget\RenderTarget.cpp">
+      <Filter>HDX\ソースファイル\Graphics\RenderTarget</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -389,12 +395,6 @@
     <ClInclude Include="HDX\Src\Resource.hpp">
       <Filter>HDX\ソースファイル</Filter>
     </ClInclude>
-    <ClInclude Include="HDX\Src\BlendState\IBlendState.hpp">
-      <Filter>HDX\ソースファイル\BlendState</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\DepthStencilState\IDepthStencilState.hpp">
-      <Filter>HDX\ソースファイル\DepthStencilState</Filter>
-    </ClInclude>
     <ClInclude Include="HDX\Src\NumberMap.hpp">
       <Filter>HDX\ソースファイル</Filter>
     </ClInclude>
@@ -413,32 +413,17 @@
     <ClInclude Include="HDX\Src\Input\InputState.hpp">
       <Filter>HDX\ソースファイル\Input</Filter>
     </ClInclude>
-    <ClInclude Include="HDX\Src\RasterizerState\IRasterizerState.hpp">
-      <Filter>HDX\ソースファイル\RasterizerState</Filter>
-    </ClInclude>
     <ClInclude Include="HDX\Src\Random\IRandom.hpp">
       <Filter>HDX\ソースファイル\Random</Filter>
     </ClInclude>
-    <ClInclude Include="HDX\Src\PixelShader\IPixelShader.hpp">
-      <Filter>HDX\ソースファイル\PixelShader</Filter>
-    </ClInclude>
     <ClInclude Include="HDX\Src\Renderer\Renderer2D\IRenderer2D.hpp">
       <Filter>HDX\ソースファイル\Renderer\Renderer2D</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\RenderTarget\IRenderTarget.hpp">
-      <Filter>HDX\ソースファイル\RenderTarget</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\SamplerState\ISamplerState.hpp">
-      <Filter>HDX\ソースファイル\SamplerState</Filter>
     </ClInclude>
     <ClInclude Include="HDX\Src\System\ISystem.hpp">
       <Filter>HDX\ソースファイル\System</Filter>
     </ClInclude>
     <ClInclude Include="HDX\Src\Texture\ITexture.hpp">
       <Filter>HDX\ソースファイル\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\VertexShader\IVertexShader.hpp">
-      <Filter>HDX\ソースファイル\VertexShader</Filter>
     </ClInclude>
     <ClInclude Include="HDX\Src\Engine.hpp">
       <Filter>HDX\ソースファイル</Filter>
@@ -467,9 +452,6 @@
     <ClInclude Include="HDX\Include\Renderer3D.hpp">
       <Filter>HDX\ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="HDX\Src\ConstantBuffer\IConstantBuffer.hpp">
-      <Filter>HDX\ソースファイル\ConstantBuffer</Filter>
-    </ClInclude>
     <ClInclude Include="HDX\Src\Sound\ISound.hpp">
       <Filter>HDX\ソースファイル\Sound</Filter>
     </ClInclude>
@@ -478,12 +460,6 @@
     </ClInclude>
     <ClInclude Include="HDX\HDX.hpp">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\BlendState\CBlendState.hpp">
-      <Filter>HDX\ソースファイル\BlendState</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\DepthStencilState\CDepthStencilState.hpp">
-      <Filter>HDX\ソースファイル\DepthStencilState</Filter>
     </ClInclude>
     <ClInclude Include="HDX\Src\GUI\CGUI.hpp">
       <Filter>HDX\ソースファイル\GUI</Filter>
@@ -503,26 +479,14 @@
     <ClInclude Include="HDX\Src\Model\CModel.hpp">
       <Filter>HDX\ソースファイル\Model</Filter>
     </ClInclude>
-    <ClInclude Include="HDX\Src\PixelShader\CPixelShader.hpp">
-      <Filter>HDX\ソースファイル\PixelShader</Filter>
-    </ClInclude>
     <ClInclude Include="HDX\Src\Random\CRandom.hpp">
       <Filter>HDX\ソースファイル\Random</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\RasterizerState\CRasterizerState.hpp">
-      <Filter>HDX\ソースファイル\RasterizerState</Filter>
     </ClInclude>
     <ClInclude Include="HDX\Src\Renderer\Renderer2D\CRenderer2D.hpp">
       <Filter>HDX\ソースファイル\Renderer\Renderer2D</Filter>
     </ClInclude>
     <ClInclude Include="HDX\Src\Renderer\Renderer3D\CRenderer3D.hpp">
       <Filter>HDX\ソースファイル\Renderer\Renderer3D</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\RenderTarget\CRenderTarget.hpp">
-      <Filter>HDX\ソースファイル\RenderTarget</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\SamplerState\CSamplerState.hpp">
-      <Filter>HDX\ソースファイル\SamplerState</Filter>
     </ClInclude>
     <ClInclude Include="HDX\Src\Sound\CSound.hpp">
       <Filter>HDX\ソースファイル\Sound</Filter>
@@ -533,20 +497,62 @@
     <ClInclude Include="HDX\Src\Texture\CTexture.hpp">
       <Filter>HDX\ソースファイル\Texture</Filter>
     </ClInclude>
-    <ClInclude Include="HDX\Src\VertexShader\CVertexShader.hpp">
-      <Filter>HDX\ソースファイル\VertexShader</Filter>
-    </ClInclude>
     <ClInclude Include="HDX\Src\Constants.hpp">
       <Filter>HDX\ソースファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="HDX\Src\ConstantBuffer\CConstantBuffer.hpp">
-      <Filter>HDX\ソースファイル\ConstantBuffer</Filter>
     </ClInclude>
     <ClInclude Include="HDX\Include\Format.hpp">
       <Filter>HDX\ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="HDX\Include\Type4.hpp">
       <Filter>HDX\ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Graphics\BlendState\CBlendState.hpp">
+      <Filter>HDX\ソースファイル\Graphics\BlendState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Graphics\BlendState\IBlendState.hpp">
+      <Filter>HDX\ソースファイル\Graphics\BlendState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Graphics\ConstantBuffer\CConstantBuffer.hpp">
+      <Filter>HDX\ソースファイル\Graphics\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Graphics\ConstantBuffer\IConstantBuffer.hpp">
+      <Filter>HDX\ソースファイル\Graphics\ConstantBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Graphics\DepthStencilState\CDepthStencilState.hpp">
+      <Filter>HDX\ソースファイル\Graphics\DepthStencilState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Graphics\DepthStencilState\IDepthStencilState.hpp">
+      <Filter>HDX\ソースファイル\Graphics\DepthStencilState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Graphics\RasterizerState\CRasterizerState.hpp">
+      <Filter>HDX\ソースファイル\Graphics\RasterizerState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Graphics\RasterizerState\IRasterizerState.hpp">
+      <Filter>HDX\ソースファイル\Graphics\RasterizerState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Graphics\SamplerState\CSamplerState.hpp">
+      <Filter>HDX\ソースファイル\Graphics\SamplerState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Graphics\SamplerState\ISamplerState.hpp">
+      <Filter>HDX\ソースファイル\Graphics\SamplerState</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Shaders\PixelShader\CPixelShader.hpp">
+      <Filter>HDX\ソースファイル\Shaders\PixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Shaders\PixelShader\IPixelShader.hpp">
+      <Filter>HDX\ソースファイル\Shaders\PixelShader</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Shaders\VertexShader\CVertexShader.hpp">
+      <Filter>HDX\ソースファイル\Shaders\VertexShader</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Shaders\VertexShader\IVertexShader.hpp">
+      <Filter>HDX\ソースファイル\Shaders\VertexShader</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Graphics\RenderTarget\CRenderTarget.hpp">
+      <Filter>HDX\ソースファイル\Graphics\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="HDX\Src\Graphics\RenderTarget\IRenderTarget.hpp">
+      <Filter>HDX\ソースファイル\Graphics\RenderTarget</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

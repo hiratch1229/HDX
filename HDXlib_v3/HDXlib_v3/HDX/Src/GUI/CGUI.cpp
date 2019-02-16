@@ -4,8 +4,8 @@
 #include "Src/System/ISystem.hpp"
 #include "Src/Input/Keyboard/IKeyboard.hpp"
 #include "Src/Input/Mouse/IMouse.hpp"
-#include "Src/VertexShader/IVertexShader.hpp"
-#include "Src/PixelShader/IPixelShader.hpp"
+#include "Src/Shaders/VertexShader/IVertexShader.hpp"
+#include "Src/Shaders/PixelShader/IPixelShader.hpp"
 #include "Src/Renderer/Renderer2D/IRenderer2D.hpp"
 #include "Src/Renderer/Renderer3D/IRenderer3D.hpp"
 

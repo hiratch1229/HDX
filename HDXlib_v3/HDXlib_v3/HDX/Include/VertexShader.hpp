@@ -1,7 +1,6 @@
 #pragma once
 #include "Types.hpp"
 
-//  ライブラリ
 namespace hdx
 {
   //  頂点シェーダー

@@ -1,17 +1,13 @@
 #pragma once
 #include "Type2.hpp"
 
-//  前方宣言
 namespace hdx
 {
   class Radian;
 }
 
-//  ライブラリ
-namespace hdx
+namespace hdx::Math
 {
-  namespace Math
-  {
     //  X回転
     //  _Target:回転する点
     //  _Center:回転の中心点
@@ -129,5 +125,4 @@ namespace hdx
     //  二次関数(下に凸)
     //  _Maxから_Minの範囲で動きます
     float DownQuadraticFunction(float _Time, float _TotalTime, float _Max = 1.0f, float _Min = 0.0f);
-  }
 }

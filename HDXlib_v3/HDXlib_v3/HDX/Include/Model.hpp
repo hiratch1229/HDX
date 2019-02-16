@@ -7,7 +7,6 @@
 
 #include <vector>
 
-//  ƒ‰ƒCƒuƒ‰ƒŠ
 namespace hdx
 {
   //  ‹éŒ`

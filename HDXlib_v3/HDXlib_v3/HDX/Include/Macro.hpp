@@ -1,36 +1,33 @@
 #pragma once
 
-namespace hdx
+namespace hdx::Macro
 {
-  namespace Macro
+  //  ポインタ解放
+  template<class T>
+  inline void SafeDelete(T*& _p)
   {
-    //  ポインタ解放
-    template<class T>
-    inline void SafeDelete(T*& _p)
+    if (_p)
     {
-      if (_p)
-      {
-        delete _p;
-        _p = nullptr;
-      }
+      delete _p;
+      _p = nullptr;
     }
+  }
 
-    //	ポインタ配列解放
-    template<class T>
-    inline void SafeDeleteArray(T*& _p)
+  //	ポインタ配列解放
+  template<class T>
+  inline void SafeDeleteArray(T*& _p)
+  {
+    if (_p)
     {
-      if (_p)
-      {
-        delete[] _p;
-        _p = nullptr;
-      }
+      delete[] _p;
+      _p = nullptr;
     }
+  }
 
-    //  配列サイズを取得
-    template<class T, std::size_t Size>
-    inline constexpr size_t ArraySize(const T(&)[Size])
-    {
-      return Size;
-    }
+  //  配列サイズを取得
+  template<class T, std::size_t Size>
+  inline constexpr size_t ArraySize(const T(&)[Size])
+  {
+    return Size;
   }
 }
