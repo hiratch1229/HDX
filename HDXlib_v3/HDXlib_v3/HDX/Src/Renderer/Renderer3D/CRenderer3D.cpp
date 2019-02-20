@@ -22,8 +22,7 @@ void CRenderer3D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImme
   pDepthStencilView_ = _pDepthStencilView;
 
   ConstantBuffer_.Get().LightDirection = { 0.0f, 0.0f, 1.0f, 0.0f };
-
-  DirectX::XMStoreFloat4x4(&BoneNothingMatrix_, DirectX::XMMatrixTranslation(0.0f, 0.0f, 0.0f));
+  DirectX::XMStoreFloat4x4(&BoneIdentityMatrix_, DirectX::XMMatrixIdentity());
 
   VertexShader_ = Engine::Get<IVertexShader>()->CreateDefault3D(pInputLayout_.GetAddressOf());
   PixelShader_ = Engine::Get<IPixelShader>()->CreateDefault3D();
@@ -62,23 +61,27 @@ void CRenderer3D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImme
   CalcView();
 }
 
-void CRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::MotionData& _MotionData, const hdx::ColorF& _Color)
+void CRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const std::vector<hdx::MotionBlendData>& _MotionBlendDatas, const hdx::ColorF& _Color)
 {
   if (!Instances_ || Model_ != _Model)
   {
-    MotionData_ = _MotionData;
-
     Engine::Get<IRenderer2D>()->Flush();
+
     Flush();
+    MotionBlendDatas_ = _MotionBlendDatas;
     Model_ = _Model;
     Begin();
   }
 
-  Instance& Instance = Instances_[Count_];
+  Instance& Instance = Instances_[Count_++];
   DirectX::XMStoreFloat4x4(&Instance.World, _WorldMatrix);
   Instance.MaterialColor = _Color;
 
-  if (++Count_ >= kModelBatchMaxNum || _MotionData.Number != 0 || _MotionData.Frame != 0.0f)
+  if (_MotionBlendDatas.size() > 0)
+  {
+    Flush();
+  }
+  else if (Count_ >= kModelBatchMaxNum)
   {
     Flush();
 
@@ -213,28 +216,48 @@ void CRenderer3D::Flush()
 
     ConstantBuffer_.Get().GlobalTransform = Mesh.GlobalTransform;
 
-    //  ボーンアニメーション
+    for (auto& BoneTransform : ConstantBuffer_.Get().BoneTransforms)
     {
-      const int SkeletalAnimationNum = (Mesh.SkeletalAnimations.size() > 0) ? Mesh.SkeletalAnimations[MotionData_.Number].size() : 0;
+      BoneTransform = BoneIdentityMatrix_;
+    }
 
-      if (SkeletalAnimationNum > 0)
+    //  ボーンアニメーション
+    if (MotionBlendDatas_.size() > 0)
+    {
+      DirectX::XMFLOAT4X4 OffsetMatrixs[kModelBoneMaxNum];
+      DirectX::XMFLOAT4X4 PoseMatrixs[kModelBoneMaxNum]{};
+
+      for (auto& Data : MotionBlendDatas_)
       {
-        const Skeletal& Skeletal = Mesh.SkeletalAnimations[MotionData_.Number].at(static_cast<size_t>(MotionData_.Frame / Mesh.SamplingTime));
+        if (Data.BlendRate <= 0.0f) continue;
 
-        const int NumberOfBones = Skeletal.size();
-        _ASSERT_EXPR_A(NumberOfBones < kModelBoneMaxNum, "'the NumberOfBones' exceeds kModelBoneMaxNum");
+        const int SkeletalAnimationNum = (Mesh.SkeletalAnimations.size() > 0) ? Mesh.SkeletalAnimations[Data.Number].size() : 0;
 
-        for (int i = 0; i < NumberOfBones; ++i)
+        if (SkeletalAnimationNum > 0)
         {
-          DirectX::XMStoreFloat4x4(&ConstantBuffer_.Get().BoneTransforms[i], DirectX::XMLoadFloat4x4(&Skeletal.at(i).Transform));
+          const Skeletal& Skeletal = Mesh.SkeletalAnimations[Data.Number].at(static_cast<size_t>(Data.Frame / kModelAnimationSamplingTime));
+
+          const int NumberOfBones = Skeletal.size();
+          _ASSERT_EXPR_A(NumberOfBones < kModelBoneMaxNum, "'the NumberOfBones' exceeds kModelBoneMaxNum");
+
+          const hdx::Matrix MultiplyMatrix =
+            DirectX::XMMatrixSet(Data.BlendRate, 0.0f, 0.0f, 0.0f,
+              0.0f, Data.BlendRate, 0.0f, 0.0f,
+              0.0f, 0.0f, Data.BlendRate, 0.0f,
+              0.0f, 0.0f, 0.0f, Data.BlendRate);
+
+          const Bone* Bones = Skeletal.data();
+          for (int i = 0; i < NumberOfBones; ++i)
+          {
+            OffsetMatrixs[i] = Bones[i].Offset;
+            DirectX::XMStoreFloat4x4(&PoseMatrixs[i], DirectX::XMLoadFloat4x4(&PoseMatrixs[i]) + DirectX::XMLoadFloat4x4(&Bones[i].Pose)*MultiplyMatrix);
+          }
         }
       }
-      else
+
+      for (int i = 0; i < kModelBoneMaxNum; ++i)
       {
-        for (int i = 0; i < kModelBoneMaxNum; ++i)
-        {
-          ConstantBuffer_.Get().BoneTransforms[i] = BoneNothingMatrix_;
-        }
+        DirectX::XMStoreFloat4x4(&ConstantBuffer_.Get().BoneTransforms[i], DirectX::XMLoadFloat4x4(&OffsetMatrixs[i])*DirectX::XMLoadFloat4x4(&PoseMatrixs[i]));
       }
     }
 
@@ -249,12 +272,12 @@ void CRenderer3D::Flush()
       ID3D11ShaderResourceView* pShaderResourceView = Engine::Get<ITexture>()->GetShaderResourceView(Subset.Diffuse.TextureID);
       pImmediateContext_->PSSetShaderResources(0, 1, &pShaderResourceView);
 
-      pImmediateContext_->DrawIndexedInstanced(Subset.IndexCount - Subset.IndexStart, Count_, Subset.IndexStart, 0, 0);
+      pImmediateContext_->DrawIndexedInstanced(Subset.IndexCount, Count_, Subset.IndexStart, 0, 0);
     }
   }
 
   Model_ = hdx::Model();
-  MotionData_ = hdx::MotionData();
+  MotionBlendDatas_.clear();
   Count_ = 0;
 
   Instances_ = nullptr;

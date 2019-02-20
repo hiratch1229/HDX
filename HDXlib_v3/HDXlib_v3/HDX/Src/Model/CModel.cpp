@@ -79,21 +79,22 @@ namespace
 
         // Matrices are defined using the Column Major scheme. When a FbxAMatrix represents a transformation
         // (translation, rotation and scale), the last row of the matrix represents the translation part of the transformation.
-        const fbxsdk::FbxAMatrix Transform = ReferenceGlobalCurrentPosition.Inverse() * ClusterGlobalCurrentPosition *
-          ClusterGlobalInitPosition.Inverse() * ReferenceGlobalInitPosition;
+        const fbxsdk::FbxAMatrix Offset = ClusterGlobalInitPosition.Inverse() * ReferenceGlobalInitPosition;
+        const fbxsdk::FbxAMatrix Pose = ReferenceGlobalCurrentPosition.Inverse() * ClusterGlobalCurrentPosition;
 
         for (int Row = 0; Row < 4; ++Row)
         {
           for (int Column = 0; Column < 4; ++Column)
           {
-            Bone.Transform.m[Row][Column] = static_cast<float>(Transform.Get(Row, Column));
+            Bone.Offset.m[Row][Column] = static_cast<float>(Offset.Get(Row, Column));
+            Bone.Pose.m[Row][Column] = static_cast<float>(Pose.Get(Row, Column));
           }
         }
       }
     }
   }
 
-  inline void FetchAnimations(const fbxsdk::FbxMesh* _pFbxMesh, std::vector<SkeletalAnimation>* _pSkeletalAnimation, float* _pSamplingTime)
+  inline void FetchAnimations(const fbxsdk::FbxMesh* _pFbxMesh, std::vector<SkeletalAnimation>* _pSkeletalAnimation)
   {
     // Get the list of all the animation stack.
     fbxsdk::FbxArray<FbxString*> ArrayOfAnimationStackNames;
@@ -110,9 +111,6 @@ namespace
       fbxsdk::FbxTime FrameTime;
       FrameTime.SetTime(0, 0, 0, 1, 0, TimeMode);
 
-      UINT SamplingRate = kModelAnimationSamplingRate;
-      (*_pSamplingTime) = 1.0f / SamplingRate;
-
       fbxsdk::FbxString* AnimationStackName = ArrayOfAnimationStackNames.GetAt(IndexOfAnimation);
       fbxsdk::FbxAnimStack* CurrentAnimationStack = _pFbxMesh->GetScene()->FindMember<fbxsdk::FbxAnimStack>(AnimationStackName->Buffer());
       _pFbxMesh->GetScene()->SetCurrentAnimationStack(CurrentAnimationStack);
@@ -123,7 +121,7 @@ namespace
 
       fbxsdk::FbxTime SamplingStep;
       SamplingStep.SetTime(0, 0, 1, 0, 0, TimeMode);
-      SamplingStep = static_cast<fbxsdk::FbxLongLong>(SamplingStep.Get() * (*_pSamplingTime));
+      SamplingStep = static_cast<fbxsdk::FbxLongLong>(SamplingStep.Get() * kModelAnimationSamplingTime);
 
       for (fbxsdk::FbxTime CurrentTime = StartTime; CurrentTime < EndTime; CurrentTime += SamplingStep)
       {
@@ -215,11 +213,11 @@ void CModel::ModelUpdate(int _ID, float _DeltaTime, hdx::MotionData* _pMotionDat
 
   _pMotionData->Frame += _DeltaTime;
 
-  int Frame = static_cast<int>(_pMotionData->Frame / Mesh.SamplingTime);
+  int Frame = static_cast<int>(_pMotionData->Frame / kModelAnimationSamplingTime);
   while (Frame > SkeletalAnimationNum - 1)
   {
     Frame -= SkeletalAnimationNum;
-    _pMotionData->Frame -= Mesh.SamplingTime*SkeletalAnimationNum;
+    _pMotionData->Frame -= kModelAnimationSamplingTime * SkeletalAnimationNum;
   }
 }
 
@@ -507,7 +505,7 @@ int CModel::Load(const char* _FilePath)
       std::vector<BoneInfluencePerControlPoint> BoneInfluences;
 
       FetchBoneInfluences(pFbxMesh, &BoneInfluences);
-      FetchAnimations(pFbxMesh, &Mesh.SkeletalAnimations, &Mesh.SamplingTime);
+      FetchAnimations(pFbxMesh, &Mesh.SkeletalAnimations);
 
       std::vector<Subset>& Subsets = Mesh.Subsets;
 
@@ -1174,5 +1172,5 @@ float CModel::GetFrame(int _ID, int _MotionNumber)
 {
   const Mesh& Mesh = ModelMap_[_ID].Meshes[0];
 
-  return Mesh.SamplingTime*Mesh.SkeletalAnimations[_MotionNumber].size();
+  return kModelAnimationSamplingTime * Mesh.SkeletalAnimations[_MotionNumber].size();
 }

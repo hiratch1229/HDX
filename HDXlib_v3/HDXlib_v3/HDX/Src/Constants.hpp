@@ -17,6 +17,8 @@ constexpr UINT kModelBatchMaxNum = 10000;
 
 constexpr UINT kModelAnimationSamplingRate = 24;
 
+constexpr float kModelAnimationSamplingTime = 1.0f / kModelAnimationSamplingRate;
+
 constexpr UINT kModelBoneMaxNum = hdx::Constants::kModelBoneMaxNum;
 
 constexpr UINT kModelBoneInfluencesMaxNum = 4;

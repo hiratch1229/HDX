@@ -42,8 +42,8 @@ private:
   Instance* Instances_ = nullptr;
   int Count_ = 0;
   hdx::Model Model_;
-  hdx::MotionData MotionData_;
-  DirectX::XMFLOAT4X4 BoneNothingMatrix_;
+  std::vector<hdx::MotionBlendData> MotionBlendDatas_;
+  DirectX::XMFLOAT4X4 BoneIdentityMatrix_;
 private:
   hdx::BlendState BlendState_ = hdx::BlendState::Default;
   hdx::ConstantBuffer<CommonConstantBuffer> ConstantBuffer_;
@@ -67,7 +67,7 @@ private:
 public:
   void Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView)override;
 
-  void Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const hdx::MotionData& _MotionData, const hdx::ColorF& _Color)override;
+  void Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix, const std::vector<hdx::MotionBlendData>& _MotionBlendDatas, const hdx::ColorF& _Color)override;
 
   void Flush()override;
 

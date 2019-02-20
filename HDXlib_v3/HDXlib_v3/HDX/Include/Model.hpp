@@ -45,8 +45,32 @@ namespace hdx
   {
     float Frame;  //  フレーム数
     UINT Number;  //  モーション番号
+  };
+
+  struct MotionBlendData : public MotionData
+  {
+    float BlendRate; // 合成割合
   public:
-    MotionData(float _Frame = 0.0f, UINT _Number = 0) :Frame(_Frame), Number(_Number) {}
+    MotionBlendData() = default;
+
+    MotionBlendData(const MotionData& _MotionData, float _BlendRate)
+      : BlendRate(_BlendRate)
+    {
+      Frame = _MotionData.Frame;
+      Number = _MotionData.Number;
+    }
+    MotionBlendData(const MotionData& _MotionData)
+    {
+      Frame = _MotionData.Frame;
+      Number = _MotionData.Number;
+    }
+    const MotionBlendData& operator=(const MotionData& _MotionData)
+    {
+      Frame = _MotionData.Frame;
+      Number = _MotionData.Number;
+
+      return *this;
+    }
   };
 
   class Model
@@ -89,5 +113,7 @@ namespace hdx
     void Draw(const Matrix& _WorldMatrix, const ColorF& _Color = hdx::Palette::White)const;
     //  モーション有り描画
     void Draw(const Matrix& _WorldMatrix, const MotionData& _MotionData, const ColorF& _Color = hdx::Palette::White)const;
+    //  モーションブレンド有り描画
+    void Draw(const Matrix& _WorldMatrix,const std::vector<MotionBlendData>& _MotionBlendDatas, const ColorF& _Color = hdx::Palette::White)const;
   };
 }

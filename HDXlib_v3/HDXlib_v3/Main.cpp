@@ -14,7 +14,7 @@ void Main()
     { "DATA/Model/danbo_fbx/danbo_atk.fbx" },
   };
 
-  constexpr float Scale = 0.01f;
+  constexpr float Scale = 0.1f;
 
   hdx::Camera Camera;
 
@@ -23,7 +23,7 @@ void Main()
 
   hdx::float3 Rotation{ hdx::Math::ToRadian(0.0f), hdx::Math::ToRadian(180.0f), 0.0f };
   hdx::Matrix WorldMatrix;
-  hdx::MotionData MotionData;
+  hdx::MotionData MotionData{ 0.0f, 0 };
   const hdx::Matrix S = DirectX::XMMatrixScaling(Scale, Scale, Scale);
 
   int MaxFPS = 0;
@@ -50,8 +50,8 @@ void Main()
 
     for (int i = 0; i < Num; ++i)
     {
-      //Models[0].Update(hdx::System::GetDeltaTime(), &MotionData);
-      Models[0].Draw(WorldMatrix/*, MotionData*/);
+      Models[0].Update(hdx::System::GetDeltaTime(), &MotionData);
+      Models[0].Draw(WorldMatrix, MotionData);
     }
   }
 }

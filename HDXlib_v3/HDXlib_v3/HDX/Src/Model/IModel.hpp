@@ -32,7 +32,8 @@ struct Subset
 };
 struct Bone
 {
-  DirectX::XMFLOAT4X4 Transform;
+  DirectX::XMFLOAT4X4 Offset;
+  DirectX::XMFLOAT4X4 Pose;
 };
 struct BoneInfluence
 {
@@ -51,7 +52,6 @@ struct Mesh
   std::vector<Subset> Subsets;
   DirectX::XMFLOAT4X4 GlobalTransform = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1 };
   std::vector<SkeletalAnimation> SkeletalAnimations;
-  float SamplingTime = 1 / 24.0f;
 };
 
 struct ModelData

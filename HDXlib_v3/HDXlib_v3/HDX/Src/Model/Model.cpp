@@ -42,15 +42,21 @@ namespace hdx
   //  描画
   void Model::Draw(const Matrix& _WorldMatrix, const ColorF& _Color)const
   {
-    Engine::Get<IRenderer3D>()->Draw((*this), _WorldMatrix, { 0.0f, 0 }, _Color);
+    Engine::Get<IRenderer3D>()->Draw((*this), _WorldMatrix, std::vector<MotionBlendData>(0), _Color);
   }
 
   //  モーション有り描画
   void Model::Draw(const Matrix& _WorldMatrix, const MotionData& _MotionData, const ColorF& _Color)const
   {
-    Engine::Get<IRenderer3D>()->Draw((*this), _WorldMatrix, _MotionData, _Color);
+    Engine::Get<IRenderer3D>()->Draw((*this), _WorldMatrix, std::vector<MotionBlendData>({ {_MotionData, 1.0f} }), _Color);
   }
-  
+
+  //  モーションブレンド有り描画
+  void Model::Draw(const Matrix& _WorldMatrix, const std::vector<MotionBlendData>& _MotionBlendDatas, const ColorF& _Color)const
+  {
+    Engine::Get<IRenderer3D>()->Draw((*this), _WorldMatrix, _MotionBlendDatas, _Color);
+  }
+
   const std::vector<hdx::float3>& Model::GetVertices()const
   {
     return Engine::Get<IModel>()->GetVertices(ID_);
