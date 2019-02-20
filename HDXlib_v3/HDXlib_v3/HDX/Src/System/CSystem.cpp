@@ -80,8 +80,6 @@ void CSystem::FrameRate::SetFPS(UINT _MaxFPS)
   QueryPerformanceCounter(&CurrentTime);
 
   FrameInterval_ = ((_MaxFPS == 0) ? 0.0f : 1.0f / _MaxFPS);
-  CurrentFPS_ = 0;
-  DeltaTime_ = 0.0f;
   LastTime_ = CurrentTime;
 }
 

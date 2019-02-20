@@ -22,7 +22,7 @@ class CSystem : public ISystem
     int Frames_ = 0;
   public:
     //  Œo‰ßŠÔ
-    float DeltaTime_ = 0.0f;
+    float DeltaTime_ = 0.1f;
     //  Œ»İ‚ÌFPS
     int CurrentFPS_ = 0;
   public:

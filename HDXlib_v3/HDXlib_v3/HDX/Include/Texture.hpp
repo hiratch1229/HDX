@@ -20,7 +20,7 @@ namespace hdx
     ~Texture() = default;
   public:
     int GetID()const { return ID_; }
-    int2 GetSize()const { return Size_; }
+    const int2& GetSize()const { return Size_; }
     int GetWidth()const { return Size_.x; }
     int GetHeight()const { return Size_.y; }
   public:

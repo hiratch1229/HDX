@@ -4,6 +4,7 @@
 #include "Src/System/ISystem.hpp"
 #include "Src/Input/Keyboard/IKeyboard.hpp"
 #include "Src/Input/Mouse/IMouse.hpp"
+#include "Src/Input/XInput/IXInput.hpp"
 #include "Src/Shaders/VertexShader/IVertexShader.hpp"
 #include "Src/Shaders/PixelShader/IPixelShader.hpp"
 #include "Src/Renderer/Renderer2D/IRenderer2D.hpp"
@@ -12,7 +13,9 @@
 #include "Src/Misc.hpp"
 #include "Src/Constants.hpp"
 
+#include "Include/Math.hpp"
 #include "Include/Mouse.hpp"
+#include "Include/XInput.hpp"
 
 CGUI::Win32::Win32(const HWND& _hWnd)
   : hWnd_(_hWnd)
@@ -49,6 +52,7 @@ CGUI::Win32::Win32(const HWND& _hWnd)
 void CGUI::Win32::NewFrame()
 {
   ImGuiIO& io = ImGui::GetIO();
+  IM_ASSERT(io.Fonts->IsBuilt() && "Font atlas not built! It is generally built by the renderer back-end. Missing call to renderer _NewFrame() function? e.g. ImGui_ImplOpenGL3_NewFrame().");
 
   const ISystem* pSystem = Engine::Get<ISystem>();
 
@@ -143,6 +147,50 @@ void CGUI::Win32::NewFrame()
     }
 
     ::SetCursor(::LoadCursor(NULL, Cursor));
+  }
+
+  // Update game controllers (if available)
+  {
+    memset(io.NavInputs, 0, sizeof(io.NavInputs));
+    //if ((io.ConfigFlags & ImGuiConfigFlags_NavEnableGamepad) == 0)
+    //  return;
+
+    // Calling XInputGetState() every frame on disconnected gamepads is unfortunately too slow.
+    // Instead we refresh gamepad availability by calling XInputGetCapabilities() _only_ after receiving WM_DEVICECHANGE.
+
+    const IXInput* pXInput = Engine::Get<IXInput>();
+
+    io.BackendFlags &= ~ImGuiBackendFlags_HasGamepad;
+    if (pXInput->isConnect(0))
+    {
+      auto MapButton = [&](ImGuiNavInput_ _NavNo, hdx::Input::XInput::Buttons _Button)->void
+      {
+        io.NavInputs[_NavNo] = (pXInput->Press(_Button, 0) ? 1.0f : 0.0f);
+      };
+      auto MapAnalog = [&](ImGuiNavInput_ _NavNo, float _Value)->void
+      {
+        io.NavInputs[_NavNo] = _Value;
+      };
+
+      MapButton(ImGuiNavInput_Activate, hdx::Input::XInput::Buttons::A);
+      MapButton(ImGuiNavInput_Cancel, hdx::Input::XInput::Buttons::B);
+      MapButton(ImGuiNavInput_Menu, hdx::Input::XInput::Buttons::X);
+      MapButton(ImGuiNavInput_Input, hdx::Input::XInput::Buttons::Y);
+      MapButton(ImGuiNavInput_DpadLeft, hdx::Input::XInput::Buttons::Left);
+      MapButton(ImGuiNavInput_DpadRight, hdx::Input::XInput::Buttons::Right);
+      MapButton(ImGuiNavInput_DpadUp, hdx::Input::XInput::Buttons::Up);
+      MapButton(ImGuiNavInput_DpadDown, hdx::Input::XInput::Buttons::Down);
+      MapButton(ImGuiNavInput_FocusPrev, hdx::Input::XInput::Buttons::LeftShoulder);
+      MapButton(ImGuiNavInput_FocusNext, hdx::Input::XInput::Buttons::RightShoulder);
+      MapButton(ImGuiNavInput_TweakSlow, hdx::Input::XInput::Buttons::LeftShoulder);
+      MapButton(ImGuiNavInput_TweakFast, hdx::Input::XInput::Buttons::RightShoulder);
+
+      const hdx::float2 LeftStickValue = pXInput->GetLeftStick(0, 0.3f);
+      MapAnalog(ImGuiNavInput_LStickLeft, (LeftStickValue.x < 0.0f ? hdx::Math::GetAbsoluteValue(LeftStickValue.x) : 0.0f));
+      MapAnalog(ImGuiNavInput_LStickRight, (LeftStickValue.x > 0.0f ? LeftStickValue.x : 0.0f));
+      MapAnalog(ImGuiNavInput_LStickUp, (LeftStickValue.y > 0.0f ? LeftStickValue.y : 0.0f));
+      MapAnalog(ImGuiNavInput_LStickDown, (LeftStickValue.y < 0.0f ? hdx::Math::GetAbsoluteValue(LeftStickValue.y) : 0.0f));
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Include/Type2.hpp"
+#include "Include/Macro.hpp"
 
 #include "Src/Constants.hpp"
 
@@ -24,7 +25,7 @@ class IXInput
 {
 public:
   static constexpr int kControllerNum = (kControllerMaxNum <= 4) ? kControllerMaxNum : 4;
-  static constexpr int kButtonNum = sizeof(kXInputButtonsCode) / sizeof(kXInputButtonsCode[0]);
+  static constexpr int kButtonNum = hdx::Macro::ArraySize(kXInputButtonsCode);
 public:
   static IXInput* Create();
 

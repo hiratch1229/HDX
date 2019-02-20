@@ -6,6 +6,7 @@ namespace hdx::Input
 {
   class XInput
   {
+  public:
     //  Žg‚¤ƒ{ƒ^ƒ“
     enum Buttons
     {
