@@ -6,20 +6,9 @@ namespace hdx
   class Degree;
 
   //  ŒÊ“x–@
-  //  Šp“x‚ð-ƒÎ~ƒÎ‚Å•\Œ»‚µ‚Ü‚·
-  //  (Ž©“®‚Å³‹K‰»‚³‚ê‚Ü‚·)
   class Radian
   {
     float Value_;
-  public:
-    //  ³‹K‰»(-ƒÎ~ƒÎ‚É‚·‚é)
-    static constexpr float Normalize(float _Value)
-    {
-      while (_Value > Math::HalfPI) _Value -= Math::PI;
-      while (_Value < -Math::HalfPI) _Value += Math::PI;
-
-      return _Value;
-    }
   public:
     Radian() = default;
 
@@ -29,7 +18,7 @@ namespace hdx
 
     constexpr Radian(const Degree& _Degree)noexcept;
   public:
-    constexpr operator float()const { return Value_; }
+    constexpr operator decltype(Value_)()const { return Value_; }
   public:
     constexpr bool operator==(const Radian& _Radian)const noexcept { return Value_ == _Radian.Value_; }
 
@@ -47,32 +36,30 @@ namespace hdx
 
     constexpr Radian operator-()const noexcept { return{ -Value_ }; }
 
-    const Radian& operator=(const Radian& _Radian)noexcept { Value_ = _Radian.Value_; return *this; }
+    Radian& operator=(const Radian& _Radian)noexcept { Value_ = _Radian.Value_; return *this; }
 
-    const Radian& operator+=(const Radian& _Radian)noexcept { Value_ = Normalize(Value_ + _Radian.Value_); return *this; }
+    Radian& operator+=(const Radian& _Radian)noexcept { Value_ += _Radian.Value_; return *this; }
 
-    const Radian& operator-=(const Radian& _Radian)noexcept { Value_ = Normalize(Value_ - _Radian.Value_); return *this; }
+    Radian& operator-=(const Radian& _Radian)noexcept { Value_ -= _Radian.Value_; return *this; }
 
-    const Radian& operator*=(float _s) { Value_ = Normalize(Value_ * _s); return *this; }
+    Radian& operator*=(float _s) { Value_ *= _s; return *this; }
 
-    const Radian& operator/=(float _s) { Value_ = Normalize(Value_ / _s); return *this; }
-  };
-
-
-  //  “x”–@
-  //  Šp“x‚ð-180~180‚Å•\Œ»‚µ‚Ü‚·
-  //  (Ž©“®‚Å³‹K‰»‚³‚ê‚Ü‚·)
-  class Degree
-  {
-    float Value_;
+    Radian& operator/=(float _s) { Value_ /= _s; return *this; }
   public:
-    static constexpr float Normalize(float _Value)
+    //  ³‹K‰»(-ƒÎ~ƒÎ‚É‚·‚é)
+    constexpr float Normalize(float _Value)
     {
-      while (_Value > 180.0f) _Value -= 360.0f;
-      while (_Value < -180.0f) _Value += 360.0f;
+      while (_Value > Math::HalfPI) _Value -= Math::PI;
+      while (_Value < -Math::HalfPI) _Value += Math::PI;
 
       return _Value;
     }
+  };
+  
+  //  “x”–@
+  class Degree
+  {
+    float Value_;
   public:
     Degree() = default;
 
@@ -82,7 +69,7 @@ namespace hdx
 
     constexpr Degree(const Radian& _Radian)noexcept;
   public:
-    constexpr operator float()const { return Value_; }
+    constexpr operator decltype(Value_)()const { return Value_; }
   public:
     constexpr bool operator==(const Degree& _Degree)const noexcept { return Value_ == _Degree.Value_; }
 
@@ -100,15 +87,31 @@ namespace hdx
 
     constexpr Degree operator-()const noexcept { return{ -Value_ }; }
 
-    const Degree& operator=(const Degree& _Degree)noexcept { Value_ = _Degree.Value_; return *this; }
+    Degree& operator=(const Degree& _Degree)noexcept { Value_ = _Degree.Value_; return *this; }
 
-    const Degree& operator+=(const Degree& _Degree)noexcept { Value_ = Normalize(Value_ + _Degree.Value_); return *this; }
+    Degree& operator+=(const Degree& _Degree)noexcept { Value_ += _Degree.Value_; return *this; }
 
-    const Degree& operator-=(const Degree& _Degree)noexcept { Value_ = Normalize(Value_ - _Degree.Value_); return *this; }
+    Degree& operator-=(const Degree& _Degree)noexcept { Value_ -= _Degree.Value_; return *this; }
 
-    const Degree& operator*=(float _s) { Value_ = Normalize(Value_ * _s); return *this; }
+    Degree& operator*=(float _s) { Value_ *= _s; return *this; }
 
-    const Degree& operator/=(float _s) { Value_ = Normalize(Value_ / _s); return *this; }
+    Degree& operator/=(float _s) { Value_ /= _s; return *this; }
+
+    Degree& operator++() { ++Value_; return *this; }
+
+    Degree operator++(int) { Degree Temp = *this; ++Value_; return Temp; }
+
+    Degree& operator--() { --Value_; return *this; }
+
+    Degree operator--(int) { Degree Temp = *this; --Value_; return Temp; }
+  public:
+    constexpr float Normalize(float _Value)
+    {
+      while (_Value > 180.0f) _Value -= 360.0f;
+      while (_Value < -180.0f) _Value += 360.0f;
+
+      return _Value;
+    }
   };
 
   inline constexpr Radian::Radian(const Degree& _Degree)noexcept : Value_(Normalize(Math::ToRadian(_Degree))) {}

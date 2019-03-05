@@ -6,6 +6,8 @@
 #include "Include/Type3.hpp"
 #include "Include/Type4.hpp"
 
+#include "../ConstantBufferData.hpp"
+
 #include <DirectXMath.h>
 #include <wrl.h>
 
@@ -21,18 +23,6 @@ class CRenderer2D : public IRenderer2D
     DirectX::XMFLOAT4X4 NDCTransform;
     hdx::float4 TexcoordTransfrom;
     hdx::ColorF Color;
-  };
-  struct ConstantBufferData
-  {
-    UINT Size = 0;
-    void* pData;
-  public:
-    ConstantBufferData() = default;
-    ConstantBufferData(UINT _Size, void* _pData)
-      : Size(_Size), pData(_pData)
-    {
-
-    }
   };
 private:
   ID3D11DeviceContext* pImmediateContext_ = nullptr;
@@ -68,7 +58,7 @@ public:
 
   void SetBlendState(const hdx::BlendState& _BlendState)override;
 
-  void SetConstantBuffer(hdx::ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot)override;
+  void SetConstantBuffer(hdx::ShaderStage _Stage, UINT _ID, const void* _pData, UINT _Slot)override;
 
   void SetDepthStencilState(const hdx::DepthStencilState& _DepthStencilState)override;
 

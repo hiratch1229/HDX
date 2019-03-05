@@ -8,6 +8,7 @@
 #include "RasterizerState.hpp"
 #include "RenderTarget.hpp"
 #include "DepthStencilState.hpp"
+#include "ConstantBuffer.hpp"
 
 namespace hdx::Renderer2D
 {
@@ -21,4 +22,12 @@ namespace hdx::Renderer2D
   void SetTexture(const Texture& _Texture, UINT _Slot);
   void RestoreRenderTarget();
   void SetRenderTarget(const RenderTarget& _RenderTarget);
+
+  void SetConstantBuffer(ShaderStage _Stage, UINT _ID, const void* _pData, UINT _Slot);
+
+  template<class T>
+  void SetConstantBuffer(const ConstantBuffer<T>& ConstantBuffer, UINT _Slot, ShaderStage _Stage = ShaderStage::Vertex)
+  {
+    SetConstantBuffer(_Stage, ConstantBuffer.GetID(), ConstantBuffer.GetPtr(), _Slot);
+  }
 }

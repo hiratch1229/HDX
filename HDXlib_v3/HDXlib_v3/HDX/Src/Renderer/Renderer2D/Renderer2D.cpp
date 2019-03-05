@@ -71,4 +71,11 @@ namespace hdx::Renderer2D
   {
     Engine::Get<IRenderer2D>()->SetRenderTarget(_RenderTarget);
   }
+
+  void SetConstantBuffer(ShaderStage _Stage, UINT _ID, const void* _pData, UINT _Slot)
+  {
+    _ASSERT_EXPR_A(_Slot >= 1 && _Slot < hdx::Constants::kConstantBufferMaxNum, ("1‚©‚ç" + std::to_string(hdx::Constants::kConstantBufferMaxNum - 1) + "‚Ì”ÍˆÍ‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢B").c_str());
+
+    Engine::Get<IRenderer2D>()->SetConstantBuffer(_Stage, _ID, _pData, _Slot);
+  }
 }

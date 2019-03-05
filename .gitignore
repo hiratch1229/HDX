@@ -1,5 +1,6 @@
 Debug/
 Release/
+SCREENSHOT/
 *.cso
 *.vcxproj.user
 *.VC.db
@@ -7,3 +8,4 @@ Release/
 *.suo
 *.aps
 *.vs
+*.fbm

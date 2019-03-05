@@ -16,7 +16,7 @@ struct Vertex
 };
 struct Material
 {
-  hdx::ColorF Color = { 0.8f,0.8f,0.8f,1.0f };
+  hdx::ColorF Color = hdx::Palette::White;
   int TextureID = -1;
 };
 struct Subset

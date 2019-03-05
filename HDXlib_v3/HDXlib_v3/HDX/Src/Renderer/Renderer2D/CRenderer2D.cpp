@@ -112,14 +112,14 @@ void CRenderer2D::Begin()
     {
       ConstantBufferData& ConstantBuffer = VertexStageConstantBuffers_[i];
 
-      if (ConstantBuffer.Size == 0)
+      if (ConstantBuffer.ID < 0)
       {
         ID3D11Buffer* NullObject = nullptr;
         pConstantBuffers[i] = NullObject;
       }
       else
       {
-        pImmediateContext_->UpdateSubresource(pConstantBuffers[i] = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size), 0, 0, ConstantBuffer.pData, 0, 0);
+        pImmediateContext_->UpdateSubresource(pConstantBuffers[i] = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.ID), 0, 0, ConstantBuffer.pData, 0, 0);
       }
     }
 
@@ -134,14 +134,14 @@ void CRenderer2D::Begin()
     {
       ConstantBufferData& ConstantBuffer = PixelStageConstantBuffers_[i];
 
-      if (ConstantBuffer.Size == 0)
+      if (ConstantBuffer.ID < 0)
       {
         ID3D11Buffer* NullObject = nullptr;
         pConstantBuffers[i] = NullObject;
       }
       else
       {
-        pImmediateContext_->UpdateSubresource(pConstantBuffers[i] = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size), 0, 0, ConstantBuffer.pData, 0, 0);
+        pImmediateContext_->UpdateSubresource(pConstantBuffers[i] = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.ID), 0, 0, ConstantBuffer.pData, 0, 0);
       }
     }
 
@@ -269,15 +269,15 @@ void CRenderer2D::SetBlendState(const hdx::BlendState& _BlendState)
   BlendState_ = _BlendState;
 }
 
-void CRenderer2D::SetConstantBuffer(hdx::ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot)
+void CRenderer2D::SetConstantBuffer(hdx::ShaderStage _Stage, UINT _ID, const void* _pData, UINT _Slot)
 {
   switch (_Stage)
   {
   case hdx::ShaderStage::Vertex:
-    VertexStageConstantBuffers_[_Slot] = ConstantBufferData(_Size, const_cast<void*>(_pData));
+    VertexStageConstantBuffers_[_Slot] = ConstantBufferData(_ID, const_cast<void*>(_pData));
     break;
   case hdx::ShaderStage::Pixel:
-    PixelStageConstantBuffers_[_Slot] = ConstantBufferData(_Size, const_cast<void*>(_pData));
+    PixelStageConstantBuffers_[_Slot] = ConstantBufferData(_ID, const_cast<void*>(_pData));
     break;
   default: assert(false);
   }

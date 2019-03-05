@@ -30,7 +30,7 @@ public:
 
   virtual void SetBlendState(const hdx::BlendState& _BlendState) = 0;
 
-  virtual void SetConstantBuffer(hdx::ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot) = 0;
+  virtual void SetConstantBuffer(hdx::ShaderStage _Stage, UINT _ID, const void* _pData, UINT _Slot) = 0;
 
   virtual void SetDepthStencilState(const hdx::DepthStencilState& _DepthStencilState) = 0;
 
@@ -47,8 +47,6 @@ public:
   virtual void SetPixelShader(const hdx::PixelShader& _PixelShader) = 0;
 
   virtual void RestoreRenderTarget() = 0;
-
-  virtual void SetLightDirection(const hdx::float3& _LightDirection) = 0;
 
   virtual void SetCamera(const hdx::Camera& _Camera) = 0;
 

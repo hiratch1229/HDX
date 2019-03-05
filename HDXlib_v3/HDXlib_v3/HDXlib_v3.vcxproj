@@ -134,6 +134,7 @@
     <ClCompile Include="HDX\Src\Graphics\BlendState\CBlendState.cpp" />
     <ClCompile Include="HDX\Src\Graphics\BlendState\IBlendState.cpp" />
     <ClCompile Include="HDX\Src\Graphics\ConstantBuffer\CConstantBuffer.cpp" />
+    <ClCompile Include="HDX\Src\Graphics\ConstantBuffer\ConstantBuffer.cpp" />
     <ClCompile Include="HDX\Src\Graphics\ConstantBuffer\IConstantBuffer.cpp" />
     <ClCompile Include="HDX\Src\Graphics\DepthStencilState\CDepthStencilState.cpp" />
     <ClCompile Include="HDX\Src\Graphics\DepthStencilState\IDepthStencilState.cpp" />
@@ -213,6 +214,7 @@
     <ClInclude Include="HDX\Include\Mouse.hpp" />
     <ClInclude Include="HDX\Include\NonCopy.hpp" />
     <ClInclude Include="HDX\Include\PixelShader.hpp" />
+    <ClInclude Include="HDX\Include\Light.hpp" />
     <ClInclude Include="HDX\Include\Random.hpp" />
     <ClInclude Include="HDX\Include\RasterizerState.hpp" />
     <ClInclude Include="HDX\Include\Renderer2D.hpp" />
@@ -262,6 +264,7 @@
     <ClInclude Include="HDX\Src\NumberMap.hpp" />
     <ClInclude Include="HDX\Src\Random\CRandom.hpp" />
     <ClInclude Include="HDX\Src\Random\IRandom.hpp" />
+    <ClInclude Include="HDX\Src\Renderer\ConstantBufferData.hpp" />
     <ClInclude Include="HDX\Src\Renderer\Renderer2D\CRenderer2D.hpp" />
     <ClInclude Include="HDX\Src\Renderer\Renderer2D\IRenderer2D.hpp" />
     <ClInclude Include="HDX\Src\Renderer\Renderer3D\CRenderer3D.hpp" />
@@ -280,6 +283,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="HDX\Shader\GUI\GUI.hlsli" />
+    <None Include="HDX\Shader\Model\Bone.hlsli" />
+    <None Include="HDX\Shader\Model\Light.hlsli" />
     <None Include="HDX\Shader\Model\Model.hlsli" />
     <None Include="HDX\Shader\Sprite\Sprite.hlsli" />
   </ItemGroup>
@@ -329,6 +334,26 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="LightTestPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="LightTestVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">DATA\Shader\%(Filename).cso</ObjectFileOutput>
     </FxCompile>

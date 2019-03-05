@@ -2,19 +2,19 @@
 
 #define ARITHMETIC_OPERATOR(Operator)\
 template<class T>\
-constexpr auto operator##Operator(const Type4<T>& _v)const->Type4<decltype(x Operator _v.x)>\
+constexpr auto operator##Operator(const Type4<T>& _v)const->Type4<decltype(std::declval(x Operator _v.x))>\
 {\
   return{ x Operator _v.x, y Operator _v.y, z Operator _v.z, w Operator _v.w };\
 }\
 template<class T>\
-constexpr auto operator##Operator(T _s)const->Type4<decltype(x Operator _s)>\
+constexpr auto operator##Operator(T _s)const->Type4<decltype(std::declval(x Operator _s))>\
 {\
   return{ x Operator _s, y Operator _s, z Operator _s, w Operator _s };\
 }\
 
 #define ASSIGNMENT_OPERATOR(Operator)\
 template<class T>\
-const Type4& operator##Operator(const Type4<T>& _v)\
+Type4& operator##Operator(const Type4<T>& _v)\
 {\
   x Operator static_cast<Type>(_v.x);\
   y Operator static_cast<Type>(_v.y);\
@@ -24,7 +24,7 @@ const Type4& operator##Operator(const Type4<T>& _v)\
   return *this;\
 }\
 template<class T>\
-const Type4& operator##Operator(T _s)\
+Type4& operator##Operator(T _s)\
 {\
   x Operator static_cast<Type>(_s);\
   y Operator static_cast<Type>(_s);\
@@ -94,6 +94,15 @@ namespace hdx
     ASSIGNMENT_OPERATOR(*= );
 
     ASSIGNMENT_OPERATOR(/= );
+  public:
+    [[nodiscard]] constexpr Type Length()const { return std::sqrt(Length()); }
+
+    [[nodiscard]] constexpr Type LengthSq()const { return x * x + y * y + z * z + w * w; }
+
+    [[nodiscard]] constexpr Type4 Normalize()const { return (*this)*(static_cast<Type>(1) / LengthSq()); }
+
+    template<class T>
+    [[nodiscard]] constexpr auto Dot(const Type4<T>& _v)const->decltype(x * _v.x) { return x * _v.x + y * _v.y + z * _v.z + w * _v.w; }
   };
 
   template<class T, class Type>
@@ -104,9 +113,6 @@ namespace hdx
 
   template<class T, class Type>
   inline constexpr auto operator+(T _s, const Type4<Type>& _v) { return _v + _s; }
-
-  template<class T, class Type>
-  inline constexpr auto operator-(T _s, const Type4<Type>& _v) { return _v - _s; }
 
   template<class T, class Type>
   inline constexpr auto operator*(T _s, const Type4<Type>& _v) { return _v * _s; }

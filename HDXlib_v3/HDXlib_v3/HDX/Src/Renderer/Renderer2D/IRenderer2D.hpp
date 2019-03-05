@@ -27,7 +27,7 @@ public:
 
   virtual void SetBlendState(const hdx::BlendState& _BlendState) = 0;
 
-  virtual void SetConstantBuffer(hdx::ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot) = 0;
+  virtual void SetConstantBuffer(hdx::ShaderStage _Stage, UINT _ID, const void* _pData, UINT _Slot) = 0;
 
   virtual void SetDepthStencilState(const hdx::DepthStencilState& _DepthStencilState) = 0;
 

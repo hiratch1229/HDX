@@ -567,6 +567,26 @@ int CModel::Load(const char* _FilePath)
           Vertex.Position.z = static_cast<float>(ArrayOfControlPoints[IndexOfControlPoint][2]);
 
           BoneInfluencePerControlPoint& InfluencesPerControlPoint = BoneInfluences.at(IndexOfControlPoint);
+          if (InfluencesPerControlPoint.size() > 4)
+          {
+            std::sort(InfluencesPerControlPoint.begin(), InfluencesPerControlPoint.end(), [](const BoneInfluence& _Obj1, const BoneInfluence& _Obj2)->bool {
+              return _Obj1.Weight > _Obj2.Weight;
+            });
+
+            float SumWeight = 0.0f;
+            for (int i = 4, Size = InfluencesPerControlPoint.size(); i < Size; ++i)
+            {
+              SumWeight += InfluencesPerControlPoint[i].Weight;
+            }
+            InfluencesPerControlPoint[0].Weight += SumWeight;
+
+            for (int i = 0, MaxCount = InfluencesPerControlPoint.size() - 4; i < MaxCount; ++i)
+            {
+              InfluencesPerControlPoint.pop_back();
+            }
+            assert(InfluencesPerControlPoint.size() <= 4);
+          }
+
           for (int IndexOfInfluence = 0, Size = InfluencesPerControlPoint.size(); IndexOfInfluence < Size; ++IndexOfInfluence)
           {
             Vertex.BoneWeights[IndexOfInfluence] = InfluencesPerControlPoint.at(IndexOfInfluence).Weight;
@@ -594,7 +614,7 @@ int CModel::Load(const char* _FilePath)
             Vertex.Texcoord.y = 1.0f - static_cast<float>(UV[1]);
           }
 
-          Vertices.push_back(Vertex);
+          Vertices.emplace_back(Vertex);
           Indices.at(IndexOffset + IndexOfVertex) = VertexCount++;
         }
         Subset.IndexCount += 3;
@@ -678,13 +698,13 @@ int CModel::Load(const char* _FilePath)
       //  バッファの作成
       CreateBuffers(Vertices.data(), Vertices.size(), Indices.data(), Indices.size(), Mesh.pVertexBuffer.GetAddressOf(), Mesh.pIndexBuffer.GetAddressOf());
 
-      for (int j = 0, Size = Vertices.size(); j < Size; ++j)
+      for (auto& Vertex : Vertices)
       {
-        ModelData.Vertices.push_back(Vertices[j].Position);
+        ModelData.Vertices.push_back(Vertex.Position);
       }
-      for (int j = 0, Size = Indices.size(); j < Size; ++j)
+      for (auto& Index : Indices)
       {
-        ModelData.Indices.push_back(Indices[j]);
+        ModelData.Indices.push_back(Index);
       }
     }
 

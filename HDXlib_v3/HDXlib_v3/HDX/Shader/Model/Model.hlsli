@@ -1,3 +1,6 @@
+#ifndef __MODEL__
+#define __MODEL__
+
 struct VS_IN
 {
   float4 Position : POSITION;
@@ -13,6 +16,8 @@ struct VS_IN
 struct VS_OUT
 {
   float4 Position : SV_POSITION;
+  float3 World : WORLD;
+  float3 Normal : NORMAL;
   float4 Color : COLOR;
   float2 Texcoord : TEXCOORD;
 };
@@ -22,8 +27,9 @@ cbuffer CONSTANT_BUFFER : register(b0)
 {
   row_major float4x4 ViewProjectionMatrix;
   row_major float4x4 GlobalTransform;
-  float4 LightDirection;
   float4 DiffuseColor;
 
   row_major float4x4 BoneTransforms[MAX_BONES];
 };
+
+#endif

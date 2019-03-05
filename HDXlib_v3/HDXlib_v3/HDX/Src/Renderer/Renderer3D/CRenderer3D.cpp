@@ -3,6 +3,8 @@
 #include "Src/Engine.hpp"
 #include "Src/System/ISystem.hpp"
 #include "Src/Model/IModel.hpp"
+#include "Src/Input/Keyboard/IKeyboard.hpp"
+#include "Src/Input/Mouse/IMouse.hpp"
 #include "Src/Renderer/Renderer2D/IRenderer2D.hpp"
 #include "Src/Graphics/BlendState/IBlendState.hpp"
 #include "Src/Graphics/ConstantBuffer/IConstantBuffer.hpp"
@@ -15,13 +17,16 @@
 #include "Src/Shaders/PixelShader/IPixelShader.hpp"
 #include "Src/Misc.hpp"
 
+#include "Include/Mouse.hpp"
+
 void CRenderer3D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImmediateContext, ID3D11RenderTargetView** _ppRenderTargetView, ID3D11DepthStencilView* _pDepthStencilView)
 {
   pImmediateContext_ = _pImmediateContext;
   ppRenderTargetView_ = _ppRenderTargetView;
   pDepthStencilView_ = _pDepthStencilView;
 
-  ConstantBuffer_.Get().LightDirection = { 0.0f, 0.0f, 1.0f, 0.0f };
+  pConstantBuffer_ = std::make_unique<hdx::ConstantBuffer<CommonConstantBuffer>>();
+
   DirectX::XMStoreFloat4x4(&BoneIdentityMatrix_, DirectX::XMMatrixIdentity());
 
   VertexShader_ = Engine::Get<IVertexShader>()->CreateDefault3D(pInputLayout_.GetAddressOf());
@@ -92,7 +97,7 @@ void CRenderer3D::Draw(const hdx::Model& _Model, const hdx::Matrix& _WorldMatrix
 
 void CRenderer3D::Begin()
 {
-  DirectX::XMStoreFloat4x4(&ConstantBuffer_.Get().ViewProjectionMatrix, DirectX::XMLoadFloat4x4(&ViewMatrix_)*DirectX::XMLoadFloat4x4(&ProjectionMatrix_));
+  DirectX::XMStoreFloat4x4(&pConstantBuffer_->Get().ViewProjectionMatrix, DirectX::XMLoadFloat4x4(&ViewMatrix_)*DirectX::XMLoadFloat4x4(&ProjectionMatrix_));
 
   pImmediateContext_->OMSetBlendState(Engine::Get<IBlendState>()->GetBlendState(BlendState_), nullptr, 0xFFFFFFFF);
   pImmediateContext_->OMSetDepthStencilState(Engine::Get<IDepthStencilState>()->GetDepthStencilState(DepthStencilState_), 1);
@@ -118,13 +123,13 @@ void CRenderer3D::Begin()
     for (int i = 0; i < kConstantBufferMaxNum - 1; ++i)
     {
       ConstantBufferData& ConstantBuffer = VertexStageConstantBuffers_[i];
-      if (ConstantBuffer.Size == 0)
+      if (ConstantBuffer.ID < 0)
       {
         pConstantBuffers[i] = NullObject;
       }
       else
       {
-        pImmediateContext_->UpdateSubresource(pConstantBuffers[i] = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size), 0, 0, ConstantBuffer.pData, 0, 0);
+        pImmediateContext_->UpdateSubresource(pConstantBuffers[i] = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.ID), 0, 0, ConstantBuffer.pData, 0, 0);
       }
     }
 
@@ -140,13 +145,13 @@ void CRenderer3D::Begin()
     {
       ConstantBufferData& ConstantBuffer = PixelStageConstantBuffers_[i];
 
-      if (ConstantBuffer.Size == 0)
+      if (ConstantBuffer.ID < 0)
       {
         pConstantBuffers[i] = NullObject;
       }
       else
       {
-        pImmediateContext_->UpdateSubresource(pConstantBuffers[i] = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.Size), 0, 0, ConstantBuffer.pData, 0, 0);
+        pImmediateContext_->UpdateSubresource(pConstantBuffers[i] = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer.ID), 0, 0, ConstantBuffer.pData, 0, 0);
       }
     }
 
@@ -205,7 +210,7 @@ void CRenderer3D::Flush()
   pImmediateContext_->Unmap(pInstanceBuffer_.Get(), 0);
 
   const ModelData& ModelData = Engine::Get<IModel>()->GetModelData(Model_.GetID());
-  ID3D11Buffer* pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(ConstantBuffer_.Size);
+  ID3D11Buffer* pConstantBuffer = Engine::Get<IConstantBuffer>()->GetConstantBuffer(pConstantBuffer_->GetID());
 
   UINT Stride = sizeof(Vertex);
   UINT Offset = 0;
@@ -214,9 +219,9 @@ void CRenderer3D::Flush()
     pImmediateContext_->IASetVertexBuffers(0, 1, Mesh.pVertexBuffer.GetAddressOf(), &Stride, &Offset);
     pImmediateContext_->IASetIndexBuffer(Mesh.pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
-    ConstantBuffer_.Get().GlobalTransform = Mesh.GlobalTransform;
+    pConstantBuffer_->Get().GlobalTransform = Mesh.GlobalTransform;
 
-    for (auto& BoneTransform : ConstantBuffer_.Get().BoneTransforms)
+    for (auto& BoneTransform : pConstantBuffer_->Get().BoneTransforms)
     {
       BoneTransform = BoneIdentityMatrix_;
     }
@@ -257,15 +262,15 @@ void CRenderer3D::Flush()
 
       for (int i = 0; i < kModelBoneMaxNum; ++i)
       {
-        DirectX::XMStoreFloat4x4(&ConstantBuffer_.Get().BoneTransforms[i], DirectX::XMLoadFloat4x4(&OffsetMatrixs[i])*DirectX::XMLoadFloat4x4(&PoseMatrixs[i]));
+        DirectX::XMStoreFloat4x4(&pConstantBuffer_->Get().BoneTransforms[i], DirectX::XMLoadFloat4x4(&OffsetMatrixs[i])*DirectX::XMLoadFloat4x4(&PoseMatrixs[i]));
       }
     }
 
     for (auto& Subset : Mesh.Subsets)
     {
-      ConstantBuffer_.Get().DiffuseColor = Subset.Diffuse.Color;
+      pConstantBuffer_->Get().DiffuseColor = Subset.Diffuse.Color;
 
-      pImmediateContext_->UpdateSubresource(pConstantBuffer, 0, 0, ConstantBuffer_.GetPtr(), 0, 0);
+      pImmediateContext_->UpdateSubresource(pConstantBuffer, 0, 0, pConstantBuffer_->GetPtr(), 0, 0);
       pImmediateContext_->VSSetConstantBuffers(0, 1, &pConstantBuffer);
       pImmediateContext_->PSSetConstantBuffers(0, 1, &pConstantBuffer);
 
@@ -398,30 +403,45 @@ void CRenderer3D::SetCamera(const hdx::Camera& _Camera)
   CalcView();
 }
 
-void CRenderer3D::SetConstantBuffer(hdx::ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot)
+void CRenderer3D::SetConstantBuffer(hdx::ShaderStage _Stage, UINT _ID, const void* _pData, UINT _Slot)
 {
   switch (_Stage)
   {
   case hdx::ShaderStage::Vertex:
-    VertexStageConstantBuffers_[_Slot - 1] = ConstantBufferData(_Size, const_cast<void*>(_pData));
+    VertexStageConstantBuffers_[_Slot - 1] = ConstantBufferData(_ID, const_cast<void*>(_pData));
     break;
   case hdx::ShaderStage::Pixel:
-    PixelStageConstantBuffers_[_Slot - 1] = ConstantBufferData(_Size, const_cast<void*>(_pData));
+    PixelStageConstantBuffers_[_Slot - 1] = ConstantBufferData(_ID, const_cast<void*>(_pData));
     break;
   default: assert(false);
   }
 }
 
-void CRenderer3D::SetLightDirection(const hdx::float3& _LightDirection)
-{
-  ConstantBuffer_.Get().LightDirection.x = _LightDirection.x;
-  ConstantBuffer_.Get().LightDirection.y = _LightDirection.y;
-  ConstantBuffer_.Get().LightDirection.z = _LightDirection.z;
-}
-
 void CRenderer3D::FreeCamera()
 {
+  if (!Engine::Get<IKeyboard>()->Press(VK_MENU)) return;
 
+  IMouse* pMouse = Engine::Get<IMouse>();
+
+  if (pMouse->Press(hdx::Input::Mouse::Buttons::Middle))
+  {
+    const hdx::float3 AxisY = Camera_.Up.Normalize();
+    const hdx::float3 AxisZ = (Camera_.Target - Camera_.Pos).Normalize();
+    const hdx::float3 AxisX = AxisY.Cross(AxisZ);
+
+    const hdx::float3 Move = AxisX * -pMouse->GetDelta().x*0.1f + AxisY * pMouse->GetDelta().y*0.01f;
+
+    Camera_.Pos += Move;
+    Camera_.Target += Move;
+  }
+  if (int Wheel = pMouse->GetWheel().y; Wheel != 0)
+  {
+    const hdx::float3 AxisZ = (Camera_.Target - Camera_.Pos).Normalize();
+
+    Camera_.Pos += AxisZ * Wheel*5.0f;
+  }
+
+  SetCamera(Camera_);
 }
 
 void CRenderer3D::CalcView()

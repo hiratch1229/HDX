@@ -60,6 +60,10 @@
 //  2018.11.21  作成
 #include "Include/Camera.hpp"
 
+//  ライト
+//  2019.03.01  作成
+#include "Include/Light.hpp"
+
 //  レンダラー2D
 //  2018.10.28  作成
 #include "Include/Renderer2D.hpp"

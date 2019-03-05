@@ -27,15 +27,16 @@ namespace hdx::Renderer3D
   void RestoreRenderTarget();
   void SetRenderTarget(const RenderTarget& _RenderTarget);
   void SetCamera(const Camera& _Camera);
-  void SetLightDirection(const float3& _LightDirection);
-  void SetConstantBuffer(ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot);
+  void SetConstantBuffer(ShaderStage _Stage, UINT _ID, const void* _pData, UINT _Slot);
 
   template<class T>
   void SetConstantBuffer(const ConstantBuffer<T>& ConstantBuffer, UINT _Slot, ShaderStage _Stage = ShaderStage::Vertex)
   {
-    SetConstantBuffer(_Stage, ConstantBuffer.Size, ConstantBuffer.GetPtr(), _Slot);
+    SetConstantBuffer(_Stage, ConstantBuffer.GetID(), ConstantBuffer.GetPtr(), _Slot);
   }
 
-  const Matrix& GetProjectionMatrix();
-  const Matrix& GetViewMatrix();
+  void FreeCamera();
+
+  Matrix GetProjectionMatrix();
+  Matrix GetViewMatrix();
 }

@@ -5,14 +5,13 @@ void CConstantBuffer::Initialize(ID3D11Device* _pDevice)
   pDevice_ = _pDevice;
 }
 
-inline void CConstantBuffer::Create(UINT _Size)
+ID3D11Buffer* CConstantBuffer::GetConstantBuffer(UINT _ID)
 {
-  //  既に作成されていたら終了
-  if (BufferMap_.find(_Size) != BufferMap_.end())
-  {
-    return;
-  }
+  return Buffers_[_ID].Get();
+}
 
+int CConstantBuffer::Add(UINT _Size)
+{
   //  エラーチェック用
   HRESULT hr = S_OK;
 
@@ -30,16 +29,7 @@ inline void CConstantBuffer::Create(UINT _Size)
   hr = pDevice_->CreateBuffer(&ConstantBufferDesc, nullptr, pConstantBuffer.GetAddressOf());
   _ASSERT_EXPR(SUCCEEDED(hr), L"CreateBuffer");
 
-  BufferMap_.insert(std::make_pair(_Size, pConstantBuffer));
-}
+  Buffers_.emplace_back(pConstantBuffer);
 
-ID3D11Buffer* CConstantBuffer::GetConstantBuffer(UINT _Size)
-{
-  //  作成されて居なければ作成
-  if (BufferMap_.find(_Size) == BufferMap_.end())
-  {
-    Create(_Size);
-  }
-
-  return BufferMap_[_Size].Get();
+  return Buffers_.size() - 1;
 }

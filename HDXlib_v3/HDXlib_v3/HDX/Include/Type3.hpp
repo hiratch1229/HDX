@@ -14,7 +14,7 @@ constexpr auto operator##Operator(T _s)const->Type3<decltype(x Operator _s)>\
 
 #define ASSIGNMENT_OPERATOR(Operator)\
 template<class T>\
-const Type3& operator##Operator(const Type3<T>& _v)\
+Type3& operator##Operator(const Type3<T>& _v)\
 {\
   x Operator static_cast<Type>(_v.x);\
   y Operator static_cast<Type>(_v.y);\
@@ -23,7 +23,7 @@ const Type3& operator##Operator(const Type3<T>& _v)\
   return *this;\
 }\
 template<class T>\
-const Type3& operator##Operator(T _s)\
+Type3& operator##Operator(T _s)\
 {\
   x Operator static_cast<Type>(_s);\
   y Operator static_cast<Type>(_s);\
@@ -88,6 +88,18 @@ namespace hdx
     ASSIGNMENT_OPERATOR(*= );
 
     ASSIGNMENT_OPERATOR(/= );
+  public:
+    [[nodiscard]] constexpr Type Length()const { return std::sqrt(Length()); }
+
+    [[nodiscard]] constexpr Type LengthSq()const { return x * x + y * y + z * z; }
+
+    [[nodiscard]] constexpr Type3 Normalize()const { return (*this)*(static_cast<Type>(1) / LengthSq()); }
+
+    template<class T>
+    [[nodiscard]] constexpr auto Dot(const Type3<T>& _v)const->decltype(x * _v.x) { return x * _v.x + y * _v.y + z * _v.z; }
+
+    template<class T>
+    [[nodiscard]] constexpr auto Cross(const Type3<T>& _v)const->Type3<decltype(x * _v.x)> { return{ y * _v.z - z * _v.y, z * _v.x - x * _v.z, x * _v.y - y * _v.x }; }
   };
 
   template<class T, class Type>
@@ -98,9 +110,6 @@ namespace hdx
 
   template<class T, class Type>
   inline constexpr auto operator+(T _s, const Type3<Type>& _v) { return _v + _s; }
-
-  template<class T, class Type>
-  inline constexpr auto operator-(T _s, const Type3<Type>& _v) { return _v - _s; }
 
   template<class T, class Type>
   inline constexpr auto operator*(T _s, const Type3<Type>& _v) { return _v * _s; }

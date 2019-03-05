@@ -2,7 +2,10 @@
 #include "IRenderer3D.hpp"
 #include "Src/Constants.hpp"
 
+#include "../ConstantBufferData.hpp"
+
 #include <wrl.h>
+#include <memory>
 
 class CRenderer3D : public IRenderer3D
 {
@@ -10,22 +13,9 @@ class CRenderer3D : public IRenderer3D
   {
     DirectX::XMFLOAT4X4 ViewProjectionMatrix;
     DirectX::XMFLOAT4X4 GlobalTransform;
-    DirectX::XMFLOAT4 LightDirection;     //  ライト進行方向
     hdx::ColorF DiffuseColor;
 
     DirectX::XMFLOAT4X4 BoneTransforms[kModelBoneMaxNum];
-  };
-  struct ConstantBufferData
-  {
-    UINT Size = 0;
-    void* pData;
-  public:
-    ConstantBufferData() = default;
-    ConstantBufferData(UINT _Size, void* _pData)
-      : Size(_Size), pData(_pData)
-    {
-
-    }
   };
   struct Instance
   {
@@ -46,7 +36,7 @@ private:
   DirectX::XMFLOAT4X4 BoneIdentityMatrix_;
 private:
   hdx::BlendState BlendState_ = hdx::BlendState::Default;
-  hdx::ConstantBuffer<CommonConstantBuffer> ConstantBuffer_;
+  std::unique_ptr<hdx::ConstantBuffer<CommonConstantBuffer>> pConstantBuffer_;
   ConstantBufferData VertexStageConstantBuffers_[kConstantBufferMaxNum - 1];
   ConstantBufferData PixelStageConstantBuffers_[kConstantBufferMaxNum - 1];
   hdx::RasterizerState RasterizerState_ = hdx::RasterizerState::Default3D;
@@ -73,7 +63,7 @@ public:
 
   void SetBlendState(const hdx::BlendState& _BlendState)override;
 
-  void SetConstantBuffer(hdx::ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot)override;
+  void SetConstantBuffer(hdx::ShaderStage _Stage, UINT _ID, const void* _pData, UINT _Slot)override;
 
   void SetDepthStencilState(const hdx::DepthStencilState& _DepthStencilState)override;
 
@@ -90,8 +80,6 @@ public:
   void SetPixelShader(const hdx::PixelShader& _PixelShader)override;
 
   void RestoreRenderTarget()override;
-
-  void SetLightDirection(const hdx::float3& _LightDirection)override;
 
   void SetCamera(const hdx::Camera& _Camera)override;
 

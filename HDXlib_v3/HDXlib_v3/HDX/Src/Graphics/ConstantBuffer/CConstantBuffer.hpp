@@ -6,12 +6,12 @@
 
 class CConstantBuffer : public IConstantBuffer
 {
-  std::unordered_map<UINT, Microsoft::WRL::ComPtr<ID3D11Buffer>> BufferMap_;
+  std::vector<Microsoft::WRL::ComPtr<ID3D11Buffer>> Buffers_;
   ID3D11Device* pDevice_;
-private:
-  void Create(UINT _Size);
 public:
-  ID3D11Buffer* GetConstantBuffer(UINT _Size);
+  ID3D11Buffer* GetConstantBuffer(UINT _ID)override;
+
+  int Add(UINT _Size)override;
 public:
-  void Initialize(ID3D11Device* _pDevice);
+  void Initialize(ID3D11Device* _pDevice)override;
 };

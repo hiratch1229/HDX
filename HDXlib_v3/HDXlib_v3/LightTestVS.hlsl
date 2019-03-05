@@ -1,5 +1,11 @@
-#include "Model.hlsli"
-#include "Bone.hlsli"
+#include "HDX/Shader/Model/Model.hlsli"
+#include "HDX/Shader/Model/Bone.hlsli"
+#include "HDX/Shader/Model/Light.hlsli"
+
+cbuffer ConstantBuffer : register(b1)
+{
+  DirectionalLight DLight;
+}
 
 VS_OUT main(VS_IN In)
 {
@@ -26,7 +32,8 @@ VS_OUT main(VS_IN In)
   Out.Texcoord = In.Texcoord;
   Out.Normal = normalize(mul(In.Normal, In.World)).xyz;
 
-  Out.Color = In.MaterialColor * DiffuseColor;
+  Out.Color = In.MaterialColor * DiffuseColor * DLight.Calc(Out.Normal)*0.5f;
+  Out.Color.a = In.MaterialColor.a * DiffuseColor.a;
 
   return Out;
 }

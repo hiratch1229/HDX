@@ -81,11 +81,11 @@ namespace hdx
       Engine::Get<IRenderer3D>()->SetRenderTarget(_RenderTarget);
     }
 
-    void SetConstantBuffer(ShaderStage _Stage, UINT _Size, const void* _pData, UINT _Slot)
+    void SetConstantBuffer(ShaderStage _Stage, UINT _ID, const void* _pData, UINT _Slot)
     {
       _ASSERT_EXPR_A(_Slot >= 1 && _Slot < hdx::Constants::kConstantBufferMaxNum, ("1‚©‚ç" + std::to_string(hdx::Constants::kConstantBufferMaxNum - 1) + "‚Ì”ÍˆÍ‚ðŽw’è‚µ‚Ä‚­‚¾‚³‚¢B").c_str());
 
-      Engine::Get<IRenderer3D>()->SetConstantBuffer(_Stage, _Size, _pData, _Slot);
+      Engine::Get<IRenderer3D>()->SetConstantBuffer(_Stage, _ID, _pData, _Slot);
     }
 
     void SetCamera(const Camera& _Camera)
@@ -93,18 +93,20 @@ namespace hdx
       Engine::Get<IRenderer3D>()->SetCamera(_Camera);
     }
 
-    void SetLightDirection(const float3& _LightDirection)
+    void FreeCamera()
     {
-      Engine::Get<IRenderer3D>()->SetLightDirection(_LightDirection);
+      Engine::Get<IRenderer3D>()->FreeCamera();
     }
 
-    const Matrix& GetProjectionMatrix()
+    Matrix GetProjectionMatrix()
     {
       return Engine::Get<IRenderer3D>()->GetProjectionMatrix();
     }
-    const Matrix& GetViewMatrix()
+
+    Matrix GetViewMatrix()
     {
       return Engine::Get<IRenderer3D>()->GetViewMatrix();
     }
+
   }
 }

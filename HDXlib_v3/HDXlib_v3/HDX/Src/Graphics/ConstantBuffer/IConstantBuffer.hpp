@@ -12,5 +12,7 @@ public:
 
   virtual void Initialize(ID3D11Device* _pDevice) = 0;
 
-  virtual ID3D11Buffer* GetConstantBuffer(UINT _Size) = 0;
+  virtual ID3D11Buffer* GetConstantBuffer(UINT _ID) = 0;
+
+  virtual int Add(UINT _Size) = 0;
 };

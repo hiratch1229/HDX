@@ -165,8 +165,6 @@ void CSystem::Initialize()
   Engine::Get<ISamplerState>()->Initialize(pDevice_.Get());
   Engine::Get<IVertexShader>()->Initialize(pDevice_.Get());
   Engine::Get<IPixelShader>()->Initialize(pDevice_.Get());
-  Engine::Get<IRenderer2D>()->Initialize(pDevice_.Get(), pImmediateContext_.Get(), pRenderTargetView_.GetAddressOf(), pDepthStencilView_.Get());
-  Engine::Get<IRenderer3D>()->Initialize(pDevice_.Get(), pImmediateContext_.Get(), pRenderTargetView_.GetAddressOf(), pDepthStencilView_.Get());
   Engine::Get<IGamepad>()->Initialize(pWindow_->hWnd_);
   Engine::Get<ITexture>()->Initialize(pDevice_.Get(), pSwapChain_.Get());
   Engine::Get<ISound>()->Initialize(pWindow_->hWnd_);
@@ -186,6 +184,9 @@ bool CSystem::Update()
 
     ResizeSwapChain();
     CreateRenderTargetViewAndDepthStencilView();
+
+    Engine::Get<IRenderer2D>()->Initialize(pDevice_.Get(), pImmediateContext_.Get(), pRenderTargetView_.GetAddressOf(), pDepthStencilView_.Get());
+    Engine::Get<IRenderer3D>()->Initialize(pDevice_.Get(), pImmediateContext_.Get(), pRenderTargetView_.GetAddressOf(), pDepthStencilView_.Get());
 
     Engine::Get<IRenderer3D>()->CalcProjection();
 
