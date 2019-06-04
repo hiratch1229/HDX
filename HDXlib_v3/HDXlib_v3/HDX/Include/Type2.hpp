@@ -1,13 +1,18 @@
 #pragma once
+#include "Fwd.hpp"
+
+#include <cmath>
+#include <string>
+#include <fstream>
 
 #define ARITHMETIC_OPERATOR(Operator)\
 template<class T>\
-constexpr auto operator##Operator(const Type2<T>& _v)const->Type2<decltype(x Operator _v.x)>\
+[[nodiscard]] constexpr auto operator##Operator(const Type2<T>& _v)const->Type2<decltype(x Operator _v.x)>\
 {\
   return{ x Operator _v.x, y Operator _v.y };\
 }\
 template<class T>\
-constexpr auto operator##Operator(T _s)const->Type2<decltype(x Operator _s)>\
+[[nodiscard]] constexpr auto operator##Operator(T _s)const->Type2<decltype(x Operator _s)>\
 {\
   return{ x Operator _s, y Operator _s };\
 }\
@@ -57,13 +62,13 @@ namespace hdx
       : x(static_cast<Type>(_v.x))
       , y(static_cast<Type>(_v.y)) {}
   public:
-    constexpr bool operator==(const Type2& _v)const { return x == _v.x && y == _v.y; }
+    [[nodiscard]] constexpr bool operator==(const Type2& _v)const { return x == _v.x && y == _v.y; }
 
-    constexpr bool operator!=(const Type2& _v)const { return !(*this == _v); }
+    [[nodiscard]] constexpr bool operator!=(const Type2& _v)const { return !(*this == _v); }
 
-    constexpr Type2 operator+()const { return *this; }
+    [[nodiscard]] constexpr Type2 operator+()const { return *this; }
 
-    constexpr Type2 operator-()const { return{ -x, -y }; }
+    [[nodiscard]] constexpr Type2 operator-()const { return{ -x, -y }; }
 
     ARITHMETIC_OPERATOR(+);
 
@@ -87,7 +92,7 @@ namespace hdx
 
     [[nodiscard]] constexpr Type LengthSq()const { return x * x + y * y; }
 
-    [[nodiscard]] constexpr Type2 Normalize()const { return (*this)*(static_cast<Type>(1) / Length()); }
+    [[nodiscard]] constexpr Type2 Normalize()const { return *this / Length(); }
 
     template<class T>
     [[nodiscard]] constexpr auto Dot(const Type2<T>& _v)const->decltype(x * _v.x) { return x * _v.x + y * _v.y; }
@@ -97,19 +102,45 @@ namespace hdx
   };
 
   template<class T, class Type>
-  inline constexpr auto operator==(T _s, const Type2<Type>& _v) { return _v == _s; }
+  [[nodiscard]] inline constexpr auto operator==(T _s, const Type2<Type>& _v) { return _v == _s; }
 
   template<class T, class Type>
-  inline constexpr auto operator!=(T _s, const Type2<Type>& _v) { return _v != _s; }
+  [[nodiscard]] inline constexpr auto operator!=(T _s, const Type2<Type>& _v) { return _v != _s; }
 
   template<class T, class Type>
-  inline constexpr auto operator+(T _s, const Type2<Type>& _v) { return _v + _s; }
+  [[nodiscard]] inline constexpr auto operator+(T _s, const Type2<Type>& _v) { return _v + _s; }
 
   template<class T, class Type>
-  inline constexpr auto operator*(T _s, const Type2<Type>& _v) { return _v * _s; }
+  [[nodiscard]] inline constexpr auto operator*(T _s, const Type2<Type>& _v) { return _v * _s; }
+}
 
-  using int2 = Type2<int>;
-  using float2 = Type2<float>;
+namespace std
+{
+  template <class Type>
+  [[nodiscard]] inline string to_string(const hdx::Type2<Type>& _v)
+  {
+    return to_string(_v.x) + "," + to_string(_v.y);
+  }
+
+  template <class Type>
+  [[nodiscard]] inline wstring to_wstring(const hdx::Type2<Type>& _v)
+  {
+    return to_wstring(_v.x) + L"," + to_wstring(_v.y);
+  }
+
+  template <class CharType, class Type>
+  inline basic_ostream<CharType>& operator<<(basic_ostream<CharType>& _OStream, const hdx::Type2<Type>& _v)
+  {
+    return _OStream << _v.x << CharType(',') << _v.y;
+  }
+
+  template <class CharType, class Type>
+  inline basic_istream<CharType>& operator>>(basic_istream<CharType>& _IStream, hdx::Type2<Type>& _v)
+  {
+    CharType Temp;
+
+    return _IStream >> _v.x >> Temp >> _v.y;
+  }
 }
 
 #undef ARITHMETIC_OPERATOR

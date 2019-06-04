@@ -1,10 +1,13 @@
 #pragma once
+#include "Fwd.hpp"
 #include "Types.hpp"
+
+#include <cmath>
+#include <string>
+#include <fstream>
 
 namespace hdx
 {
-  struct ColorF;
-
   //  カラー
   //  R,G,B,A それぞれ0~255で色を表現します
   struct Color
@@ -558,4 +561,31 @@ namespace hdx
     //  #7B68EE
     constexpr Color MediumSlateBlue{ 123,104,238 };
   };
+}
+
+namespace std
+{
+  [[nodiscard]] inline string to_string(const hdx::ColorF& _Color)
+  {
+    return to_string(_Color.R) + "," + to_string(_Color.G) + "," + to_string(_Color.B) + "," + to_string(_Color.A);
+  }
+
+  [[nodiscard]] inline wstring to_wstring(const hdx::ColorF& _Color)
+  {
+    return to_wstring(_Color.R) + L"," + to_wstring(_Color.G) + L"," + to_wstring(_Color.B) + L"," + to_wstring(_Color.A);
+  }
+
+  template <class CharType>
+  inline basic_ostream<CharType>& operator<<(basic_ostream<CharType>& _OStream, const hdx::ColorF& _Color)
+  {
+    return _OStream << _Color.R << CharType(',') << _Color.G << CharType(',') << _Color.B << CharType(',') << _Color.A;
+  }
+
+  template <class CharType>
+  inline basic_istream<CharType>& operator>>(basic_istream<CharType>& _IStream, hdx::ColorF& _Color)
+  {
+    CharType Temp;
+
+    return _IStream >> _Color.R >> Temp >> _Color.G >> Temp >> _Color.B >> Temp >> _Color.A;
+  }
 }

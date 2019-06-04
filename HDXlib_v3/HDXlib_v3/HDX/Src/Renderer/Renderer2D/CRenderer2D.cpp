@@ -30,10 +30,10 @@ void CRenderer2D::Initialize(ID3D11Device* _pDevice, ID3D11DeviceContext* _pImme
   {
     Vertex Vertices[] =
     {
-      { hdx::float3(0.0f, 0.0f, 0.0f), hdx::float2(0.0f, 0.0f) },
-      { hdx::float3(1.0f, 0.0f, 0.0f), hdx::float2(1.0f, 0.0f) },
-      { hdx::float3(0.0f, 1.0f, 0.0f), hdx::float2(0.0f, 1.0f) },
-      { hdx::float3(1.0f, 1.0f, 0.0f), hdx::float2(1.0f, 1.0f) },
+      { hdx::float3(-0.5f, -0.5f, 0.0f), hdx::float2(0.0f, 0.0f) },
+      { hdx::float3(+0.5f, -0.5f, 0.0f), hdx::float2(1.0f, 0.0f) },
+      { hdx::float3(-0.5f, +0.5f, 0.0f), hdx::float2(0.0f, 1.0f) },
+      { hdx::float3(+0.5f, +0.5f, 0.0f), hdx::float2(1.0f, 1.0f) },
     };
 
     D3D11_BUFFER_DESC BufferDesc{};
@@ -206,30 +206,18 @@ void CRenderer2D::Draw(const hdx::Texture& _Texture, const hdx::float2& _DstLeft
 
   Instance& Instance = Instances_[Count_];
 
-  const hdx::float2 Center = _DstLeftTop + _DstSize / 2.0f;
   const hdx::float2 WindowSize = Engine::Get<ISystem>()->GetWindowSize();
 
-  const float cos = cosf(_Angle);
-  const float sin = sinf(_Angle);
-  const float Width = 2.0f / WindowSize.x;
-  const float Height = -2.0f / WindowSize.y;
-
-  Instance.NDCTransform._11 = Width*_DstSize.x*cos;
-  Instance.NDCTransform._21 = Height*_DstSize.x*sin;
-  Instance.NDCTransform._31 = 0.0f;
-  Instance.NDCTransform._41 = 0.0f;
-  Instance.NDCTransform._12 = Width*_DstSize.y*-sin;
-  Instance.NDCTransform._22 = Height*_DstSize.y*cos;
-  Instance.NDCTransform._32 = 0.0f;
-  Instance.NDCTransform._42 = 0.0f;
-  Instance.NDCTransform._13 = 0.0f;
-  Instance.NDCTransform._23 = 0.0f;
-  Instance.NDCTransform._33 = 1.0f;
-  Instance.NDCTransform._43 = 0.0f;
-  Instance.NDCTransform._14 = Width*(-Center.x*cos + -Center.y*-sin + Center.x + _DstLeftTop.x) - 1.0f;
-  Instance.NDCTransform._24 = Height*(-Center.x*sin + -Center.y*cos + Center.y + _DstLeftTop.y) + 1.0f;
-  Instance.NDCTransform._34 = 0.0f;
-  Instance.NDCTransform._44 = 1.0f;
+  DirectX::XMStoreFloat4x4(&Instance.NDCTransform,
+    DirectX::XMMatrixTranspose(DirectX::XMMatrixMultiply(DirectX::XMMatrixAffineTransformation2D(
+      DirectX::XMVectorSet(_DstSize.x, _DstSize.y, 0.0f, 0.0f),
+      DirectX::XMVectorZero(),
+      _Angle,
+      DirectX::XMVectorSet(_DstLeftTop.x + _DstSize.x*0.5f, _DstLeftTop.y + _DstSize.y*0.5f, 0.0f, 0.0f)),
+      DirectX::XMMATRIX(2.0f / WindowSize.x, 0.0f, 0.0f, 0.0f,
+        0.0f, -2.0f / WindowSize.y, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        -1.0f, 1.0f, 0.0f, 1.0f))));
 
   const hdx::int2 Size = _Texture.GetSize();
 

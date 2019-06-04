@@ -1,10 +1,83 @@
 #pragma once
+#include "Fwd.hpp"
 #include "MathConstants.hpp"
+
+#define MEMBER_COMPARISON_OPERATOR(ClassName, Operator)\
+[[nodiscard]] constexpr bool operator##Operator(const ClassName& _##ClassName)const noexcept { return Value_ Operator _##ClassName.Value_; }\
+
+#define MEMBER_ARITHMETIC_OPERATOR(ClassName, Operator)\
+[[nodiscard]] constexpr ClassName operator##Operator(const ClassName& _##ClassName)const noexcept { return{ Value_ Operator static_cast<float>(_##ClassName.Value_) }; }\
+template<class T>\
+[[nodiscard]] constexpr ClassName operator##Operator(T _s)const noexcept { return{ Value_ Operator static_cast<float>(_s) }; }\
+
+#define MEMBER_ASSIGNMENT_OPERATOR(ClassName, Operator)\
+ClassName& operator##Operator(const ClassName& _##ClassName)noexcept { Value_ Operator static_cast<float>(_##ClassName.Value_); return *this; }\
+template<class T>\
+ClassName& operator##Operator(T _s)noexcept { Value_ Operator static_cast<float>(_s); return *this; }\
+
+#define MEMBER_COMMON_OPERATOR(ClassName)\
+MEMBER_COMPARISON_OPERATOR(ClassName, ==)\
+\
+MEMBER_COMPARISON_OPERATOR(ClassName, !=)\
+\
+MEMBER_COMPARISON_OPERATOR(ClassName, <)\
+\
+MEMBER_COMPARISON_OPERATOR(ClassName, >)\
+\
+MEMBER_COMPARISON_OPERATOR(ClassName, <=)\
+\
+MEMBER_COMPARISON_OPERATOR(ClassName, >=)\
+\
+MEMBER_ARITHMETIC_OPERATOR(ClassName, +)\
+\
+MEMBER_ARITHMETIC_OPERATOR(ClassName, -)\
+\
+MEMBER_ARITHMETIC_OPERATOR(ClassName, *)\
+\
+MEMBER_ARITHMETIC_OPERATOR(ClassName, /)\
+\
+MEMBER_ASSIGNMENT_OPERATOR(ClassName, =)\
+\
+MEMBER_ASSIGNMENT_OPERATOR(ClassName, +=)\
+\
+MEMBER_ASSIGNMENT_OPERATOR(ClassName, -=)\
+\
+MEMBER_ASSIGNMENT_OPERATOR(ClassName, *=)\
+\
+MEMBER_ASSIGNMENT_OPERATOR(ClassName, /=)\
+
+
+#define COMPARISON_OPERATOR(ClassName, Operator)\
+template<class T>\
+[[nodiscard]] inline constexpr bool operator##Operator(T _s, const ClassName& _##ClassName)noexcept { return ClassName(static_cast<float>(_s)) Operator _##ClassName; }\
+
+#define ARITHMETIC_OPERATOR(ClassName, Operator)\
+template<class T>\
+[[nodiscard]] inline constexpr ClassName operator##Operator(T _s, const ClassName& _##ClassName)noexcept { return ClassName(static_cast<float>(_s)) Operator _##ClassName; }\
+
+#define COMMON_OPERATOR(ClassName)\
+COMPARISON_OPERATOR(ClassName, ==)\
+\
+COMPARISON_OPERATOR(ClassName, !=)\
+\
+COMPARISON_OPERATOR(ClassName, <)\
+\
+COMPARISON_OPERATOR(ClassName, >)\
+\
+COMPARISON_OPERATOR(ClassName, <=)\
+\
+COMPARISON_OPERATOR(ClassName, >=)\
+\
+ARITHMETIC_OPERATOR(ClassName, +)\
+\
+ARITHMETIC_OPERATOR(ClassName, -)\
+\
+ARITHMETIC_OPERATOR(ClassName, *)\
+\
+ARITHMETIC_OPERATOR(ClassName, /)\
 
 namespace hdx
 {
-  class Degree;
-
   //  弧度法
   class Radian
   {
@@ -12,50 +85,29 @@ namespace hdx
   public:
     Radian() = default;
 
-    constexpr Radian(float _Radian) : Value_(Normalize(_Radian)) {}
+    constexpr Radian(float _Radian)noexcept
+      : Value_(_Radian) {}
 
-    constexpr Radian(const Radian& _Radian)noexcept : Value_(_Radian.Value_) {}
+    constexpr Radian(const Radian& _Radian)noexcept
+      : Value_(_Radian.Value_) {}
 
     constexpr Radian(const Degree& _Degree)noexcept;
   public:
-    constexpr operator decltype(Value_)()const { return Value_; }
+    constexpr operator float()const noexcept { return Value_; }
   public:
-    constexpr bool operator==(const Radian& _Radian)const noexcept { return Value_ == _Radian.Value_; }
-
-    constexpr bool operator!=(const Radian& _Radian)const noexcept { return !(*this == _Radian); }
-
-    constexpr bool operator<(const Radian& _Radian)const noexcept { return Value_ < _Radian.Value_; }
-
-    constexpr bool operator>(const Radian& _Radian)const noexcept { return Value_ > _Radian.Value_; }
-
-    constexpr bool operator<=(const Radian& _Radian)const noexcept { return Value_ <= _Radian.Value_; }
-
-    constexpr bool operator>=(const Radian& _Radian)const noexcept { return Value_ >= _Radian.Value_; }
-
-    constexpr Radian operator+()const noexcept { return *this; }
-
-    constexpr Radian operator-()const noexcept { return{ -Value_ }; }
-
-    Radian& operator=(const Radian& _Radian)noexcept { Value_ = _Radian.Value_; return *this; }
-
-    Radian& operator+=(const Radian& _Radian)noexcept { Value_ += _Radian.Value_; return *this; }
-
-    Radian& operator-=(const Radian& _Radian)noexcept { Value_ -= _Radian.Value_; return *this; }
-
-    Radian& operator*=(float _s) { Value_ *= _s; return *this; }
-
-    Radian& operator/=(float _s) { Value_ /= _s; return *this; }
+    MEMBER_COMMON_OPERATOR(Radian)
   public:
-    //  正規化(-π~πにする)
-    constexpr float Normalize(float _Value)
+    [[nodiscard]] constexpr Radian Normalize()const noexcept
     {
-      while (_Value > Math::HalfPI) _Value -= Math::PI;
-      while (_Value < -Math::HalfPI) _Value += Math::PI;
+      float Value = Value_;
 
-      return _Value;
+      while (Value > Math::HalfPI) Value -= Math::PI;
+      while (Value < -Math::HalfPI) Value += Math::PI;
+
+      return Value;
     }
   };
-  
+
   //  度数法
   class Degree
   {
@@ -63,58 +115,100 @@ namespace hdx
   public:
     Degree() = default;
 
-    constexpr Degree(float _Degree) : Value_(Normalize(_Degree)) {}
+    constexpr Degree(float _Degree)noexcept
+      : Value_(_Degree) {}
 
-    constexpr Degree(const Degree& _Degree)noexcept : Value_(_Degree.Value_) {}
+    constexpr Degree(const Degree& _Degree)noexcept
+      : Value_(_Degree.Value_) {}
 
     constexpr Degree(const Radian& _Radian)noexcept;
   public:
-    constexpr operator decltype(Value_)()const { return Value_; }
+    constexpr operator float()const noexcept { return Value_; }
   public:
-    constexpr bool operator==(const Degree& _Degree)const noexcept { return Value_ == _Degree.Value_; }
-
-    constexpr bool operator!=(const Degree& _Degree)const noexcept { return !(*this == _Degree); }
-
-    constexpr bool operator<(const Degree& _Degree)const noexcept { return Value_ < _Degree.Value_; }
-
-    constexpr bool operator>(const Degree& _Degree)const noexcept { return Value_ > _Degree.Value_; }
-
-    constexpr bool operator<=(const Degree& _Degree)const noexcept { return Value_ <= _Degree.Value_; }
-
-    constexpr bool operator>=(const Degree& _Degree)const noexcept { return Value_ >= _Degree.Value_; }
-
-    constexpr Degree operator+()const noexcept { return *this; }
-
-    constexpr Degree operator-()const noexcept { return{ -Value_ }; }
-
-    Degree& operator=(const Degree& _Degree)noexcept { Value_ = _Degree.Value_; return *this; }
-
-    Degree& operator+=(const Degree& _Degree)noexcept { Value_ += _Degree.Value_; return *this; }
-
-    Degree& operator-=(const Degree& _Degree)noexcept { Value_ -= _Degree.Value_; return *this; }
-
-    Degree& operator*=(float _s) { Value_ *= _s; return *this; }
-
-    Degree& operator/=(float _s) { Value_ /= _s; return *this; }
-
-    Degree& operator++() { ++Value_; return *this; }
-
-    Degree operator++(int) { Degree Temp = *this; ++Value_; return Temp; }
-
-    Degree& operator--() { --Value_; return *this; }
-
-    Degree operator--(int) { Degree Temp = *this; --Value_; return Temp; }
+    MEMBER_COMMON_OPERATOR(Degree)
   public:
-    constexpr float Normalize(float _Value)
+    Degree& operator++()noexcept { ++Value_; return *this; }
+
+    Degree operator++(int)noexcept { Degree Temp = *this; ++Value_; return Temp; }
+
+    Degree& operator--()noexcept { --Value_; return *this; }
+
+    Degree operator--(int)noexcept { Degree Temp = *this; --Value_; return Temp; }
+  public:
+    [[nodiscard]] constexpr Degree Normalize()const noexcept
     {
-      while (_Value > 180.0f) _Value -= 360.0f;
-      while (_Value < -180.0f) _Value += 360.0f;
+      float Value = Value_;
 
-      return _Value;
+      while (Value > 180.0f) Value -= 360.0f;
+      while (Value < -180.0f) Value += 360.0f;
+
+      return Value;
     }
   };
 
-  inline constexpr Radian::Radian(const Degree& _Degree)noexcept : Value_(Normalize(Math::ToRadian(_Degree))) {}
+  inline constexpr Radian::Radian(const Degree& _Degree)noexcept
+    : Value_(Math::ToRadian(_Degree)) {}
 
-  inline constexpr Degree::Degree(const Radian& _Radian)noexcept : Value_(Normalize(Math::ToDegree(_Radian))) {}
+  inline constexpr Degree::Degree(const Radian& _Radian)noexcept
+    : Value_(Math::ToDegree(_Radian)) {}
+
+  COMMON_OPERATOR(Radian);
+
+  COMMON_OPERATOR(Degree);
 }
+
+namespace std
+{
+  [[nodiscard]] inline string to_string(const hdx::Radian& _Angle)
+  {
+    return to_string(static_cast<float>(_Angle));
+  }
+
+  [[nodiscard]] inline wstring to_wstring(const hdx::Radian& _Angle)
+  {
+    return to_wstring(static_cast<float>(_Angle));
+  }
+
+  template <class CharType>
+  inline basic_ostream<CharType>& operator<<(basic_ostream<CharType>& _OStream, const hdx::Radian& _Angle)
+  {
+    return _OStream << static_cast<float>(_Angle);
+  }
+
+  template <class CharType>
+  inline basic_istream<CharType>& operator>>(basic_istream<CharType>& _IStream, hdx::Radian& _Angle)
+  {
+    return _IStream >> reinterpret_cast<float&>(_Angle);
+  }
+
+  [[nodiscard]] inline string to_string(const hdx::Degree& _Angle)
+  {
+    return to_string(static_cast<float>(_Angle));
+  }
+
+  [[nodiscard]] inline wstring to_wstring(const hdx::Degree& _Angle)
+  {
+    return to_wstring(static_cast<float>(_Angle));
+  }
+
+  template <class CharType>
+  inline basic_ostream<CharType>& operator<<(basic_ostream<CharType>& _OStream, const hdx::Degree& _Angle)
+  {
+    return _OStream << static_cast<float>(_Angle);
+  }
+
+  template <class CharType>
+  inline basic_istream<CharType>& operator>>(basic_istream<CharType>& _IStream, hdx::Degree& _Angle)
+  {
+    return _IStream >> reinterpret_cast<float&>(_Angle);
+  }
+}
+
+#undef MEMBER_COMPARISON_OPERATOR
+#undef MEMBER_ARITHMETIC_OPERATOR
+#undef MEMBER_ASSIGNMENT_OPERATOR
+#undef MEMBER_COMMON_OPERATOR
+#undef COMPARISON_OPERATOR
+#undef ARITHMETIC_OPERATOR
+#undef COMMON_OPERATOR
+

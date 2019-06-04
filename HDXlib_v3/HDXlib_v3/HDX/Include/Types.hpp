@@ -1,5 +1,4 @@
 #pragma once
-
 using UINT = unsigned int;
 
 namespace hdx
